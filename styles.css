@@ -1250,8 +1250,27 @@ tbody tr:last-child td {
 .listing-item {
   display: grid;
   grid-template-columns: 64px minmax(0, 1fr);
+  align-items: start;
   gap: 18px;
   padding: 18px;
+}
+
+.listing-item .date-badge {
+  width: 64px;
+  height: 64px;
+  align-self: start;
+}
+
+.listing-item .date-badge span {
+  height: 22px;
+  padding: 5px 0 0;
+}
+
+.listing-item .date-badge strong {
+  display: grid;
+  height: 42px;
+  place-items: center;
+  padding: 0;
 }
 
 .listing-item h3 {
@@ -1623,6 +1642,21 @@ tbody tr:last-child td {
   .listing-item {
     grid-template-columns: 54px minmax(0, 1fr);
     padding: 14px;
+  }
+
+  .listing-item .date-badge {
+    width: 54px;
+    height: 54px;
+  }
+
+  .listing-item .date-badge span {
+    height: 20px;
+    font-size: 11px;
+  }
+
+  .listing-item .date-badge strong {
+    height: 34px;
+    font-size: 23px;
   }
 
   .feature-card,
