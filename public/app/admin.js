@@ -293,7 +293,7 @@ document.addEventListener("click", async (event) => {
   if (action === "save") await save();
   if (action === "reset") {
     state = structuredClone(defaultContent);
-    setStatus("Reset to placeholder content. Save to keep this reset.", "warn");
+    setStatus("Reset to default content. Save to keep this reset.", "warn");
     render();
   }
   if (action === "add-jummah") {
