@@ -429,7 +429,7 @@ img {
   align-items: center;
   gap: 7px;
   margin: 13px 0 17px;
-  color: var(--danger);
+  color: var(--gold);
 }
 
 .countdown-unit {
