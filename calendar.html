@@ -36,9 +36,24 @@
       <section class="page-band" id="prayer-times">
         <div class="section-heading">
           <h2>Daily Prayer Schedule</h2>
-          <p>Today's prayer times for the Morrisville community. Please check back regularly for the latest schedule.</p>
+          <p>Prayer times for the Morrisville community. Use the date selector to view another day.</p>
         </div>
-        <div class="schedule-panel" data-page-prayers></div>
+        <div class="schedule-with-date">
+          <div class="date-navigator page-date-navigator" aria-label="Prayer date navigation" data-page-date-navigator>
+            <button class="date-nav-button" type="button" data-date-nav="prev" aria-label="Previous day">
+              <img src="./public/icons/chevron-left.svg" alt="" aria-hidden="true">
+            </button>
+            <button class="date-nav-main" type="button" aria-label="Selected prayer date">
+              <img src="./public/icons/calendar.svg" alt="" aria-hidden="true">
+              <span data-date-label>Tue, June 16</span>
+            </button>
+            <button class="date-nav-button" type="button" data-date-nav="next" aria-label="Next day">
+              <img src="./public/icons/chevron-right.svg" alt="" aria-hidden="true">
+            </button>
+            <button class="date-nav-today" type="button" data-date-nav="today">Today</button>
+          </div>
+          <div class="schedule-panel" data-page-prayers></div>
+        </div>
         <div class="inline-cta">
           <span>Need the full monthly schedule?</span>
           <a href="#prayer-times">Monthly Prayer Timing</a>

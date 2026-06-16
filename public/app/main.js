@@ -972,8 +972,7 @@ var prayerLabels = {
 var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 var nextPrayerOrder = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
 var countdownTimer = null;
-var defaultPrayerDate = new Date(2026, 5, 16);
-var selectedPrayerDate = new Date(defaultPrayerDate);
+var selectedPrayerDate = /* @__PURE__ */ new Date();
 function getIcmPrayerTimes(date) {
   const params = CalculationMethod_default.Karachi();
   params.madhab = Madhab.Hanafi;
@@ -1029,6 +1028,11 @@ function zonedDateParts(date) {
 function prayerDateFor(date, dayOffset = 0) {
   const parts = zonedDateParts(date);
   return new Date(parts.year, parts.month - 1, parts.day + dayOffset);
+}
+function isSamePrayerDate(left, right) {
+  const leftParts = zonedDateParts(left);
+  const rightParts = zonedDateParts(right);
+  return leftParts.year === rightParts.year && leftParts.month === rightParts.month && leftParts.day === rightParts.day;
 }
 function formatTime(date) {
   return new Intl.DateTimeFormat("en-US", {
@@ -1087,13 +1091,14 @@ function initDateNavigator() {
     const button = event.target.closest("[data-date-nav]");
     if (!button) return;
     if (button.dataset.dateNav === "today") {
-      selectedPrayerDate = new Date(defaultPrayerDate);
+      selectedPrayerDate = /* @__PURE__ */ new Date();
     } else {
       const offset = button.dataset.dateNav === "prev" ? -1 : 1;
       selectedPrayerDate = new Date(selectedPrayerDate);
       selectedPrayerDate.setDate(selectedPrayerDate.getDate() + offset);
     }
     renderDateNavigator();
+    renderPrayerTimes();
   });
   renderDateNavigator();
 }
@@ -1105,32 +1110,36 @@ function renderHero(content) {
 }
 function renderPrayerTimes() {
   const now = /* @__PURE__ */ new Date();
-  const todayPrayerDate = prayerDateFor(now);
-  const tomorrowPrayerDate = prayerDateFor(now, 1);
-  const todayTimes = getIcmPrayerTimes(todayPrayerDate);
-  const tomorrowTimes = getIcmPrayerTimes(tomorrowPrayerDate);
+  const selectedDate = prayerDateFor(selectedPrayerDate);
+  const selectedTimes = getIcmPrayerTimes(selectedDate);
   for (const key of prayerOrder) {
-    setText(`[data-prayer-time="${key}"]`, formatTime(todayTimes[key]));
+    setText(`[data-prayer-time="${key}"]`, formatTime(selectedTimes[key]));
   }
-  let next = nextPrayerOrder.map((key) => ({ key, time: todayTimes[key] })).find((item) => item.time.getTime() > now.getTime());
-  if (!next) {
+  const todayDate = prayerDateFor(now);
+  const isToday = isSamePrayerDate(selectedDate, now);
+  const isFutureDate = selectedDate.getTime() > todayDate.getTime();
+  let next = nextPrayerOrder.map((key) => ({ key, time: selectedTimes[key] })).find((item) => item.time.getTime() > now.getTime());
+  if (!next && isToday) {
+    const tomorrowTimes = getIcmPrayerTimes(prayerDateFor(now, 1));
     next = { key: "fajr", time: tomorrowTimes.fajr };
+  } else if (!next && isFutureDate) {
+    next = { key: "fajr", time: selectedTimes.fajr };
   }
-  const label = prayerLabels[next.key];
+  const label = next ? prayerLabels[next.key] : prayerLabels.fajr;
   setText("[data-next-name]", label);
-  setText("[data-next-time]", formatTime(next.time));
+  setText("[data-next-time]", next ? formatTime(next.time) : formatTime(selectedTimes.fajr));
   const countdown = document.querySelector("[data-countdown]");
   if (countdown) countdown.setAttribute("aria-label", `Time remaining until ${label}`);
   document.querySelectorAll("[data-prayer-tile]").forEach((tile) => {
-    tile.classList.toggle("active", tile.dataset.prayerTile === next.key);
+    tile.classList.toggle("active", Boolean(next) && tile.dataset.prayerTile === next.key);
   });
   if (countdownTimer) window.clearInterval(countdownTimer);
   const tick = () => {
-    const remaining = Math.max(0, Math.ceil((next.time.getTime() - Date.now()) / 1e3));
+    const remaining = next ? Math.max(0, Math.ceil((next.time.getTime() - Date.now()) / 1e3)) : 0;
     setText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
     setText("[data-countdown-minutes]", String(Math.floor(remaining % 3600 / 60)).padStart(2, "0"));
     setText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));
-    if (remaining <= 0) renderPrayerTimes();
+    if (next && remaining <= 0) renderPrayerTimes();
   };
   tick();
   countdownTimer = window.setInterval(tick, 1e3);

@@ -19,6 +19,7 @@ const prayerLabels = {
   maghrib: "Maghrib",
   isha: "Isha",
 };
+let selectedPrayerDate = new Date();
 
 const fallbackNews = [
   {
@@ -102,6 +103,14 @@ function prayerDateFor(date) {
   return new Date(parts.year, parts.month - 1, parts.day);
 }
 
+function formatNavigatorDate(date) {
+  return date.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 function formatTime(date) {
   return new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
@@ -146,7 +155,7 @@ function getDateBadgeParts(dateString) {
 function renderPrayerTable() {
   const target = document.querySelector("[data-page-prayers]");
   if (!target) return;
-  const times = getIcmPrayerTimes(prayerDateFor(new Date()));
+  const times = getIcmPrayerTimes(prayerDateFor(selectedPrayerDate));
   target.innerHTML = prayerOrder
     .map(
       (key) => `
@@ -157,6 +166,34 @@ function renderPrayerTable() {
       `,
     )
     .join("");
+}
+
+function renderDateNavigator() {
+  const label = document.querySelector("[data-page-date-navigator] [data-date-label]");
+  if (label) label.textContent = formatNavigatorDate(selectedPrayerDate);
+}
+
+function initDateNavigator() {
+  const navigator = document.querySelector("[data-page-date-navigator]");
+  if (!navigator) return;
+
+  navigator.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-date-nav]");
+    if (!button) return;
+
+    if (button.dataset.dateNav === "today") {
+      selectedPrayerDate = new Date();
+    } else {
+      const offset = button.dataset.dateNav === "prev" ? -1 : 1;
+      selectedPrayerDate = new Date(selectedPrayerDate);
+      selectedPrayerDate.setDate(selectedPrayerDate.getDate() + offset);
+    }
+
+    renderDateNavigator();
+    renderPrayerTable();
+  });
+
+  renderDateNavigator();
 }
 
 function renderEvents(content) {
@@ -218,6 +255,7 @@ function renderNews(content) {
 async function boot() {
   initMobileNav();
   const content = await loadCmsContent();
+  initDateNavigator();
   renderPrayerTable();
   renderEvents(content);
   renderJummah(content);

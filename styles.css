@@ -1272,6 +1272,16 @@ tbody tr:last-child td {
   overflow: hidden;
 }
 
+.schedule-with-date {
+  position: relative;
+  padding-top: 20px;
+}
+
+.schedule-with-date .page-date-navigator {
+  top: -14px;
+  right: 14px;
+}
+
 .schedule-row {
   display: flex;
   align-items: center;
