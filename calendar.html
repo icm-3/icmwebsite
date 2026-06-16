@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calendar | Islamic Center of Morrisville</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./index.html" aria-label="Islamic Center of Morrisville home"><img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville"></a>
+      <nav class="top-nav" aria-label="Primary navigation">
+        <a class="nav-donate" href="./donate.html"><img src="./public/icons/generated/donate.png" alt="" aria-hidden="true"><span>Donate</span></a>
+        <a href="./calendar.html">Calendar</a>
+        <a href="./programs.html">Programs</a>
+        <a href="./news.html">News</a>
+        <a href="./about.html">About</a>
+        <button class="menu-button" type="button" aria-label="Open menu"><img src="./public/icons/generated/menu.png" alt="" aria-hidden="true"></button>
+      </nav>
+    </header>
+
+    <main class="page-main">
+      <section class="page-hero">
+        <p class="eyebrow">Prayer and events</p>
+        <h1>Calendar</h1>
+        <p>See today's prayer times, Jumu'ah shifts, and upcoming community events at ICM.</p>
+        <div class="page-actions">
+          <a class="button button-primary" href="#events">Upcoming Events</a>
+          <a class="button button-secondary" href="#prayer-times">Prayer Times</a>
+        </div>
+      </section>
+
+      <section class="page-band" id="prayer-times">
+        <div class="section-heading">
+          <h2>Daily Prayer Schedule</h2>
+          <p>Calculated for Morrisville using the ICM Karachi-style 18 degree method with Hanafi Asr.</p>
+        </div>
+        <div class="schedule-panel" data-page-prayers></div>
+        <div class="inline-cta">
+          <span>Need the full monthly schedule?</span>
+          <a href="#">Monthly Prayer Timing</a>
+        </div>
+      </section>
+
+      <section class="page-split">
+        <div>
+          <h2>Jumu'ah Schedule</h2>
+          <p>ICM holds multiple Friday prayer shifts to serve the community. Please arrive early and follow parking guidance.</p>
+        </div>
+        <div class="schedule-panel" data-page-jummah></div>
+      </section>
+
+      <section class="page-band" id="events">
+        <div class="section-heading">
+          <h2>Upcoming Events</h2>
+          <p>Events are pulled from the same CMS data used on the homepage.</p>
+        </div>
+        <div class="listing-list" data-page-events></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="socials" aria-label="Social links">
+        <a href="#" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a>
+        <a href="#" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a>
+        <a href="#" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a>
+      </div>
+      <p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p>
+      <a href="./about.html#contact">Contact Us</a>
+    </footer>
+    <script type="module" src="./public/app/pages.js"></script>
+  </body>
+</html>

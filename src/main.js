@@ -6,6 +6,7 @@ import {
   Rounding,
 } from "adhan";
 import { defaultContent } from "./default-content.js";
+import { initMobileNav } from "./nav.js";
 
 const ICM_COORDS = new Coordinates(35.8111, -78.8231);
 const TIME_ZONE = "America/New_York";
@@ -249,6 +250,7 @@ function renderNews(content) {
 }
 
 async function boot() {
+  initMobileNav();
   const content = await loadCmsContent();
   renderHero(content);
   renderPrayerTimes();

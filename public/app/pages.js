@@ -958,9 +958,10 @@ function initMobileNav() {
   });
 }
 
-// src/main.js
+// src/pages.js
 var ICM_COORDS = new Coordinates(35.8111, -78.8231);
 var TIME_ZONE = "America/New_York";
+var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 var prayerLabels = {
   fajr: "Fajr",
   sunrise: "Sunrise",
@@ -969,17 +970,29 @@ var prayerLabels = {
   maghrib: "Maghrib",
   isha: "Isha"
 };
-var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
-var nextPrayerOrder = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
-var countdownTimer = null;
-function getIcmPrayerTimes(date) {
-  const params = CalculationMethod_default.Karachi();
-  params.madhab = Madhab.Hanafi;
-  params.rounding = Rounding.Up;
-  params.adjustments.sunrise = -1;
-  params.adjustments.dhuhr = -2;
-  return new PrayerTimes(ICM_COORDS, date, params);
-}
+var fallbackNews = [
+  {
+    title: "Community Programs Continue Through Summer",
+    date: "2026-06-10",
+    summary: "ICM continues to host learning, service, and family programs for the Morrisville community.",
+    image: "./public/news/ramadan.png",
+    imageAlt: "Mosque at sunset"
+  },
+  {
+    title: "Volunteer Opportunities Available",
+    date: "2026-06-05",
+    summary: "Community members can support events, education programs, and social services through volunteer work.",
+    image: "./public/news/camp.png",
+    imageAlt: "Youth program activity"
+  },
+  {
+    title: "Friday Prayer Updates",
+    date: "2026-05-29",
+    summary: "Please review Jumu'ah shift times and arrive early to help keep parking and entry smooth.",
+    image: "./public/news/eid.png",
+    imageAlt: "Masjid evening scene"
+  }
+];
 function escapeHtml(value) {
   return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
 }
@@ -987,7 +1000,6 @@ function mergeContent(content) {
   return {
     ...defaultContent,
     ...content,
-    hero: { ...defaultContent.hero, ...content?.hero || {} },
     jummah: { ...defaultContent.jummah, ...content?.jummah || {} },
     events: Array.isArray(content?.events) ? content.events : defaultContent.events,
     news: Array.isArray(content?.news) ? content.news : defaultContent.news
@@ -999,16 +1011,16 @@ async function loadCmsContent() {
     if (!response.ok) throw new Error("CMS API unavailable");
     return mergeContent(await response.json());
   } catch {
-    const local = localStorage.getItem("icm-cms-content");
-    if (local) {
-      try {
-        return mergeContent(JSON.parse(local));
-      } catch {
-        return defaultContent;
-      }
-    }
     return defaultContent;
   }
+}
+function getIcmPrayerTimes(date) {
+  const params = CalculationMethod_default.Karachi();
+  params.madhab = Madhab.Hanafi;
+  params.rounding = Rounding.Up;
+  params.adjustments.sunrise = -1;
+  params.adjustments.dhuhr = -2;
+  return new PrayerTimes(ICM_COORDS, date, params);
 }
 function zonedDateParts(date) {
   const parts = new Intl.DateTimeFormat("en-US", {
@@ -1024,9 +1036,9 @@ function zonedDateParts(date) {
     day: Number(values.day)
   };
 }
-function prayerDateFor(date, dayOffset = 0) {
+function prayerDateFor(date) {
   const parts = zonedDateParts(date);
-  return new Date(parts.year, parts.month - 1, parts.day + dayOffset);
+  return new Date(parts.year, parts.month - 1, parts.day);
 }
 function formatTime(date) {
   return new Intl.DateTimeFormat("en-US", {
@@ -1060,100 +1072,67 @@ function formatShortDate(dateString) {
 function getDateBadgeParts(dateString) {
   const date = /* @__PURE__ */ new Date(`${dateString}T12:00:00`);
   if (Number.isNaN(date.getTime())) return { month: "---", day: "--" };
-  const month = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: TIME_ZONE }).format(date);
-  const day = new Intl.DateTimeFormat("en-US", { day: "2-digit", timeZone: TIME_ZONE }).format(date);
-  return { month, day };
-}
-function setText(selector, value) {
-  const element = document.querySelector(selector);
-  if (element) element.textContent = value;
-}
-function renderHero(content) {
-  const image = document.querySelector("[data-hero-image]");
-  if (!image) return;
-  image.src = content.hero.image || defaultContent.hero.image;
-  image.alt = content.hero.imageAlt || "";
-}
-function renderPrayerTimes() {
-  const now = /* @__PURE__ */ new Date();
-  const todayPrayerDate = prayerDateFor(now);
-  const tomorrowPrayerDate = prayerDateFor(now, 1);
-  const todayTimes = getIcmPrayerTimes(todayPrayerDate);
-  const tomorrowTimes = getIcmPrayerTimes(tomorrowPrayerDate);
-  for (const key of prayerOrder) {
-    setText(`[data-prayer-time="${key}"]`, formatTime(todayTimes[key]));
-  }
-  let next = nextPrayerOrder.map((key) => ({ key, time: todayTimes[key] })).find((item) => item.time.getTime() > now.getTime());
-  if (!next) {
-    next = { key: "fajr", time: tomorrowTimes.fajr };
-  }
-  const label = prayerLabels[next.key];
-  setText("[data-next-name]", label);
-  setText("[data-next-time]", formatTime(next.time));
-  const countdown = document.querySelector("[data-countdown]");
-  if (countdown) countdown.setAttribute("aria-label", `Time remaining until ${label}`);
-  document.querySelectorAll("[data-prayer-tile]").forEach((tile) => {
-    tile.classList.toggle("active", tile.dataset.prayerTile === next.key);
-  });
-  if (countdownTimer) window.clearInterval(countdownTimer);
-  const tick = () => {
-    const remaining = Math.max(0, Math.ceil((next.time.getTime() - Date.now()) / 1e3));
-    setText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
-    setText("[data-countdown-minutes]", String(Math.floor(remaining % 3600 / 60)).padStart(2, "0"));
-    setText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));
-    if (remaining <= 0) renderPrayerTimes();
+  return {
+    month: new Intl.DateTimeFormat("en-US", { month: "short", timeZone: TIME_ZONE }).format(date),
+    day: new Intl.DateTimeFormat("en-US", { day: "2-digit", timeZone: TIME_ZONE }).format(date)
   };
-  tick();
-  countdownTimer = window.setInterval(tick, 1e3);
 }
-function renderJummah(content) {
-  const label = content.jummah.dateLabel || defaultContent.jummah.dateLabel;
-  setText("[data-jummah-date]", `- ${label.toUpperCase()}`);
-  const tbody = document.querySelector("[data-jummah-body]");
-  if (!tbody) return;
-  const shifts = content.jummah.shifts?.length ? content.jummah.shifts : defaultContent.jummah.shifts;
-  tbody.innerHTML = shifts.map(
-    (shift) => `
-        <tr>
-          <td><span class="shift">${escapeHtml(shift.shift)}</span></td>
-          <td class="time">${escapeHtml(shift.time)}</td>
-          <td>${escapeHtml(shift.speaker)}</td>
-          <td>${escapeHtml(shift.topic)}</td>
-        </tr>
+function renderPrayerTable() {
+  const target = document.querySelector("[data-page-prayers]");
+  if (!target) return;
+  const times = getIcmPrayerTimes(prayerDateFor(/* @__PURE__ */ new Date()));
+  target.innerHTML = prayerOrder.map(
+    (key) => `
+        <div class="schedule-row">
+          <span>${prayerLabels[key]}</span>
+          <strong>${formatTime(times[key])}</strong>
+        </div>
       `
   ).join("");
 }
 function renderEvents(content) {
-  const list = document.querySelector("[data-events-list]");
-  if (!list) return;
-  const events = content.events?.length ? content.events : defaultContent.events;
-  list.innerHTML = events.map((event) => {
+  const target = document.querySelector("[data-page-events]");
+  if (!target) return;
+  target.innerHTML = content.events.map((event) => {
     const badge = getDateBadgeParts(event.date);
-    const dateLabel = formatLongDate(event.date);
     return `
-        <div class="event-item">
+        <article class="listing-item">
           <div class="date-badge"><span>${escapeHtml(badge.month)}</span><strong>${escapeHtml(badge.day)}</strong></div>
           <div>
             <h3>${escapeHtml(event.title)}</h3>
-            <p>${escapeHtml(dateLabel)} &bull; ${escapeHtml(event.time)}<br>${escapeHtml(event.location)}</p>
+            <p>${escapeHtml(formatLongDate(event.date))} &bull; ${escapeHtml(event.time)}</p>
+            <p>${escapeHtml(event.location)}</p>
+            <p>${escapeHtml(event.description)}</p>
           </div>
-        </div>
+        </article>
       `;
   }).join("");
 }
+function renderJummah(content) {
+  const target = document.querySelector("[data-page-jummah]");
+  if (!target) return;
+  target.innerHTML = content.jummah.shifts.map(
+    (shift) => `
+        <div class="schedule-row">
+          <span>${escapeHtml(shift.time)} - ${escapeHtml(shift.speaker)}</span>
+          <strong>${escapeHtml(shift.topic)}</strong>
+        </div>
+      `
+  ).join("");
+}
 function renderNews(content) {
-  const list = document.querySelector("[data-news-list]");
-  if (!list) return;
-  const news = content.news?.length ? content.news : defaultContent.news;
-  list.innerHTML = news.map(
+  const target = document.querySelector("[data-page-news]");
+  if (!target) return;
+  const items = [...content.news, ...fallbackNews].slice(0, Math.max(6, content.news.length));
+  target.innerHTML = items.map(
     (item) => `
-        <article class="news-item">
+        <article class="news-feature">
           <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">
           <div>
-            <h3>${escapeHtml(item.title)}</h3>
+            <time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>
+            <h2>${escapeHtml(item.title)}</h2>
             <p>${escapeHtml(item.summary)}</p>
           </div>
-          <time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>
         </article>
       `
   ).join("");
@@ -1161,13 +1140,9 @@ function renderNews(content) {
 async function boot() {
   initMobileNav();
   const content = await loadCmsContent();
-  renderHero(content);
-  renderPrayerTimes();
-  renderJummah(content);
+  renderPrayerTable();
   renderEvents(content);
+  renderJummah(content);
   renderNews(content);
 }
 boot();
-export {
-  getIcmPrayerTimes
-};

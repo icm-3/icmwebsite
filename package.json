@@ -5,7 +5,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "build": "esbuild src/main.js src/admin.js --bundle --format=esm --target=es2020 --outdir=public/app",
+    "build": "esbuild src/main.js src/admin.js src/pages.js src/site.js --bundle --format=esm --target=es2020 --outdir=public/app",
     "serve": "node server.js",
     "start": "npm run build && node server.js"
   },
