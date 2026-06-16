@@ -30,9 +30,99 @@
         <h1>Donate</h1>
         <p>Your giving sustains daily prayers, classes, youth work, social services, facility care, and community programs for Morrisville, West Cary, and RTP.</p>
         <div class="page-actions">
-          <a class="button button-primary" href="#giving">Giving Categories</a>
+          <a class="button button-primary" href="#donate-now">Donate Now</a>
           <a class="button button-secondary" href="#receipts">Receipts & Recurring Gifts</a>
         </div>
+      </section>
+
+      <section class="page-band" id="donate-now">
+        <div class="section-heading">
+          <h2>Make a Donation</h2>
+          <p>Select a giving amount and category, then continue with your donor information.</p>
+        </div>
+        <form class="donation-form" aria-label="Donation form">
+          <div class="donation-form-main">
+            <fieldset class="donation-fieldset">
+              <legend>Donation Amount</legend>
+              <div class="amount-grid">
+                <label><input type="radio" name="amount" value="25"><span>$25</span></label>
+                <label><input type="radio" name="amount" value="50" checked><span>$50</span></label>
+                <label><input type="radio" name="amount" value="100"><span>$100</span></label>
+                <label><input type="radio" name="amount" value="250"><span>$250</span></label>
+                <label><input type="radio" name="amount" value="500"><span>$500</span></label>
+                <label class="custom-amount">
+                  <input type="radio" name="amount" value="custom">
+                  <span>
+                    <small>Custom</small>
+                    <input type="number" min="1" step="1" aria-label="Custom donation amount">
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="donation-fieldset">
+              <legend>Frequency</legend>
+              <div class="segmented-options">
+                <label><input type="radio" name="frequency" value="one-time" checked><span>One-Time</span></label>
+                <label><input type="radio" name="frequency" value="monthly"><span>Monthly</span></label>
+              </div>
+            </fieldset>
+
+            <div class="donation-grid">
+              <label class="form-field">
+                <span>Giving Category</span>
+                <select name="category">
+                  <option>General Donation</option>
+                  <option>Masjid Operations</option>
+                  <option>Zakat & Sadaqah</option>
+                  <option>Education & Youth</option>
+                  <option>Social & Welfare Services</option>
+                </select>
+              </label>
+              <label class="form-field">
+                <span>Payment Method</span>
+                <select name="payment-method">
+                  <option>Credit or Debit Card</option>
+                  <option>Bank Account</option>
+                </select>
+              </label>
+              <label class="form-field">
+                <span>First Name</span>
+                <input type="text" name="first-name" autocomplete="given-name">
+              </label>
+              <label class="form-field">
+                <span>Last Name</span>
+                <input type="text" name="last-name" autocomplete="family-name">
+              </label>
+              <label class="form-field">
+                <span>Email</span>
+                <input type="email" name="email" autocomplete="email">
+              </label>
+              <label class="form-field">
+                <span>Phone</span>
+                <input type="tel" name="phone" autocomplete="tel">
+              </label>
+              <label class="form-field form-field-wide">
+                <span>Note or Dedication <em>Optional</em></span>
+                <textarea name="note" rows="4"></textarea>
+              </label>
+            </div>
+
+            <label class="checkbox-field">
+              <input type="checkbox" name="anonymous">
+              <span>Keep this donation anonymous in public acknowledgements.</span>
+            </label>
+          </div>
+
+          <aside class="donation-summary">
+            <h3>Donation Summary</h3>
+            <div class="summary-row"><span>Selected amount</span><strong data-summary-amount>$50</strong></div>
+            <div class="summary-row"><span>Frequency</span><strong data-summary-frequency>One-Time</strong></div>
+            <div class="summary-row"><span>Category</span><strong data-summary-category>General Donation</strong></div>
+            <button class="button button-primary" type="button">Continue to Secure Donation</button>
+            <p>Receipts are sent to the email address provided with the donation.</p>
+          </aside>
+        </form>
       </section>
 
       <section class="page-band" id="giving">

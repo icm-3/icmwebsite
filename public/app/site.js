@@ -17,4 +17,31 @@ function initMobileNav() {
 }
 
 // src/site.js
+function initDonationForm() {
+  const form = document.querySelector(".donation-form");
+  if (!form) return;
+  const amountSummary = form.querySelector("[data-summary-amount]");
+  const frequencySummary = form.querySelector("[data-summary-frequency]");
+  const categorySummary = form.querySelector("[data-summary-category]");
+  const customAmount = form.querySelector(".custom-amount input[type='number']");
+  const updateSummary = () => {
+    const selectedAmount = form.querySelector("input[name='amount']:checked");
+    const selectedFrequency = form.querySelector("input[name='frequency']:checked");
+    const selectedCategory = form.querySelector("select[name='category']");
+    if (amountSummary && selectedAmount) {
+      const value = selectedAmount.value === "custom" ? customAmount?.value : selectedAmount.value;
+      amountSummary.textContent = value ? `$${Number(value).toLocaleString()}` : "Custom";
+    }
+    if (frequencySummary && selectedFrequency) {
+      frequencySummary.textContent = selectedFrequency.value === "monthly" ? "Monthly" : "One-Time";
+    }
+    if (categorySummary && selectedCategory) {
+      categorySummary.textContent = selectedCategory.value;
+    }
+  };
+  form.addEventListener("input", updateSummary);
+  form.addEventListener("change", updateSummary);
+  updateSummary();
+}
 initMobileNav();
+initDonationForm();

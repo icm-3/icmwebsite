@@ -1318,6 +1318,231 @@ tbody tr:last-child td {
   max-width: 900px;
 }
 
+.donation-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 20px;
+  align-items: start;
+}
+
+.donation-form-main,
+.donation-summary {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(18, 24, 39, 0.035);
+}
+
+.donation-form-main {
+  display: grid;
+  gap: 22px;
+  padding: 24px;
+}
+
+.donation-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.donation-fieldset legend,
+.form-field span {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.form-field span em {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.donation-fieldset legend {
+  display: block;
+}
+
+.amount-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.amount-grid label,
+.segmented-options label {
+  min-width: 0;
+}
+
+.amount-grid input[type="radio"],
+.segmented-options input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.amount-grid label > span,
+.segmented-options label > span {
+  display: grid;
+  min-height: 50px;
+  place-items: center;
+  padding: 0 12px;
+  color: var(--green);
+  background: #fbfdfc;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+}
+
+.amount-grid input[type="radio"]:checked + span,
+.segmented-options input[type="radio"]:checked + span {
+  background: var(--green-pale);
+  border-color: var(--green);
+  box-shadow: inset 0 0 0 1px var(--green);
+}
+
+.amount-grid input[type="radio"]:focus-visible + span,
+.segmented-options input[type="radio"]:focus-visible + span {
+  outline: 3px solid rgba(0, 84, 61, 0.24);
+  outline-offset: 3px;
+}
+
+.custom-amount span {
+  gap: 2px;
+  align-content: center;
+}
+
+.custom-amount small {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.custom-amount input[type="number"] {
+  width: 100%;
+  max-width: 82px;
+  min-height: 0;
+  padding: 0;
+  color: var(--green);
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+  outline: 0;
+}
+
+.segmented-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 160px));
+  gap: 10px;
+}
+
+.donation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.form-field {
+  display: grid;
+  gap: 7px;
+}
+
+.form-field-wide {
+  grid-column: 1 / -1;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 12px;
+  color: var(--text);
+  background: #fbfdfc;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.form-field textarea {
+  resize: vertical;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--green);
+  outline: 3px solid rgba(0, 84, 61, 0.16);
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.checkbox-field input {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  accent-color: var(--green);
+}
+
+.donation-summary {
+  position: sticky;
+  top: 18px;
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+}
+
+.donation-summary h3 {
+  margin: 0 0 2px;
+  color: var(--green);
+  font-size: 22px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-row span {
+  color: var(--muted);
+}
+
+.summary-row strong {
+  color: var(--green);
+  text-align: right;
+}
+
+.donation-summary .button {
+  width: 100%;
+}
+
+.donation-summary p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1363,6 +1588,14 @@ tbody tr:last-child td {
   .program-grid,
   .contact-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .donation-form {
+    grid-template-columns: 1fr;
+  }
+
+  .donation-summary {
+    position: static;
   }
 }
 
@@ -1555,6 +1788,10 @@ tbody tr:last-child td {
   .news-feature img {
     max-height: 220px;
   }
+
+  .amount-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 520px) {
@@ -1664,5 +1901,21 @@ tbody tr:last-child td {
   .callout,
   .bio-panel {
     padding: 20px;
+  }
+
+  .donation-form-main,
+  .donation-summary {
+    padding: 18px;
+  }
+
+  .amount-grid,
+  .donation-grid,
+  .segmented-options {
+    grid-template-columns: 1fr;
+  }
+
+  .amount-grid label > span,
+  .segmented-options label > span {
+    min-height: 48px;
   }
 }
