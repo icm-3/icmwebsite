@@ -972,6 +972,8 @@ var prayerLabels = {
 var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 var nextPrayerOrder = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
 var countdownTimer = null;
+var defaultPrayerDate = new Date(2026, 5, 16);
+var selectedPrayerDate = new Date(defaultPrayerDate);
 function getIcmPrayerTimes(date) {
   const params = CalculationMethod_default.Karachi();
   params.madhab = Madhab.Hanafi;
@@ -1068,6 +1070,33 @@ function setText(selector, value) {
   const element = document.querySelector(selector);
   if (element) element.textContent = value;
 }
+function formatNavigatorDate(date) {
+  return date.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "long",
+    day: "numeric"
+  });
+}
+function renderDateNavigator() {
+  setText("[data-date-label]", formatNavigatorDate(selectedPrayerDate));
+}
+function initDateNavigator() {
+  const navigator = document.querySelector(".date-navigator");
+  if (!navigator) return;
+  navigator.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-date-nav]");
+    if (!button) return;
+    if (button.dataset.dateNav === "today") {
+      selectedPrayerDate = new Date(defaultPrayerDate);
+    } else {
+      const offset = button.dataset.dateNav === "prev" ? -1 : 1;
+      selectedPrayerDate = new Date(selectedPrayerDate);
+      selectedPrayerDate.setDate(selectedPrayerDate.getDate() + offset);
+    }
+    renderDateNavigator();
+  });
+  renderDateNavigator();
+}
 function renderHero(content) {
   const image = document.querySelector("[data-hero-image]");
   if (!image) return;
@@ -1160,6 +1189,7 @@ function renderNews(content) {
 }
 async function boot() {
   initMobileNav();
+  initDateNavigator();
   const content = await loadCmsContent();
   renderHero(content);
   renderPrayerTimes();

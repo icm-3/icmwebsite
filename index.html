@@ -51,7 +51,21 @@
         </div>
       </section>
 
-      <section class="prayer-strip" aria-label="Prayer times">
+      <section class="prayer-section" aria-label="Prayer times">
+        <div class="date-navigator" aria-label="Prayer date navigation">
+          <button class="date-nav-button" type="button" data-date-nav="prev" aria-label="Previous day">
+            <img src="/public/icons/chevron-left.svg" alt="" aria-hidden="true">
+          </button>
+          <button class="date-nav-main" type="button" aria-label="Selected prayer date">
+            <img src="/public/icons/calendar.svg" alt="" aria-hidden="true">
+            <span data-date-label>Tue, June 16</span>
+          </button>
+          <button class="date-nav-button" type="button" data-date-nav="next" aria-label="Next day">
+            <img src="/public/icons/chevron-right.svg" alt="" aria-hidden="true">
+          </button>
+          <button class="date-nav-today" type="button" data-date-nav="today">Today</button>
+        </div>
+        <section class="prayer-strip" aria-label="Prayer times">
         <div class="next-prayer">
           <div class="next-label">
             <img src="./public/icons/generated/clock.png" alt="" aria-hidden="true">
@@ -107,6 +121,7 @@
           <span>Isha</span>
           <strong data-prayer-time="isha">10:23 PM</strong>
         </div>
+        </section>
       </section>
 
       <section class="info-grid" aria-label="Masjid information">
