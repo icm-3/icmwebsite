@@ -1,0 +1,19 @@
+{
+  "name": "icm-homepage",
+  "version": "1.0.0",
+  "description": "Islamic Center of Morrisville homepage with prayer times and simple CMS",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "build": "esbuild src/main.js src/admin.js --bundle --format=esm --target=es2020 --outdir=public/app",
+    "serve": "node server.js",
+    "start": "npm run build && node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "adhan": "^4.4.4",
+    "esbuild": "^0.28.1"
+  }
+}

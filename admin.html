@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ICM CMS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body class="cms-body">
+    <header class="cms-topbar">
+      <a class="cms-brand" href="./index.html">
+        <img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville">
+      </a>
+      <nav>
+        <a href="./index.html">Homepage</a>
+        <button type="button" data-action="reset">Reset Placeholder Data</button>
+        <button class="cms-save" type="button" data-action="save">Save Changes</button>
+      </nav>
+    </header>
+
+    <main class="cms-shell">
+      <section class="cms-intro">
+        <div>
+          <h1>Site CMS</h1>
+          <p>Edit homepage content for news, upcoming events, Jumu'ah, and the hero image.</p>
+        </div>
+        <p class="cms-status" data-status>Loading content...</p>
+      </section>
+
+      <div data-cms-app></div>
+    </main>
+
+    <script type="module" src="./public/app/admin.js"></script>
+  </body>
+</html>

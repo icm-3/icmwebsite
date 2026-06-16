@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Islamic Center of Morrisville</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="Islamic Center of Morrisville home">
+        <img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville">
+      </a>
+      <nav class="top-nav" aria-label="Primary navigation">
+        <a class="nav-donate" href="#">
+          <img src="./public/icons/generated/donate.png" alt="" aria-hidden="true">
+          <span>Donate</span>
+        </a>
+        <a href="#">Calendar</a>
+        <a href="#">Programs</a>
+        <a href="#">News</a>
+        <a href="#">About</a>
+        <button class="menu-button" type="button" aria-label="Open menu">
+          <img src="./public/icons/generated/menu.png" alt="" aria-hidden="true">
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Welcome to our masjid</p>
+          <h1 id="hero-title">Our Masjid.<br>Our Community.</h1>
+          <p class="hero-subtitle">A place of worship, learning, and service for<br>you and your family.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#">
+              <img src="./public/icons/generated/donate.png" alt="" aria-hidden="true">
+              <span>Donate</span>
+            </a>
+            <a class="button button-secondary" href="#">
+              <img src="./public/icons/generated/get-involved.png" alt="" aria-hidden="true">
+              <span>Get Involved</span>
+            </a>
+          </div>
+        </div>
+        <div class="hero-image" aria-hidden="true">
+          <img src="./public/images/masjid-hero.png" alt="" data-hero-image>
+        </div>
+      </section>
+
+      <section class="prayer-strip" aria-label="Prayer times">
+        <div class="next-prayer">
+          <div class="next-label">
+            <img src="./public/icons/generated/clock.png" alt="" aria-hidden="true">
+            <span>Next Prayer</span>
+          </div>
+          <p class="next-name" data-next-name>Asr</p>
+          <p class="next-time" data-next-time>6:21 PM</p>
+          <div class="countdown" aria-label="Time remaining until Asr" data-countdown>
+            <span class="countdown-unit">
+              <strong data-countdown-hours>00</strong>
+              <em>hrs</em>
+            </span>
+            <span class="countdown-separator" aria-hidden="true">:</span>
+            <span class="countdown-unit">
+              <strong data-countdown-minutes>15</strong>
+              <em>min</em>
+            </span>
+            <span class="countdown-separator" aria-hidden="true">:</span>
+            <span class="countdown-unit">
+              <strong data-countdown-seconds>00</strong>
+              <em>sec</em>
+            </span>
+          </div>
+          <a href="#">View Full Schedule <span aria-hidden="true">&rarr;</span></a>
+        </div>
+        <div class="prayer-tile" data-prayer-tile="fajr">
+          <img src="./public/icons/generated/fajr.png" alt="" aria-hidden="true">
+          <span>Fajr</span>
+          <strong data-prayer-time="fajr">4:10 AM</strong>
+        </div>
+        <div class="prayer-tile" data-prayer-tile="sunrise">
+          <img src="./public/icons/generated/sunrise.png" alt="" aria-hidden="true">
+          <span>Sunrise</span>
+          <strong data-prayer-time="sunrise">5:58 AM</strong>
+        </div>
+        <div class="prayer-tile" data-prayer-tile="dhuhr">
+          <img src="./public/icons/generated/dhuhr.png" alt="" aria-hidden="true">
+          <span>Dhuhr</span>
+          <strong data-prayer-time="dhuhr">1:16 PM</strong>
+        </div>
+        <div class="prayer-tile active" data-prayer-tile="asr">
+          <img src="./public/icons/generated/asr.png?v=20260616d" alt="" aria-hidden="true">
+          <span>Asr</span>
+          <strong data-prayer-time="asr">6:21 PM</strong>
+        </div>
+        <div class="prayer-tile" data-prayer-tile="maghrib">
+          <img src="./public/icons/generated/maghrib.png?v=20260616c" alt="" aria-hidden="true">
+          <span>Maghrib</span>
+          <strong data-prayer-time="maghrib">8:34 PM</strong>
+        </div>
+        <div class="prayer-tile" data-prayer-tile="isha">
+          <img src="./public/icons/generated/isha.png?v=20260616c" alt="" aria-hidden="true">
+          <span>Isha</span>
+          <strong data-prayer-time="isha">10:23 PM</strong>
+        </div>
+      </section>
+
+      <section class="info-grid" aria-label="Masjid information">
+        <article class="info-card jummah-card">
+          <header class="card-header">
+            <div class="card-title">
+              <img src="./public/icons/generated/jummah.png" alt="" aria-hidden="true">
+              <h2>JUMU&rsquo;AH TODAY <span data-jummah-date>&ndash; FRIDAY, JUNE 19, 2026</span></h2>
+            </div>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Shift</th>
+                  <th>Time</th>
+                  <th>Speaker</th>
+                  <th>Topic</th>
+                </tr>
+              </thead>
+              <tbody data-jummah-body>
+                <tr>
+                  <td><span class="shift">1</span></td>
+                  <td class="time">1:00 PM</td>
+                  <td>Imam Sami Ko&ccedil;ak</td>
+                  <td>Muhasabah: Self Reflection</td>
+                </tr>
+                <tr>
+                  <td><span class="shift">2</span></td>
+                  <td class="time">2:00 PM</td>
+                  <td>Mikael Raza</td>
+                  <td>Gaining Taqwa by Avoiding Ostentation</td>
+                </tr>
+                <tr>
+                  <td><span class="shift">3</span></td>
+                  <td class="time">3:00 PM</td>
+                  <td>Mansoor Kazi</td>
+                  <td>The Green Deen</td>
+                </tr>
+                <tr>
+                  <td><span class="shift">4</span></td>
+                  <td class="time">4:00 PM</td>
+                  <td>Mansoor Syed</td>
+                  <td>Ghallah: Spiritual Negligence</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="info-card events-card">
+          <header class="card-header">
+            <div class="card-title">
+              <img src="./public/icons/generated/calendar.png" alt="" aria-hidden="true">
+              <h2>Upcoming Events</h2>
+            </div>
+            <a href="#">View Full Calendar <span aria-hidden="true">&rarr;</span></a>
+          </header>
+          <div class="event-list" data-events-list>
+            <div class="event-item">
+              <div class="date-badge"><span>Jun</span><strong>21</strong></div>
+              <div>
+                <h3>Youth Hike &amp; BBQ</h3>
+                <p>Saturday, June 21, 2026 &bull; 10:00 AM<br>William B. Umstead State Park</p>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="date-badge"><span>Jun</span><strong>27</strong></div>
+              <div>
+                <h3>Sisters&rsquo; Tea &amp; Talk</h3>
+                <p>Friday, June 27, 2026 &bull; 6:30 PM<br>ICM Community Hall</p>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="date-badge"><span>Jul</span><strong>04</strong></div>
+              <div>
+                <h3>Independence Day Potluck</h3>
+                <p>Friday, July 4, 2026 &bull; 1:00 PM<br>ICM Community Hall</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="info-card news-card">
+          <header class="card-header">
+            <div class="card-title">
+              <img src="./public/icons/generated/megaphone.png" alt="" aria-hidden="true">
+              <h2>Latest News &amp; Announcements</h2>
+            </div>
+            <a href="#">View All News <span aria-hidden="true">&rarr;</span></a>
+          </header>
+          <div class="news-list" data-news-list>
+            <article class="news-item">
+              <img src="./public/news/ramadan.png" alt="Mosque at sunset during Ramadan">
+              <div>
+                <h3>Ramadan Programs &amp; Taraweeh Schedule</h3>
+                <p>Join us for special programs throughout Ramadan.</p>
+              </div>
+              <time datetime="2026-04-28">Apr 28, 2026</time>
+            </article>
+            <article class="news-item">
+              <img src="./public/news/eid.png" alt="Mosque scene for Eid announcement">
+              <div>
+                <h3>Eid Al-Adha Announcements</h3>
+                <p>Important information for Eid prayers and events.</p>
+              </div>
+              <time datetime="2026-04-24">Apr 24, 2026</time>
+            </article>
+            <article class="news-item">
+              <img src="./public/news/camp.png" alt="Youth summer camp activity">
+              <div>
+                <h3>Youth Summer Camp Registration Open</h3>
+                <p>Fun, faith, and friends this summer!</p>
+              </div>
+              <time datetime="2026-04-18">Apr 18, 2026</time>
+            </article>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="socials" aria-label="Social links">
+        <a href="#" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a>
+        <a href="#" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a>
+        <a href="#" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a>
+      </div>
+      <p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p>
+      <a href="#">Contact Us</a>
+    </footer>
+    <script type="module" src="./public/app/main.js"></script>
+  </body>
+</html>
