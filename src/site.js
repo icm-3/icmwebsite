@@ -6,13 +6,11 @@ function initDonationForm() {
 
   const amountSummary = form.querySelector("[data-summary-amount]");
   const frequencySummary = form.querySelector("[data-summary-frequency]");
-  const categorySummary = form.querySelector("[data-summary-category]");
   const customAmount = form.querySelector(".custom-amount input[type='number']");
 
   const updateSummary = () => {
     const selectedAmount = form.querySelector("input[name='amount']:checked");
     const selectedFrequency = form.querySelector("input[name='frequency']:checked");
-    const selectedCategory = form.querySelector("select[name='category']");
 
     if (amountSummary && selectedAmount) {
       const value = selectedAmount.value === "custom" ? customAmount?.value : selectedAmount.value;
@@ -23,9 +21,6 @@ function initDonationForm() {
       frequencySummary.textContent = selectedFrequency.value === "monthly" ? "Monthly" : "One-Time";
     }
 
-    if (categorySummary && selectedCategory) {
-      categorySummary.textContent = selectedCategory.value;
-    }
   };
 
   form.addEventListener("input", updateSummary);
