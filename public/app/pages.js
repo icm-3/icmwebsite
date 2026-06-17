@@ -1354,17 +1354,21 @@ function renderCalendar(content) {
     const dateEvents = content.events.filter((event) => eventMatchesDate(event, date));
     const visibleEvents = dateEvents.slice(0, 2);
     const hiddenEvents = dateEvents.slice(2);
+    const hasSelectedEvent = dateEvents.some(
+      (event) => eventSlug(event, content.events.indexOf(event)) === selectedCalendarEventSlug
+    );
     const isOutside = date.getMonth() !== monthStart.getMonth();
     const isToday = todayDate.getFullYear() === date.getFullYear() && todayDate.getMonth() === date.getMonth() && todayDate.getDate() === date.getDate();
     return `
-      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}" data-date-label="${escapeHtml(formatShortDate(date.toISOString().slice(0, 10)))}">
+      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}" data-date-label="${escapeHtml(formatShortDate(date.toISOString().slice(0, 10)))}">
         <span class="calendar-day-number">${date.getDate()}</span>
         <div class="calendar-event-stack">
           ${visibleEvents.map(
       (event) => {
         const eventIndex = content.events.indexOf(event);
+        const slug = eventSlug(event, eventIndex);
         return `
-                <button class="calendar-event-chip" type="button" data-event-slug="${escapeHtml(eventSlug(event, eventIndex))}" title="${escapeHtml(eventTitle(event))}">
+                <button class="calendar-event-chip${slug === selectedCalendarEventSlug ? " is-selected" : ""}" type="button" data-event-slug="${escapeHtml(slug)}" title="${escapeHtml(eventTitle(event))}">
                   <img src="./public/icons/generated/calendar.png" alt="" aria-hidden="true">
                   <span>${escapeHtml(eventTitle(event))}</span>
                 </button>
