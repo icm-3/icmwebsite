@@ -354,6 +354,11 @@ img {
 
 .prayer-section {
   position: relative;
+  padding: 22px 0 18px;
+  background:
+    linear-gradient(180deg, rgba(165, 100, 5, 0.1), rgba(0, 84, 61, 0.045) 58%, rgba(255, 255, 255, 0));
+  border-top: 1px solid rgba(165, 100, 5, 0.14);
+  border-bottom: 1px solid rgba(0, 84, 61, 0.08);
 }
 
 .date-navigator {
@@ -432,14 +437,16 @@ img {
   min-height: 214px;
   margin: 0 30px;
   overflow: hidden;
-  background: white;
-  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #ffffff, #fbfdf9);
+  border: 1px solid rgba(165, 100, 5, 0.24);
   border-radius: 14px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 18px 48px rgba(18, 24, 39, 0.1), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
 }
 
 .next-prayer {
   padding: 24px 28px;
+  background: linear-gradient(180deg, rgba(0, 84, 61, 0.055), rgba(255, 255, 255, 0));
+  border-right: 1px solid rgba(0, 84, 61, 0.12);
 }
 
 .next-label,
@@ -560,7 +567,7 @@ img {
   justify-content: center;
   margin: 26px 0;
   gap: 20px;
-  border-left: 1px solid var(--border);
+  border-left: 1px solid rgba(0, 84, 61, 0.12);
   color: var(--text);
   font-size: 17px;
 }
@@ -568,6 +575,7 @@ img {
 .prayer-tile img {
   width: 48px;
   height: 48px;
+  filter: brightness(0) saturate(100%) invert(43%) sepia(93%) saturate(539%) hue-rotate(1deg) brightness(93%) contrast(95%);
 }
 
 .prayer-tile strong {
@@ -576,12 +584,12 @@ img {
 }
 
 .prayer-tile.active {
-  margin: 20px 8px;
+  margin: 18px 8px;
   color: var(--green);
-  background: linear-gradient(180deg, #edf6f1, #f7fbf8);
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
+  background: linear-gradient(180deg, #edf7f1, #ffffff);
+  border: 2px solid var(--green-dark);
   border-radius: 8px;
+  box-shadow: 0 12px 26px rgba(0, 84, 61, 0.16), inset 0 0 0 1px rgba(165, 100, 5, 0.18);
 }
 
 .prayer-tile.active + .prayer-tile {
