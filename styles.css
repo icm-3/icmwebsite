@@ -592,10 +592,14 @@ img {
 .prayer-tile.active {
   margin: 18px 8px;
   color: var(--green);
-  background: linear-gradient(180deg, #edf7f1, #ffffff);
+  background: linear-gradient(180deg, #d9f2e5, #f0fbf5);
   border: 2px solid var(--green-dark);
   border-radius: 8px;
-  box-shadow: inset 0 0 0 1px rgba(165, 100, 5, 0.18), inset 0 0 22px rgba(0, 84, 61, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(0, 84, 61, 0.22), inset 0 0 24px rgba(0, 112, 76, 0.28);
+}
+
+.prayer-tile.active img {
+  filter: brightness(0) saturate(100%) invert(22%) sepia(58%) saturate(1098%) hue-rotate(128deg) brightness(92%) contrast(101%);
 }
 
 .prayer-tile.active + .prayer-tile {
@@ -674,7 +678,13 @@ img {
 
 .card-header > a {
   flex: 0 0 auto;
+  color: var(--text);
   font-size: 13px;
+}
+
+.card-header > a:hover,
+.card-header > a:focus-visible {
+  color: var(--text);
 }
 
 .card-header > a span {
@@ -1844,10 +1854,6 @@ tbody tr:last-child td {
 
 .calendar-day.is-muted {
   background: #fbfdfc;
-}
-
-.calendar-day.is-muted .calendar-day-number {
-  color: #9aa3ad;
 }
 
 .calendar-day.is-today {
