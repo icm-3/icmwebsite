@@ -2097,7 +2097,7 @@ tbody tr:last-child td {
 .donation-form-main,
 .donation-summary {
   background: white;
-  border: 1px solid var(--gold);
+  border: 1px solid rgba(165, 100, 5, 0.26);
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(18, 24, 39, 0.035);
 }
@@ -2106,7 +2106,7 @@ tbody tr:last-child td {
   display: grid;
   gap: 22px;
   padding: 24px;
-  box-shadow: 0 12px 30px rgba(18, 24, 39, 0.04), inset 0 2px 0 var(--gold);
+  box-shadow: 0 12px 30px rgba(18, 24, 39, 0.04), inset 0 3px 0 rgba(165, 100, 5, 0.18);
 }
 
 .donation-fieldset {
@@ -2125,13 +2125,16 @@ tbody tr:last-child td {
 }
 
 .form-field span em {
-  color: var(--muted);
+  color: var(--gold);
   font-style: normal;
   font-weight: 600;
 }
 
 .donation-fieldset legend {
   display: block;
+  color: var(--gold);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .amount-grid {
@@ -2276,7 +2279,7 @@ tbody tr:last-child td {
   display: grid;
   gap: 14px;
   padding: 22px;
-  box-shadow: 4px 4px 0 var(--gold), 0 10px 28px rgba(18, 24, 39, 0.06);
+  box-shadow: 8px 8px 0 rgba(165, 100, 5, 0.18), 0 10px 28px rgba(18, 24, 39, 0.06);
 }
 
 .donation-summary h3 {
@@ -2298,7 +2301,7 @@ tbody tr:last-child td {
 }
 
 .summary-row strong {
-  color: var(--green);
+  color: var(--gold);
   text-align: right;
 }
 
