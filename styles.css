@@ -545,8 +545,8 @@ img {
 .card-header > a {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  color: var(--green);
+  gap: 4px;
+  color: var(--text);
   font-size: 16px;
   font-weight: 600;
   transition: color 260ms ease, transform 260ms ease;
@@ -556,8 +556,18 @@ img {
 .next-prayer a:focus-visible,
 .card-header > a:hover,
 .card-header > a:focus-visible {
-  color: var(--green-dark);
+  color: var(--text);
   transform: translateX(1px);
+}
+
+.next-prayer a span,
+.card-header > a span {
+  display: inline-block;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0.5px 0 currentColor;
+  transform: translateY(-0.06em);
 }
 
 .prayer-tile {
@@ -592,14 +602,10 @@ img {
 .prayer-tile.active {
   margin: 18px 8px;
   color: var(--green);
-  background: linear-gradient(180deg, #d9f2e5, #f0fbf5);
+  background: linear-gradient(180deg, #e2f5ea, #f5fcf8);
   border: 2px solid var(--green-dark);
   border-radius: 8px;
-  box-shadow: inset 0 0 0 1px rgba(0, 84, 61, 0.22), inset 0 0 24px rgba(0, 112, 76, 0.28);
-}
-
-.prayer-tile.active img {
-  filter: brightness(0) saturate(100%) invert(22%) sepia(58%) saturate(1098%) hue-rotate(128deg) brightness(92%) contrast(101%);
+  box-shadow: inset 0 0 0 1px rgba(0, 84, 61, 0.17), inset 0 0 24px rgba(0, 112, 76, 0.2);
 }
 
 .prayer-tile.active + .prayer-tile {
@@ -688,12 +694,7 @@ img {
 }
 
 .card-header > a span {
-  display: inline-block;
-  font-size: 14px;
-  font-weight: 900;
-  line-height: 1;
-  text-shadow: 0.35px 0 currentColor;
-  transform: translateY(-0.08em);
+  font-size: 15px;
 }
 
 .table-wrap {
