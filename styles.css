@@ -611,12 +611,11 @@ img {
 }
 
 .card-header > a span {
-  display: inline-grid;
-  place-items: center;
-  font-size: 28px;
+  display: inline-block;
+  font-size: 14px;
   font-weight: 800;
-  line-height: 0.8;
-  transform: translateY(-1px);
+  line-height: 1;
+  transform: translateY(-0.08em);
 }
 
 .table-wrap {
