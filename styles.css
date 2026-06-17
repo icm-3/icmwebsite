@@ -1860,8 +1860,8 @@ tbody tr:last-child td {
   height: 26px;
   place-items: center;
   color: var(--green);
-  font-size: 13px;
-  font-weight: 900;
+  font-size: 15px;
+  font-weight: 750;
 }
 
 .calendar-event-stack {
