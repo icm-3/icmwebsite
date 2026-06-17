@@ -54,6 +54,20 @@ export const defaultContent = {
       location: "ICM Community Hall",
       description: "Bring a dish and spend the afternoon with the community.",
     },
+    {
+      title: "Community Service Day & Food Pantry Support",
+      date: "2026-07-12",
+      time: "9:30 AM",
+      location: "ICM Social Services Entrance",
+      description: "Help sort donations, prepare family grocery bags, and support neighbors across Morrisville.",
+    },
+    {
+      title: "New Muslim Welcome Circle and Family Dinner",
+      date: "2026-07-18",
+      time: "7:15 PM",
+      location: "ICM Multipurpose Room",
+      description: "A welcoming evening for new Muslims, families, mentors, and community members.",
+    },
   ],
   news: [
     {
@@ -76,6 +90,20 @@ export const defaultContent = {
       summary: "Fun, faith, and friends this summer!",
       image: "./public/news/camp.png",
       imageAlt: "Youth summer camp activity",
+    },
+    {
+      title: "Parking and Arrival Guidance for Busy Friday Prayer Shifts",
+      date: "2026-04-12",
+      summary: "Please arrive early, follow volunteer directions, and leave extra time for entry.",
+      image: "./public/news/eid.png",
+      imageAlt: "Masjid evening scene for community announcement",
+    },
+    {
+      title: "Weekend Learning Programs Add New Family Workshop Series",
+      date: "2026-04-05",
+      summary: "Families can join monthly workshops focused on worship, service, and home routines.",
+      image: "./public/news/ramadan.png",
+      imageAlt: "Mosque lanterns for program announcement",
     },
   ],
 };

@@ -545,7 +545,7 @@ img {
 .info-card {
   display: flex;
   flex-direction: column;
-  height: 360px;
+  height: 392px;
   padding: 21px 22px 22px;
   overflow: hidden;
   background: white;
@@ -568,40 +568,12 @@ img {
 }
 
 .jummah-card .card-header {
-  position: relative;
-  min-height: 58px;
-  margin-bottom: 0;
-  padding: 18px 22px 14px;
-  color: white;
-  background: var(--green-dark);
-}
-
-.jummah-card .card-header::after {
-  content: "";
-  position: absolute;
-  right: 18px;
-  bottom: 0;
-  width: 150px;
-  height: 52px;
-  opacity: 0.15;
-  background: rgba(255, 255, 255, 0.9);
-  clip-path: polygon(
-    0 100%, 0 78%, 8% 78%, 8% 62%, 12% 62%, 12% 78%,
-    22% 78%, 22% 54%, 29% 40%, 36% 54%, 36% 78%,
-    48% 78%, 48% 38%, 51% 38%, 51% 28%, 54% 38%, 57% 38%, 57% 78%,
-    68% 78%, 68% 50%, 75% 34%, 82% 50%, 82% 78%,
-    92% 78%, 92% 62%, 96% 62%, 96% 78%, 100% 78%, 100% 100%
-  );
-  pointer-events: none;
+  padding: 21px 22px 0;
 }
 
 .card-title img {
   width: 28px;
   height: 28px;
-}
-
-.jummah-card .card-title img {
-  filter: brightness(0) invert(1);
 }
 
 .card-title h2 {
@@ -612,11 +584,6 @@ img {
   letter-spacing: 0.02em;
   line-height: 1.2;
   text-transform: uppercase;
-}
-
-.jummah-card .card-title h2,
-.jummah-card .card-title h2 span {
-  color: white;
 }
 
 .card-title h2 span {
@@ -635,7 +602,7 @@ img {
 
 .jummah-card .table-wrap {
   flex: 1;
-  padding: 0 0 22px;
+  padding: 0;
   overflow: hidden;
 }
 
@@ -689,7 +656,7 @@ th {
 
 .jummah-card th,
 .jummah-card td {
-  border-right: 1px solid rgba(0, 84, 61, 0.1);
+  border-right: 1px solid rgba(0, 84, 61, 0.16);
 }
 
 .jummah-card th {
@@ -703,12 +670,12 @@ th {
 
 .jummah-card th:nth-child(1),
 .jummah-card td:nth-child(1) {
-  width: 12%;
+  width: 11%;
 }
 
 .jummah-card th:nth-child(2),
 .jummah-card td:nth-child(2) {
-  width: 19%;
+  width: 20%;
 }
 
 .jummah-card th:nth-child(3),
@@ -719,6 +686,13 @@ th {
 .jummah-card th:nth-child(4),
 .jummah-card td:nth-child(4) {
   width: 44%;
+}
+
+.jummah-card th:nth-child(1),
+.jummah-card th:nth-child(2),
+.jummah-card td:nth-child(1),
+.jummah-card td:nth-child(2) {
+  text-align: center;
 }
 
 th:first-child {
@@ -818,11 +792,17 @@ tbody tr:last-child td {
   scrollbar-color: rgba(0, 84, 61, 0.38) transparent;
 }
 
+.events-card .event-list {
+  grid-auto-rows: 90px;
+  max-height: 270px;
+}
+
 .event-item {
   display: grid;
   grid-template-columns: 52px 1fr;
   gap: 18px;
-  padding: 0 0 14px;
+  min-height: 90px;
+  padding: 0 0 15px;
   border-bottom: 1px solid var(--border);
   color: inherit;
   text-decoration: none;
@@ -830,7 +810,7 @@ tbody tr:last-child td {
 }
 
 .event-item + .event-item {
-  padding-top: 13px;
+  padding-top: 14px;
 }
 
 .event-item:last-child {
@@ -879,6 +859,7 @@ tbody tr:last-child td {
 
 .event-item h3,
 .news-item h3 {
+  min-width: 0;
   margin: 0;
   color: var(--text);
   font-size: 16px;
@@ -896,6 +877,12 @@ tbody tr:last-child td {
   color: #363d4a;
   font-size: 13px;
   line-height: 1.45;
+  overflow-wrap: break-word;
+}
+
+.event-item > div:last-child,
+.news-item > div {
+  min-width: 0;
 }
 
 .news-item {
