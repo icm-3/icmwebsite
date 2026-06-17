@@ -478,7 +478,7 @@ img {
 
 .next-time {
   margin: 6px 0 0;
-  color: var(--text);
+  color: var(--green);
   font-size: 35px;
   font-weight: 800;
   line-height: 1.05;
