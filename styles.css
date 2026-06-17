@@ -349,7 +349,7 @@ img {
   height: 100%;
   min-height: 390px;
   object-fit: cover;
-  object-position: center;
+  object-position: center 48%;
 }
 
 .prayer-section {
@@ -488,9 +488,9 @@ img {
   position: relative;
   margin: 10px 0 0;
   padding-top: 10px;
-  color: var(--text);
+  color: var(--green);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 800;
   line-height: 1.2;
 }
 
@@ -545,10 +545,11 @@ img {
 .card-header > a {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   color: var(--text);
   font-size: 16px;
   font-weight: 600;
+  line-height: 1;
   transition: color 260ms ease, transform 260ms ease;
 }
 
@@ -562,12 +563,17 @@ img {
 
 .next-prayer a span,
 .card-header > a span {
-  display: inline-block;
-  font-size: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 24px;
+  margin-left: -4px;
+  font-size: 42px;
   font-weight: 900;
   line-height: 1;
-  text-shadow: 0.9px 0 currentColor;
-  transform: translateY(-0.06em);
+  text-shadow: 1.6px 0 currentColor;
+  transform: translateY(-0.01em);
 }
 
 .prayer-tile {
@@ -704,7 +710,7 @@ img {
 }
 
 .card-header > a span {
-  font-size: 26px;
+  font-size: 42px;
 }
 
 .table-wrap {

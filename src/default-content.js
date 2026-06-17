@@ -1,6 +1,6 @@
 export const defaultContent = {
   hero: {
-    image: "./public/images/masjid-interior-hero.png",
+    image: "./public/images/masjid-interior-hero-cropped.png",
     imageAlt: "Islamic Center of Morrisville prayer hall interior",
   },
   jummah: {
