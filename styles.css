@@ -620,7 +620,7 @@ img {
 }
 
 .prayer-tile.active strong {
-  color: var(--text);
+  color: var(--green);
   font-weight: 800;
 }
 
