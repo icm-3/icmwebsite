@@ -152,6 +152,14 @@ function getDateBadgeParts(dateString) {
   };
 }
 
+function slugify(value) {
+  return String(value ?? "")
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function renderPrayerTable() {
   const target = document.querySelector("[data-page-prayers]");
   if (!target) return;
@@ -203,7 +211,7 @@ function renderEvents(content) {
     .map((event) => {
       const badge = getDateBadgeParts(event.date);
       return `
-        <article class="listing-item">
+        <article class="listing-item" id="event-${escapeHtml(slugify(event.title))}">
           <div class="date-badge"><span>${escapeHtml(badge.month)}</span><strong>${escapeHtml(badge.day)}</strong></div>
           <div>
             <h3>${escapeHtml(event.title)}</h3>
@@ -239,7 +247,7 @@ function renderNews(content) {
   target.innerHTML = items
     .map(
       (item) => `
-        <article class="news-feature">
+        <article class="news-feature" id="news-${escapeHtml(slugify(item.title))}">
           <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">
           <div>
             <time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>

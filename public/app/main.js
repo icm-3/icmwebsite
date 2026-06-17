@@ -971,6 +971,14 @@ var prayerLabels = {
 };
 var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 var nextPrayerOrder = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
+var topicIconRules = [
+  { icon: "leaf", words: ["gratitude", "shukr", "blessing", "thanks", "worship"] },
+  { icon: "heart", words: ["love", "mercy", "compassion", "kindness", "service", "sincerity"] },
+  { icon: "community", words: ["justice", "responsibility", "accountability", "community", "trust"] },
+  { icon: "feather", words: ["patience", "sabr", "change", "hardship", "steadfast"] },
+  { icon: "moon", words: ["ramadan", "taraweeh", "quran", "deen", "taqwa", "faith", "spiritual"] },
+  { icon: "spark", words: ["reflection", "reminder", "youth", "family", "knowledge"] }
+];
 var countdownTimer = null;
 var selectedPrayerDate = /* @__PURE__ */ new Date();
 function getIcmPrayerTimes(date) {
@@ -1029,10 +1037,18 @@ function prayerDateFor(date, dayOffset = 0) {
   const parts = zonedDateParts(date);
   return new Date(parts.year, parts.month - 1, parts.day + dayOffset);
 }
-function isSamePrayerDate(left, right) {
-  const leftParts = zonedDateParts(left);
-  const rightParts = zonedDateParts(right);
-  return leftParts.year === rightParts.year && leftParts.month === rightParts.month && leftParts.day === rightParts.day;
+function nextPrayerForNow(now) {
+  const todayDate = prayerDateFor(now);
+  const todayTimes = getIcmPrayerTimes(todayDate);
+  const next = nextPrayerOrder.map((key) => ({ key, time: todayTimes[key] })).find((item) => item.time.getTime() > now.getTime());
+  if (next) return next;
+  const tomorrowTimes = getIcmPrayerTimes(prayerDateFor(now, 1));
+  return { key: "fajr", time: tomorrowTimes.fajr };
+}
+function currentPrayerForNow(now) {
+  const todayTimes = getIcmPrayerTimes(prayerDateFor(now));
+  const current = nextPrayerOrder.map((key) => ({ key, time: todayTimes[key] })).filter((item) => item.time.getTime() <= now.getTime()).at(-1);
+  return current || { key: "isha", time: getIcmPrayerTimes(prayerDateFor(now, -1)).isha };
 }
 function formatTime(date) {
   return new Intl.DateTimeFormat("en-US", {
@@ -1069,6 +1085,31 @@ function getDateBadgeParts(dateString) {
   const month = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: TIME_ZONE }).format(date);
   const day = new Intl.DateTimeFormat("en-US", { day: "2-digit", timeZone: TIME_ZONE }).format(date);
   return { month, day };
+}
+function getNewsCategory(title) {
+  const normalized = title.toLowerCase();
+  if (normalized.includes("ramadan") || normalized.includes("taraweeh")) return "Programs";
+  if (normalized.includes("camp") || normalized.includes("youth")) return "Youth";
+  return "Announcement";
+}
+function getTopicIcon(topic) {
+  const normalized = topic.toLowerCase();
+  return topicIconRules.find((rule) => rule.words.some((word) => normalized.includes(word)))?.icon || "\u2726";
+}
+function topicIconSvg(topic) {
+  const icon = getTopicIcon(topic);
+  const icons = {
+    leaf: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c6.6 0 11-4.4 11-11V5h-3C6.4 5 3 8.4 3 15v4h2Z"/><path d="M5 19 16 8"/></svg>`,
+    heart: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 6.7a5 5 0 0 0-7.1 0L12 7.9l-1.2-1.2a5 5 0 1 0-7.1 7.1L12 22l8.3-8.2a5 5 0 0 0 0-7.1Z"/></svg>`,
+    community: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M16 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M3 20a5 5 0 0 1 10 0"/><path d="M11 20a5 5 0 0 1 10 0"/></svg>`,
+    feather: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4c-7 0-12 5-12 12v4h4c7 0 12-5 12-12V4h-4Z"/><path d="M8 20 20 8"/><path d="M11 17H7"/><path d="M14 14h-4"/></svg>`,
+    moon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5Z"/></svg>`,
+    spark: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 14.4 9.6 21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4L12 3Z"/></svg>`
+  };
+  return icons[icon] || icons.spark;
+}
+function slugify(value) {
+  return String(value ?? "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 function setText(selector, value) {
   const element = document.querySelector(selector);
@@ -1115,31 +1156,25 @@ function renderPrayerTimes() {
   for (const key of prayerOrder) {
     setText(`[data-prayer-time="${key}"]`, formatTime(selectedTimes[key]));
   }
-  const todayDate = prayerDateFor(now);
-  const isToday = isSamePrayerDate(selectedDate, now);
-  const isFutureDate = selectedDate.getTime() > todayDate.getTime();
-  let next = nextPrayerOrder.map((key) => ({ key, time: selectedTimes[key] })).find((item) => item.time.getTime() > now.getTime());
-  if (!next && isToday) {
-    const tomorrowTimes = getIcmPrayerTimes(prayerDateFor(now, 1));
-    next = { key: "fajr", time: tomorrowTimes.fajr };
-  } else if (!next && isFutureDate) {
-    next = { key: "fajr", time: selectedTimes.fajr };
-  }
-  const label = next ? prayerLabels[next.key] : prayerLabels.fajr;
-  setText("[data-next-name]", label);
-  setText("[data-next-time]", next ? formatTime(next.time) : formatTime(selectedTimes.fajr));
+  const current = currentPrayerForNow(now);
+  const next = nextPrayerForNow(now);
+  const currentLabel = prayerLabels[current.key];
+  const nextLabel = prayerLabels[next.key];
+  setText("[data-next-name]", currentLabel);
+  setText("[data-next-time]", formatTime(current.time));
+  setText("[data-countdown-target]", nextLabel);
   const countdown = document.querySelector("[data-countdown]");
-  if (countdown) countdown.setAttribute("aria-label", `Time remaining until ${label}`);
+  if (countdown) countdown.setAttribute("aria-label", `Time remaining until ${nextLabel}`);
   document.querySelectorAll("[data-prayer-tile]").forEach((tile) => {
-    tile.classList.toggle("active", Boolean(next) && tile.dataset.prayerTile === next.key);
+    tile.classList.toggle("active", tile.dataset.prayerTile === current.key);
   });
   if (countdownTimer) window.clearInterval(countdownTimer);
   const tick = () => {
-    const remaining = next ? Math.max(0, Math.ceil((next.time.getTime() - Date.now()) / 1e3)) : 0;
+    const remaining = Math.max(0, Math.ceil((next.time.getTime() - Date.now()) / 1e3));
     setText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
     setText("[data-countdown-minutes]", String(Math.floor(remaining % 3600 / 60)).padStart(2, "0"));
     setText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));
-    if (next && remaining <= 0) renderPrayerTimes();
+    if (remaining <= 0) renderPrayerTimes();
   };
   tick();
   countdownTimer = window.setInterval(tick, 1e3);
@@ -1156,7 +1191,7 @@ function renderJummah(content) {
           <td><span class="shift">${escapeHtml(shift.shift)}</span></td>
           <td class="time">${escapeHtml(shift.time)}</td>
           <td>${escapeHtml(shift.speaker)}</td>
-          <td>${escapeHtml(shift.topic)}</td>
+          <td><span class="topic-chip"><span class="topic-icon">${topicIconSvg(shift.topic)}</span>${escapeHtml(shift.topic)}</span></td>
         </tr>
       `
   ).join("");
@@ -1169,13 +1204,13 @@ function renderEvents(content) {
     const badge = getDateBadgeParts(event.date);
     const dateLabel = formatLongDate(event.date);
     return `
-        <div class="event-item">
+        <a class="event-item" href="./calendar.html#event-${escapeHtml(slugify(event.title))}">
           <div class="date-badge"><span>${escapeHtml(badge.month)}</span><strong>${escapeHtml(badge.day)}</strong></div>
           <div>
             <h3>${escapeHtml(event.title)}</h3>
             <p>${escapeHtml(dateLabel)} &bull; ${escapeHtml(event.time)}<br>${escapeHtml(event.location)}</p>
           </div>
-        </div>
+        </a>
       `;
   }).join("");
 }
@@ -1185,14 +1220,15 @@ function renderNews(content) {
   const news = content.news?.length ? content.news : defaultContent.news;
   list.innerHTML = news.map(
     (item) => `
-        <article class="news-item">
+        <a class="news-item" href="./news.html#news-${escapeHtml(slugify(item.title))}">
           <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">
           <div>
+            <span class="news-category">${escapeHtml(getNewsCategory(item.title))}</span>
             <h3>${escapeHtml(item.title)}</h3>
             <p>${escapeHtml(item.summary)}</p>
           </div>
           <time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>
-        </article>
+        </a>
       `
   ).join("");
 }
