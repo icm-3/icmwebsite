@@ -1262,8 +1262,8 @@ function renderJummah(content) {
   const shifts = getJummahRowsForDate(content, targetDate);
   tbody.innerHTML = shifts.map(
     (shift) => {
-      const speakerFit = textFitClass(shift.speaker, { small: 22, smaller: 34, tiny: 48 });
-      const topicFit = textFitClass(shift.topic, { small: 24, smaller: 40, tiny: 56 });
+      const speakerFit = textFitClass(shift.speaker, { small: 28, smaller: 42, tiny: 50 });
+      const topicFit = textFitClass(shift.topic, { small: 42, smaller: 68, tiny: 92 });
       return `
         <tr>
           <td><span class="shift">${escapeHtml(shift.shift)}</span></td>
