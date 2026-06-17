@@ -568,7 +568,21 @@ img {
 }
 
 .jummah-card .card-header {
-  padding: 21px 22px 0;
+  min-height: 56px;
+  margin-bottom: 0;
+  padding: 16px 22px 12px;
+  background: linear-gradient(180deg, #f6fbf8, #ffffff);
+  border-bottom: 1px solid var(--border);
+}
+
+.jummah-card .card-title img {
+  width: 30px;
+  height: 30px;
+}
+
+.jummah-card .card-title h2 {
+  font-size: 16px;
+  font-weight: 900;
 }
 
 .card-title img {
@@ -604,6 +618,14 @@ img {
   flex: 1;
   padding: 0;
   overflow: hidden;
+}
+
+.jummah-card table {
+  height: 100%;
+}
+
+.jummah-card tbody tr {
+  height: 25%;
 }
 
 table {
@@ -741,7 +763,12 @@ tbody tr:last-child td {
 
 .jummah-card td:nth-child(3),
 .jummah-card td:nth-child(4) {
-  font-size: 13.5px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.speaker-name {
+  font-weight: 700;
 }
 
 .topic-chip {
@@ -754,6 +781,7 @@ tbody tr:last-child td {
   padding: 7px 10px;
   background: #f7f8f5;
   border-radius: 11px;
+  font-weight: 700;
   overflow-wrap: anywhere;
 }
 

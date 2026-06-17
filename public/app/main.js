@@ -1218,7 +1218,7 @@ function renderJummah(content) {
         <tr>
           <td><span class="shift">${escapeHtml(shift.shift)}</span></td>
           <td class="time">${escapeHtml(shift.time)}</td>
-          <td>${escapeHtml(shift.speaker)}</td>
+          <td><span class="speaker-name">${escapeHtml(shift.speaker)}</span></td>
           <td><span class="topic-chip"><span class="topic-icon">${topicIconSvg(shift.topic)}</span>${escapeHtml(shift.topic)}</span></td>
         </tr>
       `
