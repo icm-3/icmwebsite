@@ -4,3 +4,4 @@ npm-debug.log*
 work/
 .DS_Store
 Thumbs.db
+.vercel
