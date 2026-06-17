@@ -1485,6 +1485,11 @@ tbody tr:last-child td {
   border-top: 1px solid var(--border);
 }
 
+.donation-start {
+  padding-top: 54px;
+  border-top: 0;
+}
+
 .page-split {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
@@ -1528,6 +1533,17 @@ tbody tr:last-child td {
 
 .section-heading p {
   max-width: 560px;
+}
+
+.section-heading .eyebrow {
+  margin: 0 0 12px;
+  color: var(--gold);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.donation-start .section-heading {
+  display: block;
 }
 
 .feature-grid,
@@ -2125,7 +2141,7 @@ tbody tr:last-child td {
 }
 
 .form-field span em {
-  color: var(--gold);
+  color: var(--muted);
   font-style: normal;
   font-weight: 600;
 }
@@ -2141,6 +2157,45 @@ tbody tr:last-child td {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
+}
+
+.amount-entry {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  min-height: 68px;
+  margin-bottom: 14px;
+  padding: 0 18px;
+  color: var(--text);
+  background: #fbfdfc;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+}
+
+.amount-entry span {
+  color: var(--green);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.amount-entry input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1;
+  text-align: right;
+  outline: 0;
+}
+
+.amount-entry:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(0, 84, 61, 0.16);
 }
 
 .amount-grid label,
@@ -2212,8 +2267,91 @@ tbody tr:last-child td {
 
 .segmented-options {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 160px));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10px;
+}
+
+.payment-fieldset {
+  display: grid;
+  gap: 12px;
+  padding-top: 2px;
+}
+
+.payment-fieldset legend {
+  color: var(--text);
+  font-size: 18px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.payment-fieldset p {
+  margin: -4px 0 2px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.payment-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.payment-option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  min-width: 0;
+  padding: 14px;
+  background: #fbfdfc;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+}
+
+.payment-option input {
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  accent-color: var(--green);
+}
+
+.payment-option span {
+  display: grid;
+  gap: 4px;
+}
+
+.payment-option strong {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.payment-option small {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.payment-option:has(input:checked) {
+  background: var(--green-pale);
+  border-color: var(--green);
+  box-shadow: inset 0 0 0 1px var(--green);
+}
+
+.payment-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 16px;
+  background: #fbfdfc;
+  border: 1px solid rgba(165, 100, 5, 0.26);
+  border-radius: 6px;
+}
+
+.payment-panel[hidden] {
+  display: none;
 }
 
 .donation-grid {
@@ -2297,7 +2435,7 @@ tbody tr:last-child td {
 }
 
 .summary-row span {
-  color: var(--muted);
+  color: var(--text);
 }
 
 .summary-row strong {
@@ -2806,8 +2944,14 @@ tbody tr:last-child td {
 
   .amount-grid,
   .donation-grid,
-  .segmented-options {
+  .segmented-options,
+  .payment-options,
+  .payment-panel {
     grid-template-columns: 1fr;
+  }
+
+  .amount-entry input {
+    font-size: 28px;
   }
 
   .amount-grid label > span,

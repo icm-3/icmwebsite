@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css?v=20260617">
+    <link rel="stylesheet" href="./styles.css?v=20260617-donate">
   </head>
   <body>
     <header class="site-header">
@@ -25,23 +25,19 @@
     </header>
 
     <main class="page-main">
-      <section class="page-hero">
-        <p class="eyebrow">Support the masjid</p>
-        <h1>Donate</h1>
-        <div class="page-actions">
-          <a class="button button-primary" href="#donate-now">Donate Now</a>
-          <a class="button button-secondary" href="#receipts">Receipts & Recurring Gifts</a>
-        </div>
-      </section>
-
-      <section class="page-band" id="donate-now">
+      <section class="page-band donation-start" id="donate-now">
         <div class="section-heading">
+          <p class="eyebrow">Support the masjid</p>
           <h2>Make a Donation</h2>
         </div>
         <form class="donation-form" aria-label="Donation form">
           <div class="donation-form-main">
             <fieldset class="donation-fieldset">
               <legend>Donation Amount</legend>
+              <label class="amount-entry">
+                <span aria-hidden="true">$</span>
+                <input type="number" name="donation-amount" min="1" step="0.01" value="25.00" aria-label="Donation amount">
+              </label>
               <div class="amount-grid">
                 <label><input type="radio" name="amount" value="10"><span>$10</span></label>
                 <label><input type="radio" name="amount" value="25" checked><span>$25</span></label>
@@ -50,13 +46,6 @@
                 <label><input type="radio" name="amount" value="100"><span>$100</span></label>
                 <label><input type="radio" name="amount" value="250"><span>$250</span></label>
                 <label><input type="radio" name="amount" value="500"><span>$500</span></label>
-                <label class="custom-amount">
-                  <input type="radio" name="amount" value="custom">
-                  <span>
-                    <small>Custom amount</small>
-                    <input type="number" min="1" step="1" aria-label="Custom donation amount">
-                  </span>
-                </label>
               </div>
             </fieldset>
 
@@ -64,18 +53,14 @@
               <legend>Frequency</legend>
               <div class="segmented-options">
                 <label><input type="radio" name="frequency" value="one-time" checked><span>One-Time</span></label>
+                <label><input type="radio" name="frequency" value="daily"><span>Daily</span></label>
+                <label><input type="radio" name="frequency" value="weekly"><span>Weekly</span></label>
                 <label><input type="radio" name="frequency" value="monthly"><span>Monthly</span></label>
+                <label><input type="radio" name="frequency" value="yearly"><span>Yearly</span></label>
               </div>
             </fieldset>
 
             <div class="donation-grid">
-              <label class="form-field form-field-wide">
-                <span>Payment Method</span>
-                <select name="payment-method">
-                  <option>Credit or Debit Card</option>
-                  <option>Bank Account</option>
-                </select>
-              </label>
               <label class="form-field">
                 <span>First Name</span>
                 <input type="text" name="first-name" autocomplete="given-name">
@@ -92,6 +77,61 @@
                 <span>Phone</span>
                 <input type="tel" name="phone" autocomplete="tel">
               </label>
+
+              <fieldset class="donation-fieldset payment-fieldset form-field-wide">
+                <legend>How would you like to pay today?</legend>
+                <p>This donation is processed through a secure encrypted payment form.</p>
+                <div class="payment-options">
+                  <label class="payment-option">
+                    <input type="radio" name="payment-method" value="card" checked>
+                    <span>
+                      <strong>Card Payment</strong>
+                      <small>Use a Visa, Mastercard, Discover, or American Express card.</small>
+                    </span>
+                  </label>
+                  <label class="payment-option">
+                    <input type="radio" name="payment-method" value="bank">
+                    <span>
+                      <strong>Bank Account</strong>
+                      <small>Give directly from a checking or savings account.</small>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="payment-panel" data-payment-panel="card">
+                  <label class="form-field form-field-wide">
+                    <span>Card Number</span>
+                    <input type="text" name="card-number" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234">
+                  </label>
+                  <label class="form-field">
+                    <span>Expiration</span>
+                    <input type="text" name="card-expiration" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY">
+                  </label>
+                  <label class="form-field">
+                    <span>Security Code</span>
+                    <input type="text" name="card-security-code" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC">
+                  </label>
+                </div>
+
+                <div class="payment-panel" data-payment-panel="bank" hidden>
+                  <label class="form-field">
+                    <span>Routing Number</span>
+                    <input type="text" name="routing-number" inputmode="numeric" autocomplete="off">
+                  </label>
+                  <label class="form-field">
+                    <span>Account Number</span>
+                    <input type="text" name="account-number" inputmode="numeric" autocomplete="off">
+                  </label>
+                  <label class="form-field form-field-wide">
+                    <span>Account Type</span>
+                    <select name="account-type">
+                      <option>Checking</option>
+                      <option>Savings</option>
+                    </select>
+                  </label>
+                </div>
+              </fieldset>
+
               <label class="form-field form-field-wide">
                 <span>Note or Dedication <em>Optional</em></span>
                 <textarea name="note" rows="4"></textarea>
@@ -116,7 +156,7 @@
 
       <section class="page-band" id="giving">
         <div class="section-heading">
-          <h2>Ways to Give</h2>
+          <h2>What Donations Support</h2>
         </div>
         <div class="feature-grid">
           <article class="feature-card">
@@ -140,17 +180,17 @@
 
       <section class="page-split" id="receipts">
         <div>
-          <h2>Recurring Giving</h2>
-          <p>Monthly support helps ICM plan confidently for worship services, utilities, education programs, youth activities, facility care, and social services.</p>
-          <p>Donors can keep records for annual giving, adjust recurring support, and direct gifts toward the area of greatest need or a specific program category.</p>
+          <h2>Automatic Giving</h2>
+          <p>Choose a daily, weekly, monthly, or yearly schedule and your support can continue automatically without re-entering the form each time.</p>
+          <p>Receipts are sent by email, and donation records can be used for annual giving summaries.</p>
         </div>
         <div class="callout">
           <h3>Giving Support</h3>
           <ul class="check-list">
-            <li>One-time and recurring donations</li>
-            <li>Donation categories and notes</li>
-            <li>Receipt downloads and annual summaries</li>
-            <li>Recurring gift updates and cancellations</li>
+            <li>One-time and scheduled donations</li>
+            <li>Donation notes and dedications</li>
+            <li>Email receipts and annual summaries</li>
+            <li>Simple updates to automatic gifts</li>
           </ul>
         </div>
       </section>
@@ -165,6 +205,6 @@
       <p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p>
       <a href="./about.html#contact">Contact Us</a>
     </footer>
-    <script type="module" src="./public/app/site.js"></script>
+    <script type="module" src="./public/app/site.js?v=20260617-donate2"></script>
   </body>
 </html>
