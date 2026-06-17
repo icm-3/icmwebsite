@@ -1900,7 +1900,7 @@ tbody tr:last-child td {
 }
 
 .calendar-day.is-selected {
-  background: linear-gradient(180deg, #fffaf0, #ffffff);
+  background: white;
   box-shadow: inset 0 0 0 2px rgba(165, 100, 5, 0.35);
 }
 
@@ -1949,8 +1949,6 @@ tbody tr:last-child td {
 
 .calendar-event-chip.is-selected {
   background: white;
-  border-color: rgba(165, 100, 5, 0.45);
-  box-shadow: inset 0 0 0 1px rgba(165, 100, 5, 0.2);
 }
 
 .calendar-event-more {
@@ -2040,15 +2038,41 @@ tbody tr:last-child td {
 .calendar-detail-body time {
   display: block;
   margin-top: 10px;
-  color: var(--gold);
+  color: var(--muted);
   font-size: inherit;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: none;
 }
 
 .calendar-detail-location {
-  color: var(--gold) !important;
+  color: var(--green) !important;
   font-weight: 800;
+}
+
+.prayer-times-hero {
+  padding-bottom: 36px;
+}
+
+.prayer-times-band {
+  padding-top: 34px;
+}
+
+.prayer-pdf-frame {
+  overflow: hidden;
+  background: white;
+  border: 1px solid rgba(165, 100, 5, 0.24);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(18, 24, 39, 0.04);
+}
+
+.prayer-pdf-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.prayer-pdf-frame img + img {
+  border-top: 1px solid rgba(165, 100, 5, 0.2);
 }
 
 .calendar-detail-link {
