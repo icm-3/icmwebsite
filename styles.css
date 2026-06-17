@@ -1762,6 +1762,7 @@ tbody tr:last-child td {
 .calendar-hijri-date {
   margin: 8px 0 0;
   color: var(--gold);
+  font-family: "Cormorant Garamond", Georgia, serif;
   font-size: clamp(17px, 2.1vw, 23px);
   font-weight: 800;
   letter-spacing: 0;
