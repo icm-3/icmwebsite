@@ -265,6 +265,14 @@ function getJummahRowsForDate(content, targetDate) {
   }));
 }
 
+function textFitClass(value, thresholds) {
+  const length = String(value ?? "").trim().length;
+  if (length >= thresholds.tiny) return "fit-tiny";
+  if (length >= thresholds.smaller) return "fit-smaller";
+  if (length >= thresholds.small) return "fit-small";
+  return "fit-normal";
+}
+
 function renderDateNavigator() {
   setText("[data-date-label]", formatNavigatorDate(selectedPrayerDate));
 }
@@ -345,14 +353,18 @@ function renderJummah(content) {
   const shifts = getJummahRowsForDate(content, targetDate);
   tbody.innerHTML = shifts
     .map(
-      (shift) => `
+      (shift) => {
+        const speakerFit = textFitClass(shift.speaker, { small: 22, smaller: 34, tiny: 48 });
+        const topicFit = textFitClass(shift.topic, { small: 24, smaller: 40, tiny: 56 });
+        return `
         <tr>
           <td><span class="shift">${escapeHtml(shift.shift)}</span></td>
           <td class="time">${escapeHtml(shift.time)}</td>
-          <td><span class="speaker-name">${escapeHtml(shift.speaker)}</span></td>
-          <td><span class="topic-chip"><span class="topic-icon">${topicIconSvg(shift.topic)}</span><span class="topic-text">${escapeHtml(shift.topic)}</span></span></td>
+          <td><span class="speaker-name ${speakerFit}">${escapeHtml(shift.speaker)}</span></td>
+          <td><span class="topic-chip ${topicFit}"><span class="topic-icon">${topicIconSvg(shift.topic)}</span><span class="topic-text">${escapeHtml(shift.topic)}</span></span></td>
         </tr>
-      `,
+      `;
+      },
     )
     .join("");
 }
