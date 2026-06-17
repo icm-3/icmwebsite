@@ -1499,6 +1499,10 @@ tbody tr:last-child td {
   border-top: 1px solid var(--border);
 }
 
+.receipts-simple {
+  grid-template-columns: minmax(0, 760px);
+}
+
 .page-split h2,
 .section-heading h2 {
   font-size: clamp(36px, 4vw, 50px);
@@ -2113,16 +2117,20 @@ tbody tr:last-child td {
 .donation-form-main,
 .donation-summary {
   background: white;
-  border: 1px solid rgba(165, 100, 5, 0.26);
+  border: 1px solid rgba(165, 100, 5, 0.38);
   border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(18, 24, 39, 0.035);
+  box-shadow: none;
+}
+
+#giving .feature-card {
+  border-color: rgba(165, 100, 5, 0.34);
 }
 
 .donation-form-main {
   display: grid;
   gap: 22px;
   padding: 24px;
-  box-shadow: 0 12px 30px rgba(18, 24, 39, 0.04), inset 0 3px 0 rgba(165, 100, 5, 0.18);
+  box-shadow: none;
 }
 
 .donation-fieldset {
@@ -2196,6 +2204,18 @@ tbody tr:last-child td {
   line-height: 1;
   text-align: right;
   outline: 0;
+}
+
+.amount-entry input.amount-compact {
+  font-size: 28px;
+}
+
+.amount-entry input.amount-condensed {
+  font-size: 22px;
+}
+
+.amount-entry input.amount-tight {
+  font-size: 17px;
 }
 
 .amount-entry:focus-within {
@@ -2460,7 +2480,7 @@ tbody tr:last-child td {
   display: grid;
   gap: 14px;
   padding: 22px;
-  box-shadow: 8px 8px 0 rgba(165, 100, 5, 0.18), 0 10px 28px rgba(18, 24, 39, 0.06);
+  box-shadow: none;
 }
 
 .donation-summary h3 {
@@ -2485,6 +2505,19 @@ tbody tr:last-child td {
 .summary-row strong {
   color: var(--gold);
   text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.summary-row strong.amount-compact {
+  font-size: 14px;
+}
+
+.summary-row strong.amount-condensed {
+  font-size: 12px;
+}
+
+.summary-row strong.amount-tight {
+  font-size: 11px;
 }
 
 .donation-summary .button {

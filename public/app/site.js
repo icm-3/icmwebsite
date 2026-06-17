@@ -85,6 +85,13 @@ function initDonationForm() {
       maximumFractionDigits: 2
     })}`;
   };
+  const setAmountFitClass = (element, rawValue) => {
+    if (!element) return;
+    const length = String(rawValue || "").replace(/[^0-9]/g, "").length;
+    element.classList.toggle("amount-compact", length > 7 && length <= 10);
+    element.classList.toggle("amount-condensed", length > 10 && length <= 15);
+    element.classList.toggle("amount-tight", length > 15);
+  };
   const syncSelectedAmount = () => {
     if (!amountInput) return;
     const enteredValue = Number(amountInput.value);
@@ -96,6 +103,8 @@ function initDonationForm() {
     const selectedFrequency = form.querySelector("input[name='frequency']:checked");
     if (amountSummary && amountInput) {
       amountSummary.textContent = formatAmount(amountInput.value);
+      setAmountFitClass(amountSummary, amountSummary.textContent);
+      setAmountFitClass(amountInput, amountInput.value);
     }
     if (frequencySummary && selectedFrequency) {
       frequencySummary.textContent = frequencyLabels[selectedFrequency.value] || selectedFrequency.value;
