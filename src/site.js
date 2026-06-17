@@ -80,7 +80,13 @@ function initDonationForm() {
   });
 
   paymentOptions.forEach((option) => {
+    const setPaymentMethod = () => {
+      option.checked = true;
+      updatePaymentPanels();
+    };
+
     option.addEventListener("change", updatePaymentPanels);
+    option.closest("label")?.addEventListener("click", setPaymentMethod);
   });
 
   form.addEventListener("input", updateSummary);

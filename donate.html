@@ -83,22 +83,27 @@
                 <p>This donation is processed through a secure encrypted payment form.</p>
                 <div class="payment-options">
                   <label class="payment-option">
-                    <input type="radio" name="payment-method" value="card" checked>
+                    <input type="radio" name="payment-method" value="stripe" checked>
                     <span>
-                      <strong>Card Payment</strong>
-                      <small>Use a Visa, Mastercard, Discover, or American Express card.</small>
+                      <strong>Stripe Payment</strong>
+                      <small>Secure card payment for Visa, Mastercard, Discover, and American Express.</small>
                     </span>
                   </label>
                   <label class="payment-option">
-                    <input type="radio" name="payment-method" value="bank">
+                    <input type="radio" name="payment-method" value="paypal">
                     <span>
-                      <strong>Bank Account</strong>
-                      <small>Give directly from a checking or savings account.</small>
+                      <strong>PayPal &amp; Venmo</strong>
+                      <small>Continue with a PayPal account, Venmo, or a linked wallet.</small>
                     </span>
                   </label>
                 </div>
 
-                <div class="payment-panel" data-payment-panel="card">
+                <div class="payment-panel stripe-panel" data-payment-panel="stripe">
+                  <div class="payment-panel-heading">
+                    <strong>Credit Card Info</strong>
+                    <span>Powered by Stripe</span>
+                  </div>
+                  <p class="payment-note">This is a secure SSL encrypted payment.</p>
                   <label class="form-field form-field-wide">
                     <span>Card Number</span>
                     <input type="text" name="card-number" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234">
@@ -113,22 +118,16 @@
                   </label>
                 </div>
 
-                <div class="payment-panel" data-payment-panel="bank" hidden>
-                  <label class="form-field">
-                    <span>Routing Number</span>
-                    <input type="text" name="routing-number" inputmode="numeric" autocomplete="off">
-                  </label>
-                  <label class="form-field">
-                    <span>Account Number</span>
-                    <input type="text" name="account-number" inputmode="numeric" autocomplete="off">
-                  </label>
-                  <label class="form-field form-field-wide">
-                    <span>Account Type</span>
-                    <select name="account-type">
-                      <option>Checking</option>
-                      <option>Savings</option>
-                    </select>
-                  </label>
+                <div class="payment-panel wallet-panel" data-payment-panel="paypal" hidden>
+                  <div class="payment-panel-heading">
+                    <strong>PayPal &amp; Venmo Checkout</strong>
+                    <span>Wallet payment</span>
+                  </div>
+                  <p class="payment-note">After continuing, donors can finish through PayPal, Venmo, or an eligible linked payment method.</p>
+                  <div class="wallet-preview" aria-hidden="true">
+                    <span class="paypal-mark">PayPal</span>
+                    <span class="venmo-mark">Venmo</span>
+                  </div>
                 </div>
               </fieldset>
 
@@ -180,7 +179,7 @@
 
       <section class="page-split" id="receipts">
         <div>
-          <h2>Automatic Giving</h2>
+          <h2>Recurring Payment</h2>
           <p>Choose a daily, weekly, monthly, or yearly schedule and your support can continue automatically without re-entering the form each time.</p>
           <p>Receipts are sent by email, and donation records can be used for annual giving summaries.</p>
         </div>

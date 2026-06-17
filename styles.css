@@ -2153,6 +2153,11 @@ tbody tr:last-child td {
   text-transform: uppercase;
 }
 
+.donation-form-main > .donation-fieldset:nth-of-type(1) legend,
+.donation-form-main > .donation-fieldset:nth-of-type(2) legend {
+  color: var(--text);
+}
+
 .amount-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2238,33 +2243,6 @@ tbody tr:last-child td {
   outline-offset: 3px;
 }
 
-.custom-amount span {
-  gap: 2px;
-  align-content: center;
-}
-
-.custom-amount small {
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 800;
-  line-height: 1;
-}
-
-.custom-amount input[type="number"] {
-  width: 100%;
-  max-width: 82px;
-  min-height: 0;
-  padding: 0;
-  color: var(--green);
-  background: transparent;
-  border: 0;
-  font: inherit;
-  font-size: 16px;
-  font-weight: 800;
-  text-align: center;
-  outline: 0;
-}
-
 .segmented-options {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -2344,7 +2322,7 @@ tbody tr:last-child td {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
-  padding: 16px;
+  padding: 18px;
   background: #fbfdfc;
   border: 1px solid rgba(165, 100, 5, 0.26);
   border-radius: 6px;
@@ -2352,6 +2330,71 @@ tbody tr:last-child td {
 
 .payment-panel[hidden] {
   display: none;
+}
+
+.payment-panel-heading,
+.payment-note,
+.wallet-preview {
+  grid-column: 1 / -1;
+}
+
+.payment-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.payment-panel-heading strong {
+  color: var(--text);
+  font-size: 17px;
+}
+
+.payment-panel-heading span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.payment-note {
+  margin: -2px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.wallet-panel {
+  grid-template-columns: 1fr;
+}
+
+.wallet-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.wallet-preview span {
+  display: inline-grid;
+  min-width: 120px;
+  min-height: 46px;
+  place-items: center;
+  padding: 0 18px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.paypal-mark {
+  color: #003087;
+  background: #f4f8ff;
+  border: 1px solid #bfd2ef;
+}
+
+.venmo-mark {
+  color: white;
+  background: #008cff;
+  border: 1px solid #008cff;
 }
 
 .donation-grid {
@@ -2436,6 +2479,7 @@ tbody tr:last-child td {
 
 .summary-row span {
   color: var(--text);
+  font-weight: 700;
 }
 
 .summary-row strong {
