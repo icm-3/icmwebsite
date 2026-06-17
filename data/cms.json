@@ -34,6 +34,15 @@
   },
   "events": [
     {
+      "title": "Women's Eid Celebration",
+      "date": "2026-06-14",
+      "time": "4:00 PM",
+      "location": "ICM Banquet Hall",
+      "description": "A women's community potluck with games, socializing, prizes, and time together after Eid.",
+      "poster": "./public/news/womens-eid-2026.png",
+      "posterAlt": "Women's Eid Celebration event poster"
+    },
+    {
       "title": "Youth Hike & BBQ",
       "date": "2026-06-21",
       "time": "10:00 AM",
