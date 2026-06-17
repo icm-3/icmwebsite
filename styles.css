@@ -1718,7 +1718,7 @@ tbody tr:last-child td {
 }
 
 .calendar-band {
-  padding-top: 28px;
+  padding-top: 36px;
 }
 
 .calendar-toolbar {
@@ -1737,12 +1737,14 @@ tbody tr:last-child td {
   line-height: 0.95;
 }
 
-.calendar-toolbar .eyebrow {
-  margin-bottom: 8px;
-  direction: rtl;
-  font-size: 15px;
+.calendar-hijri-date {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: clamp(19px, 2.4vw, 27px);
+  font-weight: 800;
   letter-spacing: 0;
-  text-transform: none;
+  line-height: 1.15;
+  text-align: left;
 }
 
 .calendar-controls {
@@ -1928,7 +1930,7 @@ tbody tr:last-child td {
 .calendar-detail-empty h3,
 .calendar-detail-card h3 {
   margin: 0;
-  color: var(--green);
+  color: var(--text);
   font-size: 24px;
   line-height: 1.15;
 }
@@ -1941,27 +1943,7 @@ tbody tr:last-child td {
 }
 
 .calendar-detail-card {
-  display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
   overflow: hidden;
-}
-
-.calendar-detail-poster {
-  width: 100%;
-  height: 100%;
-  min-height: 230px;
-  object-fit: cover;
-  background: var(--green-pale);
-}
-
-.calendar-detail-poster-empty {
-  display: grid;
-  place-items: center;
-}
-
-.calendar-detail-poster-empty img {
-  width: 68px;
-  height: 68px;
 }
 
 .calendar-detail-body {
@@ -1980,6 +1962,113 @@ tbody tr:last-child td {
 .calendar-detail-location {
   color: var(--text) !important;
   font-weight: 800;
+}
+
+.poster-open-button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+  padding: 0 18px;
+  color: white;
+  background: var(--green);
+  border: 1px solid var(--green);
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 850;
+  cursor: pointer;
+  transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.poster-open-button:hover,
+.poster-open-button:focus-visible {
+  background: #006b4f;
+  border-color: #006b4f;
+  transform: translateY(-1px);
+}
+
+.poster-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.poster-modal[hidden] {
+  display: none;
+}
+
+.poster-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 14, 20, 0.72);
+}
+
+.poster-modal-dialog {
+  position: relative;
+  display: grid;
+  width: min(92vw, 860px);
+  max-height: calc(100vh - 48px);
+  overflow: hidden;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.32);
+}
+
+.poster-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  min-height: 38px;
+  padding: 0 14px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.poster-modal-frame {
+  display: grid;
+  min-height: 280px;
+  max-height: calc(100vh - 170px);
+  place-items: center;
+  background: #f6f8f7;
+}
+
+.poster-modal-frame img {
+  display: block;
+  width: 100%;
+  max-height: calc(100vh - 170px);
+  object-fit: contain;
+}
+
+.poster-modal-caption {
+  padding: 16px 20px 18px;
+  border-top: 1px solid var(--border);
+}
+
+.poster-modal-caption h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 20px;
+}
+
+.poster-modal-caption p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.poster-modal-open {
+  overflow: hidden;
 }
 
 .listing-item p {
@@ -2536,6 +2625,29 @@ tbody tr:last-child td {
 
   .news-feature img {
     max-height: 220px;
+  }
+
+  .calendar-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .calendar-controls {
+    align-self: flex-start;
+  }
+
+  .poster-modal {
+    padding: 14px;
+  }
+
+  .poster-modal-dialog {
+    width: min(100%, 680px);
+    max-height: calc(100vh - 28px);
+  }
+
+  .poster-modal-frame,
+  .poster-modal-frame img {
+    max-height: calc(100vh - 150px);
   }
 
   .amount-grid {

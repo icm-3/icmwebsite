@@ -52,6 +52,24 @@
       "posterAlt": "Community program poster"
     },
     {
+      "title": "Youth Qiyam Night",
+      "date": "2026-06-27",
+      "time": "9:45 PM",
+      "location": "ICM Prayer Hall",
+      "description": "A night program for youth with reminders, worship, and community time.",
+      "poster": "./public/news/camp.png",
+      "posterAlt": "Youth night program poster"
+    },
+    {
+      "title": "Family Seerah Workshop",
+      "date": "2026-06-27",
+      "time": "11:00 AM",
+      "location": "ICM Multipurpose Room",
+      "description": "A family learning session with activities and discussion for parents and children.",
+      "poster": "./public/news/eid.png",
+      "posterAlt": "Family workshop poster"
+    },
+    {
       "title": "Independence Day Potluck",
       "date": "2026-07-04",
       "time": "1:00 PM",

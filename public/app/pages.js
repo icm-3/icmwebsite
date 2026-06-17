@@ -912,6 +912,24 @@ var defaultContent = {
       posterAlt: "Community program poster"
     },
     {
+      title: "Youth Qiyam Night",
+      date: "2026-06-27",
+      time: "9:45 PM",
+      location: "ICM Prayer Hall",
+      description: "A night program for youth with reminders, worship, and community time.",
+      poster: "./public/news/camp.png",
+      posterAlt: "Youth night program poster"
+    },
+    {
+      title: "Family Seerah Workshop",
+      date: "2026-06-27",
+      time: "11:00 AM",
+      location: "ICM Multipurpose Room",
+      description: "A family learning session with activities and discussion for parents and children.",
+      poster: "./public/news/eid.png",
+      posterAlt: "Family workshop poster"
+    },
+    {
       title: "Independence Day Potluck",
       date: "2026-07-04",
       time: "1:00 PM",
@@ -1055,6 +1073,7 @@ var prayerLabels = {
 var selectedPrayerDate = /* @__PURE__ */ new Date();
 var selectedCalendarMonth = /* @__PURE__ */ new Date();
 var selectedCalendarEventSlug = "";
+var calendarContent = null;
 var fallbackNews = [
   {
     title: "Community Programs Continue Through Summer",
@@ -1196,6 +1215,48 @@ function eventPoster(event) {
 function eventPosterAlt(event) {
   return event.posterAlt || event.imageAlt || `${event.title} event poster`;
 }
+function ensurePosterModal() {
+  let modal = document.querySelector("[data-poster-modal]");
+  if (modal) return modal;
+  modal = document.createElement("div");
+  modal.className = "poster-modal";
+  modal.setAttribute("data-poster-modal", "");
+  modal.setAttribute("hidden", "");
+  modal.innerHTML = `
+    <div class="poster-modal-backdrop" data-poster-close></div>
+    <div class="poster-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="poster-modal-title">
+      <button class="poster-modal-close" type="button" data-poster-close aria-label="Close poster">Close</button>
+      <div class="poster-modal-frame">
+        <img data-poster-image alt="">
+      </div>
+      <div class="poster-modal-caption">
+        <h3 id="poster-modal-title" data-poster-title></h3>
+        <p data-poster-meta></p>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  return modal;
+}
+function closePosterModal() {
+  const modal = document.querySelector("[data-poster-modal]");
+  if (!modal) return;
+  modal.setAttribute("hidden", "");
+  document.body.classList.remove("poster-modal-open");
+}
+function openPosterModal(event) {
+  const poster = eventPoster(event);
+  if (!poster) return;
+  const modal = ensurePosterModal();
+  const image = modal.querySelector("[data-poster-image]");
+  image.src = poster;
+  image.alt = eventPosterAlt(event);
+  modal.querySelector("[data-poster-title]").textContent = event.title;
+  modal.querySelector("[data-poster-meta]").textContent = `${formatLongDate(event.date)} - ${event.time}`;
+  modal.removeAttribute("hidden");
+  document.body.classList.add("poster-modal-open");
+  modal.querySelector("[data-poster-close]")?.focus();
+}
 function slugify(value) {
   return String(value ?? "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
@@ -1263,7 +1324,7 @@ function setCalendarDetail(event) {
     target.innerHTML = `
       <div class="calendar-detail-empty">
         <h3>Select an event</h3>
-        <p>Choose an event from the calendar to view the poster, time, location, and full details.</p>
+        <p>Choose an event from the calendar to view details.</p>
       </div>
     `;
     return;
@@ -1271,17 +1332,18 @@ function setCalendarDetail(event) {
   const poster = eventPoster(event);
   target.innerHTML = `
     <article class="calendar-detail-card" id="event-${escapeHtml(slugify(event.title))}">
-      ${poster ? `<img class="calendar-detail-poster" src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}">` : `<div class="calendar-detail-poster calendar-detail-poster-empty"><img src="./public/icons/generated/calendar.png" alt="" aria-hidden="true"></div>`}
       <div class="calendar-detail-body">
         <time datetime="${escapeHtml(event.date)}">${escapeHtml(formatLongDate(event.date))} &bull; ${escapeHtml(event.time)}</time>
         <h3>${escapeHtml(event.title)}</h3>
         <p class="calendar-detail-location">${escapeHtml(event.location)}</p>
         <p>${escapeHtml(event.description)}</p>
+        ${poster ? `<button class="poster-open-button" type="button" data-open-poster="${escapeHtml(slugify(event.title))}">View Poster</button>` : ""}
       </div>
     </article>
   `;
 }
 function renderCalendar(content) {
+  calendarContent = content;
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
   const title = document.querySelector("[data-calendar-title]");
@@ -1320,7 +1382,7 @@ function renderCalendar(content) {
                 </button>
               `
     ).join("")}
-          ${hiddenEvents.length ? `<button class="calendar-event-more" type="button" data-event-slug="${escapeHtml(slugify(hiddenEvents[0].title))}" title="${escapeHtml(hiddenEvents.map((event) => event.title).join(" \u2022 "))}">+${hiddenEvents.length} more</button>` : ""}
+          ${hiddenEvents.length ? `<button class="calendar-event-more" type="button" data-event-slug="${escapeHtml(slugify(hiddenEvents[0].title))}" title="${escapeHtml(hiddenEvents.map((event) => event.title).join(" - "))}">+${hiddenEvents.length} more</button>` : ""}
         </div>
       </div>
     `;
@@ -1335,6 +1397,22 @@ function renderCalendar(content) {
       setCalendarDetail(event);
       document.querySelector("[data-calendar-detail]")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
+  });
+}
+function initPosterModal() {
+  document.addEventListener("click", (event) => {
+    const closeButton = event.target.closest("[data-poster-close]");
+    if (closeButton) {
+      closePosterModal();
+      return;
+    }
+    const openButton = event.target.closest("[data-open-poster]");
+    if (!openButton) return;
+    const selectedEvent = calendarContent?.events?.find((item) => slugify(item.title) === openButton.dataset.openPoster);
+    if (selectedEvent) openPosterModal(selectedEvent);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closePosterModal();
   });
 }
 function initCalendar(content) {
@@ -1390,6 +1468,7 @@ async function boot() {
   renderPrayerTable();
   renderEvents(content);
   renderJummah(content);
+  initPosterModal();
   initCalendar(content);
   renderNews(content);
 }
