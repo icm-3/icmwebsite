@@ -567,7 +567,7 @@ img {
   justify-content: center;
   margin: 26px 0;
   gap: 20px;
-  border-left: 1px solid rgba(0, 84, 61, 0.12);
+  border-left: 1px solid rgba(0, 84, 61, 0.2);
   color: var(--text);
   font-size: 17px;
 }
