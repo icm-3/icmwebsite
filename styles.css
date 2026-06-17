@@ -1025,14 +1025,21 @@ tbody tr:last-child td {
 .news-item h3 {
   min-width: 0;
   margin: 0;
-  color: var(--text);
   font-size: 16px;
   font-weight: 800;
   line-height: 1.25;
 }
 
-.events-card .event-item h3 {
+.event-item h3 {
+  color: var(--green);
+}
+
+.news-item h3 {
   color: var(--text);
+}
+
+.events-card .event-item h3 {
+  color: var(--green);
 }
 
 .event-item p,
@@ -1711,6 +1718,7 @@ tbody tr:last-child td {
 
 .listing-item h3 {
   font-size: 22px;
+  font-weight: 900;
 }
 
 .calendar-hero {
@@ -1927,10 +1935,17 @@ tbody tr:last-child td {
   padding: 22px;
 }
 
-.calendar-detail-empty h3,
-.calendar-detail-card h3 {
+.calendar-detail-empty h3 {
   margin: 0;
   color: var(--text);
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.calendar-detail-card h3 {
+  margin: 0;
+  color: var(--green);
   font-size: 26px;
   font-weight: 900;
   line-height: 1.15;
