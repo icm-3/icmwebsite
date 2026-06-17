@@ -1739,8 +1739,8 @@ tbody tr:last-child td {
 
 .calendar-hijri-date {
   margin: 8px 0 0;
-  color: var(--muted);
-  font-size: clamp(19px, 2.4vw, 27px);
+  color: var(--gold);
+  font-size: clamp(17px, 2.1vw, 23px);
   font-weight: 800;
   letter-spacing: 0;
   line-height: 1.15;
@@ -1931,7 +1931,8 @@ tbody tr:last-child td {
 .calendar-detail-card h3 {
   margin: 0;
   color: var(--text);
-  font-size: 24px;
+  font-size: 26px;
+  font-weight: 900;
   line-height: 1.15;
 }
 
@@ -1944,15 +1945,16 @@ tbody tr:last-child td {
 
 .calendar-detail-card {
   overflow: hidden;
+  text-align: center;
 }
 
 .calendar-detail-body {
-  padding: 24px;
+  padding: 26px 24px 22px;
 }
 
 .calendar-detail-body time {
   display: block;
-  margin-bottom: 10px;
+  margin-top: 10px;
   color: var(--gold);
   font-size: 13px;
   font-weight: 900;
@@ -1964,111 +1966,13 @@ tbody tr:last-child td {
   font-weight: 800;
 }
 
-.poster-open-button {
-  display: inline-flex;
-  min-height: 42px;
-  align-items: center;
-  justify-content: center;
-  margin-top: 18px;
-  padding: 0 18px;
-  color: white;
-  background: var(--green);
-  border: 1px solid var(--green);
-  border-radius: 8px;
-  font: inherit;
-  font-weight: 850;
-  cursor: pointer;
-  transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
-}
-
-.poster-open-button:hover,
-.poster-open-button:focus-visible {
-  background: #006b4f;
-  border-color: #006b4f;
-  transform: translateY(-1px);
-}
-
-.poster-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-}
-
-.poster-modal[hidden] {
-  display: none;
-}
-
-.poster-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(6, 14, 20, 0.72);
-}
-
-.poster-modal-dialog {
-  position: relative;
-  display: grid;
-  width: min(92vw, 860px);
-  max-height: calc(100vh - 48px);
-  overflow: hidden;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.32);
-}
-
-.poster-modal-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 2;
-  min-height: 38px;
-  padding: 0 14px;
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  font: inherit;
-  font-size: 13px;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.poster-modal-frame {
-  display: grid;
-  min-height: 280px;
-  max-height: calc(100vh - 170px);
-  place-items: center;
-  background: #f6f8f7;
-}
-
-.poster-modal-frame img {
+.calendar-detail-poster {
   display: block;
   width: 100%;
-  max-height: calc(100vh - 170px);
-  object-fit: contain;
-}
-
-.poster-modal-caption {
-  padding: 16px 20px 18px;
+  max-height: min(900px, 86vh);
   border-top: 1px solid var(--border);
-}
-
-.poster-modal-caption h3 {
-  margin: 0;
-  color: var(--text);
-  font-size: 20px;
-}
-
-.poster-modal-caption p {
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.poster-modal-open {
-  overflow: hidden;
+  background: #f6f8f7;
+  object-fit: contain;
 }
 
 .listing-item p {
@@ -2636,18 +2540,63 @@ tbody tr:last-child td {
     align-self: flex-start;
   }
 
-  .poster-modal {
+  .calendar-grid {
+    display: block;
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .calendar-weekday,
+  .calendar-day:not(.has-events) {
+    display: none;
+  }
+
+  .calendar-day.has-events {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    min-height: 0;
+    align-items: start;
+    gap: 12px;
+    margin-bottom: 10px;
     padding: 14px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
   }
 
-  .poster-modal-dialog {
-    width: min(100%, 680px);
-    max-height: calc(100vh - 28px);
+  .calendar-day.has-events::before {
+    content: attr(data-date-label);
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1.2;
+    text-transform: uppercase;
   }
 
-  .poster-modal-frame,
-  .poster-modal-frame img {
-    max-height: calc(100vh - 150px);
+  .calendar-day-number {
+    display: none;
+  }
+
+  .calendar-event-stack {
+    margin-top: 0;
+  }
+
+  .calendar-event-chip {
+    grid-template-columns: 18px minmax(0, 1fr);
+    min-height: 38px;
+    font-size: 13px;
+  }
+
+  .calendar-event-chip span {
+    white-space: normal;
+  }
+
+  .calendar-event-more {
+    min-height: 32px;
+    font-size: 12px;
   }
 
   .amount-grid {

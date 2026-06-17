@@ -22,7 +22,6 @@ const prayerLabels = {
 let selectedPrayerDate = new Date();
 let selectedCalendarMonth = new Date();
 let selectedCalendarEventSlug = "";
-let calendarContent = null;
 
 const fallbackNews = [
   {
@@ -187,53 +186,6 @@ function eventPosterAlt(event) {
   return event.posterAlt || event.imageAlt || `${event.title} event poster`;
 }
 
-function ensurePosterModal() {
-  let modal = document.querySelector("[data-poster-modal]");
-  if (modal) return modal;
-
-  modal = document.createElement("div");
-  modal.className = "poster-modal";
-  modal.setAttribute("data-poster-modal", "");
-  modal.setAttribute("hidden", "");
-  modal.innerHTML = `
-    <div class="poster-modal-backdrop" data-poster-close></div>
-    <div class="poster-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="poster-modal-title">
-      <button class="poster-modal-close" type="button" data-poster-close aria-label="Close poster">Close</button>
-      <div class="poster-modal-frame">
-        <img data-poster-image alt="">
-      </div>
-      <div class="poster-modal-caption">
-        <h3 id="poster-modal-title" data-poster-title></h3>
-        <p data-poster-meta></p>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-  return modal;
-}
-
-function closePosterModal() {
-  const modal = document.querySelector("[data-poster-modal]");
-  if (!modal) return;
-  modal.setAttribute("hidden", "");
-  document.body.classList.remove("poster-modal-open");
-}
-
-function openPosterModal(event) {
-  const poster = eventPoster(event);
-  if (!poster) return;
-
-  const modal = ensurePosterModal();
-  const image = modal.querySelector("[data-poster-image]");
-  image.src = poster;
-  image.alt = eventPosterAlt(event);
-  modal.querySelector("[data-poster-title]").textContent = event.title;
-  modal.querySelector("[data-poster-meta]").textContent = `${formatLongDate(event.date)} - ${event.time}`;
-  modal.removeAttribute("hidden");
-  document.body.classList.add("poster-modal-open");
-  modal.querySelector("[data-poster-close]")?.focus();
-}
-
 function slugify(value) {
   return String(value ?? "")
     .toLowerCase()
@@ -335,22 +287,21 @@ function setCalendarDetail(event) {
   target.innerHTML = `
     <article class="calendar-detail-card" id="event-${escapeHtml(slugify(event.title))}">
       <div class="calendar-detail-body">
-        <time datetime="${escapeHtml(event.date)}">${escapeHtml(formatLongDate(event.date))} &bull; ${escapeHtml(event.time)}</time>
         <h3>${escapeHtml(event.title)}</h3>
+        <time datetime="${escapeHtml(event.date)}">${escapeHtml(formatLongDate(event.date))} &bull; ${escapeHtml(event.time)}</time>
         <p class="calendar-detail-location">${escapeHtml(event.location)}</p>
         <p>${escapeHtml(event.description)}</p>
-        ${
-          poster
-            ? `<button class="poster-open-button" type="button" data-open-poster="${escapeHtml(slugify(event.title))}">View Poster</button>`
-            : ""
-        }
       </div>
+      ${
+        poster
+          ? `<img class="calendar-detail-poster" src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}">`
+          : ""
+      }
     </article>
   `;
 }
 
 function renderCalendar(content) {
-  calendarContent = content;
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
 
@@ -386,7 +337,7 @@ function renderCalendar(content) {
       todayDate.getDate() === date.getDate();
 
     return `
-      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}">
+      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}" data-date-label="${escapeHtml(formatShortDate(date.toISOString().slice(0, 10)))}">
         <span class="calendar-day-number">${date.getDate()}</span>
         <div class="calendar-event-stack">
           ${visibleEvents
@@ -421,25 +372,6 @@ function renderCalendar(content) {
       setCalendarDetail(event);
       document.querySelector("[data-calendar-detail]")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
-  });
-}
-
-function initPosterModal() {
-  document.addEventListener("click", (event) => {
-    const closeButton = event.target.closest("[data-poster-close]");
-    if (closeButton) {
-      closePosterModal();
-      return;
-    }
-
-    const openButton = event.target.closest("[data-open-poster]");
-    if (!openButton) return;
-    const selectedEvent = calendarContent?.events?.find((item) => slugify(item.title) === openButton.dataset.openPoster);
-    if (selectedEvent) openPosterModal(selectedEvent);
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closePosterModal();
   });
 }
 
@@ -506,7 +438,6 @@ async function boot() {
   renderPrayerTable();
   renderEvents(content);
   renderJummah(content);
-  initPosterModal();
   initCalendar(content);
   renderNews(content);
 }
