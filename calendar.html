@@ -23,57 +23,30 @@
     </header>
 
     <main class="page-main">
-      <section class="page-hero">
-        <p class="eyebrow">Prayer and events</p>
+      <section class="page-hero calendar-hero">
+        <p class="eyebrow">Community calendar</p>
         <h1>Calendar</h1>
-        <p>See today's prayer times, Jumu'ah shifts, and upcoming community events at ICM.</p>
-        <div class="page-actions">
-          <a class="button button-primary" href="#events">Upcoming Events</a>
-          <a class="button button-secondary" href="#prayer-times">Prayer Times</a>
-        </div>
+        <p>Browse ICM events by day and open each listing for full details, location, and poster information.</p>
       </section>
 
-      <section class="page-band" id="prayer-times">
-        <div class="section-heading">
-          <h2>Daily Prayer Schedule</h2>
-          <p>Prayer times for the Morrisville community. Use the date selector to view another day.</p>
-        </div>
-        <div class="schedule-with-date">
-          <div class="date-navigator page-date-navigator" aria-label="Prayer date navigation" data-page-date-navigator>
-            <button class="date-nav-button" type="button" data-date-nav="prev" aria-label="Previous day">
+      <section class="page-band calendar-band" id="events">
+        <div class="calendar-toolbar">
+          <div>
+            <p class="eyebrow" data-calendar-hijri>محرم ١٤٤٨ هـ</p>
+            <h2 data-calendar-title>June 2026</h2>
+          </div>
+          <div class="calendar-controls" aria-label="Calendar navigation">
+            <button type="button" data-calendar-nav="prev" aria-label="Previous month">
               <img src="./public/icons/chevron-left.svg" alt="" aria-hidden="true">
             </button>
-            <button class="date-nav-main" type="button" aria-label="Selected prayer date">
-              <img src="./public/icons/calendar.svg" alt="" aria-hidden="true">
-              <span data-date-label>Tue, June 16</span>
-            </button>
-            <button class="date-nav-button" type="button" data-date-nav="next" aria-label="Next day">
+            <button type="button" data-calendar-nav="today">Today</button>
+            <button type="button" data-calendar-nav="next" aria-label="Next month">
               <img src="./public/icons/chevron-right.svg" alt="" aria-hidden="true">
             </button>
-            <button class="date-nav-today" type="button" data-date-nav="today">Today</button>
           </div>
-          <div class="schedule-panel" data-page-prayers></div>
         </div>
-        <div class="inline-cta">
-          <span>Need the full monthly schedule?</span>
-          <a href="#prayer-times">Monthly Prayer Timing</a>
-        </div>
-      </section>
-
-      <section class="page-split">
-        <div>
-          <h2>Jumu'ah Schedule</h2>
-          <p>ICM holds multiple Friday prayer shifts to serve the community. Please arrive early and follow parking guidance.</p>
-        </div>
-        <div class="schedule-panel" data-page-jummah></div>
-      </section>
-
-      <section class="page-band" id="events">
-        <div class="section-heading">
-          <h2>Upcoming Events</h2>
-          <p>Join upcoming ICM gatherings, classes, youth activities, and community programs.</p>
-        </div>
-        <div class="listing-list" data-page-events></div>
+        <div class="calendar-grid" data-calendar-grid aria-label="Event calendar"></div>
+        <aside class="calendar-detail" data-calendar-detail aria-live="polite"></aside>
       </section>
     </main>
 

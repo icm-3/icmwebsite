@@ -898,35 +898,45 @@ var defaultContent = {
       date: "2026-06-21",
       time: "10:00 AM",
       location: "William B. Umstead State Park",
-      description: "A morning hike followed by lunch and games."
+      description: "A morning hike followed by lunch and games.",
+      poster: "./public/news/camp.png",
+      posterAlt: "Youth outdoor activity poster"
     },
     {
       title: "Sisters' Tea & Talk",
       date: "2026-06-27",
       time: "6:30 PM",
       location: "ICM Community Hall",
-      description: "An evening gathering for reflection and connection."
+      description: "An evening gathering for reflection and connection.",
+      poster: "./public/news/ramadan.png",
+      posterAlt: "Community program poster"
     },
     {
       title: "Independence Day Potluck",
       date: "2026-07-04",
       time: "1:00 PM",
       location: "ICM Community Hall",
-      description: "Bring a dish and spend the afternoon with the community."
+      description: "Bring a dish and spend the afternoon with the community.",
+      poster: "./public/news/eid.png",
+      posterAlt: "Community potluck poster"
     },
     {
       title: "Community Service Day & Food Pantry Support",
       date: "2026-07-12",
       time: "9:30 AM",
       location: "ICM Social Services Entrance",
-      description: "Help sort donations, prepare family grocery bags, and support neighbors across Morrisville."
+      description: "Help sort donations, prepare family grocery bags, and support neighbors across Morrisville.",
+      poster: "./public/news/camp.png",
+      posterAlt: "Community service day poster"
     },
     {
       title: "New Muslim Welcome Circle and Family Dinner",
       date: "2026-07-18",
       time: "7:15 PM",
       location: "ICM Multipurpose Room",
-      description: "A welcoming evening for new Muslims, families, mentors, and community members."
+      description: "A welcoming evening for new Muslims, families, mentors, and community members.",
+      poster: "./public/news/ramadan.png",
+      posterAlt: "Welcome circle poster"
     }
   ],
   news: [
@@ -999,6 +1009,8 @@ var prayerLabels = {
   isha: "Isha"
 };
 var selectedPrayerDate = /* @__PURE__ */ new Date();
+var selectedCalendarMonth = /* @__PURE__ */ new Date();
+var selectedCalendarEventSlug = "";
 var fallbackNews = [
   {
     title: "Community Programs Continue Through Summer",
@@ -1095,6 +1107,21 @@ function formatLongDate(dateString) {
     timeZone: TIME_ZONE
   }).format(date);
 }
+function formatMonthTitle(date) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    year: "numeric",
+    timeZone: TIME_ZONE
+  }).format(date);
+}
+function formatHijriMonth(date) {
+  return new Intl.DateTimeFormat("ar-SA-u-ca-islamic", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: TIME_ZONE
+  }).format(date);
+}
 function formatShortDate(dateString) {
   const date = /* @__PURE__ */ new Date(`${dateString}T12:00:00`);
   if (Number.isNaN(date.getTime())) return "";
@@ -1112,6 +1139,16 @@ function getDateBadgeParts(dateString) {
     month: new Intl.DateTimeFormat("en-US", { month: "short", timeZone: TIME_ZONE }).format(date),
     day: new Intl.DateTimeFormat("en-US", { day: "2-digit", timeZone: TIME_ZONE }).format(date)
   };
+}
+function getEventDate(event) {
+  const date = /* @__PURE__ */ new Date(`${event.date}T12:00:00`);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+function eventPoster(event) {
+  return event.poster || event.image || "";
+}
+function eventPosterAlt(event) {
+  return event.posterAlt || event.imageAlt || `${event.title} event poster`;
 }
 function slugify(value) {
   return String(value ?? "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
@@ -1169,6 +1206,105 @@ function renderEvents(content) {
       `;
   }).join("");
 }
+function eventMatchesDate(event, date) {
+  const eventDate = getEventDate(event);
+  return eventDate && eventDate.getFullYear() === date.getFullYear() && eventDate.getMonth() === date.getMonth() && eventDate.getDate() === date.getDate();
+}
+function setCalendarDetail(event) {
+  const target = document.querySelector("[data-calendar-detail]");
+  if (!target) return;
+  if (!event) {
+    target.innerHTML = `
+      <div class="calendar-detail-empty">
+        <h3>Select an event</h3>
+        <p>Choose an event from the calendar to view the poster, time, location, and full details.</p>
+      </div>
+    `;
+    return;
+  }
+  const poster = eventPoster(event);
+  target.innerHTML = `
+    <article class="calendar-detail-card" id="event-${escapeHtml(slugify(event.title))}">
+      ${poster ? `<img class="calendar-detail-poster" src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}">` : `<div class="calendar-detail-poster calendar-detail-poster-empty"><img src="./public/icons/generated/calendar.png" alt="" aria-hidden="true"></div>`}
+      <div class="calendar-detail-body">
+        <time datetime="${escapeHtml(event.date)}">${escapeHtml(formatLongDate(event.date))} &bull; ${escapeHtml(event.time)}</time>
+        <h3>${escapeHtml(event.title)}</h3>
+        <p class="calendar-detail-location">${escapeHtml(event.location)}</p>
+        <p>${escapeHtml(event.description)}</p>
+      </div>
+    </article>
+  `;
+}
+function renderCalendar(content) {
+  const grid = document.querySelector("[data-calendar-grid]");
+  if (!grid) return;
+  const title = document.querySelector("[data-calendar-title]");
+  const hijri = document.querySelector("[data-calendar-hijri]");
+  const monthStart = new Date(selectedCalendarMonth.getFullYear(), selectedCalendarMonth.getMonth(), 1);
+  const firstGridDate = new Date(monthStart);
+  firstGridDate.setDate(firstGridDate.getDate() - firstGridDate.getDay());
+  const monthEvents = content.events.filter((event) => {
+    const eventDate = getEventDate(event);
+    return eventDate && eventDate.getFullYear() === monthStart.getFullYear() && eventDate.getMonth() === monthStart.getMonth();
+  });
+  if (title) title.textContent = formatMonthTitle(monthStart);
+  if (hijri) hijri.textContent = formatHijriMonth(monthStart);
+  if (!selectedCalendarEventSlug && monthEvents[0]) {
+    selectedCalendarEventSlug = slugify(monthEvents[0].title);
+  }
+  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const todayDate = prayerDateFor(/* @__PURE__ */ new Date());
+  const cells = Array.from({ length: 42 }, (_, index) => {
+    const date = new Date(firstGridDate);
+    date.setDate(firstGridDate.getDate() + index);
+    const dateEvents = content.events.filter((event) => eventMatchesDate(event, date));
+    const isOutside = date.getMonth() !== monthStart.getMonth();
+    const isToday = todayDate.getFullYear() === date.getFullYear() && todayDate.getMonth() === date.getMonth() && todayDate.getDate() === date.getDate();
+    return `
+      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}">
+        <span class="calendar-day-number">${date.getDate()}</span>
+        <div class="calendar-event-stack">
+          ${dateEvents.map(
+      (event) => `
+                <button class="calendar-event-chip" type="button" data-event-slug="${escapeHtml(slugify(event.title))}" title="${escapeHtml(event.title)}">
+                  <img src="./public/icons/generated/calendar.png" alt="" aria-hidden="true">
+                  <span>${escapeHtml(event.title)}</span>
+                </button>
+              `
+    ).join("")}
+        </div>
+      </div>
+    `;
+  }).join("");
+  grid.innerHTML = weekdays.map((day) => `<div class="calendar-weekday">${day}</div>`).join("") + cells;
+  const selectedEvent = content.events.find((event) => slugify(event.title) === selectedCalendarEventSlug) || monthEvents[0] || content.events[0];
+  setCalendarDetail(selectedEvent);
+  grid.querySelectorAll("[data-event-slug]").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedCalendarEventSlug = button.dataset.eventSlug;
+      const event = content.events.find((item) => slugify(item.title) === selectedCalendarEventSlug);
+      setCalendarDetail(event);
+      document.querySelector("[data-calendar-detail]")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  });
+}
+function initCalendar(content) {
+  const grid = document.querySelector("[data-calendar-grid]");
+  if (!grid) return;
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-calendar-nav]");
+    if (!button) return;
+    if (button.dataset.calendarNav === "today") {
+      selectedCalendarMonth = /* @__PURE__ */ new Date();
+    } else {
+      selectedCalendarMonth = new Date(selectedCalendarMonth);
+      selectedCalendarMonth.setMonth(selectedCalendarMonth.getMonth() + (button.dataset.calendarNav === "next" ? 1 : -1));
+    }
+    selectedCalendarEventSlug = "";
+    renderCalendar(content);
+  });
+  renderCalendar(content);
+}
 function renderJummah(content) {
   const target = document.querySelector("[data-page-jummah]");
   if (!target) return;
@@ -1205,6 +1341,7 @@ async function boot() {
   renderPrayerTable();
   renderEvents(content);
   renderJummah(content);
+  initCalendar(content);
   renderNews(content);
 }
 boot();

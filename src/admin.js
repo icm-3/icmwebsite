@@ -125,7 +125,10 @@ function renderEvents() {
             ${field(`events.${index}.time`, event.time, "Time")}
             ${field(`events.${index}.location`, event.location, "Location")}
             ${textarea(`events.${index}.description`, event.description, "Description")}
+            ${imageField(`events.${index}.poster`, event.poster || "", "Poster URL or data image")}
+            ${field(`events.${index}.posterAlt`, event.posterAlt || event.title, "Poster alt text")}
           </div>
+          ${event.poster ? `<div class="cms-preview"><img src="${escapeHtml(event.poster)}" alt=""></div>` : ""}
         </article>
       `,
     )
@@ -254,7 +257,7 @@ document.addEventListener("click", async (event) => {
     render();
   }
   if (action === "add-event") {
-    state.events.push({ title: "New Event", date: "2026-07-01", time: "7:00 PM", location: "ICM", description: "Event details." });
+    state.events.push({ title: "New Event", date: "2026-07-01", time: "7:00 PM", location: "ICM", description: "Event details.", poster: "", posterAlt: "Event poster" });
     render();
   }
   if (action === "remove-event") {

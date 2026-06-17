@@ -39,35 +39,45 @@ var defaultContent = {
       date: "2026-06-21",
       time: "10:00 AM",
       location: "William B. Umstead State Park",
-      description: "A morning hike followed by lunch and games."
+      description: "A morning hike followed by lunch and games.",
+      poster: "./public/news/camp.png",
+      posterAlt: "Youth outdoor activity poster"
     },
     {
       title: "Sisters' Tea & Talk",
       date: "2026-06-27",
       time: "6:30 PM",
       location: "ICM Community Hall",
-      description: "An evening gathering for reflection and connection."
+      description: "An evening gathering for reflection and connection.",
+      poster: "./public/news/ramadan.png",
+      posterAlt: "Community program poster"
     },
     {
       title: "Independence Day Potluck",
       date: "2026-07-04",
       time: "1:00 PM",
       location: "ICM Community Hall",
-      description: "Bring a dish and spend the afternoon with the community."
+      description: "Bring a dish and spend the afternoon with the community.",
+      poster: "./public/news/eid.png",
+      posterAlt: "Community potluck poster"
     },
     {
       title: "Community Service Day & Food Pantry Support",
       date: "2026-07-12",
       time: "9:30 AM",
       location: "ICM Social Services Entrance",
-      description: "Help sort donations, prepare family grocery bags, and support neighbors across Morrisville."
+      description: "Help sort donations, prepare family grocery bags, and support neighbors across Morrisville.",
+      poster: "./public/news/camp.png",
+      posterAlt: "Community service day poster"
     },
     {
       title: "New Muslim Welcome Circle and Family Dinner",
       date: "2026-07-18",
       time: "7:15 PM",
       location: "ICM Multipurpose Room",
-      description: "A welcoming evening for new Muslims, families, mentors, and community members."
+      description: "A welcoming evening for new Muslims, families, mentors, and community members.",
+      poster: "./public/news/ramadan.png",
+      posterAlt: "Welcome circle poster"
     }
   ],
   news: [
@@ -218,7 +228,10 @@ function renderEvents() {
             ${field(`events.${index}.time`, event.time, "Time")}
             ${field(`events.${index}.location`, event.location, "Location")}
             ${textarea(`events.${index}.description`, event.description, "Description")}
+            ${imageField(`events.${index}.poster`, event.poster || "", "Poster URL or data image")}
+            ${field(`events.${index}.posterAlt`, event.posterAlt || event.title, "Poster alt text")}
           </div>
+          ${event.poster ? `<div class="cms-preview"><img src="${escapeHtml(event.poster)}" alt=""></div>` : ""}
         </article>
       `
   ).join("");
@@ -333,7 +346,7 @@ document.addEventListener("click", async (event) => {
     render();
   }
   if (action === "add-event") {
-    state.events.push({ title: "New Event", date: "2026-07-01", time: "7:00 PM", location: "ICM", description: "Event details." });
+    state.events.push({ title: "New Event", date: "2026-07-01", time: "7:00 PM", location: "ICM", description: "Event details.", poster: "", posterAlt: "Event poster" });
     render();
   }
   if (action === "remove-event") {

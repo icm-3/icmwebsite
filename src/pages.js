@@ -20,6 +20,8 @@ const prayerLabels = {
   isha: "Isha",
 };
 let selectedPrayerDate = new Date();
+let selectedCalendarMonth = new Date();
+let selectedCalendarEventSlug = "";
 
 const fallbackNews = [
   {
@@ -132,6 +134,23 @@ function formatLongDate(dateString) {
   }).format(date);
 }
 
+function formatMonthTitle(date) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    year: "numeric",
+    timeZone: TIME_ZONE,
+  }).format(date);
+}
+
+function formatHijriMonth(date) {
+  return new Intl.DateTimeFormat("ar-SA-u-ca-islamic", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: TIME_ZONE,
+  }).format(date);
+}
+
 function formatShortDate(dateString) {
   const date = new Date(`${dateString}T12:00:00`);
   if (Number.isNaN(date.getTime())) return "";
@@ -150,6 +169,19 @@ function getDateBadgeParts(dateString) {
     month: new Intl.DateTimeFormat("en-US", { month: "short", timeZone: TIME_ZONE }).format(date),
     day: new Intl.DateTimeFormat("en-US", { day: "2-digit", timeZone: TIME_ZONE }).format(date),
   };
+}
+
+function getEventDate(event) {
+  const date = new Date(`${event.date}T12:00:00`);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function eventPoster(event) {
+  return event.poster || event.image || "";
+}
+
+function eventPosterAlt(event) {
+  return event.posterAlt || event.imageAlt || `${event.title} event poster`;
 }
 
 function slugify(value) {
@@ -225,6 +257,136 @@ function renderEvents(content) {
     .join("");
 }
 
+function eventMatchesDate(event, date) {
+  const eventDate = getEventDate(event);
+  return (
+    eventDate &&
+    eventDate.getFullYear() === date.getFullYear() &&
+    eventDate.getMonth() === date.getMonth() &&
+    eventDate.getDate() === date.getDate()
+  );
+}
+
+function setCalendarDetail(event) {
+  const target = document.querySelector("[data-calendar-detail]");
+  if (!target) return;
+
+  if (!event) {
+    target.innerHTML = `
+      <div class="calendar-detail-empty">
+        <h3>Select an event</h3>
+        <p>Choose an event from the calendar to view the poster, time, location, and full details.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const poster = eventPoster(event);
+  target.innerHTML = `
+    <article class="calendar-detail-card" id="event-${escapeHtml(slugify(event.title))}">
+      ${
+        poster
+          ? `<img class="calendar-detail-poster" src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}">`
+          : `<div class="calendar-detail-poster calendar-detail-poster-empty"><img src="./public/icons/generated/calendar.png" alt="" aria-hidden="true"></div>`
+      }
+      <div class="calendar-detail-body">
+        <time datetime="${escapeHtml(event.date)}">${escapeHtml(formatLongDate(event.date))} &bull; ${escapeHtml(event.time)}</time>
+        <h3>${escapeHtml(event.title)}</h3>
+        <p class="calendar-detail-location">${escapeHtml(event.location)}</p>
+        <p>${escapeHtml(event.description)}</p>
+      </div>
+    </article>
+  `;
+}
+
+function renderCalendar(content) {
+  const grid = document.querySelector("[data-calendar-grid]");
+  if (!grid) return;
+
+  const title = document.querySelector("[data-calendar-title]");
+  const hijri = document.querySelector("[data-calendar-hijri]");
+  const monthStart = new Date(selectedCalendarMonth.getFullYear(), selectedCalendarMonth.getMonth(), 1);
+  const firstGridDate = new Date(monthStart);
+  firstGridDate.setDate(firstGridDate.getDate() - firstGridDate.getDay());
+  const monthEvents = content.events.filter((event) => {
+    const eventDate = getEventDate(event);
+    return eventDate && eventDate.getFullYear() === monthStart.getFullYear() && eventDate.getMonth() === monthStart.getMonth();
+  });
+
+  if (title) title.textContent = formatMonthTitle(monthStart);
+  if (hijri) hijri.textContent = formatHijriMonth(monthStart);
+
+  if (!selectedCalendarEventSlug && monthEvents[0]) {
+    selectedCalendarEventSlug = slugify(monthEvents[0].title);
+  }
+
+  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const todayDate = prayerDateFor(new Date());
+  const cells = Array.from({ length: 42 }, (_, index) => {
+    const date = new Date(firstGridDate);
+    date.setDate(firstGridDate.getDate() + index);
+    const dateEvents = content.events.filter((event) => eventMatchesDate(event, date));
+    const isOutside = date.getMonth() !== monthStart.getMonth();
+    const isToday =
+      todayDate.getFullYear() === date.getFullYear() &&
+      todayDate.getMonth() === date.getMonth() &&
+      todayDate.getDate() === date.getDate();
+
+    return `
+      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}">
+        <span class="calendar-day-number">${date.getDate()}</span>
+        <div class="calendar-event-stack">
+          ${dateEvents
+            .map(
+              (event) => `
+                <button class="calendar-event-chip" type="button" data-event-slug="${escapeHtml(slugify(event.title))}" title="${escapeHtml(event.title)}">
+                  <img src="./public/icons/generated/calendar.png" alt="" aria-hidden="true">
+                  <span>${escapeHtml(event.title)}</span>
+                </button>
+              `,
+            )
+            .join("")}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  grid.innerHTML = weekdays.map((day) => `<div class="calendar-weekday">${day}</div>`).join("") + cells;
+
+  const selectedEvent = content.events.find((event) => slugify(event.title) === selectedCalendarEventSlug) || monthEvents[0] || content.events[0];
+  setCalendarDetail(selectedEvent);
+
+  grid.querySelectorAll("[data-event-slug]").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedCalendarEventSlug = button.dataset.eventSlug;
+      const event = content.events.find((item) => slugify(item.title) === selectedCalendarEventSlug);
+      setCalendarDetail(event);
+      document.querySelector("[data-calendar-detail]")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  });
+}
+
+function initCalendar(content) {
+  const grid = document.querySelector("[data-calendar-grid]");
+  if (!grid) return;
+
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-calendar-nav]");
+    if (!button) return;
+
+    if (button.dataset.calendarNav === "today") {
+      selectedCalendarMonth = new Date();
+    } else {
+      selectedCalendarMonth = new Date(selectedCalendarMonth);
+      selectedCalendarMonth.setMonth(selectedCalendarMonth.getMonth() + (button.dataset.calendarNav === "next" ? 1 : -1));
+    }
+    selectedCalendarEventSlug = "";
+    renderCalendar(content);
+  });
+
+  renderCalendar(content);
+}
+
 function renderJummah(content) {
   const target = document.querySelector("[data-page-jummah]");
   if (!target) return;
@@ -267,6 +429,7 @@ async function boot() {
   renderPrayerTable();
   renderEvents(content);
   renderJummah(content);
+  initCalendar(content);
   renderNews(content);
 }
 

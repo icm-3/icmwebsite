@@ -39,6 +39,8 @@ export const defaultContent = {
       time: "10:00 AM",
       location: "William B. Umstead State Park",
       description: "A morning hike followed by lunch and games.",
+      poster: "./public/news/camp.png",
+      posterAlt: "Youth outdoor activity poster",
     },
     {
       title: "Sisters' Tea & Talk",
@@ -46,6 +48,8 @@ export const defaultContent = {
       time: "6:30 PM",
       location: "ICM Community Hall",
       description: "An evening gathering for reflection and connection.",
+      poster: "./public/news/ramadan.png",
+      posterAlt: "Community program poster",
     },
     {
       title: "Independence Day Potluck",
@@ -53,6 +57,8 @@ export const defaultContent = {
       time: "1:00 PM",
       location: "ICM Community Hall",
       description: "Bring a dish and spend the afternoon with the community.",
+      poster: "./public/news/eid.png",
+      posterAlt: "Community potluck poster",
     },
     {
       title: "Community Service Day & Food Pantry Support",
@@ -60,6 +66,8 @@ export const defaultContent = {
       time: "9:30 AM",
       location: "ICM Social Services Entrance",
       description: "Help sort donations, prepare family grocery bags, and support neighbors across Morrisville.",
+      poster: "./public/news/camp.png",
+      posterAlt: "Community service day poster",
     },
     {
       title: "New Muslim Welcome Circle and Family Dinner",
@@ -67,6 +75,8 @@ export const defaultContent = {
       time: "7:15 PM",
       location: "ICM Multipurpose Room",
       description: "A welcoming evening for new Muslims, families, mentors, and community members.",
+      poster: "./public/news/ramadan.png",
+      posterAlt: "Welcome circle poster",
     },
   ],
   news: [
