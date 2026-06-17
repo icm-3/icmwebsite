@@ -8,6 +8,7 @@ function initDonationForm() {
   const frequencySummary = form.querySelector("[data-summary-frequency]");
   const amountInput = form.querySelector("input[name='donation-amount']");
   const amountOptions = form.querySelectorAll("input[name='amount']");
+  const customAmountOption = form.querySelector("input[name='amount'][value='custom']");
   const paymentOptions = form.querySelectorAll("input[name='payment-method']");
   const paymentPanels = form.querySelectorAll("[data-payment-panel]");
   const frequencyLabels = {
@@ -41,9 +42,16 @@ function initDonationForm() {
     if (!amountInput) return;
 
     const enteredValue = Number(amountInput.value);
+    let matchedPreset = false;
     amountOptions.forEach((option) => {
-      option.checked = Number(option.value) === enteredValue;
+      if (option.value === "custom") return;
+
+      const isMatch = Number(option.value) === enteredValue;
+      option.checked = isMatch;
+      matchedPreset ||= isMatch;
     });
+
+    if (customAmountOption) customAmountOption.checked = !matchedPreset;
   };
 
   const updateSummary = () => {
@@ -74,6 +82,13 @@ function initDonationForm() {
     const setPresetAmount = () => {
       if (!amountInput) return;
       option.checked = true;
+
+      if (option.value === "custom") {
+        amountInput.focus();
+        updateSummary();
+        return;
+      }
+
       amountInput.value = Number(option.value).toFixed(2);
       updateSummary();
     };

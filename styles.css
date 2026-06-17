@@ -545,7 +545,7 @@ img {
 .card-header > a {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 3px;
   color: var(--text);
   font-size: 16px;
   font-weight: 600;
@@ -566,13 +566,14 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 1em;
+  width: 22px;
+  height: 18px;
   margin-left: 0;
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 26px;
+  font-weight: 900;
   line-height: 1;
-  transform: none;
+  text-shadow: 0.8px 0 currentColor;
+  transform: translateY(-0.16em);
 }
 
 .prayer-tile {
@@ -694,7 +695,8 @@ img {
 
 .card-title h2 span {
   color: var(--text);
-  font-size: 14px;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 .card-header > a {
@@ -709,7 +711,7 @@ img {
 }
 
 .card-header > a span {
-  font-size: 18px;
+  font-size: 26px;
 }
 
 .table-wrap {
@@ -2002,7 +2004,7 @@ tbody tr:last-child td {
 
 .calendar-detail-card h3 {
   margin: 0;
-  color: var(--green);
+  color: var(--text);
   font-size: 26px;
   font-weight: 900;
   line-height: 1.15;
@@ -2034,7 +2036,7 @@ tbody tr:last-child td {
 }
 
 .calendar-detail-location {
-  color: var(--text) !important;
+  color: var(--green) !important;
   font-weight: 800;
 }
 
