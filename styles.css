@@ -572,6 +572,11 @@ img {
   font-size: 17px;
 }
 
+.prayer-tile span {
+  color: var(--text);
+  font-weight: 800;
+}
+
 .prayer-tile img {
   width: 48px;
   height: 48px;
