@@ -1236,6 +1236,10 @@ function eventLink(event) {
 function eventDateTimeLabel(event) {
   return [formatLongDate(event.date), event.time].filter(Boolean).join(" \u2022 ");
 }
+function eventSlugFromHash() {
+  const rawHash = window.location.hash.replace(/^#/, "");
+  return rawHash.startsWith("event-") ? rawHash.slice(6) : "";
+}
 function slugify(value) {
   return String(value ?? "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
@@ -1379,6 +1383,7 @@ function renderCalendar(content) {
   grid.querySelectorAll("[data-event-slug]").forEach((button) => {
     button.addEventListener("click", () => {
       selectedCalendarEventSlug = button.dataset.eventSlug;
+      window.history.replaceState(null, "", `#event-${selectedCalendarEventSlug}`);
       const eventIndex = content.events.findIndex((item, index) => eventSlug(item, index) === selectedCalendarEventSlug);
       const event = eventIndex >= 0 ? content.events[eventIndex] : null;
       setCalendarDetail(event, eventIndex);
@@ -1389,6 +1394,14 @@ function renderCalendar(content) {
 function initCalendar(content) {
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
+  const hashSlug = eventSlugFromHash();
+  if (hashSlug) {
+    const eventIndex = content.events.findIndex((event2, index) => eventSlug(event2, index) === hashSlug);
+    const event = eventIndex >= 0 ? content.events[eventIndex] : null;
+    const eventDate = event ? getEventDate(event) : null;
+    if (eventDate) selectedCalendarMonth = eventDate;
+    if (event) selectedCalendarEventSlug = hashSlug;
+  }
   document.addEventListener("click", (event) => {
     const button = event.target.closest("[data-calendar-nav]");
     if (!button) return;
@@ -1402,6 +1415,11 @@ function initCalendar(content) {
     renderCalendar(content);
   });
   renderCalendar(content);
+  if (hashSlug) {
+    requestAnimationFrame(() => {
+      document.querySelector("[data-calendar-detail]")?.scrollIntoView({ behavior: "auto", block: "nearest" });
+    });
+  }
 }
 function renderJummah(content) {
   const target = document.querySelector("[data-page-jummah]");
