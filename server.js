@@ -102,7 +102,7 @@ async function serveStatic(req, res) {
     const body = await readFile(filePath);
     res.writeHead(200, {
       "content-type": type,
-      "cache-control": ext === ".html" ? "no-store" : "public, max-age=60",
+      "cache-control": [".html", ".css", ".js", ".json"].includes(ext) ? "no-store" : "public, max-age=60",
     });
     res.end(body);
   } catch {

@@ -21,12 +21,12 @@ const prayerLabels = {
 const prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 const nextPrayerOrder = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
 const topicIconRules = [
-  { icon: "leaf", words: ["gratitude", "shukr", "blessing", "thanks", "worship"] },
-  { icon: "heart", words: ["love", "mercy", "compassion", "kindness", "service", "sincerity"] },
-  { icon: "community", words: ["justice", "responsibility", "accountability", "community", "trust"] },
-  { icon: "feather", words: ["patience", "sabr", "change", "hardship", "steadfast"] },
-  { icon: "moon", words: ["ramadan", "taraweeh", "quran", "deen", "taqwa", "faith", "spiritual"] },
-  { icon: "spark", words: ["reflection", "reminder", "youth", "family", "knowledge"] },
+  { icon: "leaf", words: ["gratitude", "shukr", "blessing", "thanks", "worship", "prayer", "salah", "daily"] },
+  { icon: "heart", words: ["love", "mercy", "compassion", "kindness", "service", "sincerity", "charity", "giving", "donation"] },
+  { icon: "community", words: ["justice", "responsibility", "accountability", "community", "trust", "unity", "neighbors", "ummah"] },
+  { icon: "feather", words: ["patience", "sabr", "change", "hardship", "steadfast", "resilience", "forgiveness", "healing"] },
+  { icon: "moon", words: ["ramadan", "taraweeh", "quran", "deen", "taqwa", "faith", "spiritual", "eid", "dhul hijjah", "hajj"] },
+  { icon: "spark", words: ["reflection", "reminder", "youth", "family", "knowledge", "learning", "parents", "marriage", "children"] },
 ];
 
 let countdownTimer = null;
@@ -210,6 +210,61 @@ function formatNavigatorDate(date) {
   });
 }
 
+function getNextJummahDate(fromDate = new Date()) {
+  const current = prayerDateFor(fromDate);
+  const day = current.getDay();
+  const daysUntilFriday = (5 - day + 7) % 7;
+  current.setDate(current.getDate() + daysUntilFriday);
+
+  if (daysUntilFriday === 0) {
+    const maghrib = getIcmPrayerTimes(current).maghrib;
+    if (fromDate.getTime() >= maghrib.getTime()) {
+      current.setDate(current.getDate() + 7);
+    }
+  }
+
+  return current;
+}
+
+function formatJummahDate(date) {
+  return date
+    .toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    })
+    .toUpperCase();
+}
+
+function parseJummahDateLabel(label) {
+  if (!label) return null;
+  const parsed = new Date(`${label} 12:00:00`);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return prayerDateFor(parsed);
+}
+
+function isSameDate(first, second) {
+  return (
+    first?.getFullYear() === second?.getFullYear() &&
+    first?.getMonth() === second?.getMonth() &&
+    first?.getDate() === second?.getDate()
+  );
+}
+
+function getJummahRowsForDate(content, targetDate) {
+  const shifts = content.jummah.shifts?.length ? content.jummah.shifts : defaultContent.jummah.shifts;
+  const postedDate = parseJummahDateLabel(content.jummah.dateLabel || defaultContent.jummah.dateLabel);
+
+  if (isSameDate(postedDate, targetDate)) return shifts;
+
+  return shifts.map((shift) => ({
+    ...shift,
+    speaker: "TBD",
+    topic: "TBD",
+  }));
+}
+
 function renderDateNavigator() {
   setText("[data-date-label]", formatNavigatorDate(selectedPrayerDate));
 }
@@ -282,12 +337,12 @@ function renderPrayerTimes() {
 }
 
 function renderJummah(content) {
-  const label = content.jummah.dateLabel || defaultContent.jummah.dateLabel;
-  setText("[data-jummah-date]", `- ${label.toUpperCase()}`);
+  const targetDate = getNextJummahDate();
+  setText("[data-jummah-date]", `- ${formatJummahDate(targetDate)}`);
 
   const tbody = document.querySelector("[data-jummah-body]");
   if (!tbody) return;
-  const shifts = content.jummah.shifts?.length ? content.jummah.shifts : defaultContent.jummah.shifts;
+  const shifts = getJummahRowsForDate(content, targetDate);
   tbody.innerHTML = shifts
     .map(
       (shift) => `
@@ -295,7 +350,7 @@ function renderJummah(content) {
           <td><span class="shift">${escapeHtml(shift.shift)}</span></td>
           <td class="time">${escapeHtml(shift.time)}</td>
           <td><span class="speaker-name">${escapeHtml(shift.speaker)}</span></td>
-          <td><span class="topic-chip"><span class="topic-icon">${topicIconSvg(shift.topic)}</span>${escapeHtml(shift.topic)}</span></td>
+          <td><span class="topic-chip"><span class="topic-icon">${topicIconSvg(shift.topic)}</span><span class="topic-text">${escapeHtml(shift.topic)}</span></span></td>
         </tr>
       `,
     )

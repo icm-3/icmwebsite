@@ -9,8 +9,8 @@ export const defaultContent = {
       {
         shift: "1",
         time: "1:00 PM",
-        speaker: "Imam Sami Kocak",
-        topic: "Gratitude in Daily Worship",
+        speaker: "Imam Sami Kocak with Guest Khatib Dr. Adeel Rahman",
+        topic: "Gratitude in Daily Worship, Family Service, and Community Responsibility",
       },
       {
         shift: "2",

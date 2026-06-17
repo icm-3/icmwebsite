@@ -607,7 +607,12 @@ img {
 
 .card-header > a {
   flex: 0 0 auto;
-  font-size: 13px;
+  font-size: 16px;
+}
+
+.card-header > a span {
+  font-size: 18px;
+  line-height: 1;
 }
 
 .table-wrap {
@@ -768,21 +773,38 @@ tbody tr:last-child td {
 }
 
 .speaker-name {
+  display: -webkit-box;
+  max-height: 4.8em;
+  overflow: hidden;
   font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
 }
 
 .topic-chip {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 9px;
   max-width: 100%;
+  max-height: 64px;
   box-sizing: border-box;
   min-height: 40px;
   padding: 7px 10px;
   background: #f7f8f5;
   border-radius: 11px;
   font-weight: 700;
+  line-height: 1.18;
   overflow-wrap: anywhere;
+}
+
+.topic-text {
+  display: -webkit-box;
+  max-height: 3.54em;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .topic-icon {
@@ -791,6 +813,7 @@ tbody tr:last-child td {
   place-items: center;
   width: 28px;
   height: 28px;
+  margin-top: 1px;
   color: var(--green);
   background: white;
   border-radius: 999px;
