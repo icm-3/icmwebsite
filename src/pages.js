@@ -143,12 +143,14 @@ function formatMonthTitle(date) {
 }
 
 function formatHijriMonth(date) {
-  return new Intl.DateTimeFormat("ar-SA-u-ca-islamic", {
-    day: "numeric",
+  const parts = new Intl.DateTimeFormat("en-US-u-ca-islamic", {
     month: "long",
     year: "numeric",
     timeZone: TIME_ZONE,
-  }).format(date);
+  }).formatToParts(date);
+  const month = parts.find((part) => part.type === "month")?.value;
+  const year = parts.find((part) => part.type === "year")?.value;
+  return month && year ? `${month}, ${year} Hijri` : "";
 }
 
 function formatShortDate(dateString) {
@@ -314,7 +316,7 @@ function renderCalendar(content) {
   });
 
   if (title) title.textContent = formatMonthTitle(monthStart);
-  if (hijri) hijri.textContent = formatHijriMonth(monthStart);
+  if (hijri) hijri.textContent = formatHijriMonth(selectedCalendarMonth);
 
   if (!selectedCalendarEventSlug && monthEvents[0]) {
     selectedCalendarEventSlug = slugify(monthEvents[0].title);
@@ -326,6 +328,8 @@ function renderCalendar(content) {
     const date = new Date(firstGridDate);
     date.setDate(firstGridDate.getDate() + index);
     const dateEvents = content.events.filter((event) => eventMatchesDate(event, date));
+    const visibleEvents = dateEvents.slice(0, 2);
+    const hiddenEvents = dateEvents.slice(2);
     const isOutside = date.getMonth() !== monthStart.getMonth();
     const isToday =
       todayDate.getFullYear() === date.getFullYear() &&
@@ -336,7 +340,7 @@ function renderCalendar(content) {
       <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}">
         <span class="calendar-day-number">${date.getDate()}</span>
         <div class="calendar-event-stack">
-          ${dateEvents
+          ${visibleEvents
             .map(
               (event) => `
                 <button class="calendar-event-chip" type="button" data-event-slug="${escapeHtml(slugify(event.title))}" title="${escapeHtml(event.title)}">
@@ -346,6 +350,11 @@ function renderCalendar(content) {
               `,
             )
             .join("")}
+          ${
+            hiddenEvents.length
+              ? `<button class="calendar-event-more" type="button" data-event-slug="${escapeHtml(slugify(hiddenEvents[0].title))}" title="${escapeHtml(hiddenEvents.map((event) => event.title).join(" • "))}">+${hiddenEvents.length} more</button>`
+              : ""
+          }
         </div>
       </div>
     `;

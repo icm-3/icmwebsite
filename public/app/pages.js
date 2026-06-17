@@ -983,16 +983,60 @@ function initMobileNav() {
   const nav = document.querySelector(".top-nav");
   const button = document.querySelector(".menu-button");
   if (!nav || !button) return;
-  button.setAttribute("aria-expanded", "false");
-  button.addEventListener("click", () => {
-    const isOpen = nav.classList.toggle("menu-open");
+  const panel = document.createElement("div");
+  panel.className = "menu-panel";
+  panel.id = "site-menu-panel";
+  panel.hidden = true;
+  panel.innerHTML = `
+    <div class="menu-panel-section">
+      <p>Education</p>
+      <a href="./programs.html#al-mizan">Al Mizan Academy</a>
+      <a href="./programs.html#nibraas">Nibraas Institute</a>
+      <a href="./programs.html#al-falah">Al-Falah Quran School</a>
+    </div>
+    <div class="menu-panel-section">
+      <p>Programs & Services</p>
+      <a href="./programs.html#youth">Youth Programs</a>
+      <a href="./programs.html#imam-classes">Imam's Classes</a>
+      <a href="./programs.html#social-welfare">Social & Welfare Services</a>
+      <a href="./programs.html#volunteer">Volunteer</a>
+    </div>
+    <div class="menu-panel-section">
+      <p>Community</p>
+      <a href="./calendar.html">Calendar</a>
+      <a href="./news.html">Latest News</a>
+      <a href="./about.html#imam">Our Imam</a>
+      <a href="./about.html#contact">Contact Us</a>
+    </div>
+  `;
+  button.after(panel);
+  const closeMenu = () => {
+    nav.classList.remove("menu-open");
+    panel.hidden = true;
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-label", "Open menu");
+  };
+  const setMenuOpen = (isOpen) => {
+    nav.classList.toggle("menu-open", isOpen);
+    panel.hidden = !isOpen;
     button.setAttribute("aria-expanded", String(isOpen));
+    button.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+  };
+  button.setAttribute("aria-controls", panel.id);
+  button.setAttribute("aria-expanded", "false");
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
+    setMenuOpen(!nav.classList.contains("menu-open"));
   });
   nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      nav.classList.remove("menu-open");
-      button.setAttribute("aria-expanded", "false");
-    });
+    link.addEventListener("click", closeMenu);
+  });
+  document.addEventListener("click", (event) => {
+    if (!nav.classList.contains("menu-open") || nav.contains(event.target)) return;
+    closeMenu();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
   });
 }
 
@@ -1115,12 +1159,14 @@ function formatMonthTitle(date) {
   }).format(date);
 }
 function formatHijriMonth(date) {
-  return new Intl.DateTimeFormat("ar-SA-u-ca-islamic", {
-    day: "numeric",
+  const parts = new Intl.DateTimeFormat("en-US-u-ca-islamic", {
     month: "long",
     year: "numeric",
     timeZone: TIME_ZONE
-  }).format(date);
+  }).formatToParts(date);
+  const month = parts.find((part) => part.type === "month")?.value;
+  const year = parts.find((part) => part.type === "year")?.value;
+  return month && year ? `${month}, ${year} Hijri` : "";
 }
 function formatShortDate(dateString) {
   const date = /* @__PURE__ */ new Date(`${dateString}T12:00:00`);
@@ -1248,7 +1294,7 @@ function renderCalendar(content) {
     return eventDate && eventDate.getFullYear() === monthStart.getFullYear() && eventDate.getMonth() === monthStart.getMonth();
   });
   if (title) title.textContent = formatMonthTitle(monthStart);
-  if (hijri) hijri.textContent = formatHijriMonth(monthStart);
+  if (hijri) hijri.textContent = formatHijriMonth(selectedCalendarMonth);
   if (!selectedCalendarEventSlug && monthEvents[0]) {
     selectedCalendarEventSlug = slugify(monthEvents[0].title);
   }
@@ -1258,13 +1304,15 @@ function renderCalendar(content) {
     const date = new Date(firstGridDate);
     date.setDate(firstGridDate.getDate() + index);
     const dateEvents = content.events.filter((event) => eventMatchesDate(event, date));
+    const visibleEvents = dateEvents.slice(0, 2);
+    const hiddenEvents = dateEvents.slice(2);
     const isOutside = date.getMonth() !== monthStart.getMonth();
     const isToday = todayDate.getFullYear() === date.getFullYear() && todayDate.getMonth() === date.getMonth() && todayDate.getDate() === date.getDate();
     return `
       <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}">
         <span class="calendar-day-number">${date.getDate()}</span>
         <div class="calendar-event-stack">
-          ${dateEvents.map(
+          ${visibleEvents.map(
       (event) => `
                 <button class="calendar-event-chip" type="button" data-event-slug="${escapeHtml(slugify(event.title))}" title="${escapeHtml(event.title)}">
                   <img src="./public/icons/generated/calendar.png" alt="" aria-hidden="true">
@@ -1272,6 +1320,7 @@ function renderCalendar(content) {
                 </button>
               `
     ).join("")}
+          ${hiddenEvents.length ? `<button class="calendar-event-more" type="button" data-event-slug="${escapeHtml(slugify(hiddenEvents[0].title))}" title="${escapeHtml(hiddenEvents.map((event) => event.title).join(" \u2022 "))}">+${hiddenEvents.length} more</button>` : ""}
         </div>
       </div>
     `;
