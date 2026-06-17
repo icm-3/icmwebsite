@@ -860,8 +860,8 @@ var PrayerTimes = class {
 // src/default-content.js
 var defaultContent = {
   hero: {
-    image: "./public/images/masjid-hero.png",
-    imageAlt: "Islamic Center of Morrisville masjid exterior"
+    image: "./public/images/masjid-interior-hero.png",
+    imageAlt: "Islamic Center of Morrisville prayer hall interior"
   },
   jummah: {
     dateLabel: "Friday, June 19, 2026",

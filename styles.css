@@ -470,7 +470,7 @@ img {
 
 .next-name {
   margin: 12px 0 0;
-  color: var(--green);
+  color: var(--text);
   font-size: 27px;
   font-weight: 800;
   line-height: 1;
@@ -478,7 +478,7 @@ img {
 
 .next-time {
   margin: 6px 0 0;
-  color: var(--green);
+  color: var(--text);
   font-size: 35px;
   font-weight: 800;
   line-height: 1.05;
@@ -563,10 +563,10 @@ img {
 .next-prayer a span,
 .card-header > a span {
   display: inline-block;
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 900;
   line-height: 1;
-  text-shadow: 0.5px 0 currentColor;
+  text-shadow: 0.9px 0 currentColor;
   transform: translateY(-0.06em);
 }
 
@@ -614,7 +614,7 @@ img {
 }
 
 .prayer-tile.active strong {
-  color: var(--green);
+  color: var(--text);
   font-weight: 800;
 }
 
@@ -704,7 +704,7 @@ img {
 }
 
 .card-header > a span {
-  font-size: 15px;
+  font-size: 26px;
 }
 
 .table-wrap {
