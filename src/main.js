@@ -164,6 +164,18 @@ function getDateBadgeParts(dateString) {
   return { month, day };
 }
 
+function eventTitle(event) {
+  return String(event.title || "Community Event");
+}
+
+function eventSlug(event, index = 0) {
+  return slugify([eventTitle(event), event.date, event.time, index].filter(Boolean).join("-")) || `event-${index}`;
+}
+
+function eventDateTimeLabel(event) {
+  return [formatLongDate(event.date), event.time].filter(Boolean).join(" • ");
+}
+
 function getNewsCategory(title) {
   const normalized = title.toLowerCase();
   if (normalized.includes("ramadan") || normalized.includes("taraweeh")) return "Programs";
@@ -374,15 +386,16 @@ function renderEvents(content) {
   if (!list) return;
   const events = content.events?.length ? content.events : defaultContent.events;
   list.innerHTML = events
-    .map((event) => {
+    .map((event, index) => {
       const badge = getDateBadgeParts(event.date);
-      const dateLabel = formatLongDate(event.date);
+      const meta = eventDateTimeLabel(event);
+      const details = [meta, event.location].filter(Boolean);
       return `
-        <a class="event-item" href="./calendar.html#event-${escapeHtml(slugify(event.title))}">
+        <a class="event-item" href="./calendar.html#event-${escapeHtml(eventSlug(event, index))}">
           <div class="date-badge"><span>${escapeHtml(badge.month)}</span><strong>${escapeHtml(badge.day)}</strong></div>
           <div>
-            <h3>${escapeHtml(event.title)}</h3>
-            <p>${escapeHtml(dateLabel)} &bull; ${escapeHtml(event.time)}<br>${escapeHtml(event.location)}</p>
+            <h3>${escapeHtml(eventTitle(event))}</h3>
+            ${details.length ? `<p>${details.map((item) => escapeHtml(item)).join("<br>")}</p>` : ""}
           </div>
         </a>
       `;

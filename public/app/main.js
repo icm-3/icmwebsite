@@ -899,6 +899,7 @@ var defaultContent = {
       time: "4:00 PM",
       location: "ICM Banquet Hall",
       description: "A women's community potluck with games, socializing, prizes, and time together after Eid.",
+      link: "https://tinyurl.com/ICM-EID-2026",
       poster: "./public/news/womens-eid-2026.png",
       posterAlt: "Women's Eid Celebration event poster"
     },
@@ -1195,6 +1196,15 @@ function getDateBadgeParts(dateString) {
   const day = new Intl.DateTimeFormat("en-US", { day: "2-digit", timeZone: TIME_ZONE }).format(date);
   return { month, day };
 }
+function eventTitle(event) {
+  return String(event.title || "Community Event");
+}
+function eventSlug(event, index = 0) {
+  return slugify([eventTitle(event), event.date, event.time, index].filter(Boolean).join("-")) || `event-${index}`;
+}
+function eventDateTimeLabel(event) {
+  return [formatLongDate(event.date), event.time].filter(Boolean).join(" \u2022 ");
+}
 function getNewsCategory(title) {
   const normalized = title.toLowerCase();
   if (normalized.includes("ramadan") || normalized.includes("taraweeh")) return "Programs";
@@ -1360,15 +1370,16 @@ function renderEvents(content) {
   const list = document.querySelector("[data-events-list]");
   if (!list) return;
   const events = content.events?.length ? content.events : defaultContent.events;
-  list.innerHTML = events.map((event) => {
+  list.innerHTML = events.map((event, index) => {
     const badge = getDateBadgeParts(event.date);
-    const dateLabel = formatLongDate(event.date);
+    const meta = eventDateTimeLabel(event);
+    const details = [meta, event.location].filter(Boolean);
     return `
-        <a class="event-item" href="./calendar.html#event-${escapeHtml(slugify(event.title))}">
+        <a class="event-item" href="./calendar.html#event-${escapeHtml(eventSlug(event, index))}">
           <div class="date-badge"><span>${escapeHtml(badge.month)}</span><strong>${escapeHtml(badge.day)}</strong></div>
           <div>
-            <h3>${escapeHtml(event.title)}</h3>
-            <p>${escapeHtml(dateLabel)} &bull; ${escapeHtml(event.time)}<br>${escapeHtml(event.location)}</p>
+            <h3>${escapeHtml(eventTitle(event))}</h3>
+            ${details.length ? `<p>${details.map((item) => escapeHtml(item)).join("<br>")}</p>` : ""}
           </div>
         </a>
       `;

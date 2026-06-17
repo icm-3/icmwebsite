@@ -899,6 +899,7 @@ var defaultContent = {
       time: "4:00 PM",
       location: "ICM Banquet Hall",
       description: "A women's community potluck with games, socializing, prizes, and time together after Eid.",
+      link: "https://tinyurl.com/ICM-EID-2026",
       poster: "./public/news/womens-eid-2026.png",
       posterAlt: "Women's Eid Celebration event poster"
     },
@@ -1217,11 +1218,23 @@ function getEventDate(event) {
   const date = /* @__PURE__ */ new Date(`${event.date}T12:00:00`);
   return Number.isNaN(date.getTime()) ? null : date;
 }
+function eventTitle(event) {
+  return String(event.title || "Community Event");
+}
+function eventSlug(event, index = 0) {
+  return slugify([eventTitle(event), event.date, event.time, index].filter(Boolean).join("-")) || `event-${index}`;
+}
 function eventPoster(event) {
   return event.poster || event.image || "";
 }
 function eventPosterAlt(event) {
-  return event.posterAlt || event.imageAlt || `${event.title} event poster`;
+  return event.posterAlt || event.imageAlt || `${eventTitle(event)} event poster`;
+}
+function eventLink(event) {
+  return event.link || event.url || event.registrationUrl || "";
+}
+function eventDateTimeLabel(event) {
+  return [formatLongDate(event.date), event.time].filter(Boolean).join(" \u2022 ");
 }
 function slugify(value) {
   return String(value ?? "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
@@ -1264,16 +1277,18 @@ function initDateNavigator() {
 function renderEvents(content) {
   const target = document.querySelector("[data-page-events]");
   if (!target) return;
-  target.innerHTML = content.events.map((event) => {
+  target.innerHTML = content.events.map((event, index) => {
     const badge = getDateBadgeParts(event.date);
+    const meta = eventDateTimeLabel(event);
     return `
-        <article class="listing-item" id="event-${escapeHtml(slugify(event.title))}">
+        <article class="listing-item" id="event-${escapeHtml(eventSlug(event, index))}">
           <div class="date-badge"><span>${escapeHtml(badge.month)}</span><strong>${escapeHtml(badge.day)}</strong></div>
           <div>
-            <h3>${escapeHtml(event.title)}</h3>
-            <p>${escapeHtml(formatLongDate(event.date))} &bull; ${escapeHtml(event.time)}</p>
-            <p>${escapeHtml(event.location)}</p>
-            <p>${escapeHtml(event.description)}</p>
+            <h3>${escapeHtml(eventTitle(event))}</h3>
+            ${meta ? `<p>${escapeHtml(meta)}</p>` : ""}
+            ${event.location ? `<p>${escapeHtml(event.location)}</p>` : ""}
+            ${event.description ? `<p>${escapeHtml(event.description)}</p>` : ""}
+            ${eventLink(event) ? `<a class="calendar-detail-link" href="${escapeHtml(eventLink(event))}" target="_blank" rel="noopener">Open Link</a>` : ""}
           </div>
         </article>
       `;
@@ -1283,7 +1298,7 @@ function eventMatchesDate(event, date) {
   const eventDate = getEventDate(event);
   return eventDate && eventDate.getFullYear() === date.getFullYear() && eventDate.getMonth() === date.getMonth() && eventDate.getDate() === date.getDate();
 }
-function setCalendarDetail(event) {
+function setCalendarDetail(event, index = 0) {
   const target = document.querySelector("[data-calendar-detail]");
   if (!target) return;
   if (!event) {
@@ -1296,13 +1311,15 @@ function setCalendarDetail(event) {
     return;
   }
   const poster = eventPoster(event);
+  const meta = eventDateTimeLabel(event);
   target.innerHTML = `
-    <article class="calendar-detail-card" id="event-${escapeHtml(slugify(event.title))}">
+    <article class="calendar-detail-card" id="event-${escapeHtml(eventSlug(event, index))}">
       <div class="calendar-detail-body">
-        <h3>${escapeHtml(event.title)}</h3>
-        <time datetime="${escapeHtml(event.date)}">${escapeHtml(formatLongDate(event.date))} &bull; ${escapeHtml(event.time)}</time>
-        <p class="calendar-detail-location">${escapeHtml(event.location)}</p>
-        <p>${escapeHtml(event.description)}</p>
+        <h3>${escapeHtml(eventTitle(event))}</h3>
+        ${meta ? `<time datetime="${escapeHtml(event.date || "")}">${escapeHtml(meta)}</time>` : ""}
+        ${event.location ? `<p class="calendar-detail-location">${escapeHtml(event.location)}</p>` : ""}
+        ${event.description ? `<p>${escapeHtml(event.description)}</p>` : ""}
+        ${eventLink(event) ? `<a class="calendar-detail-link" href="${escapeHtml(eventLink(event))}" target="_blank" rel="noopener">Open Link</a>` : ""}
       </div>
       ${poster ? `<img class="calendar-detail-poster" src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}">` : ""}
     </article>
@@ -1323,7 +1340,7 @@ function renderCalendar(content) {
   if (title) title.textContent = formatMonthTitle(monthStart);
   if (hijri) hijri.textContent = formatHijriMonth(selectedCalendarMonth);
   if (!selectedCalendarEventSlug && monthEvents[0]) {
-    selectedCalendarEventSlug = slugify(monthEvents[0].title);
+    selectedCalendarEventSlug = eventSlug(monthEvents[0], content.events.indexOf(monthEvents[0]));
   }
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const todayDate = prayerDateFor(/* @__PURE__ */ new Date());
@@ -1340,26 +1357,31 @@ function renderCalendar(content) {
         <span class="calendar-day-number">${date.getDate()}</span>
         <div class="calendar-event-stack">
           ${visibleEvents.map(
-      (event) => `
-                <button class="calendar-event-chip" type="button" data-event-slug="${escapeHtml(slugify(event.title))}" title="${escapeHtml(event.title)}">
+      (event) => {
+        const eventIndex = content.events.indexOf(event);
+        return `
+                <button class="calendar-event-chip" type="button" data-event-slug="${escapeHtml(eventSlug(event, eventIndex))}" title="${escapeHtml(eventTitle(event))}">
                   <img src="./public/icons/generated/calendar.png" alt="" aria-hidden="true">
-                  <span>${escapeHtml(event.title)}</span>
+                  <span>${escapeHtml(eventTitle(event))}</span>
                 </button>
-              `
+              `;
+      }
     ).join("")}
-          ${hiddenEvents.length ? `<button class="calendar-event-more" type="button" data-event-slug="${escapeHtml(slugify(hiddenEvents[0].title))}" title="${escapeHtml(hiddenEvents.map((event) => event.title).join(" - "))}">+${hiddenEvents.length} more</button>` : ""}
+          ${hiddenEvents.length ? `<button class="calendar-event-more" type="button" data-event-slug="${escapeHtml(eventSlug(hiddenEvents[0], content.events.indexOf(hiddenEvents[0])))}" title="${escapeHtml(hiddenEvents.map((event) => eventTitle(event)).join(" - "))}">+${hiddenEvents.length} more</button>` : ""}
         </div>
       </div>
     `;
   }).join("");
   grid.innerHTML = weekdays.map((day) => `<div class="calendar-weekday">${day}</div>`).join("") + cells;
-  const selectedEvent = content.events.find((event) => slugify(event.title) === selectedCalendarEventSlug) || monthEvents[0] || content.events[0];
-  setCalendarDetail(selectedEvent);
+  const selectedIndex = content.events.findIndex((event, index) => eventSlug(event, index) === selectedCalendarEventSlug);
+  const selectedEvent = selectedIndex >= 0 ? content.events[selectedIndex] : monthEvents[0] || content.events[0];
+  setCalendarDetail(selectedEvent, selectedIndex >= 0 ? selectedIndex : content.events.indexOf(selectedEvent));
   grid.querySelectorAll("[data-event-slug]").forEach((button) => {
     button.addEventListener("click", () => {
       selectedCalendarEventSlug = button.dataset.eventSlug;
-      const event = content.events.find((item) => slugify(item.title) === selectedCalendarEventSlug);
-      setCalendarDetail(event);
+      const eventIndex = content.events.findIndex((item, index) => eventSlug(item, index) === selectedCalendarEventSlug);
+      const event = eventIndex >= 0 ? content.events[eventIndex] : null;
+      setCalendarDetail(event, eventIndex);
       document.querySelector("[data-calendar-detail]")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   });

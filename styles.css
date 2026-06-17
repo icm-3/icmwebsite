@@ -2019,6 +2019,24 @@ tbody tr:last-child td {
   font-weight: 800;
 }
 
+.calendar-detail-link {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  padding: 0 16px;
+  color: white;
+  background: var(--green);
+  border-radius: 8px;
+  font-weight: 850;
+}
+
+.calendar-detail-link:hover,
+.calendar-detail-link:focus-visible {
+  background: var(--green-dark);
+}
+
 .calendar-detail-poster {
   display: block;
   width: 100%;
