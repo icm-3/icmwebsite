@@ -465,20 +465,51 @@ function renderNews(content) {
   const target = document.querySelector("[data-page-news]");
   if (!target) return;
   const items = [...content.news, ...fallbackNews].slice(0, Math.max(6, content.news.length));
-  target.innerHTML = items
-    .map(
-      (item) => `
-        <article class="news-feature" id="news-${escapeHtml(slugify(item.title))}">
-          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">
-          <div>
-            <time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>
-            <h2>${escapeHtml(item.title)}</h2>
-            <p>${escapeHtml(item.summary)}</p>
-          </div>
-        </article>
-      `,
-    )
-    .join("");
+  const renderList = () => {
+    target.innerHTML = items
+      .map((item) => {
+        const newsId = `news-${slugify(item.title)}`;
+        return `
+          <a class="news-feature" id="${escapeHtml(newsId)}" href="./news.html#${escapeHtml(newsId)}">
+            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">
+            <div>
+              <time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>
+              <h2>${escapeHtml(item.title)}</h2>
+              <p>${escapeHtml(item.summary)}</p>
+            </div>
+          </a>
+        `;
+      })
+      .join("");
+  };
+
+  const renderDetail = (item) => {
+    const newsId = `news-${slugify(item.title)}`;
+    target.innerHTML = `
+      <article class="news-detail" id="${escapeHtml(newsId)}">
+        <a class="news-detail-back" href="./news.html">Back to news</a>
+        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">
+        <div class="news-detail-body">
+          <time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>
+          <h2>${escapeHtml(item.title)}</h2>
+          <p>${escapeHtml(item.summary)}</p>
+        </div>
+      </article>
+    `;
+  };
+
+  const renderCurrent = () => {
+    const hash = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+    const selected = hash ? items.find((item) => `news-${slugify(item.title)}` === hash) : null;
+    if (selected) {
+      renderDetail(selected);
+      return;
+    }
+    renderList();
+  };
+
+  renderCurrent();
+  window.addEventListener("hashchange", renderCurrent);
 }
 
 async function boot() {

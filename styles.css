@@ -2247,6 +2247,7 @@ tbody tr:last-child td {
   font-weight: 750;
   letter-spacing: 0;
   text-align: left;
+  white-space: nowrap;
 }
 
 .prayer-times-table .prayer-time-cell strong {
@@ -2257,6 +2258,7 @@ tbody tr:last-child td {
   line-height: 1.15;
   overflow-wrap: normal;
   text-align: right;
+  white-space: nowrap;
 }
 
 .prayer-times-table .single-time strong {
@@ -2277,7 +2279,7 @@ tbody tr:last-child td {
 .prayer-times-table .iqamah-line {
   border-radius: 7px;
   background: rgba(165, 100, 5, 0.06);
-  padding: 3px 4px;
+  padding: 3px 0;
 }
 
 .prayer-times-table tbody tr:nth-child(even) {
@@ -2396,6 +2398,18 @@ tbody tr:last-child td {
   gap: 22px;
   align-items: center;
   padding: 18px;
+  color: inherit;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.news-feature:hover,
+.news-feature:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(0, 91, 64, 0.18);
+  box-shadow: 0 12px 26px rgba(18, 24, 39, 0.08);
+  outline: 0;
 }
 
 .news-feature img {
@@ -2420,6 +2434,69 @@ tbody tr:last-child td {
 
 .news-feature p {
   margin: 8px 0 0;
+}
+
+.news-detail {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1fr);
+  gap: 24px;
+  overflow: hidden;
+  padding: 18px;
+  background: white;
+  border: 1px solid rgba(165, 100, 5, 0.3);
+  border-radius: 10px;
+  box-shadow: 0 14px 34px rgba(18, 24, 39, 0.07);
+}
+
+.news-detail-back {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  color: var(--green);
+  font-weight: 850;
+}
+
+.news-detail-back:hover,
+.news-detail-back:focus-visible {
+  color: var(--green-dark);
+}
+
+.news-detail img {
+  display: block;
+  width: 100%;
+  max-height: 360px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.news-detail-body {
+  max-width: 860px;
+  align-self: center;
+  padding: 0 10px 0 0;
+}
+
+.news-detail-body time {
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.news-detail-body h2 {
+  margin: 8px 0 0;
+  color: var(--text);
+  font-size: clamp(32px, 4vw, 54px);
+  line-height: 1;
+}
+
+.news-detail-body p {
+  max-width: 760px;
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.65;
 }
 
 .bio-panel {
@@ -3080,6 +3157,14 @@ tbody tr:last-child td {
   .news-item time {
     grid-column: 2;
     margin-top: -8px;
+  }
+
+  .news-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .news-detail img {
+    max-height: 280px;
   }
 
   .site-footer {
