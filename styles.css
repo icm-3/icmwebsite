@@ -2087,7 +2087,11 @@ tbody tr:last-child td {
 }
 
 .prayer-month-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 46px;
+  padding: 0;
   color: var(--green);
   cursor: pointer;
 }
@@ -2101,8 +2105,9 @@ tbody tr:last-child td {
 }
 
 .prayer-month-controls img {
-  width: 17px;
-  height: 17px;
+  display: block;
+  width: 18px;
+  height: 18px;
 }
 
 .prayer-month-controls select {
@@ -2130,23 +2135,30 @@ tbody tr:last-child td {
 }
 
 .prayer-times-table .date-col {
-  width: 17%;
+  width: 21%;
 }
 
 .prayer-times-table .day-col {
   width: 7%;
 }
 
-.prayer-times-table .fajr-col {
-  width: 16%;
+.prayer-times-table .prayer-col {
+  width: 12%;
 }
 
-.prayer-times-table .sunrise-col {
-  width: 10%;
+.prayer-times-table th:first-child,
+.prayer-times-table td:first-child {
+  width: 21%;
 }
 
-.prayer-times-table .standard-time-col {
-  width: 12.5%;
+.prayer-times-table th:nth-child(2),
+.prayer-times-table td:nth-child(2) {
+  width: 7%;
+}
+
+.prayer-times-table th:nth-child(n + 3),
+.prayer-times-table td:nth-child(n + 3) {
+  width: 12%;
 }
 
 .prayer-times-table th {
@@ -2195,7 +2207,8 @@ tbody tr:last-child td {
 }
 
 .prayer-times-table .date-cell span {
-  font-size: 12.4px;
+  font-size: clamp(10.8px, 0.92vw, 12px);
+  white-space: nowrap;
 }
 
 .prayer-times-table .date-cell em {
@@ -2209,11 +2222,12 @@ tbody tr:last-child td {
 
 .prayer-times-table .day-cell {
   color: var(--green);
+  font-size: 10.6px;
   font-weight: 850;
 }
 
 .prayer-times-table .prayer-time-cell {
-  padding-inline: 7px;
+  padding-inline: 6px;
 }
 
 .prayer-times-table .prayer-time-cell span {
@@ -2231,7 +2245,7 @@ tbody tr:last-child td {
 .prayer-times-table .prayer-time-cell b {
   flex: 0 0 auto;
   color: var(--muted);
-  font-size: 9.5px;
+  font-size: 9px;
   font-weight: 750;
   letter-spacing: 0;
   text-align: left;
@@ -2241,7 +2255,7 @@ tbody tr:last-child td {
   flex: 1 1 auto;
   min-width: 0;
   color: var(--text);
-  font-size: clamp(10px, 0.74vw, 11.5px);
+  font-size: clamp(9.8px, 0.72vw, 11.2px);
   font-weight: 850;
   line-height: 1.15;
   overflow-wrap: normal;

@@ -182,12 +182,12 @@ function initPrayerTimesPage() {
   };
   const sourceColumnCount = 13;
   const scheduleColumns = [
-    { label: "Fajr", adhan: 2, iqamah: 3, colClass: "fajr-col" },
-    { label: "Sunrise", single: 4, colClass: "sunrise-col" },
-    { label: "Dhuhr", adhan: 5, iqamah: 6, colClass: "standard-time-col" },
-    { label: "Asr", adhan: 7, iqamah: 8, colClass: "standard-time-col" },
-    { label: "Maghrib", adhan: 9, iqamah: 10, colClass: "standard-time-col" },
-    { label: "Isha", adhan: 11, iqamah: 12, colClass: "standard-time-col" }
+    { label: "Fajr", adhan: 2, iqamah: 3 },
+    { label: "Sunrise", single: 4 },
+    { label: "Dhuhr", adhan: 5, iqamah: 6 },
+    { label: "Asr", adhan: 7, iqamah: 8 },
+    { label: "Maghrib", adhan: 9, iqamah: 10 },
+    { label: "Isha", adhan: 11, iqamah: 12 }
   ];
   const selectedMonth = (/* @__PURE__ */ new Date()).getMonth() + 1;
   monthSelect.value = String(selectedMonth);
@@ -212,7 +212,7 @@ function initPrayerTimesPage() {
         <colgroup>
           <col class="date-col">
           <col class="day-col">
-          ${scheduleColumns.map((column) => `<col class="${column.colClass}">`).join("")}
+          ${scheduleColumns.map(() => '<col class="prayer-col">').join("")}
         </colgroup>
         <thead>
           <tr>
