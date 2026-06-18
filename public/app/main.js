@@ -1099,6 +1099,7 @@ var topicIconRules = [
 ];
 var countdownTimer = null;
 var selectedPrayerDate = /* @__PURE__ */ new Date();
+var prayerDateTracksToday = true;
 function getIcmPrayerTimes(date) {
   const params = CalculationMethod_default.Karachi();
   params.madhab = Madhab.Hanafi;
@@ -1313,10 +1314,12 @@ function initDateNavigator() {
     if (!button) return;
     if (button.dataset.dateNav === "today") {
       selectedPrayerDate = /* @__PURE__ */ new Date();
+      prayerDateTracksToday = true;
     } else {
       const offset = button.dataset.dateNav === "prev" ? -1 : 1;
       selectedPrayerDate = new Date(selectedPrayerDate);
       selectedPrayerDate.setDate(selectedPrayerDate.getDate() + offset);
+      prayerDateTracksToday = false;
     }
     renderDateNavigator();
     renderPrayerTimes();
@@ -1331,6 +1334,10 @@ function renderHero(content) {
 }
 function renderPrayerTimes() {
   const now = /* @__PURE__ */ new Date();
+  if (prayerDateTracksToday) {
+    selectedPrayerDate = now;
+    renderDateNavigator();
+  }
   const selectedDate = prayerDateFor(selectedPrayerDate);
   const selectedTimes = getIcmPrayerTimes(selectedDate);
   for (const key of prayerOrder) {

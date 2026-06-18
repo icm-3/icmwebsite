@@ -31,6 +31,7 @@ const topicIconRules = [
 
 let countdownTimer = null;
 let selectedPrayerDate = new Date();
+let prayerDateTracksToday = true;
 
 export function getIcmPrayerTimes(date) {
   const params = CalculationMethod.Karachi();
@@ -307,10 +308,12 @@ function initDateNavigator() {
 
     if (button.dataset.dateNav === "today") {
       selectedPrayerDate = new Date();
+      prayerDateTracksToday = true;
     } else {
       const offset = button.dataset.dateNav === "prev" ? -1 : 1;
       selectedPrayerDate = new Date(selectedPrayerDate);
       selectedPrayerDate.setDate(selectedPrayerDate.getDate() + offset);
+      prayerDateTracksToday = false;
     }
 
     renderDateNavigator();
@@ -329,6 +332,10 @@ function renderHero(content) {
 
 function renderPrayerTimes() {
   const now = new Date();
+  if (prayerDateTracksToday) {
+    selectedPrayerDate = now;
+    renderDateNavigator();
+  }
   const selectedDate = prayerDateFor(selectedPrayerDate);
   const selectedTimes = getIcmPrayerTimes(selectedDate);
 
