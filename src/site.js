@@ -121,5 +121,119 @@ function initDonationForm() {
   updatePaymentPanels();
 }
 
+function initPrayerTimesPage() {
+  const monthSelect = document.querySelector("[data-prayer-month]");
+  const title = document.querySelector("[data-prayer-month-title]");
+  const status = document.querySelector("[data-prayer-status]");
+  const target = document.querySelector("[data-prayer-table]");
+  const prevButton = document.querySelector("[data-prayer-month-prev]");
+  const nextButton = document.querySelector("[data-prayer-month-next]");
+  if (!monthSelect || !target) return;
+
+  const monthNames = {
+    1: "January",
+    2: "February",
+    3: "March",
+    4: "April",
+    5: "May",
+    6: "June",
+    7: "July",
+    8: "August",
+    9: "September",
+    10: "October",
+    11: "November",
+    12: "December",
+    13: "Ramadan",
+  };
+  const headers = [
+    "Date",
+    "Day",
+    "Fajr Adhan",
+    "Fajr Iqamah",
+    "Sunrise",
+    "Dhuhr Adhan",
+    "Dhuhr Iqamah",
+    "Asr Adhan",
+    "Asr Iqamah",
+    "Maghrib Adhan",
+    "Maghrib Iqamah",
+    "Isha Adhan",
+    "Isha Iqamah",
+  ];
+
+  const selectedMonth = new Date().getMonth() + 1;
+  monthSelect.value = String(selectedMonth);
+
+  const cleanCellText = (cell) => cell.textContent.replace(/\s+/g, " ").trim();
+
+  const renderTable = (html, month) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const rows = [...doc.querySelectorAll("table tr")]
+      .map((row) => [...row.querySelectorAll("td")].map(cleanCellText))
+      .filter((cells) => cells.length >= headers.length);
+
+    if (!rows.length) throw new Error("No prayer rows were returned.");
+
+    if (title) title.textContent = `${monthNames[month]} 2026`;
+    target.innerHTML = `
+      <table class="prayer-times-table">
+        <thead>
+          <tr>${headers.map((header) => `<th>${header}</th>`).join("")}</tr>
+        </thead>
+        <tbody>
+          ${rows
+            .map(
+              (cells) => `
+                <tr>
+                  ${cells
+                    .slice(0, headers.length)
+                    .map((cell, index) => `<td${[3, 6, 8, 10, 12].includes(index) ? ' class="iqamah-cell"' : ""}>${cell}</td>`)
+                    .join("")}
+                </tr>
+              `,
+            )
+            .join("")}
+        </tbody>
+      </table>
+    `;
+  };
+
+  const loadMonth = async (month) => {
+    if (status) {
+      status.hidden = false;
+      status.textContent = "Loading prayer times...";
+    }
+    target.innerHTML = "";
+
+    try {
+      const response = await fetch(`/api/prayer-times?month=${month}`, { cache: "no-store" });
+      if (!response.ok) throw new Error("Could not load the selected month.");
+      renderTable(await response.text(), month);
+      if (status) status.hidden = true;
+    } catch (error) {
+      if (status) status.textContent = error.message || "Could not load prayer times.";
+    }
+  };
+
+  const setMonth = (month) => {
+    const nextMonth = month < 1 ? 12 : month > 12 ? 1 : month;
+    monthSelect.value = String(nextMonth);
+    loadMonth(nextMonth);
+  };
+
+  monthSelect.addEventListener("change", () => {
+    loadMonth(Number(monthSelect.value));
+  });
+  prevButton?.addEventListener("click", () => {
+    setMonth(Number(monthSelect.value) - 1);
+  });
+  nextButton?.addEventListener("click", () => {
+    setMonth(Number(monthSelect.value) + 1);
+  });
+
+  loadMonth(Number(monthSelect.value));
+}
+
 initMobileNav();
 initDonationForm();
+initPrayerTimesPage();

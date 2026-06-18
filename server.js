@@ -8,6 +8,7 @@ const PORT = Number(process.env.PORT || 4173);
 const DATA_DIR = path.join(__dirname, "data");
 const CMS_FILE = path.join(DATA_DIR, "cms.json");
 const MAX_BODY_BYTES = 2_500_000;
+const ICM_PRAYER_ENDPOINT = "https://www.icmnc.org/wp-admin/admin-ajax.php";
 
 const mimeTypes = new Map([
   [".html", "text/html; charset=utf-8"],
@@ -26,6 +27,14 @@ function sendJson(res, status, payload) {
   const body = JSON.stringify(payload);
   res.writeHead(status, {
     "content-type": "application/json; charset=utf-8",
+    "cache-control": "no-store",
+  });
+  res.end(body);
+}
+
+function sendHtml(res, status, body) {
+  res.writeHead(status, {
+    "content-type": "text/html; charset=utf-8",
     "cache-control": "no-store",
   });
   res.end(body);
@@ -51,6 +60,8 @@ async function readRequestBody(req) {
 }
 
 async function handleApi(req, res) {
+  const requestUrl = new URL(req.url, `http://${req.headers.host || "localhost"}`);
+
   if (req.url === "/api/cms" && req.method === "GET") {
     try {
       const content = await readFile(CMS_FILE, "utf8");
@@ -74,6 +85,33 @@ async function handleApi(req, res) {
       sendJson(res, 200, { ok: true });
     } catch (error) {
       sendJson(res, 400, { error: error.message || "Could not save CMS content." });
+    }
+    return true;
+  }
+
+  if (requestUrl.pathname === "/api/prayer-times" && req.method === "GET") {
+    try {
+      const month = Number(requestUrl.searchParams.get("month") || new Date().getMonth() + 1);
+      if (!Number.isInteger(month) || month < 1 || month > 13) {
+        sendJson(res, 400, { error: "Month must be between 1 and 13." });
+        return true;
+      }
+
+      const body = new URLSearchParams({
+        action: "get_monthly_timetable",
+        month: String(month),
+      });
+      const response = await fetch(ICM_PRAYER_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+        body,
+      });
+      if (!response.ok) throw new Error(`ICM schedule request failed with ${response.status}`);
+      sendHtml(res, 200, await response.text());
+    } catch (error) {
+      sendJson(res, 502, { error: error.message || "Could not load prayer schedule." });
     }
     return true;
   }

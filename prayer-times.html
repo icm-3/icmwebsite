@@ -27,23 +27,37 @@
         <p class="eyebrow">Adhan and iqamah</p>
         <h1>Prayer Times</h1>
         <p>Monthly prayer schedule for the Islamic Center of Morrisville, including daily Adhan and Iqamah times.</p>
-        <div class="page-actions">
-          <a class="button button-primary" href="./public/docs/monthly-prayer-time-icm.pdf" target="_blank" rel="noopener">Open Monthly PDF</a>
-          <a class="button button-secondary" href="https://www.icmnc.org/monthly-prayer-time/" target="_blank" rel="noopener">ICM Monthly Schedule</a>
-        </div>
       </section>
 
       <section class="page-band prayer-times-band" id="monthly">
         <div class="section-heading">
           <div>
             <p class="eyebrow">Current monthly schedule</p>
-            <h2>June 2026</h2>
+            <h2 data-prayer-month-title>Monthly Times</h2>
           </div>
-          <a class="button button-secondary" href="./public/docs/monthly-prayer-time-icm.pdf" download>Download PDF</a>
+          <div class="prayer-month-controls" aria-label="Prayer schedule month">
+            <button type="button" data-prayer-month-prev aria-label="Previous month">&larr;</button>
+            <select data-prayer-month aria-label="Select month">
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+              <option value="13">Ramadan</option>
+            </select>
+            <button type="button" data-prayer-month-next aria-label="Next month">&rarr;</button>
+          </div>
         </div>
-        <div class="prayer-pdf-frame">
-          <img src="./public/docs/monthly-prayer-time-icm-page-1.png" alt="June 2026 monthly prayer schedule page 1">
-          <img src="./public/docs/monthly-prayer-time-icm-page-2.png" alt="June 2026 monthly prayer schedule page 2">
+        <div class="prayer-table-shell">
+          <div class="prayer-table-status" data-prayer-status>Loading prayer times...</div>
+          <div class="prayer-table-scroll" data-prayer-table></div>
         </div>
       </section>
     </main>
