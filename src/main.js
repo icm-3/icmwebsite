@@ -21,12 +21,12 @@ const prayerLabels = {
 const prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 const nextPrayerOrder = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
 const topicIconRules = [
-  { icon: "leaf", words: ["gratitude", "shukr", "blessing", "thanks", "worship", "prayer", "salah", "daily", "green", "environment"] },
-  { icon: "heart", words: ["love", "mercy", "compassion", "kindness", "service", "sincerity", "charity", "giving", "donation", "muhasaba", "self reflection"] },
-  { icon: "community", words: ["justice", "responsibility", "accountability", "community", "trust", "unity", "neighbors", "ummah"] },
-  { icon: "feather", words: ["patience", "sabr", "change", "hardship", "steadfast", "resilience", "forgiveness", "healing"] },
-  { icon: "moon", words: ["ramadan", "taraweeh", "quran", "deen", "taqwa", "faith", "spiritual", "eid", "dhul hijjah", "hajj", "ghaflah"] },
-  { icon: "spark", words: ["reflection", "reminder", "youth", "family", "knowledge", "learning", "parents", "marriage", "children", "ostentation"] },
+  { icon: "leaf", words: ["gratitude", "shukr", "blessing", "thanks", "worship", "ibadah", "prayer", "salah", "daily", "green", "environment", "deen", "stewardship", "earth", "creation", "sustainability", "nature", "cleanliness", "purity"] },
+  { icon: "heart", words: ["love", "mercy", "rahma", "compassion", "kindness", "service", "sincerity", "ikhlas", "charity", "giving", "donation", "zakat", "sadaqah", "muhasaba", "self reflection", "forgiveness", "healing", "care"] },
+  { icon: "community", words: ["justice", "responsibility", "accountability", "community", "trust", "amanah", "unity", "neighbors", "ummah", "family", "parents", "children", "marriage", "brotherhood", "sisterhood", "society", "rights", "service"] },
+  { icon: "feather", words: ["patience", "sabr", "change", "hardship", "steadfast", "resilience", "forgiveness", "healing", "trials", "tests", "hope", "courage", "character", "akhlaq", "manners", "humility"] },
+  { icon: "moon", words: ["ramadan", "taraweeh", "quran", "taqwa", "faith", "iman", "spiritual", "eid", "dhul hijjah", "hajj", "umrah", "ghaflah", "heedlessness", "night", "dua", "dhikr", "akhirah", "jannah", "repentance", "tawbah"] },
+  { icon: "spark", words: ["reflection", "reminder", "youth", "knowledge", "learning", "ilm", "education", "wisdom", "seerah", "sunnah", "hadith", "ostentation", "riya", "intention", "niyyah", "growth", "leadership"] },
 ];
 
 let countdownTimer = null;

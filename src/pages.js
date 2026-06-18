@@ -351,10 +351,6 @@ function renderCalendar(content) {
   if (title) title.textContent = formatMonthTitle(monthStart);
   if (hijri) hijri.textContent = formatHijriMonth(selectedCalendarMonth);
 
-  if (!selectedCalendarEventSlug && monthEvents[0]) {
-    selectedCalendarEventSlug = eventSlug(monthEvents[0], content.events.indexOf(monthEvents[0]));
-  }
-
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const todayDate = prayerDateFor(new Date());
   const cells = Array.from({ length: 42 }, (_, index) => {
@@ -403,16 +399,14 @@ function renderCalendar(content) {
   grid.innerHTML = weekdays.map((day) => `<div class="calendar-weekday">${day}</div>`).join("") + cells;
 
   const selectedIndex = content.events.findIndex((event, index) => eventSlug(event, index) === selectedCalendarEventSlug);
-  const selectedEvent = selectedIndex >= 0 ? content.events[selectedIndex] : monthEvents[0] || content.events[0];
-  setCalendarDetail(selectedEvent, selectedIndex >= 0 ? selectedIndex : content.events.indexOf(selectedEvent));
+  const selectedEvent = selectedIndex >= 0 ? content.events[selectedIndex] : null;
+  setCalendarDetail(selectedEvent, selectedIndex);
 
   grid.querySelectorAll("[data-event-slug]").forEach((button) => {
     button.addEventListener("click", () => {
       selectedCalendarEventSlug = button.dataset.eventSlug;
       window.history.replaceState(null, "", `#event-${selectedCalendarEventSlug}`);
-      const eventIndex = content.events.findIndex((item, index) => eventSlug(item, index) === selectedCalendarEventSlug);
-      const event = eventIndex >= 0 ? content.events[eventIndex] : null;
-      setCalendarDetail(event, eventIndex);
+      renderCalendar(content);
       document.querySelector("[data-calendar-detail]")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   });

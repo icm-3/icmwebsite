@@ -267,8 +267,8 @@ img {
   pointer-events: none;
   content: "";
   background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.97) 0%, rgba(255, 255, 255, 0.9) 23%, rgba(255, 255, 255, 0.62) 43%, rgba(255, 255, 255, 0.12) 68%, rgba(255, 255, 255, 0) 100%),
-    linear-gradient(180deg, rgba(17, 17, 15, 0.14) 0%, rgba(17, 17, 15, 0) 36%, rgba(17, 17, 15, 0.18) 100%);
+    linear-gradient(90deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.94) 25%, rgba(255, 255, 255, 0.82) 43%, rgba(255, 255, 255, 0.36) 62%, rgba(255, 255, 255, 0.03) 82%),
+    linear-gradient(180deg, rgba(17, 17, 15, 0.2) 0%, rgba(17, 17, 15, 0) 36%, rgba(17, 17, 15, 0.16) 100%);
 }
 
 .hero-copy {
@@ -364,7 +364,14 @@ img {
 }
 
 .hero-image::before {
-  content: none;
+  position: absolute;
+  inset: -18px;
+  z-index: 0;
+  content: "";
+  background: url("./public/images/masjid-interior-hero-full.png") center / cover no-repeat;
+  filter: blur(22px) saturate(0.95);
+  opacity: 0.68;
+  transform: scale(1.04);
 }
 
 .hero-image img {
@@ -375,9 +382,10 @@ img {
   width: 100%;
   height: 100%;
   min-height: 390px;
-  object-fit: cover;
-  object-position: center 48%;
-  filter: saturate(0.98) contrast(0.98);
+  object-fit: contain;
+  object-position: right center;
+  -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.22) 12%, rgba(0, 0, 0, 0.72) 26%, #000 42%);
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.22) 12%, rgba(0, 0, 0, 0.72) 26%, #000 42%);
 }
 
 .prayer-section {
@@ -602,7 +610,7 @@ img {
   font-weight: 900;
   line-height: 1;
   text-shadow: none;
-  transform: translate(-1px, -0.01em);
+  transform: translate(-1px, -0.04em);
 }
 
 .prayer-tile {
@@ -745,7 +753,7 @@ img {
   margin-left: -2px;
   font-size: 22px;
   font-weight: 900;
-  transform: translate(-1px, -0.01em);
+  transform: translate(-1px, -0.04em);
 }
 
 .table-wrap {
