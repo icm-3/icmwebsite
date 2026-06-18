@@ -22,8 +22,8 @@ var defaultContent = {
       {
         shift: "3",
         time: "3:00 PM",
-        speaker: "Mansoor Kazi",
-        topic: "Community Responsibility"
+        speaker: "TBD",
+        topic: "TBD"
       },
       {
         shift: "4",

@@ -257,17 +257,35 @@ img {
   grid-template-columns: minmax(420px, 40%) 1fr;
   min-height: 390px;
   overflow: hidden;
-  background: var(--surface);
+  background: #11110f;
 }
 
 .hero::before {
-  content: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.94) 25%, rgba(255, 255, 255, 0.82) 43%, rgba(255, 255, 255, 0.36) 62%, rgba(255, 255, 255, 0.03) 82%),
+    linear-gradient(180deg, rgba(17, 17, 15, 0.2) 0%, rgba(17, 17, 15, 0) 36%, rgba(17, 17, 15, 0.16) 100%);
 }
 
 .hero-copy {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   padding: 40px 0 24px 50px;
+}
+
+.hero-copy::before {
+  position: absolute;
+  inset: 18px -36px 12px 18px;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background: rgba(255, 255, 255, 0.38);
+  filter: blur(34px);
+  border-radius: 22px;
 }
 
 .eyebrow {
@@ -338,32 +356,36 @@ img {
 }
 
 .hero-image {
-  position: relative;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  min-height: 390px;
+  min-height: 100%;
   background: #11110f;
 }
 
 .hero-image::before {
   position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
+  inset: -18px;
+  z-index: 0;
   content: "";
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.76) 12%, rgba(255, 255, 255, 0) 28%),
-    linear-gradient(90deg, rgba(17, 17, 15, 0) 58%, rgba(17, 17, 15, 0.2) 78%, rgba(17, 17, 15, 0.48) 100%);
+  background: url("./public/images/masjid-interior-hero-full.png") center / cover no-repeat;
+  filter: blur(22px) saturate(0.95);
+  opacity: 0.68;
+  transform: scale(1.04);
 }
 
 .hero-image img {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
   min-height: 390px;
-  object-fit: cover;
-  object-position: center 62%;
+  object-fit: contain;
+  object-position: right center;
+  -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.22) 12%, rgba(0, 0, 0, 0.72) 26%, #000 42%);
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.22) 12%, rgba(0, 0, 0, 0.72) 26%, #000 42%);
 }
 
 .prayer-section {
@@ -559,11 +581,12 @@ img {
 .card-header > a {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   color: var(--text);
   font-size: 16px;
   font-weight: 600;
-  line-height: 1.1;
+  line-height: 1;
   transition: color 260ms ease, transform 260ms ease;
 }
 
@@ -580,14 +603,14 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 14px;
-  height: 1em;
-  margin-left: 0;
-  font-size: 15px;
+  width: 18px;
+  height: 18px;
+  margin-left: 1px;
+  font-size: 18px;
   font-weight: 800;
   line-height: 1;
   text-shadow: none;
-  transform: translateY(0.05em);
+  transform: translateY(-0.01em);
 }
 
 .prayer-tile {
@@ -3457,10 +3480,17 @@ body:has(.program-detail-card:target) .program-overview {
 
   .hero {
     grid-template-columns: 1fr;
+    min-height: 560px;
   }
 
   .hero-copy {
     padding: 34px 24px 24px;
+  }
+
+  .hero::before {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.9) 38%, rgba(255, 255, 255, 0.42) 66%, rgba(255, 255, 255, 0.04) 100%),
+      linear-gradient(180deg, rgba(17, 17, 15, 0) 0%, rgba(17, 17, 15, 0.2) 100%);
   }
 
   .hero h1 {
@@ -3472,11 +3502,7 @@ body:has(.program-detail-card:target) .program-overview {
   }
 
   .hero-image {
-    min-height: 210px;
-  }
-
-  .hero::before {
-    content: none;
+    min-height: 100%;
   }
 
   .hero-image::before {
@@ -3485,7 +3511,8 @@ body:has(.program-detail-card:target) .program-overview {
   }
 
   .hero-image img {
-    min-height: 210px;
+    min-height: 100%;
+    object-position: center bottom;
   }
 
   .date-navigator {
