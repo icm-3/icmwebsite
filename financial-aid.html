@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css?v=20260618-money-fields">
+    <link rel="stylesheet" href="./styles.css?v=20260618-money-fields-reverted">
   </head>
   <body>
     <header class="site-header"><a class="brand" href="./index.html" aria-label="Islamic Center of Morrisville home"><img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville"></a><nav class="top-nav" aria-label="Primary navigation"><a class="nav-donate" href="./donate.html"><img src="./public/icons/generated/donate.png" alt="" aria-hidden="true"><span>Donate</span></a><a href="./calendar.html">Calendar</a><a href="./programs.html">Programs</a><a href="./news.html">News</a><a href="./about.html">About</a><button class="menu-button" type="button" aria-label="Open menu"><img src="./public/icons/generated/menu.png" alt="" aria-hidden="true"></button></nav></header>
@@ -90,8 +90,8 @@
                 <label class="form-field-wide"><span>Applicant's Occupation</span><input type="text" name="occupation"></label>
                 <label><span>Are you employed?</span><select name="employed"><option value="">Please select</option><option>Yes</option><option>No</option></select></label>
                 <label><span>Dependents living with you</span><input type="text" name="dependents" inputmode="numeric" pattern="[0-9]*" data-numeric-only></label>
-                <label><span>Total Family Income Per Month</span><span class="money-field"><span aria-hidden="true">$</span><input type="number" name="family-income" min="0" step="0.01"></span></label>
-                <label><span>Additional Income</span><span class="money-field"><span aria-hidden="true">$</span><input type="number" name="additional-income" min="0" step="0.01"></span></label>
+                <label><span>Total Family Income Per Month</span><input type="number" name="family-income" min="0" step="0.01" placeholder="$"></label>
+                <label><span>Additional Income</span><input type="number" name="additional-income" min="0" step="0.01" placeholder="$"></label>
               </div>
             </fieldset>
 
@@ -99,7 +99,7 @@
               <legend>Amount Requested & Financial Need</legend>
               <p class="form-help">ICM Social and Welfare Committee processes checks to a third party. No checks are written directly to the applicant.</p>
               <div class="local-registration-form">
-                <label><span>Amount requested</span><span class="money-field"><span aria-hidden="true">$</span><input type="number" name="amount-requested" min="0" step="0.01" required></span></label>
+                <label><span>Amount requested</span><input type="number" name="amount-requested" min="0" step="0.01" placeholder="$" required></label>
                 <label><span>Purpose of this request</span><input type="text" name="request-purpose" placeholder="e.g. rent, electricity, medical bill" required></label>
                 <label class="form-field-wide"><span>Explain your financial situation</span><textarea name="financial-situation" rows="5" required></textarea></label>
                 <label class="form-field-wide file-field"><span>Upload bills, statements, or contracts</span><input type="file" name="need-documents" multiple accept=".jpg,.jpeg,.png,.gif,.pdf"><em>Max file size is 10mb. Allowed file extensions are jpg, jpeg, png, gif, pdf. Upload no more than 4 files.</em></label>
@@ -131,6 +131,6 @@
         </article>
       </section>
     </main>
-    <footer class="site-footer"><div class="socials" aria-label="Social links"><a href="https://www.facebook.com/ICMMASJID/" target="_blank" rel="noopener" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a><a href="https://www.instagram.com/icmmasjid/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a><a href="https://www.youtube.com/@islamiccenterofmorrisville1071" target="_blank" rel="noopener" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a></div><p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p><a href="./about.html#contact">Contact Us</a></footer><script type="module" src="./public/app/site.js?v=20260618-money-fields"></script>
+    <footer class="site-footer"><div class="socials" aria-label="Social links"><a href="https://www.facebook.com/ICMMASJID/" target="_blank" rel="noopener" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a><a href="https://www.instagram.com/icmmasjid/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a><a href="https://www.youtube.com/@islamiccenterofmorrisville1071" target="_blank" rel="noopener" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a></div><p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p><a href="./about.html#contact">Contact Us</a></footer><script type="module" src="./public/app/site.js?v=20260618-money-fields-reverted"></script>
   </body>
 </html>

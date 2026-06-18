@@ -2216,7 +2216,6 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 .local-registration-form input,
-.money-field,
 .local-registration-form textarea {
   width: 100%;
   min-height: 46px;
@@ -2226,26 +2225,6 @@ body:has(.program-detail-card:target) .program-overview {
   border: 1px solid var(--border);
   border-radius: 6px;
   font: inherit;
-}
-
-.money-field {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 8px;
-}
-
-.money-field > span {
-  color: var(--green);
-  font-size: 15px;
-  font-weight: 900;
-}
-
-.money-field input {
-  min-height: 0;
-  padding: 0;
-  background: transparent;
-  border: 0;
 }
 
 .local-registration-form textarea {
