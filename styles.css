@@ -341,17 +341,11 @@ img {
   position: relative;
   overflow: hidden;
   min-height: 390px;
-  background: #11110f;
+  background: white;
 }
 
 .hero-image::before {
-  position: absolute;
-  inset: 0 auto 0 -2px;
-  z-index: 1;
-  width: 44%;
-  pointer-events: none;
-  content: "";
-  background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0.93) 34%, rgba(255, 255, 255, 0) 100%);
+  content: none;
 }
 
 .hero-image img {
@@ -3479,10 +3473,7 @@ body:has(.program-detail-card:target) .program-overview {
   }
 
   .hero-image::before {
-    inset: 0;
-    width: 100%;
-    content: "";
-    background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.12) 46%, rgba(255, 255, 255, 0) 100%);
+    content: none;
   }
 
   .hero-image img {
