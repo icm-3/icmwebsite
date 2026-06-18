@@ -10,16 +10,16 @@ function initMobileNav() {
   panel.innerHTML = `
     <div class="menu-panel-section">
       <p>Education</p>
-      <a href="./programs.html#al-mizan">Al Mizan Academy</a>
-      <a href="./programs.html#nibraas">Nibraas Institute</a>
-      <a href="./programs.html#al-falah">Al-Falah Quran School</a>
+      <a href="./al-mizaan-academy.html">Al Mizaan Academy</a>
+      <a href="./nibraas-institute.html">Nibraas Institute</a>
+      <a href="./al-falah-quran-school.html">Al-Falah Quran School</a>
     </div>
     <div class="menu-panel-section">
       <p>Programs & Services</p>
-      <a href="./programs.html#youth">Youth Programs</a>
-      <a href="./programs.html#imam-classes">Imam's Classes</a>
-      <a href="./programs.html#social-welfare">Social & Welfare Services</a>
-      <a href="./programs.html#volunteer">Volunteer</a>
+      <a href="./programs.html#services">Services Overview</a>
+      <a href="./imams-classes.html">Imam's Classes</a>
+      <a href="./social-welfare-services.html">Social & Welfare Services</a>
+      <a href="./volunteer.html">Volunteer</a>
     </div>
     <div class="menu-panel-section">
       <p>Community</p>

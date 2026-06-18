@@ -1867,6 +1867,10 @@ body:has(.program-detail-card:target) .program-overview {
   border-radius: 8px;
 }
 
+.program-full .button {
+  margin-top: 18px;
+}
+
 .registration-stack {
   display: grid;
   gap: 24px;
