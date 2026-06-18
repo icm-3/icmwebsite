@@ -1,9 +1,99 @@
 <!doctype html>
 <html lang="en">
-  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Volunteer | Islamic Center of Morrisville</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="./styles.css?v=20260617-program-pages"></head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Volunteer | Islamic Center of Morrisville</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css?v=20260618-service-forms">
+  </head>
   <body>
     <header class="site-header"><a class="brand" href="./index.html" aria-label="Islamic Center of Morrisville home"><img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville"></a><nav class="top-nav" aria-label="Primary navigation"><a class="nav-donate" href="./donate.html"><img src="./public/icons/generated/donate.png" alt="" aria-hidden="true"><span>Donate</span></a><a href="./calendar.html">Calendar</a><a href="./programs.html">Programs</a><a href="./news.html">News</a><a href="./about.html">About</a><button class="menu-button" type="button" aria-label="Open menu"><img src="./public/icons/generated/menu.png" alt="" aria-hidden="true"></button></nav></header>
-    <main class="page-main"><section class="page-hero"><p class="eyebrow">Services</p><h1>Volunteer</h1></section><section class="page-band"><article class="program-full"><div class="program-full-copy"><h2>Volunteer Opportunities</h2><p>Volunteers support events, education, social service, prayer logistics, and community operations. Registered volunteers can share interests, track service hours, and request confirmation for completed service.</p><ul class="check-list"><li>Event and program support</li><li>Education and youth support</li><li>Social welfare and food pantry service</li><li>Prayer logistics and community operations</li></ul></div><aside class="program-facts"><h3>Service Hours</h3><ul class="check-list"><li>Register before requesting service-hour certificates</li><li>Report event name, date, hours, and supervising committee lead</li><li>Keep confirmation for certificate requests</li></ul><h3>Contact</h3><p>volunteer@icmnc.org</p></aside></article></section><section class="page-band registration-stack" id="signup"><article class="registration-panel"><div><p class="eyebrow">Sign up</p><h2>Volunteer Form</h2><p>Use this local form to register your interests and availability.</p></div><form class="local-registration-form" aria-label="Volunteer signup"><label><span>Name</span><input type="text"></label><label><span>Email</span><input type="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Enter a valid email address with an @ sign"></label><label><span>Phone</span><input type="tel" required inputmode="numeric" pattern="[0-9]*" title="Use numbers only"></label><label><span>Availability</span><input type="text"></label><label class="form-field-wide"><span>Volunteer Interests</span><textarea rows="5"></textarea></label><button class="button button-primary" type="button">Submit Volunteer Form</button></form></article></section></main>
-    <footer class="site-footer"><div class="socials" aria-label="Social links"><a href="https://www.facebook.com/ICMMASJID/" target="_blank" rel="noopener" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a><a href="https://www.instagram.com/icmmasjid/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a><a href="https://www.youtube.com/@islamiccenterofmorrisville1071" target="_blank" rel="noopener" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a></div><p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p><a href="./about.html#contact">Contact Us</a></footer><script type="module" src="./public/app/site.js?v=20260617-program-pages"></script>
+    <main class="page-main service-form-page">
+      <section class="page-hero compact-hero">
+        <p class="eyebrow">Community service</p>
+        <h1>Volunteer Sign-Up</h1>
+        <p>Register your contact information, emergency contact, interests, and availability so ICM committees can match you with service opportunities.</p>
+      </section>
+
+      <section class="page-band registration-stack" id="signup">
+        <article class="service-form-panel">
+          <div class="form-title-row">
+            <div>
+              <p class="eyebrow">Volunteer information</p>
+              <h2>Volunteer Registration</h2>
+            </div>
+            <span class="form-progress">Page 1 of 2</span>
+          </div>
+          <form class="aid-form volunteer-form" aria-label="Volunteer signup">
+            <fieldset>
+              <legend>Volunteer Information</legend>
+              <div class="local-registration-form">
+                <label class="form-field-wide"><span>Full Name</span><input type="text" name="full-name" required></label>
+                <label><span>Email address</span><input type="email" name="email" autocomplete="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Enter a valid email address with an @ sign"></label>
+                <label><span>Phone Number</span><input type="tel" name="phone" autocomplete="tel" required inputmode="numeric" pattern="[0-9]*" title="Use numbers only"></label>
+                <label class="form-field-wide"><span>Address</span><input type="text" name="address" autocomplete="street-address" required></label>
+              </div>
+              <div class="option-grid" role="group" aria-label="Age range">
+                <span>Age</span>
+                <label><input type="radio" name="age-range" value="10-16" required><span>10-16</span></label>
+                <label><input type="radio" name="age-range" value="16-22"><span>16-22</span></label>
+                <label><input type="radio" name="age-range" value="22-30"><span>22-30</span></label>
+                <label><input type="radio" name="age-range" value="30+"><span>30+</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Emergency Contact Information</legend>
+              <div class="local-registration-form">
+                <label><span>Contact Name</span><input type="text" name="emergency-name" required></label>
+                <label><span>Contact Phone</span><input type="tel" name="emergency-phone" required inputmode="numeric" pattern="[0-9]*" title="Use numbers only"></label>
+                <label class="form-field-wide"><span>Contact Address</span><input type="text" name="emergency-address"></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Volunteer Opportunities</legend>
+              <div class="local-registration-form">
+                <label class="form-field-wide"><span>Profession / Occupation</span><input type="text" name="occupation" required></label>
+              </div>
+              <div class="option-grid option-grid-3" role="group" aria-label="Volunteer interests">
+                <span>I am interested in the following volunteer opportunities</span>
+                <label><input type="checkbox" name="interest" value="ramadan"><span>Ramadan / Taraweeh Assistance</span></label>
+                <label><input type="checkbox" name="interest" value="admin"><span>Administration Services</span></label>
+                <label><input type="checkbox" name="interest" value="social-welfare"><span>Social and Welfare Committee</span></label>
+                <label><input type="checkbox" name="interest" value="women"><span>Women Committee</span></label>
+                <label><input type="checkbox" name="interest" value="management"><span>Management Committee</span></label>
+                <label><input type="checkbox" name="interest" value="education"><span>Education Committee</span></label>
+                <label><input type="checkbox" name="interest" value="youth"><span>Youth Committee</span></label>
+                <label><input type="checkbox" name="interest" value="it"><span>IT & Communications</span></label>
+                <label><input type="checkbox" name="interest" value="al-mizaan"><span>Al Mizaan Academy</span></label>
+                <label><input type="checkbox" name="interest" value="imam-office"><span>Office of Imam</span></label>
+                <label><input type="checkbox" name="interest" value="dawah"><span>Dawah Committee</span></label>
+                <label><input type="checkbox" name="interest" value="fundraising"><span>Fundraising Team</span></label>
+                <label><input type="checkbox" name="interest" value="finance"><span>Finance Committee</span></label>
+                <label><input type="checkbox" name="interest" value="planning"><span>Planning & Construction Committee</span></label>
+                <label><input type="checkbox" name="interest" value="other"><span>Other</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Availability & Agreement</legend>
+              <div class="local-registration-form">
+                <label><span>Preferred Days / Times</span><input type="text" name="availability" placeholder="e.g. Fridays after Jumu'ah, weekends"></label>
+                <label><span>Volunteer Hours Needed?</span><select name="service-hours"><option>No</option><option>Yes</option></select></label>
+                <label class="form-field-wide"><span>Additional Notes</span><textarea name="notes" rows="4"></textarea></label>
+              </div>
+              <label class="checkbox-field"><input type="checkbox" name="agreement" required><span>I understand ICM may contact me about volunteer assignments and service-hour verification.</span></label>
+            </fieldset>
+
+            <button class="button button-primary" type="submit">Submit Volunteer Form</button>
+          </form>
+        </article>
+      </section>
+    </main>
+    <footer class="site-footer"><div class="socials" aria-label="Social links"><a href="https://www.facebook.com/ICMMASJID/" target="_blank" rel="noopener" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a><a href="https://www.instagram.com/icmmasjid/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a><a href="https://www.youtube.com/@islamiccenterofmorrisville1071" target="_blank" rel="noopener" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a></div><p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p><a href="./about.html#contact">Contact Us</a></footer><script type="module" src="./public/app/site.js?v=20260618-service-forms"></script>
   </body>
 </html>

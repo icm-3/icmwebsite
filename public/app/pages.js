@@ -1032,8 +1032,8 @@ function initMobileNav() {
     <div class="menu-panel-section">
       <p>Programs & Services</p>
       <a href="./programs.html#services">Services Overview</a>
-      <a href="./imams-classes.html">Imam's Classes</a>
-      <a href="./social-welfare-services.html">Social & Welfare Services</a>
+      <a href="./financial-aid.html">Financial Aid</a>
+      <a href="./food-pantry.html">Food Pantry</a>
       <a href="./volunteer.html">Volunteer</a>
     </div>
     <div class="menu-panel-section">

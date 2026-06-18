@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Financial Aid | Islamic Center of Morrisville</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css?v=20260618-service-forms">
+  </head>
+  <body>
+    <header class="site-header"><a class="brand" href="./index.html" aria-label="Islamic Center of Morrisville home"><img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville"></a><nav class="top-nav" aria-label="Primary navigation"><a class="nav-donate" href="./donate.html"><img src="./public/icons/generated/donate.png" alt="" aria-hidden="true"><span>Donate</span></a><a href="./calendar.html">Calendar</a><a href="./programs.html">Programs</a><a href="./news.html">News</a><a href="./about.html">About</a><button class="menu-button" type="button" aria-label="Open menu"><img src="./public/icons/generated/menu.png" alt="" aria-hidden="true"></button></nav></header>
+    <main class="page-main service-form-page">
+      <section class="page-hero compact-hero">
+        <p class="eyebrow">Social welfare</p>
+        <h1>Financial Aid Request</h1>
+        <p>Confidential assistance requests are reviewed after the required documents are received. Processing can take up to two weeks.</p>
+      </section>
+
+      <section class="page-band">
+        <div class="service-notice">
+          <div>
+            <h2>Required Documents</h2>
+            <p>Incomplete applications cannot be processed. Upload clear copies when submitting the request.</p>
+          </div>
+          <ul class="check-list">
+            <li>State ID or passport</li>
+            <li>Most recent federal income tax return</li>
+            <li>Last two pay stubs</li>
+            <li>Bank account statements for checking, savings, and investments</li>
+            <li>Bills, lease, contracts, or statements related to the aid request</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="page-band registration-stack" id="application">
+        <article class="service-form-panel">
+          <div class="form-title-row">
+            <div>
+              <p class="eyebrow">Application</p>
+              <h2>Application for Financial Aid</h2>
+            </div>
+            <span class="form-progress">Local request form</span>
+          </div>
+
+          <form class="aid-form" aria-label="Application for Financial Aid">
+            <fieldset>
+              <legend>Applicant Information</legend>
+              <div class="local-registration-form form-grid-3">
+                <label><span>First Name</span><input type="text" name="first-name" autocomplete="given-name" required></label>
+                <label><span>Middle Name</span><input type="text" name="middle-name" autocomplete="additional-name"></label>
+                <label><span>Last Name</span><input type="text" name="last-name" autocomplete="family-name" required></label>
+                <label class="form-field-wide"><span>Other Name</span><input type="text" name="other-name"></label>
+                <label class="form-field-wide"><span>Street Address</span><input type="text" name="street-address" autocomplete="street-address" required></label>
+                <label><span>City</span><input type="text" name="city" autocomplete="address-level2" required></label>
+                <label><span>State</span><input type="text" name="state" autocomplete="address-level1" required></label>
+                <label><span>Zip Code</span><input type="text" name="zip" inputmode="numeric" pattern="[0-9]*" data-numeric-only autocomplete="postal-code" required></label>
+                <label class="form-field-wide"><span>Email address</span><input type="email" name="email" autocomplete="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Enter a valid email address with an @ sign"></label>
+                <label><span>Phone Number</span><input type="tel" name="phone" autocomplete="tel" required inputmode="numeric" pattern="[0-9]*" title="Use numbers only"></label>
+                <label><span>Age</span><input type="text" name="age" inputmode="numeric" pattern="[0-9]*" data-numeric-only></label>
+                <label><span>Date of Birth</span><input type="date" name="birthdate"></label>
+                <label><span>Sex</span><select name="sex"><option value="">Please select</option><option>Male</option><option>Female</option></select></label>
+                <label><span>Religion</span><input type="text" name="religion"></label>
+                <label><span>Marital Status</span><select name="marital-status"><option value="">Please select</option><option>Single</option><option>Married</option><option>Divorced</option><option>Separated</option><option>Widowed</option></select></label>
+                <label><span>Number of Children</span><input type="text" name="children" inputmode="numeric" pattern="[0-9]*" data-numeric-only></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Physical Ability & References</legend>
+              <div class="service-choice-row" role="group" aria-label="Disability status">
+                <span>Do you have any disability?</span>
+                <label><input type="radio" name="disability" value="yes"> Yes</label>
+                <label><input type="radio" name="disability" value="no"> No</label>
+              </div>
+              <label class="standalone-field"><span>Explain your disability, if applicable</span><textarea name="disability-details" rows="3"></textarea></label>
+              <p class="form-help">Provide two Muslim references in the local community who know about your financial situation and are not related to you.</p>
+              <div class="local-registration-form">
+                <label><span>Reference 1 Name</span><input type="text" name="reference-1-name"></label>
+                <label><span>Reference 1 Phone</span><input type="tel" name="reference-1-phone" inputmode="numeric" pattern="[0-9]*" title="Use numbers only"></label>
+                <label><span>Reference 2 Name</span><input type="text" name="reference-2-name"></label>
+                <label><span>Reference 2 Phone</span><input type="tel" name="reference-2-phone" inputmode="numeric" pattern="[0-9]*" title="Use numbers only"></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Financial Information</legend>
+              <div class="local-registration-form">
+                <label class="form-field-wide"><span>Applicant's Occupation</span><input type="text" name="occupation"></label>
+                <label><span>Are you employed?</span><select name="employed"><option value="">Please select</option><option>Yes</option><option>No</option></select></label>
+                <label><span>Dependents living with you</span><input type="text" name="dependents" inputmode="numeric" pattern="[0-9]*" data-numeric-only></label>
+                <label><span>Total Family Income Per Month</span><input type="number" name="family-income" min="0" step="0.01" placeholder="$"></label>
+                <label><span>Additional Income</span><input type="number" name="additional-income" min="0" step="0.01" placeholder="$"></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Amount Requested & Financial Need</legend>
+              <p class="form-help">ICM Social and Welfare Committee processes checks to a third party. No checks are written directly to the applicant.</p>
+              <div class="local-registration-form">
+                <label><span>Amount requested</span><input type="number" name="amount-requested" min="0" step="0.01" placeholder="$" required></label>
+                <label><span>Purpose of this request</span><input type="text" name="request-purpose" placeholder="e.g. rent, electricity, medical bill" required></label>
+                <label class="form-field-wide"><span>Explain your financial situation</span><textarea name="financial-situation" rows="5" required></textarea></label>
+                <label class="form-field-wide file-field"><span>Upload bills, statements, or contracts</span><input type="file" name="need-documents" multiple accept=".jpg,.jpeg,.png,.gif,.pdf"><em>Max file size is 10mb. Allowed file extensions are jpg, jpeg, png, gif, pdf. Upload no more than 4 files.</em></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Document Upload</legend>
+              <div class="local-registration-form">
+                <label class="file-field"><span>State ID or Passport</span><input type="file" name="state-id" accept=".jpg,.jpeg,.png,.gif,.pdf" required><em>Required</em></label>
+                <label class="file-field"><span>Federal Income Tax Return</span><input type="file" name="tax-return" accept=".jpg,.jpeg,.png,.gif,.pdf" required><em>Required</em></label>
+                <label class="file-field"><span>Last 2 Pay Stubs</span><input type="file" name="paystubs" multiple accept=".jpg,.jpeg,.png,.gif,.pdf" required><em>Required</em></label>
+                <label class="file-field"><span>Bank Account Statements</span><input type="file" name="bank-statements" multiple accept=".jpg,.jpeg,.png,.gif,.pdf" required><em>Required</em></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Authorization</legend>
+              <p class="form-help">I certify that the information contained in this application is true. I authorize ICM's Social and Welfare Committee to investigate my needs and income, including performing a credit check and obtaining credit reports.</p>
+              <label class="checkbox-field"><input type="checkbox" name="agree" required><span>I agree</span></label>
+              <div class="local-registration-form">
+                <label><span>Type your name</span><input type="text" name="signature-name" required></label>
+                <label><span>Date</span><input type="date" name="signature-date" required></label>
+              </div>
+            </fieldset>
+
+            <button class="button button-primary" type="submit">Submit Financial Aid Request</button>
+          </form>
+        </article>
+      </section>
+    </main>
+    <footer class="site-footer"><div class="socials" aria-label="Social links"><a href="https://www.facebook.com/ICMMASJID/" target="_blank" rel="noopener" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a><a href="https://www.instagram.com/icmmasjid/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a><a href="https://www.youtube.com/@islamiccenterofmorrisville1071" target="_blank" rel="noopener" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a></div><p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p><a href="./about.html#contact">Contact Us</a></footer><script type="module" src="./public/app/site.js?v=20260618-service-forms"></script>
+  </body>
+</html>
