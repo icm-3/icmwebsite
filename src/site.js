@@ -261,9 +261,22 @@ function initPrayerTimesPage() {
 }
 
 function initStaticFormValidation() {
-  document.querySelectorAll("input[type='tel'], input[data-numeric-only]").forEach((input) => {
+  document.querySelectorAll("input[type='tel'], input[inputmode='numeric'], input[data-numeric-only]").forEach((input) => {
     input.addEventListener("input", () => {
       const numericValue = input.value.replace(/\D/g, "");
+      if (input.value !== numericValue) input.value = numericValue;
+    });
+  });
+
+  document.querySelectorAll("input[type='number']").forEach((input) => {
+    input.addEventListener("keydown", (event) => {
+      if (["e", "E", "+", "-"].includes(event.key)) event.preventDefault();
+    });
+
+    input.addEventListener("input", () => {
+      const numericValue = input.value
+        .replace(/[^\d.]/g, "")
+        .replace(/(\..*)\./g, "$1");
       if (input.value !== numericValue) input.value = numericValue;
     });
   });

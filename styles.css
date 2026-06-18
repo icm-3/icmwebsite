@@ -491,7 +491,7 @@ img {
 }
 
 .next-label span {
-  color: var(--gold);
+  color: var(--text);
   font-size: 14px;
   font-weight: 800;
   text-transform: uppercase;
