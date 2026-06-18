@@ -110,6 +110,13 @@ var defaultContent = {
   ],
   news: [
     {
+      title: "Friday Announcements - June 12, 2026",
+      date: "2026-06-12",
+      summary: "Monthly support, traffic reminders, summer programs, Eid celebration, Bukhari Circle, youth volunteer signups, and weekly lectures.",
+      image: "./public/news/friday-announcements-june-12-2026.png",
+      imageAlt: "Friday Announcements flyer for June 12, 2026"
+    },
+    {
       title: "Ramadan Programs & Taraweeh Schedule",
       date: "2026-04-28",
       summary: "Join us for special programs throughout Ramadan.",

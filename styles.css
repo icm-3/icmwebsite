@@ -2466,8 +2466,9 @@ tbody tr:last-child td {
   display: block;
   width: 100%;
   max-height: 360px;
+  background: #fbfaf6;
   border-radius: 8px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .news-detail-body {
