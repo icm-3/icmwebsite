@@ -260,6 +260,22 @@ function initPrayerTimesPage() {
   loadMonth(Number(monthSelect.value));
 }
 
+function initStaticFormValidation() {
+  document.querySelectorAll("form").forEach((form) => {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      form.reportValidity();
+    });
+
+    form.querySelectorAll("button").forEach((button) => {
+      button.addEventListener("click", () => {
+        form.reportValidity();
+      });
+    });
+  });
+}
+
 initMobileNav();
 initDonationForm();
 initPrayerTimesPage();
+initStaticFormValidation();

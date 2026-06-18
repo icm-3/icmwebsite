@@ -646,7 +646,7 @@ img {
   padding: 21px 22px 22px;
   overflow: hidden;
   background: white;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(165, 100, 5, 0.28);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(18, 24, 39, 0.035);
 }
@@ -1505,6 +1505,13 @@ tbody tr:last-child td {
   border-top: 1px solid var(--border);
 }
 
+.about-community-copy {
+  display: block;
+  max-width: 760px;
+  margin-left: max(30px, calc((100% - 1180px) / 2));
+  margin-right: auto;
+}
+
 .receipts-simple {
   grid-template-columns: minmax(0, 760px);
 }
@@ -1650,7 +1657,7 @@ tbody tr:last-child td {
   min-height: 245px;
   flex-direction: column;
   overflow: hidden;
-  border-color: var(--border);
+  border-color: rgba(165, 100, 5, 0.28);
   box-shadow: none;
   transition:
     transform 190ms cubic-bezier(0.2, 0, 0.2, 1),
@@ -1661,7 +1668,7 @@ tbody tr:last-child td {
 .program-card:hover,
 .program-card:focus-within {
   transform: translateY(-2px);
-  border-color: rgba(0, 84, 61, 0.22);
+  border-color: rgba(165, 100, 5, 0.46);
   box-shadow: 0 10px 24px rgba(18, 24, 39, 0.055);
 }
 
@@ -1679,12 +1686,12 @@ tbody tr:last-child td {
 }
 
 .program-card a {
-  margin-top: 14px;
+  margin-top: auto;
 }
 
 .program-card .program-detail-link {
   width: fit-content;
-  margin-top: 16px;
+  margin-top: auto;
   padding: 9px 12px;
   color: white;
   background: var(--green);
@@ -2660,7 +2667,7 @@ body:has(.program-detail-card:target) .program-overview {
   align-items: center;
   padding: 18px;
   color: inherit;
-  border: 1px solid transparent;
+  border: 1px solid rgba(165, 100, 5, 0.24);
   border-radius: 8px;
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
@@ -2668,7 +2675,7 @@ body:has(.program-detail-card:target) .program-overview {
 .news-feature:hover,
 .news-feature:focus-visible {
   transform: translateY(-2px);
-  border-color: rgba(0, 91, 64, 0.18);
+  border-color: rgba(165, 100, 5, 0.42);
   box-shadow: 0 12px 26px rgba(18, 24, 39, 0.08);
   outline: 0;
 }
@@ -2770,6 +2777,79 @@ body:has(.program-detail-card:target) .program-overview {
 
 .bio-panel {
   max-width: 900px;
+}
+
+.imam-bio-panel {
+  display: grid;
+  max-width: 1080px;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+  gap: 28px;
+  align-items: stretch;
+  border-color: rgba(165, 100, 5, 0.3);
+}
+
+.imam-photo {
+  margin: 0;
+  align-self: stretch;
+}
+
+.imam-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  max-height: 520px;
+  object-fit: cover;
+  border: 1px solid rgba(165, 100, 5, 0.34);
+  border-radius: 8px;
+}
+
+.location-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.map-panel {
+  position: relative;
+  overflow: hidden;
+  min-height: 430px;
+  background: #edf6f3;
+  border: 1px solid rgba(165, 100, 5, 0.28);
+  border-radius: 8px;
+}
+
+.map-panel::after {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 1;
+  padding: 9px 12px;
+  color: var(--green-dark);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(165, 100, 5, 0.26);
+  border-radius: 6px;
+  content: "107 Quail Fields Court";
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.map-panel iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 430px;
+  border: 0;
+}
+
+.location-cards {
+  grid-template-columns: 1fr;
+}
+
+.location-cards .feature-card {
+  box-shadow: none;
+  border-color: rgba(165, 100, 5, 0.24);
 }
 
 .donation-form {
@@ -3255,7 +3335,24 @@ body:has(.program-detail-card:target) .program-overview {
 
   .program-full,
   .program-poster-layout,
+  .imam-bio-panel,
+  .location-layout,
   .registration-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .imam-photo {
+    max-width: 320px;
+  }
+
+  .imam-photo img {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: 1;
+  }
+
+  .location-cards {
     grid-template-columns: 1fr;
   }
 }
@@ -3579,6 +3676,20 @@ body:has(.program-detail-card:target) .program-overview {
 
   .local-registration-form {
     grid-template-columns: 1fr;
+  }
+
+  .map-panel {
+    min-height: 280px;
+  }
+
+  .map-panel iframe {
+    min-height: 300px;
+    height: 300px;
+  }
+
+  .map-panel::after {
+    right: 12px;
+    bottom: 12px;
   }
 }
 

@@ -45,8 +45,8 @@
             <label><span>Student Name</span><input type="text" name="student-name"></label>
             <label><span>Grade</span><input type="text" name="grade"></label>
             <label><span>Parent / Guardian Name</span><input type="text" name="guardian-name"></label>
-            <label><span>Email</span><input type="email" name="email"></label>
-            <label><span>Phone</span><input type="tel" name="phone"></label>
+            <label><span>Email</span><input type="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Enter a valid email address with an @ sign" name="email"></label>
+            <label><span>Phone</span><input type="tel" required inputmode="numeric" pattern="[0-9]*" title="Use numbers only" name="phone"></label>
             <label class="form-field-wide"><span>Notes</span><textarea name="notes" rows="4"></textarea></label>
             <button class="button button-primary" type="button">Submit Registration</button>
           </form>

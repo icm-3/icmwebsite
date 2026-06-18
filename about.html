@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css?v=20260617-news-text-first">
+    <link rel="stylesheet" href="./styles.css?v=20260617-gold-cards">
   </head>
   <body>
     <header class="site-header">
@@ -26,26 +26,13 @@
       <section class="page-hero">
         <p class="eyebrow">About ICM</p>
         <h1>Islamic Center of Morrisville</h1>
-        <div class="page-actions">
-          <a class="button button-primary" href="#imam">Meet the Imam</a>
-          <a class="button button-secondary" href="#contact">Location & Contact</a>
-        </div>
       </section>
 
-      <section class="page-split">
+      <section class="page-split about-community-copy">
         <div>
           <h2>Our Community</h2>
           <p>ICM began as a response to the needs of a growing Muslim community around Morrisville and RTP. The masjid welcomes residents from many backgrounds and offers Islamic programs for children, youth, adults, and families.</p>
           <p>As attendance has grown, ICM has made room for multiple Jumu'ah shifts, regular Quran learning, youth halaqas, women's gatherings, social welfare work, and weekend education.</p>
-        </div>
-        <div class="callout">
-          <h3>What ICM Offers</h3>
-          <ul class="check-list">
-            <li>Daily prayers and four Jumu'ah shifts</li>
-            <li>Quran, Arabic, and Islamic studies programs</li>
-            <li>Youth halaqas, outings, games, and service work</li>
-            <li>Social welfare, food pantry, counseling, and aid pathways</li>
-          </ul>
         </div>
       </section>
 
@@ -53,7 +40,7 @@
         <div class="section-heading">
           <h2>Meet the Imam</h2>
         </div>
-        <div class="bio-panel">
+        <div class="bio-panel imam-bio-panel">
           <div>
             <h3>Imam Manzar ul Islam al Azhari</h3>
             <p>Imam Manzar was born in India in 1980 and completed an eight-year Alim education in a traditional seminary, studying Islamic sciences and languages including Urdu, Persian, Hindi, and Arabic.</p>
@@ -61,6 +48,9 @@
             <p>His public biography notes more than 50 research papers and books, presentations at international universities, and ongoing service to the ICM community through scholarship, classes, reminders, and guidance.</p>
             <p class="contact-line">Contact: imam@icmnc.org</p>
           </div>
+          <figure class="imam-photo">
+            <img src="./public/images/imam-manzar.png" alt="Imam Manzar ul Islam al Azhari">
+          </figure>
         </div>
       </section>
 
@@ -68,20 +58,30 @@
         <div class="section-heading">
           <h2>Location & Contact</h2>
         </div>
-        <div class="contact-grid">
-          <article class="feature-card">
-            <h3>Islamic Center of Morrisville</h3>
-            <p>107 Quail Fields Court<br>Morrisville, NC 27560</p>
-          </article>
-          <article class="feature-card">
-            <h3>General Contact</h3>
-            <p>contact@icmnc.org</p>
-            <p class="contact-line">For prayer, facility, and general masjid questions.</p>
-          </article>
-          <article class="feature-card">
-            <h3>Program Contacts</h3>
-            <p>Al Mizan: almizaan@icmnc.org<br>Social Welfare: socialwelfare@icmnc.org<br>Volunteer Hours: volunteer@icmnc.org</p>
-          </article>
+        <div class="location-layout">
+          <div class="map-panel">
+            <iframe
+              title="Map to Islamic Center of Morrisville"
+              src="https://maps.google.com/maps?hl=en&amp;q=107%20Quail%20Fields%20Court%2C%20Morrisville%2C%20NC%2027560&amp;z=15&amp;output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <div class="contact-grid location-cards">
+            <article class="feature-card">
+              <h3>Islamic Center of Morrisville</h3>
+              <p>107 Quail Fields Court<br>Morrisville, NC 27560</p>
+              <a href="https://www.google.com/maps/dir/?api=1&destination=107%20Quail%20Fields%20Court%2C%20Morrisville%2C%20NC%2027560" target="_blank" rel="noopener">Get Directions</a>
+            </article>
+            <article class="feature-card">
+              <h3>General Contact</h3>
+              <p>contact@icmnc.org</p>
+              <p class="contact-line">For prayer, facility, and general masjid questions.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Program Contacts</h3>
+              <p>Al Mizan: almizaan@icmnc.org<br>Social Welfare: socialwelfare@icmnc.org<br>Volunteer Hours: volunteer@icmnc.org</p>
+            </article>
+          </div>
         </div>
       </section>
     </main>
@@ -95,6 +95,6 @@
       <p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p>
       <a href="#contact">Contact Us</a>
     </footer>
-    <script type="module" src="./public/app/site.js?v=20260617-news-text-first"></script>
+    <script type="module" src="./public/app/site.js?v=20260617-gold-cards"></script>
   </body>
 </html>
