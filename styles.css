@@ -341,11 +341,16 @@ img {
   position: relative;
   overflow: hidden;
   min-height: 390px;
-  background: white;
+  background: #11110f;
 }
 
 .hero-image::before {
-  content: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(90deg, rgba(17, 17, 15, 0) 58%, rgba(17, 17, 15, 0.2) 78%, rgba(17, 17, 15, 0.48) 100%);
 }
 
 .hero-image img {
@@ -355,8 +360,8 @@ img {
   width: 100%;
   height: 100%;
   min-height: 390px;
-  object-fit: contain;
-  object-position: center center;
+  object-fit: cover;
+  object-position: center 62%;
 }
 
 .prayer-section {
@@ -3473,7 +3478,8 @@ body:has(.program-detail-card:target) .program-overview {
   }
 
   .hero-image::before {
-    content: none;
+    content: "";
+    background: linear-gradient(180deg, rgba(17, 17, 15, 0) 62%, rgba(17, 17, 15, 0.24) 100%);
   }
 
   .hero-image img {
