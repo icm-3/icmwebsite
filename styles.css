@@ -341,6 +341,7 @@ img {
   position: relative;
   overflow: hidden;
   min-height: 390px;
+  background: #11110f;
 }
 
 .hero-image::before {
@@ -360,8 +361,8 @@ img {
   width: 100%;
   height: 100%;
   min-height: 390px;
-  object-fit: cover;
-  object-position: center 68%;
+  object-fit: contain;
+  object-position: center center;
 }
 
 .prayer-section {
