@@ -1701,11 +1701,18 @@ tbody tr:last-child td {
 }
 
 .program-details {
-  display: grid;
+  display: none;
   gap: 18px;
 }
 
+.program-details:has(.program-detail-card:target) {
+  display: grid;
+  padding-top: 42px;
+  border-top: 0;
+}
+
 .program-detail-card {
+  display: none;
   scroll-margin-top: 110px;
   padding: 26px;
   background: white;
@@ -1715,8 +1722,29 @@ tbody tr:last-child td {
 }
 
 .program-detail-card:target {
+  display: block;
   border-color: rgba(0, 84, 61, 0.28);
   box-shadow: 0 12px 28px rgba(18, 24, 39, 0.07);
+}
+
+body:has(.program-detail-card:target) .programs-hero,
+body:has(.program-detail-card:target) .program-overview {
+  display: none;
+}
+
+.program-detail-back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  margin-bottom: 18px;
+  color: var(--green);
+  font-weight: 850;
+}
+
+.program-detail-back:hover,
+.program-detail-back:focus-visible {
+  color: var(--green-dark);
+  transform: translateX(1px);
 }
 
 .program-detail-card h3 {
