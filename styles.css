@@ -2135,30 +2135,35 @@ tbody tr:last-child td {
 }
 
 .prayer-times-table .date-col {
-  width: 21%;
-}
-
-.prayer-times-table .day-col {
-  width: 7%;
+  width: 20%;
 }
 
 .prayer-times-table .prayer-col {
-  width: 12%;
+  width: 14.2%;
+}
+
+.prayer-times-table .sunrise-col {
+  width: 9%;
 }
 
 .prayer-times-table th:first-child,
 .prayer-times-table td:first-child {
-  width: 21%;
+  width: 20%;
 }
 
 .prayer-times-table th:nth-child(2),
 .prayer-times-table td:nth-child(2) {
-  width: 7%;
+  width: 14.2%;
 }
 
-.prayer-times-table th:nth-child(n + 3),
-.prayer-times-table td:nth-child(n + 3) {
-  width: 12%;
+.prayer-times-table th:nth-child(3),
+.prayer-times-table td:nth-child(3) {
+  width: 9%;
+}
+
+.prayer-times-table th:nth-child(n + 4),
+.prayer-times-table td:nth-child(n + 4) {
+  width: 14.2%;
 }
 
 .prayer-times-table th {
@@ -2220,21 +2225,15 @@ tbody tr:last-child td {
   line-height: 1.2;
 }
 
-.prayer-times-table .day-cell {
-  color: var(--green);
-  font-size: 10.6px;
-  font-weight: 850;
-}
-
 .prayer-times-table .prayer-time-cell {
-  padding-inline: 6px;
+  padding-inline: 8px;
 }
 
 .prayer-times-table .prayer-time-cell span {
-  display: flex;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
   align-items: baseline;
-  justify-content: space-between;
-  gap: 5px;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -2243,19 +2242,17 @@ tbody tr:last-child td {
 }
 
 .prayer-times-table .prayer-time-cell b {
-  flex: 0 0 auto;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 750;
   letter-spacing: 0;
   text-align: left;
 }
 
 .prayer-times-table .prayer-time-cell strong {
-  flex: 1 1 auto;
   min-width: 0;
   color: var(--text);
-  font-size: clamp(9.8px, 0.72vw, 11.2px);
+  font-size: clamp(10.8px, 0.86vw, 12.7px);
   font-weight: 850;
   line-height: 1.15;
   overflow-wrap: normal;
@@ -2263,9 +2260,13 @@ tbody tr:last-child td {
 }
 
 .prayer-times-table .single-time strong {
-  display: block;
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
   color: var(--green);
-  font-size: 12px;
+  font-size: clamp(12px, 0.95vw, 13.8px);
+  text-align: center;
 }
 
 .prayer-times-table .iqamah-line strong {
@@ -2338,8 +2339,7 @@ tbody tr:last-child td {
     text-transform: uppercase;
   }
 
-  .prayer-times-table .date-cell,
-  .prayer-times-table .day-cell {
+  .prayer-times-table .date-cell {
     box-shadow: none;
   }
 

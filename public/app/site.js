@@ -182,12 +182,12 @@ function initPrayerTimesPage() {
   };
   const sourceColumnCount = 13;
   const scheduleColumns = [
-    { label: "Fajr", adhan: 2, iqamah: 3 },
-    { label: "Sunrise", single: 4 },
-    { label: "Dhuhr", adhan: 5, iqamah: 6 },
-    { label: "Asr", adhan: 7, iqamah: 8 },
-    { label: "Maghrib", adhan: 9, iqamah: 10 },
-    { label: "Isha", adhan: 11, iqamah: 12 }
+    { label: "Fajr", adhan: 2, iqamah: 3, colClass: "prayer-col" },
+    { label: "Sunrise", single: 4, colClass: "sunrise-col" },
+    { label: "Dhuhr", adhan: 5, iqamah: 6, colClass: "prayer-col" },
+    { label: "Asr", adhan: 7, iqamah: 8, colClass: "prayer-col" },
+    { label: "Maghrib", adhan: 9, iqamah: 10, colClass: "prayer-col" },
+    { label: "Isha", adhan: 11, iqamah: 12, colClass: "prayer-col" }
   ];
   const selectedMonth = (/* @__PURE__ */ new Date()).getMonth() + 1;
   monthSelect.value = String(selectedMonth);
@@ -211,13 +211,11 @@ function initPrayerTimesPage() {
       <table class="prayer-times-table">
         <colgroup>
           <col class="date-col">
-          <col class="day-col">
-          ${scheduleColumns.map(() => '<col class="prayer-col">').join("")}
+          ${scheduleColumns.map((column) => `<col class="${column.colClass}">`).join("")}
         </colgroup>
         <thead>
           <tr>
             <th>Date</th>
-            <th>Day</th>
             ${scheduleColumns.map((column) => `<th>${column.label}</th>`).join("")}
           </tr>
         </thead>
@@ -230,7 +228,6 @@ function initPrayerTimesPage() {
         return `
                 <tr class="${isToday ? "is-today" : ""}${isFriday ? " is-friday" : ""}">
                   <td class="date-cell" data-label="Date"><span>${dateParts.gregorian}</span>${dateParts.hijri ? `<em>${dateParts.hijri}</em>` : ""}</td>
-                  <td class="day-cell" data-label="Day">${cells[1]}</td>
                   ${scheduleColumns.map((column) => {
           if (column.single) {
             return `<td class="prayer-time-cell single-time" data-label="${column.label}"><strong>${cells[column.single]}</strong></td>`;
