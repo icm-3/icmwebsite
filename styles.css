@@ -267,7 +267,7 @@ img {
   pointer-events: none;
   content: "";
   background:
-    linear-gradient(90deg, #ffffff 0%, #ffffff 40%, rgba(255, 255, 255, 0.94) 46%, rgba(255, 255, 255, 0.66) 55%, rgba(255, 255, 255, 0.22) 66%, rgba(255, 255, 255, 0) 76%),
+    linear-gradient(90deg, #ffffff 0%, #ffffff 38%, rgba(255, 255, 255, 0.96) 45%, rgba(255, 255, 255, 0.78) 52%, rgba(255, 255, 255, 0.42) 60%, rgba(255, 255, 255, 0.12) 70%, rgba(255, 255, 255, 0) 82%),
     linear-gradient(180deg, rgba(17, 17, 15, 0.08) 0%, rgba(17, 17, 15, 0) 42%, rgba(17, 17, 15, 0.1) 100%);
 }
 
@@ -358,6 +358,7 @@ img {
 .hero-image {
   position: absolute;
   inset: 0;
+  z-index: 0;
   overflow: hidden;
   min-height: 100%;
   background: white;
@@ -370,9 +371,9 @@ img {
 .hero-image img {
   position: absolute;
   inset: 0 0 0 auto;
-  z-index: 1;
+  z-index: 0;
   display: block;
-  width: 60%;
+  width: 62%;
   height: 100%;
   min-height: 390px;
   object-fit: cover;
@@ -1558,6 +1559,7 @@ tbody tr:last-child td {
 .section-heading h2 {
   color: var(--text);
   font-size: clamp(36px, 4vw, 50px);
+  font-weight: 800;
   line-height: 1;
 }
 
