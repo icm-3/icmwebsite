@@ -2454,6 +2454,7 @@ tbody tr:last-child td {
 
 .news-detail-back {
   grid-column: 1 / -1;
+  order: 0;
   display: inline-flex;
   align-items: center;
   min-height: 42px;
@@ -2467,6 +2468,7 @@ tbody tr:last-child td {
 }
 
 .news-detail img {
+  order: 2;
   display: block;
   width: 100%;
   height: auto;
@@ -2477,8 +2479,13 @@ tbody tr:last-child td {
 }
 
 .news-detail-body {
+  order: 1;
   max-width: 860px;
   padding: 0 10px 10px;
+}
+
+.news-detail-body:empty {
+  display: none;
 }
 
 .news-detail-body time {

@@ -183,6 +183,14 @@ function getNewsCategory(title) {
   return "Announcement";
 }
 
+function newsTitle(item, index = 0) {
+  return String(item.title || item.imageAlt || `Announcement ${index + 1}`);
+}
+
+function newsSlug(item, index = 0) {
+  return slugify([newsTitle(item, index), item.date, index].filter(Boolean).join("-")) || `announcement-${index}`;
+}
+
 function getTopicIcon(topic) {
   const normalized = topic.toLowerCase();
   return topicIconRules.find((rule) => rule.words.some((word) => normalized.includes(word)))?.icon || "✦";
@@ -409,15 +417,15 @@ function renderNews(content) {
   const news = content.news?.length ? content.news : defaultContent.news;
   list.innerHTML = news
     .map(
-      (item) => `
-        <a class="news-item" href="./news.html#news-${escapeHtml(slugify(item.title))}">
-          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">
+      (item, index) => `
+        <a class="news-item" href="./news.html#news-${escapeHtml(newsSlug(item, index))}">
+          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, index))}">
           <div>
-            <span class="news-category">${escapeHtml(getNewsCategory(item.title))}</span>
-            <h3>${escapeHtml(item.title)}</h3>
-            <p>${escapeHtml(item.summary)}</p>
+            <span class="news-category">${escapeHtml(getNewsCategory(newsTitle(item, index)))}</span>
+            ${item.title ? `<h3>${escapeHtml(item.title)}</h3>` : ""}
+            ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
           </div>
-          <time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>
+          ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
         </a>
       `,
     )

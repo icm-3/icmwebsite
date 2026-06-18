@@ -1248,6 +1248,12 @@ function eventSlugFromHash() {
   const rawHash = window.location.hash.replace(/^#/, "");
   return rawHash.startsWith("event-") ? rawHash.slice(6) : "";
 }
+function newsTitle(item, index = 0) {
+  return String(item.title || item.imageAlt || `Announcement ${index + 1}`);
+}
+function newsSlug(item, index = 0) {
+  return slugify([newsTitle(item, index), item.date, index].filter(Boolean).join("-")) || `announcement-${index}`;
+}
 function slugify(value) {
   return String(value ?? "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
@@ -1450,39 +1456,39 @@ function renderNews(content) {
   if (!target) return;
   const items = [...content.news, ...fallbackNews].slice(0, Math.max(6, content.news.length));
   const renderList = () => {
-    target.innerHTML = items.map((item) => {
-      const newsId = `news-${slugify(item.title)}`;
+    target.innerHTML = items.map((item, index) => {
+      const newsId = `news-${newsSlug(item, index)}`;
       return `
           <a class="news-feature" id="${escapeHtml(newsId)}" href="./news.html#${escapeHtml(newsId)}">
-            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">
+            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, index))}">
             <div>
-              <time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>
-              <h2>${escapeHtml(item.title)}</h2>
-              <p>${escapeHtml(item.summary)}</p>
+              ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
+              ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
+              ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
             </div>
           </a>
         `;
     }).join("");
   };
-  const renderDetail = (item) => {
-    const newsId = `news-${slugify(item.title)}`;
+  const renderDetail = (item, index) => {
+    const newsId = `news-${newsSlug(item, index)}`;
     target.innerHTML = `
       <article class="news-detail" id="${escapeHtml(newsId)}">
         <a class="news-detail-back" href="./news.html">Back to news</a>
-        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">
         <div class="news-detail-body">
-          <time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>
-          <h2>${escapeHtml(item.title)}</h2>
-          <p>${escapeHtml(item.summary)}</p>
+          ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
+          ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
+          ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
         </div>
+        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, index))}">
       </article>
     `;
   };
   const renderCurrent = () => {
     const hash = decodeURIComponent(window.location.hash.replace(/^#/, ""));
-    const selected = hash ? items.find((item) => `news-${slugify(item.title)}` === hash) : null;
-    if (selected) {
-      renderDetail(selected);
+    const selectedIndex = hash ? items.findIndex((item, index) => `news-${newsSlug(item, index)}` === hash || `news-${slugify(item.title)}` === hash) : -1;
+    if (selectedIndex >= 0) {
+      renderDetail(items[selectedIndex], selectedIndex);
       return;
     }
     renderList();

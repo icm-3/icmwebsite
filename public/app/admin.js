@@ -174,30 +174,30 @@ function setByPath(path, value) {
   }
   target[parts[0]] = value;
 }
-function field(path, value, label, type = "text") {
+function field(path, value, label, type = "text", options = {}) {
   return `
     <label class="cms-field">
       <span>${escapeHtml(label)}</span>
-      <input type="${type}" value="${escapeHtml(value)}" data-path="${escapeHtml(path)}">
+      <input type="${type}" value="${escapeHtml(value)}" data-path="${escapeHtml(path)}"${options.required ? " required" : ""}>
     </label>
   `;
 }
-function textarea(path, value, label) {
+function textarea(path, value, label, options = {}) {
   return `
     <label class="cms-field cms-field-wide">
       <span>${escapeHtml(label)}</span>
-      <textarea data-path="${escapeHtml(path)}">${escapeHtml(value)}</textarea>
+      <textarea data-path="${escapeHtml(path)}"${options.required ? " required" : ""}>${escapeHtml(value)}</textarea>
     </label>
   `;
 }
-function imageField(path, value, label) {
+function imageField(path, value, label, options = {}) {
   return `
     <label class="cms-field cms-field-wide">
       <span>${escapeHtml(label)}</span>
-      <input type="text" value="${escapeHtml(value)}" data-path="${escapeHtml(path)}">
+      <input type="text" value="${escapeHtml(value)}" data-path="${escapeHtml(path)}"${options.required ? " required" : ""}>
     </label>
     <label class="cms-file">
-      <span>Upload image</span>
+      <span>${options.required ? "Upload required image" : "Upload image"}</span>
       <input type="file" accept="image/*" data-image-path="${escapeHtml(path)}">
     </label>
   `;
@@ -290,10 +290,10 @@ function renderNews() {
             <button type="button" data-action="remove-news" data-index="${index}">Remove</button>
           </div>
           <div class="cms-grid">
-            ${field(`news.${index}.title`, item.title, "Title")}
-            ${field(`news.${index}.date`, item.date, "Date", "date")}
-            ${textarea(`news.${index}.summary`, item.summary, "Summary")}
-            ${imageField(`news.${index}.image`, item.image, "Image URL or data image")}
+            ${imageField(`news.${index}.image`, item.image, "Image URL or data image (required)", { required: true })}
+            ${field(`news.${index}.title`, item.title, "Title (optional)")}
+            ${field(`news.${index}.date`, item.date, "Date (optional)", "date")}
+            ${textarea(`news.${index}.summary`, item.summary, "Description (optional)")}
             ${field(`news.${index}.imageAlt`, item.imageAlt, "Image alt text")}
           </div>
           <div class="cms-preview"><img src="${escapeHtml(item.image)}" alt=""></div>
@@ -329,6 +329,11 @@ async function load() {
   render();
 }
 async function save() {
+  const missingNewsImage = state.news.some((item) => !String(item.image || "").trim());
+  if (missingNewsImage) {
+    setStatus("Every news post needs an image before saving.", "warn");
+    return;
+  }
   localStorage.setItem("icm-cms-content", JSON.stringify(state));
   try {
     const response = await fetch("/api/cms", {
@@ -390,7 +395,7 @@ document.addEventListener("click", async (event) => {
     render();
   }
   if (action === "add-news") {
-    state.news.push({ title: "New Announcement", date: "2026-07-01", summary: "Announcement details.", image: "./public/news/ramadan.png", imageAlt: "Announcement image" });
+    state.news.push({ title: "", date: "", summary: "", image: "", imageAlt: "Announcement image" });
     render();
   }
   if (action === "remove-news") {
