@@ -254,7 +254,7 @@ img {
 .hero {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(420px, 50%) 1fr;
+  grid-template-columns: minmax(420px, 40%) 1fr;
   min-height: 390px;
   overflow: hidden;
   background: var(--surface);
@@ -3307,7 +3307,7 @@ body:has(.program-detail-card:target) .program-overview {
   }
 
   .hero {
-    grid-template-columns: minmax(360px, 50%) 1fr;
+    grid-template-columns: minmax(360px, 42%) 1fr;
   }
 
   .hero-copy {
