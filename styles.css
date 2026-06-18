@@ -1652,6 +1652,15 @@ tbody tr:last-child td {
   line-height: 1.2;
 }
 
+.program-card h3,
+.imam-bio-panel h3 {
+  color: var(--green);
+}
+
+.heading-black {
+  color: var(--text) !important;
+}
+
 .feature-card p,
 .program-card p,
 .callout p,
