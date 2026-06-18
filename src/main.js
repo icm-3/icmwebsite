@@ -21,12 +21,12 @@ const prayerLabels = {
 const prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 const nextPrayerOrder = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
 const topicIconRules = [
-  { icon: "leaf", words: ["gratitude", "shukr", "blessing", "thanks", "worship", "prayer", "salah", "daily"] },
-  { icon: "heart", words: ["love", "mercy", "compassion", "kindness", "service", "sincerity", "charity", "giving", "donation"] },
+  { icon: "leaf", words: ["gratitude", "shukr", "blessing", "thanks", "worship", "prayer", "salah", "daily", "green", "environment"] },
+  { icon: "heart", words: ["love", "mercy", "compassion", "kindness", "service", "sincerity", "charity", "giving", "donation", "muhasaba", "self reflection"] },
   { icon: "community", words: ["justice", "responsibility", "accountability", "community", "trust", "unity", "neighbors", "ummah"] },
   { icon: "feather", words: ["patience", "sabr", "change", "hardship", "steadfast", "resilience", "forgiveness", "healing"] },
-  { icon: "moon", words: ["ramadan", "taraweeh", "quran", "deen", "taqwa", "faith", "spiritual", "eid", "dhul hijjah", "hajj"] },
-  { icon: "spark", words: ["reflection", "reminder", "youth", "family", "knowledge", "learning", "parents", "marriage", "children"] },
+  { icon: "moon", words: ["ramadan", "taraweeh", "quran", "deen", "taqwa", "faith", "spiritual", "eid", "dhul hijjah", "hajj", "ghaflah"] },
+  { icon: "spark", words: ["reflection", "reminder", "youth", "family", "knowledge", "learning", "parents", "marriage", "children", "ostentation"] },
 ];
 
 let countdownTimer = null;
@@ -383,12 +383,14 @@ function renderJummah(content) {
       (shift) => {
         const speakerFit = textFitClass(shift.speaker, { small: 28, smaller: 42, tiny: 50 });
         const topicFit = textFitClass(shift.topic, { small: 42, smaller: 68, tiny: 92 });
+        const isTbdTopic = shift.topic.trim().toLowerCase() === "tbd";
+        const topicIcon = isTbdTopic ? "" : `<span class="topic-icon">${topicIconSvg(shift.topic)}</span>`;
         return `
         <tr>
           <td><span class="shift">${escapeHtml(shift.shift)}</span></td>
           <td class="time">${escapeHtml(shift.time)}</td>
           <td><span class="speaker-name ${speakerFit}">${escapeHtml(shift.speaker)}</span></td>
-          <td><span class="topic-chip ${topicFit}"><span class="topic-icon">${topicIconSvg(shift.topic)}</span><span class="topic-text">${escapeHtml(shift.topic)}</span></span></td>
+          <td><span class="topic-chip ${topicFit}${isTbdTopic ? " is-tbd" : ""}">${topicIcon}<span class="topic-text">${escapeHtml(shift.topic)}</span></span></td>
         </tr>
       `;
       },

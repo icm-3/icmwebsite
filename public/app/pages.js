@@ -869,26 +869,26 @@ var defaultContent = {
       {
         shift: "1",
         time: "1:00 PM",
-        speaker: "Imam Sami Kocak with Guest Khatib Dr. Adeel Rahman",
-        topic: "Gratitude in Daily Worship, Family Service, and Community Responsibility"
+        speaker: "Imam Sami Kocak",
+        topic: "Muhasaba: Self Reflection"
       },
       {
         shift: "2",
         time: "2:00 PM",
         speaker: "Mikael Raza",
-        topic: "Sincerity and Service"
+        topic: "Gaining Taqwa by Avoiding Ostentation"
       },
       {
         shift: "3",
         time: "3:00 PM",
-        speaker: "TBD",
-        topic: "TBD"
+        speaker: "Mansoor Kazi",
+        topic: "The Green Deen"
       },
       {
         shift: "4",
         time: "4:00 PM",
         speaker: "Mansoor Syed",
-        topic: "Patience Through Change"
+        topic: "Ghaflah: Spiritual Negligence"
       }
     ]
   },
