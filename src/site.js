@@ -269,14 +269,26 @@ function initStaticFormValidation() {
   });
 
   document.querySelectorAll("form").forEach((form) => {
+    const showFormStatus = () => {
+      let status = form.querySelector(".form-status");
+      if (!status) {
+        status = document.createElement("p");
+        status.className = "form-status";
+        status.setAttribute("role", "status");
+        form.append(status);
+      }
+      status.textContent = "Form validation passed. This form is ready to connect to the website submission backend.";
+    };
+
     form.addEventListener("submit", (event) => {
       event.preventDefault();
-      form.reportValidity();
+      if (form.reportValidity()) showFormStatus();
     });
 
     form.querySelectorAll("button").forEach((button) => {
       button.addEventListener("click", () => {
-        form.reportValidity();
+        if (button.type === "submit") return;
+        if (form.reportValidity()) showFormStatus();
       });
     });
   });
