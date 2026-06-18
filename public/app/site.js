@@ -180,41 +180,71 @@ function initPrayerTimesPage() {
     12: "December",
     13: "Ramadan"
   };
-  const headers = [
-    "Date",
-    "Day",
-    "Fajr Adhan",
-    "Fajr Iqamah",
-    "Sunrise",
-    "Dhuhr Adhan",
-    "Dhuhr Iqamah",
-    "Asr Adhan",
-    "Asr Iqamah",
-    "Maghrib Adhan",
-    "Maghrib Iqamah",
-    "Isha Adhan",
-    "Isha Iqamah"
+  const sourceColumnCount = 13;
+  const scheduleColumns = [
+    { label: "Fajr", adhan: 2, iqamah: 3, colClass: "fajr-col" },
+    { label: "Sunrise", single: 4, colClass: "sunrise-col" },
+    { label: "Dhuhr", adhan: 5, iqamah: 6, colClass: "standard-time-col" },
+    { label: "Asr", adhan: 7, iqamah: 8, colClass: "standard-time-col" },
+    { label: "Maghrib", adhan: 9, iqamah: 10, colClass: "standard-time-col" },
+    { label: "Isha", adhan: 11, iqamah: 12, colClass: "standard-time-col" }
   ];
   const selectedMonth = (/* @__PURE__ */ new Date()).getMonth() + 1;
   monthSelect.value = String(selectedMonth);
   const cleanCellText = (cell) => cell.textContent.replace(/\s+/g, " ").trim();
+  const todayLabel = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  }).format(/* @__PURE__ */ new Date());
+  const splitDateText = (value) => {
+    const match = value.match(/^(.*?, \w+ \d{1,2}, \d{4})\s+(.+)$/);
+    return match ? { gregorian: match[1], hijri: match[2] } : { gregorian: value, hijri: "" };
+  };
   const renderTable = (html, month) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
-    const rows = [...doc.querySelectorAll("table tr")].map((row) => [...row.querySelectorAll("td")].map(cleanCellText)).filter((cells) => cells.length >= headers.length);
+    const rows = [...doc.querySelectorAll("table tr")].map((row) => [...row.querySelectorAll("td")].map(cleanCellText)).filter((cells) => cells.length >= sourceColumnCount);
     if (!rows.length) throw new Error("No prayer rows were returned.");
     if (title) title.textContent = `${monthNames[month]} 2026`;
     target.innerHTML = `
       <table class="prayer-times-table">
+        <colgroup>
+          <col class="date-col">
+          <col class="day-col">
+          ${scheduleColumns.map((column) => `<col class="${column.colClass}">`).join("")}
+        </colgroup>
         <thead>
-          <tr>${headers.map((header) => `<th>${header}</th>`).join("")}</tr>
+          <tr>
+            <th>Date</th>
+            <th>Day</th>
+            ${scheduleColumns.map((column) => `<th>${column.label}</th>`).join("")}
+          </tr>
         </thead>
         <tbody>
           ${rows.map(
-      (cells) => `
-                <tr>
-                  ${cells.slice(0, headers.length).map((cell, index) => `<td${[3, 6, 8, 10, 12].includes(index) ? ' class="iqamah-cell"' : ""}>${cell}</td>`).join("")}
+      (cells) => {
+        const dateParts = splitDateText(cells[0]);
+        const isToday = dateParts.gregorian === todayLabel;
+        const isFriday = cells[1] === "Friday";
+        return `
+                <tr class="${isToday ? "is-today" : ""}${isFriday ? " is-friday" : ""}">
+                  <td class="date-cell" data-label="Date"><span>${dateParts.gregorian}</span>${dateParts.hijri ? `<em>${dateParts.hijri}</em>` : ""}</td>
+                  <td class="day-cell" data-label="Day">${cells[1]}</td>
+                  ${scheduleColumns.map((column) => {
+          if (column.single) {
+            return `<td class="prayer-time-cell single-time" data-label="${column.label}"><strong>${cells[column.single]}</strong></td>`;
+          }
+          return `
+                        <td class="prayer-time-cell" data-label="${column.label}">
+                          <span><b>Adhan</b><strong>${cells[column.adhan]}</strong></span>
+                          <span class="iqamah-line"><b>Iqamah</b><strong>${cells[column.iqamah]}</strong></span>
+                        </td>
+                      `;
+        }).join("")}
                 </tr>
-              `
+              `;
+      }
     ).join("")}
         </tbody>
       </table>
