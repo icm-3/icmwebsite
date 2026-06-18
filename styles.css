@@ -1661,6 +1661,10 @@ tbody tr:last-child td {
   color: var(--text) !important;
 }
 
+.heading-green {
+  color: var(--green) !important;
+}
+
 .feature-card p,
 .program-card p,
 .callout p,
