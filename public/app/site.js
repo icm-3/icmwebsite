@@ -24,6 +24,7 @@ function initMobileNav() {
     <div class="menu-panel-section">
       <p>Community</p>
       <a href="./calendar.html">Calendar</a>
+      <a href="./prayer-times.html">Full Prayer Schedule</a>
       <a href="./news.html">Latest News</a>
       <a href="./about.html#imam">Our Imam</a>
       <a href="./about.html#contact">Contact Us</a>
