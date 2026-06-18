@@ -1645,9 +1645,33 @@ tbody tr:last-child td {
 }
 
 .program-card {
+  position: relative;
   display: flex;
   min-height: 245px;
   flex-direction: column;
+  overflow: hidden;
+  border-color: rgba(165, 100, 5, 0.22);
+  transition:
+    transform 190ms cubic-bezier(0.2, 0, 0.2, 1),
+    border-color 190ms ease,
+    box-shadow 190ms ease;
+}
+
+.program-card::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  content: "";
+  background: linear-gradient(90deg, var(--gold), var(--green));
+}
+
+.program-card:hover,
+.program-card:focus-within {
+  transform: translateY(-2px);
+  border-color: rgba(0, 84, 61, 0.22);
+  box-shadow: 0 12px 28px rgba(18, 24, 39, 0.07);
 }
 
 .program-card span {
@@ -1655,9 +1679,9 @@ tbody tr:last-child td {
   width: fit-content;
   margin-top: auto;
   padding: 8px 10px;
-  color: var(--green);
-  background: var(--green-pale);
-  border: 1px solid var(--border);
+  color: var(--green-dark);
+  background: linear-gradient(180deg, #fff, #fbf8ef);
+  border: 1px solid rgba(165, 100, 5, 0.28);
   border-radius: 6px;
   font-size: 13px;
   font-weight: 800;
