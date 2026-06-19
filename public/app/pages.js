@@ -1514,7 +1514,7 @@ function renderNews(content) {
           <span class="news-feature-category">${escapeHtml(newsCategory(item))}</span>
           ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
           ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
-          ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
+          ${item.summary ? `<div class="news-detail-summary"><p>${escapeHtml(item.summary)}</p></div>` : ""}
         </div>
         <figure class="news-detail-poster">
           <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
