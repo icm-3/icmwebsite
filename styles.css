@@ -1099,9 +1099,9 @@ tbody tr:last-child td {
 .event-status {
   align-self: start;
   padding: 4px 9px;
-  color: var(--gold);
-  background: rgba(165, 100, 5, 0.08);
-  border: 1px solid rgba(165, 100, 5, 0.22);
+  color: var(--green);
+  background: rgba(0, 84, 61, 0.08);
+  border: 1px solid rgba(0, 84, 61, 0.2);
   border-radius: 999px;
   font-size: 11px;
   font-weight: 800;
@@ -1531,6 +1531,18 @@ tbody tr:last-child td {
   background:
     linear-gradient(180deg, #f8fbf9 0, #fff 280px),
     #fff;
+}
+
+body.is-news-detail-page .page-main {
+  background: #fff;
+}
+
+body.is-news-detail-page .page-hero {
+  display: none;
+}
+
+body.is-news-detail-page .page-band {
+  padding-top: 34px;
 }
 
 .page-hero,
@@ -3155,22 +3167,24 @@ body:has(.program-detail-card:target) .program-overview {
 .news-detail {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 18px;
+  gap: 16px;
   overflow: hidden;
-  padding: 18px;
+  padding: 24px 28px 28px;
   background: white;
-  border: 1px solid rgba(165, 100, 5, 0.3);
+  border: 1px solid rgba(0, 84, 61, 0.14);
   border-radius: 10px;
-  box-shadow: 0 14px 34px rgba(18, 24, 39, 0.07);
+  box-shadow: 0 14px 34px rgba(18, 24, 39, 0.06);
 }
 
 .news-detail-back {
   grid-column: 1 / -1;
   order: 0;
   display: inline-flex;
+  width: fit-content;
   align-items: center;
-  min-height: 42px;
+  min-height: 34px;
   color: var(--green);
+  font-size: 15px;
   font-weight: 850;
 }
 
@@ -3186,14 +3200,15 @@ body:has(.program-detail-card:target) .program-overview {
   height: auto;
   max-height: none;
   background: #fbfaf6;
+  border: 1px solid rgba(0, 84, 61, 0.08);
   border-radius: 8px;
   object-fit: contain;
 }
 
 .news-detail-body {
   order: 1;
-  max-width: 860px;
-  padding: 0 10px 10px;
+  max-width: 920px;
+  padding: 0 0 6px;
 }
 
 .news-detail-body:empty {
@@ -3209,18 +3224,19 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 .news-detail-body h2 {
+  max-width: 980px;
   margin: 8px 0 0;
   color: var(--text);
-  font-size: clamp(32px, 4vw, 54px);
-  line-height: 1;
+  font-size: clamp(30px, 3.2vw, 44px);
+  line-height: 1.04;
 }
 
 .news-detail-body p {
-  max-width: 760px;
-  margin: 18px 0 0;
+  max-width: 860px;
+  margin: 12px 0 0;
   color: var(--muted);
-  font-size: 18px;
-  line-height: 1.65;
+  font-size: 17px;
+  line-height: 1.55;
 }
 
 .bio-panel {

@@ -1205,12 +1205,38 @@ function getDateBadgeParts(dateString) {
   const day = new Intl.DateTimeFormat("en-US", { day: "2-digit", timeZone: TIME_ZONE }).format(date);
   return { month, day };
 }
-function dateValue(dateString) {
+function dateValue(dateString, hour = 12, minute = 0) {
   const date = /* @__PURE__ */ new Date(`${dateString}T12:00:00`);
-  return Number.isNaN(date.getTime()) ? 0 : date.getTime();
+  if (Number.isNaN(date.getTime())) return 0;
+  date.setHours(hour, minute, 0, 0);
+  return date.getTime();
 }
-function eventSortValue(event) {
-  return dateValue(event.date) || Number.MAX_SAFE_INTEGER;
+function parseTimeParts(timeString) {
+  const match = String(timeString || "").trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?$/i);
+  if (!match) return null;
+  let hour = Number(match[1]);
+  const minute = Number(match[2] || 0);
+  const meridiem = match[3]?.toUpperCase();
+  if (meridiem === "PM" && hour < 12) hour += 12;
+  if (meridiem === "AM" && hour === 12) hour = 0;
+  return { hour, minute };
+}
+function eventStartValue(event) {
+  const time = parseTimeParts(event.time);
+  return dateValue(event.date, time?.hour ?? 0, time?.minute ?? 0) || Number.MAX_SAFE_INTEGER;
+}
+function eventEndValue(event) {
+  const endTime = parseTimeParts(event.endTime);
+  if (event.endDate || endTime) {
+    return dateValue(event.endDate || event.date, endTime?.hour ?? 23, endTime?.minute ?? 59) || Number.MAX_SAFE_INTEGER;
+  }
+  const time = parseTimeParts(event.time);
+  if (time) return dateValue(event.date, time.hour, time.minute) || Number.MAX_SAFE_INTEGER;
+  const endOfDay = /* @__PURE__ */ new Date(`${event.date}T12:00:00`);
+  if (Number.isNaN(endOfDay.getTime())) return Number.MAX_SAFE_INTEGER;
+  endOfDay.setDate(endOfDay.getDate() + 1);
+  endOfDay.setHours(0, 0, 0, 0);
+  return endOfDay.getTime();
 }
 function eventTitle(event) {
   return String(event.title || "Community Event");
@@ -1399,18 +1425,18 @@ function renderJummah(content) {
 function renderEvents(content) {
   const list = document.querySelector("[data-events-list]");
   if (!list) return;
-  const today = prayerDateFor(/* @__PURE__ */ new Date()).getTime();
-  const sourceEvents = content.events?.length ? content.events : defaultContent.events;
-  const upcomingEvents = sourceEvents.filter((event) => eventSortValue(event) >= today).sort((first, second) => eventSortValue(first) - eventSortValue(second));
-  const pastEvents = sourceEvents.filter((event) => eventSortValue(event) < today).sort((first, second) => eventSortValue(second) - eventSortValue(first));
+  const now = Date.now();
+  const sourceEvents = (content.events?.length ? content.events : defaultContent.events).map((event, originalIndex) => ({ event, originalIndex }));
+  const upcomingEvents = sourceEvents.filter(({ event }) => eventEndValue(event) > now).sort((first, second) => eventStartValue(first.event) - eventStartValue(second.event));
+  const pastEvents = sourceEvents.filter(({ event }) => eventEndValue(event) <= now).sort((first, second) => eventEndValue(second.event) - eventEndValue(first.event));
   const events = [...upcomingEvents, ...pastEvents];
-  list.innerHTML = events.map((event, index) => {
+  list.innerHTML = events.map(({ event, originalIndex }) => {
     const badge = getDateBadgeParts(event.date);
     const meta = eventDateTimeLabel(event);
     const details = [meta, event.location].filter(Boolean);
-    const isPast = eventSortValue(event) < today;
+    const isPast = eventEndValue(event) <= now;
     return `
-        <a class="event-item${isPast ? " is-past" : ""}" href="./calendar.html#event-${escapeHtml(eventSlug(event, index))}">
+        <a class="event-item${isPast ? " is-past" : ""}" href="./calendar.html#event-${escapeHtml(eventSlug(event, originalIndex))}">
           <div class="date-badge"><span>${escapeHtml(badge.month)}</span><strong>${escapeHtml(badge.day)}</strong></div>
           <div>
             <h3>${escapeHtml(eventTitle(event))}</h3>
@@ -1424,13 +1450,13 @@ function renderEvents(content) {
 function renderNews(content) {
   const list = document.querySelector("[data-news-list]");
   if (!list) return;
-  const news = [...content.news?.length ? content.news : defaultContent.news].sort((first, second) => dateValue(second.date) - dateValue(first.date));
+  const news = (content.news?.length ? content.news : defaultContent.news).map((item, originalIndex) => ({ item, originalIndex })).sort((first, second) => dateValue(second.item.date) - dateValue(first.item.date));
   list.innerHTML = news.map(
-    (item, index) => `
-        <a class="news-item" href="./news.html#news-${escapeHtml(newsSlug(item, index))}">
-          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, index))}">
+    ({ item, originalIndex }) => `
+        <a class="news-item" href="./news.html#news-${escapeHtml(newsSlug(item, originalIndex))}">
+          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
           <div>
-            <span class="news-category">${escapeHtml(getNewsCategory(newsTitle(item, index)))}</span>
+            <span class="news-category">${escapeHtml(getNewsCategory(newsTitle(item, originalIndex)))}</span>
             ${item.title ? `<h3>${escapeHtml(item.title)}</h3>` : ""}
             ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
           </div>

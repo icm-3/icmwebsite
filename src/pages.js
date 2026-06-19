@@ -164,6 +164,11 @@ function formatShortDate(dateString) {
   }).format(date);
 }
 
+function dateValue(dateString) {
+  const date = new Date(`${dateString}T12:00:00`);
+  return Number.isNaN(date.getTime()) ? 0 : date.getTime();
+}
+
 function getDateBadgeParts(dateString) {
   const date = new Date(`${dateString}T12:00:00`);
   if (Number.isNaN(date.getTime())) return { month: "---", day: "--" };
@@ -466,14 +471,17 @@ function renderJummah(content) {
 function renderNews(content) {
   const target = document.querySelector("[data-page-news]");
   if (!target) return;
-  const items = [...content.news, ...fallbackNews].slice(0, Math.max(6, content.news.length));
+  const items = [...content.news.map((item, originalIndex) => ({ item, originalIndex })), ...fallbackNews.map((item, fallbackIndex) => ({ item, originalIndex: content.news.length + fallbackIndex }))].sort(
+    (first, second) => dateValue(second.item.date) - dateValue(first.item.date),
+  );
   const renderList = () => {
+    document.body.classList.remove("is-news-detail-page");
     target.innerHTML = items
-      .map((item, index) => {
-        const newsId = `news-${newsSlug(item, index)}`;
+      .map(({ item, originalIndex }) => {
+        const newsId = `news-${newsSlug(item, originalIndex)}`;
         return `
           <a class="news-feature" id="${escapeHtml(newsId)}" href="./news.html#${escapeHtml(newsId)}">
-            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, index))}">
+            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
             <div>
               ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
               ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
@@ -485,8 +493,9 @@ function renderNews(content) {
       .join("");
   };
 
-  const renderDetail = (item, index) => {
-    const newsId = `news-${newsSlug(item, index)}`;
+  const renderDetail = (item, originalIndex) => {
+    const newsId = `news-${newsSlug(item, originalIndex)}`;
+    document.body.classList.add("is-news-detail-page");
     target.innerHTML = `
       <article class="news-detail" id="${escapeHtml(newsId)}">
         <a class="news-detail-back" href="./news.html">Back to news</a>
@@ -495,16 +504,16 @@ function renderNews(content) {
           ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
           ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
         </div>
-        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, index))}">
+        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
       </article>
     `;
   };
 
   const renderCurrent = () => {
     const hash = decodeURIComponent(window.location.hash.replace(/^#/, ""));
-    const selectedIndex = hash ? items.findIndex((item, index) => `news-${newsSlug(item, index)}` === hash || `news-${slugify(item.title)}` === hash) : -1;
+    const selectedIndex = hash ? items.findIndex(({ item, originalIndex }) => `news-${newsSlug(item, originalIndex)}` === hash || `news-${slugify(item.title)}` === hash) : -1;
     if (selectedIndex >= 0) {
-      renderDetail(items[selectedIndex], selectedIndex);
+      renderDetail(items[selectedIndex].item, items[selectedIndex].originalIndex);
       return;
     }
     renderList();
