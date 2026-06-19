@@ -3859,7 +3859,13 @@ body:has(.program-detail-card:target) .program-overview {
   }
 
   .hero h1 {
-    font-size: clamp(52px, 15vw, 70px);
+    font-size: clamp(50px, 13.6vw, 64px);
+  }
+
+  .hero-title-line {
+    display: inline-block;
+    font-size: 0.9em;
+    white-space: nowrap;
   }
 
   .hero-subtitle {
@@ -4257,7 +4263,8 @@ body:has(.program-detail-card:target) .program-overview {
 
 @media (max-width: 520px) {
   .jummah-card {
-    height: 430px;
+    height: auto;
+    min-height: 0;
   }
 
   .news-card .card-header,
@@ -4327,12 +4334,21 @@ body:has(.program-detail-card:target) .program-overview {
   }
 
   .jummah-card .table-wrap {
-    overflow: hidden;
+    overflow: visible;
   }
 
   .jummah-card thead tr,
   .jummah-card tbody tr {
-    grid-template-columns: 12% 21% 27% 40%;
+    grid-template-columns: 11% 19% 26% 44%;
+  }
+
+  .jummah-card tbody {
+    grid-auto-rows: max-content;
+    grid-template-rows: none;
+  }
+
+  .jummah-card tbody tr {
+    min-height: 0;
   }
 
   .jummah-card th,
@@ -4366,20 +4382,35 @@ body:has(.program-detail-card:target) .program-overview {
   .topic-chip,
   .topic-text {
     min-width: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
     word-break: normal;
+    hyphens: none;
   }
 
   .topic-chip {
+    width: 100%;
     gap: 5px;
     min-height: 36px;
+    align-items: flex-start;
     padding: 6px;
     border-radius: 9px;
   }
 
-  .topic-chip img {
+  .topic-icon {
+    flex: 0 0 22px;
     width: 22px;
     height: 22px;
+  }
+
+  .topic-chip img,
+  .topic-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .topic-text {
+    flex: 1 1 auto;
+    white-space: normal;
   }
 
   .speaker-name.fit-small,
