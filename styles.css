@@ -2869,6 +2869,18 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 @media (max-width: 760px) {
+  .prayer-table-shell {
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .prayer-table-scroll {
+    overflow: visible;
+  }
+
   .prayer-times-table,
   .prayer-times-table thead,
   .prayer-times-table tbody,
@@ -2885,29 +2897,30 @@ body:has(.program-detail-card:target) .program-overview {
 
   .prayer-times-table {
     display: grid;
-    gap: 12px;
-    background: #f8fbfa;
+    gap: 14px;
+    background: transparent;
     font-size: 13px;
   }
 
   .prayer-times-table tr {
     display: grid;
-    gap: 8px;
+    gap: 9px;
     margin: 0;
-    padding: 14px 12px 16px;
+    padding: 15px 14px 16px;
     background: white;
-    border: 1px solid rgba(165, 100, 5, 0.22);
-    border-radius: 9px;
+    border: 1px solid rgba(165, 100, 5, 0.28);
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(18, 24, 39, 0.045);
   }
 
   .prayer-times-table td {
     display: grid;
-    grid-template-columns: 78px minmax(0, 1fr);
-    align-items: center;
+    grid-template-columns: 1fr;
+    align-items: start;
     width: 100% !important;
     box-sizing: border-box;
-    gap: 10px;
-    padding: 5px 0;
+    gap: 5px;
+    padding: 4px 0;
     border: 0;
     text-align: left;
   }
@@ -2923,7 +2936,7 @@ body:has(.program-detail-card:target) .program-overview {
   .prayer-times-table .date-cell {
     grid-template-columns: 1fr;
     gap: 5px;
-    padding: 0 0 8px;
+    padding: 0 0 10px;
     border-bottom: 1px solid rgba(0, 91, 64, 0.12);
     box-shadow: none;
   }
@@ -2944,7 +2957,7 @@ body:has(.program-detail-card:target) .program-overview {
 
   .prayer-times-table .prayer-time-cell::before {
     align-self: start;
-    padding-top: 2px;
+    padding-top: 0;
   }
 
   .prayer-times-table .prayer-time-cell {
@@ -2952,19 +2965,20 @@ body:has(.program-detail-card:target) .program-overview {
   }
 
   .prayer-times-table .prayer-time-cell span {
-    display: inline-flex;
-    width: fit-content;
-    max-width: 240px;
+    display: grid;
+    width: 100%;
+    max-width: 210px;
+    grid-template-columns: 48px minmax(0, 1fr);
     align-items: baseline;
     gap: 8px;
   }
 
   .prayer-times-table .prayer-time-cell span + span {
-    margin-top: 4px;
+    margin-top: 6px;
   }
 
   .prayer-times-table .prayer-time-cell b {
-    min-width: 44px;
+    min-width: 0;
     font-size: 10px;
   }
 
@@ -2976,10 +2990,12 @@ body:has(.program-detail-card:target) .program-overview {
   .prayer-times-table .single-time strong {
     min-height: 0;
     justify-content: flex-start;
+    padding-top: 1px;
     font-size: 15px;
   }
 
   .prayer-times-table .iqamah-line {
+    width: fit-content;
     padding: 4px 7px;
   }
 }
@@ -2990,8 +3006,8 @@ body:has(.program-detail-card:target) .program-overview {
   }
 
   .prayer-times-table td {
-    grid-template-columns: 72px minmax(0, 1fr);
-    gap: 8px;
+    grid-template-columns: 1fr;
+    gap: 5px;
   }
 }
 
