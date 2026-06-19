@@ -663,7 +663,22 @@ img {
 .prayer-tile img {
   width: 48px;
   height: 48px;
+  object-fit: contain;
+  object-position: center;
   filter: brightness(0) saturate(100%) invert(43%) sepia(93%) saturate(539%) hue-rotate(1deg) brightness(93%) contrast(95%);
+}
+
+.prayer-tile[data-prayer-tile="dhuhr"] img {
+  transform: scale(0.9);
+}
+
+.prayer-tile[data-prayer-tile="isha"] img {
+  transform: scale(1.08);
+}
+
+.prayer-tile[data-prayer-tile="fajr"] img,
+.prayer-tile[data-prayer-tile="sunrise"] img {
+  transform: scale(1.04);
 }
 
 .prayer-tile strong {
@@ -1631,6 +1646,55 @@ body.is-news-detail-page .page-band {
   line-height: 1;
 }
 
+.page-split h2.section-heading-charcoal,
+.section-heading h2.section-heading-charcoal {
+  color: #202737;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: clamp(29px, 3vw, 40px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.heading-charcoal {
+  color: #202737 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+}
+
+.program-overview .section-heading h2.section-heading-charcoal {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(42px, 4.8vw, 58px);
+  font-weight: 700;
+  line-height: 0.96;
+}
+
+.about-community-copy h2.section-heading-charcoal,
+#imam .section-heading h2.section-heading-charcoal,
+#contact .section-heading h2.section-heading-charcoal {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(42px, 4.8vw, 58px);
+  font-weight: 800;
+  line-height: 0.96;
+}
+
+.section-heading h2.heading-charcoal,
+.page-split h2.heading-charcoal {
+  font-size: clamp(26px, 2.5vw, 34px);
+  line-height: 1.12;
+}
+
+.program-full h2.heading-charcoal,
+.registration-panel h2.heading-charcoal,
+.service-form-panel h2.heading-charcoal,
+.service-notice h2.heading-charcoal {
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-size: clamp(32px, 3.4vw, 44px);
+  font-weight: 700 !important;
+  line-height: 1;
+}
+
 .page-split p,
 .section-heading p,
 .feature-card p,
@@ -1918,22 +1982,68 @@ body:has(.program-detail-card:target) .program-overview {
   display: inline-flex;
   width: fit-content;
   align-items: center;
-  min-height: 38px;
-  color: var(--green);
+  justify-content: center;
+  gap: 3px;
+  min-height: 42px;
+  padding: 0 16px;
+  color: white;
+  background: var(--green);
+  border: 1px solid var(--green);
+  border-radius: 6px;
+  box-shadow: 0 10px 22px rgba(0, 84, 61, 0.12);
   font-size: 15px;
   font-weight: 850;
-  transition: color 180ms ease, transform 180ms ease;
+  text-decoration: none;
+  transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
+.news-detail-back {
+  grid-column: 1 / -1;
+  order: 0;
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 42px;
+  padding: 0 16px;
+  color: white;
+  background: var(--green);
+  border: 1px solid var(--green);
+  border-radius: 6px;
+  box-shadow: 0 10px 22px rgba(0, 84, 61, 0.12);
+  font-size: 15px;
+  font-weight: 850;
+  text-decoration: none;
+  transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.news-detail-back::before,
+.detail-page-back::before {
+  content: "←";
+  display: inline-flex;
+  align-items: center;
+  height: 1em;
+  font-size: 17px;
+  line-height: 1;
+  transform: translateY(-0.11em);
+}
+
+.news-detail-back:hover,
+.news-detail-back:focus-visible,
 .detail-page-back:hover,
 .detail-page-back:focus-visible {
-  color: var(--green-dark);
-  transform: translateX(-2px);
+  color: white;
+  background: var(--green-dark);
+  box-shadow: 0 14px 28px rgba(0, 84, 61, 0.18);
+  transform: translateY(-1px);
 }
 
 .page-back-band {
-  padding-top: 22px;
-  padding-bottom: 0;
+  padding-top: 20px;
+  padding-bottom: 18px;
+  border-top: 1px solid var(--border);
+  border-bottom: 2px solid rgba(165, 100, 5, 0.24);
 }
 
 .program-detail-grid {
@@ -3478,23 +3588,6 @@ body:has(.program-detail-card:target) .program-overview {
   box-shadow: 0 14px 34px rgba(18, 24, 39, 0.06);
 }
 
-.news-detail-back {
-  grid-column: 1 / -1;
-  order: 0;
-  display: inline-flex;
-  width: fit-content;
-  align-items: center;
-  min-height: 34px;
-  color: var(--green);
-  font-size: 15px;
-  font-weight: 850;
-}
-
-.news-detail-back:hover,
-.news-detail-back:focus-visible {
-  color: var(--green-dark);
-}
-
 .news-detail-poster {
   order: 2;
   margin: 0;
@@ -3559,7 +3652,7 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 .news-detail-summary {
-  margin: 14px 0 0;
+  margin: 14px 0 0 -15px;
 }
 
 .news-detail-summary p {
@@ -3625,22 +3718,39 @@ body:has(.program-detail-card:target) .program-overview {
   border-radius: 8px;
 }
 
-.map-panel::after {
+.map-address-button {
   position: absolute;
   right: 18px;
   bottom: 18px;
-  z-index: 1;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
   padding: 9px 12px;
-  color: var(--green-dark);
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(165, 100, 5, 0.26);
+  color: white;
+  background: var(--green);
+  border: 1px solid var(--green);
   border-radius: 6px;
-  content: "107 Quail Fields Court";
+  box-shadow: 0 10px 22px rgba(18, 24, 39, 0.08);
   font-size: 13px;
   font-weight: 850;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.map-address-button:hover,
+.map-address-button:focus-visible {
+  color: white;
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+  box-shadow: 0 14px 28px rgba(0, 84, 61, 0.18);
+  transform: translateY(-1px);
 }
 
 .map-panel iframe {
+  position: relative;
+  z-index: 0;
   display: block;
   width: 100%;
   height: 100%;
@@ -3680,13 +3790,13 @@ body:has(.program-detail-card:target) .program-overview {
 .donation-form-main,
 .donation-summary {
   background: white;
-  border: 1px solid rgba(165, 100, 5, 0.38);
+  border: 1px solid rgba(0, 84, 61, 0.16);
   border-radius: 8px;
   box-shadow: none;
 }
 
 #giving .feature-card {
-  border-color: rgba(165, 100, 5, 0.34);
+  border-color: rgba(0, 84, 61, 0.14);
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
@@ -4549,7 +4659,7 @@ body:has(.program-detail-card:target) .program-overview {
     height: 300px;
   }
 
-  .map-panel::after {
+  .map-address-button {
     right: 12px;
     bottom: 12px;
   }
@@ -4866,6 +4976,17 @@ body:has(.program-detail-card:target) .program-overview {
   .news-detail-body,
   .news-detail-poster {
     padding: 14px;
+  }
+
+  .news-detail-body .news-feature-category {
+    position: static;
+    margin-bottom: 10px;
+  }
+
+  .news-detail-body time,
+  .news-detail-body h2,
+  .news-detail-summary {
+    padding-right: 0;
   }
 
   .news-detail-body time {
