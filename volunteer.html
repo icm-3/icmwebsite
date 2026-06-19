@@ -32,8 +32,8 @@
               <legend>Volunteer Information</legend>
               <div class="local-registration-form">
                 <label class="form-field-wide"><span>Full Name</span><input type="text" name="full-name" required></label>
-                <label><span>Email address</span><input type="email" name="email" autocomplete="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Enter a valid email address with an @ sign"></label>
-                <label><span>Phone Number</span><input type="tel" name="phone" autocomplete="tel" required inputmode="numeric" pattern="[0-9]*" title="Use numbers only"></label>
+                <label><span>Email address</span><input type="email" name="email" autocomplete="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Enter a valid email address with an @ sign" placeholder="name@example.com"></label>
+                <label><span>Phone Number</span><input type="tel" name="phone" autocomplete="tel" required inputmode="numeric" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" data-format="phone" title="Use 10 digits, formatted as 919-555-0123" placeholder="919-555-0123"></label>
                 <label class="form-field-wide"><span>Address</span><input type="text" name="address" autocomplete="street-address" required></label>
               </div>
               <div class="option-grid" role="group" aria-label="Age range">
@@ -49,7 +49,7 @@
               <legend>Emergency Contact Information</legend>
               <div class="local-registration-form">
                 <label><span>Contact Name</span><input type="text" name="emergency-name" required></label>
-                <label><span>Contact Phone</span><input type="tel" name="emergency-phone" required inputmode="numeric" pattern="[0-9]*" title="Use numbers only"></label>
+                <label><span>Contact Phone</span><input type="tel" name="emergency-phone" required inputmode="numeric" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" data-format="phone" title="Use 10 digits, formatted as 919-555-0123" placeholder="919-555-0123"></label>
                 <label class="form-field-wide"><span>Contact Address</span><input type="text" name="emergency-address"></label>
               </div>
             </fieldset>

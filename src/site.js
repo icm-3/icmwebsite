@@ -261,10 +261,41 @@ function initPrayerTimesPage() {
 }
 
 function initStaticFormValidation() {
-  document.querySelectorAll("input[type='tel'], input[inputmode='numeric'], input[data-numeric-only]").forEach((input) => {
+  const formatPhone = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 10);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+    return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+  };
+
+  const formatMoney = (value) => {
+    const cleanedValue = value
+      .replace(/[^\d.]/g, "")
+      .replace(/(\..*)\./g, "$1");
+    const [dollars = "", cents] = cleanedValue.split(".");
+    const normalizedDollars = dollars.replace(/^0+(?=\d)/, "");
+    if (typeof cents === "undefined") return normalizedDollars;
+    return `${normalizedDollars}.${cents.slice(0, 2)}`;
+  };
+
+  document.querySelectorAll("[data-format='phone']").forEach((input) => {
+    input.addEventListener("input", () => {
+      const phoneValue = formatPhone(input.value);
+      if (input.value !== phoneValue) input.value = phoneValue;
+    });
+  });
+
+  document.querySelectorAll("input[inputmode='numeric']:not([data-format='phone']), input[data-numeric-only]").forEach((input) => {
     input.addEventListener("input", () => {
       const numericValue = input.value.replace(/\D/g, "");
       if (input.value !== numericValue) input.value = numericValue;
+    });
+  });
+
+  document.querySelectorAll("[data-format='money']").forEach((input) => {
+    input.addEventListener("input", () => {
+      const moneyValue = formatMoney(input.value);
+      if (input.value !== moneyValue) input.value = moneyValue;
     });
   });
 

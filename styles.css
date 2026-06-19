@@ -1987,6 +1987,34 @@ body:has(.program-detail-card:target) .program-overview {
   grid-template-columns: minmax(0, 0.85fr) minmax(300px, 0.75fr);
 }
 
+.program-balanced-detail {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.88fr);
+}
+
+.program-wide-section {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 14px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+
+.program-wide-section h3 {
+  margin: 0;
+  color: var(--green);
+  font-size: 20px;
+}
+
+.program-bio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 24px;
+}
+
+.program-bio-grid p {
+  margin: 0;
+}
+
 .program-poster {
   margin: 0;
 }
@@ -2134,6 +2162,13 @@ body:has(.program-detail-card:target) .program-overview {
   font: inherit;
 }
 
+.aid-form input::placeholder,
+.local-registration-form input::placeholder,
+.aid-form textarea::placeholder,
+.local-registration-form textarea::placeholder {
+  color: #8a94a3;
+}
+
 .form-grid-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -2223,26 +2258,48 @@ body:has(.program-detail-card:target) .program-overview {
   width: 100%;
   min-height: 42px;
   align-items: center;
+  justify-content: center;
   padding: 9px 11px;
-  color: white;
-  background: var(--green);
-  border: 1px solid var(--green);
+  color: var(--green);
+  background: white;
+  border: 1px solid rgba(0, 84, 61, 0.28);
   border-radius: 6px;
   font-size: 12px;
   font-weight: 850;
   line-height: 1.2;
+  text-align: center;
   transition:
     transform 180ms ease,
     background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
     box-shadow 180ms ease;
 }
 
-.option-grid input:checked + span,
-.option-grid label:hover > span,
-.option-grid label:focus-within > span {
-  background: var(--green-dark);
+.option-grid label:hover > span {
+  color: white;
+  background: var(--green);
   box-shadow: 0 8px 18px rgba(0, 84, 61, 0.12);
   transform: translateY(-1px);
+}
+
+.option-grid input:checked + span {
+  color: white;
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+  box-shadow: 0 0 0 2px rgba(0, 84, 61, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+}
+
+.option-grid label:has(input:checked):hover > span {
+  color: white;
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+}
+
+.option-grid input:checked + span::after {
+  content: "✓";
+  margin-left: 8px;
+  font-weight: 900;
 }
 
 .option-grid input:focus-visible + span {
@@ -2292,6 +2349,38 @@ body:has(.program-detail-card:target) .program-overview {
   border: 1px solid var(--border);
   border-radius: 6px;
   font: inherit;
+}
+
+.local-registration-form select:focus,
+.local-registration-form input:focus,
+.local-registration-form textarea:focus,
+.aid-form select:focus {
+  border-color: var(--green);
+  outline: 3px solid rgba(0, 84, 61, 0.16);
+}
+
+.local-registration-form .money-input {
+  position: relative;
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.local-registration-form .money-input::before {
+  content: "$";
+  position: absolute;
+  top: 50%;
+  left: 13px;
+  z-index: 1;
+  color: var(--text);
+  font-size: inherit;
+  font-weight: inherit;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.local-registration-form .money-input input {
+  padding-left: 28px;
 }
 
 .local-registration-form textarea {
@@ -2669,23 +2758,23 @@ body:has(.program-detail-card:target) .program-overview {
 .calendar-detail-card {
   overflow: hidden;
   padding: 18px;
-  background: linear-gradient(180deg, #ffffff, #fbfdfc);
-  border-color: rgba(165, 100, 5, 0.24);
+  background: #ffffff;
+  border-color: rgba(0, 84, 61, 0.16);
   text-align: left;
 }
 
 .calendar-detail-body {
   padding: 22px 24px;
   background: #ffffff;
-  border: 1px solid rgba(0, 84, 61, 0.12);
-  border-left: 4px solid var(--gold);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--green);
   border-radius: 9px;
 }
 
 .calendar-detail-eyebrow {
   display: block;
   margin-bottom: 8px;
-  color: var(--gold);
+  color: var(--green);
   font-size: 13px;
   font-weight: 850;
   letter-spacing: 0.1em;
@@ -2712,9 +2801,17 @@ body:has(.program-detail-card:target) .program-overview {
 .calendar-detail-meta span {
   min-width: 0;
   padding: 12px 14px;
-  background: #fbfdfc;
-  border: 1px solid rgba(0, 84, 61, 0.12);
+  background: #ffffff;
+  border: 1px solid var(--border);
   border-radius: 8px;
+}
+
+.calendar-detail-meta time {
+  border-left: 3px solid rgba(165, 100, 5, 0.7);
+}
+
+.calendar-detail-meta span {
+  border-left: 3px solid rgba(0, 84, 61, 0.68);
 }
 
 .calendar-detail-location {
@@ -2725,8 +2822,8 @@ body:has(.program-detail-card:target) .program-overview {
 .calendar-detail-description {
   margin-top: 14px !important;
   padding: 14px 16px;
-  background: rgba(165, 100, 5, 0.055);
-  border: 1px solid rgba(165, 100, 5, 0.14);
+  background: #fbfdfc;
+  border: 1px solid var(--border);
   border-radius: 8px;
 }
 
@@ -3153,7 +3250,7 @@ body:has(.program-detail-card:target) .program-overview {
   margin: 16px 0 0;
   padding: 14px;
   background: #ffffff;
-  border: 1px solid rgba(0, 84, 61, 0.12);
+  border: 1px solid var(--border);
   border-radius: 10px;
   box-shadow: 0 10px 26px rgba(18, 24, 39, 0.045);
 }
@@ -3877,6 +3974,10 @@ body:has(.program-detail-card:target) .program-overview {
   .location-layout,
   .registration-panel,
   .service-notice {
+    grid-template-columns: 1fr;
+  }
+
+  .program-bio-grid {
     grid-template-columns: 1fr;
   }
 

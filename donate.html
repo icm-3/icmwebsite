@@ -72,11 +72,11 @@
               </label>
               <label class="form-field">
                 <span>Email</span>
-                <input type="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Enter a valid email address with an @ sign" name="email" autocomplete="email">
+                <input type="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Enter a valid email address with an @ sign" name="email" autocomplete="email" placeholder="name@example.com">
               </label>
               <label class="form-field">
                 <span>Phone</span>
-                <input type="tel" required inputmode="numeric" pattern="[0-9]*" title="Use numbers only" name="phone" autocomplete="tel">
+                <input type="tel" required inputmode="numeric" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" data-format="phone" title="Use 10 digits, formatted as 919-555-0123" name="phone" autocomplete="tel" placeholder="919-555-0123">
               </label>
 
               <fieldset class="donation-fieldset payment-fieldset form-field-wide">
