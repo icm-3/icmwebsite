@@ -254,7 +254,7 @@ img {
 .hero {
   position: relative;
   display: flex;
-  min-height: 310px;
+  min-height: 360px;
   align-items: center;
   justify-content: center;
   isolation: isolate;
@@ -263,7 +263,14 @@ img {
 }
 
 .hero::before {
-  content: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.04) 20%, rgba(255, 255, 255, 0) 48%, rgba(255, 255, 255, 0.06) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 24%, rgba(255, 255, 255, 0) 74%, rgba(17, 17, 15, 0.14) 100%);
 }
 
 .hero-copy {
@@ -271,7 +278,7 @@ img {
   z-index: 3;
   width: min(1020px, calc(100% - 64px));
   margin: 0 auto;
-  padding: 15px 40px 14px;
+  padding: 18px 40px 16px;
   text-align: center;
 }
 
@@ -284,15 +291,17 @@ img {
   width: 100vw;
   pointer-events: none;
   content: "";
-  background: #ffffff;
-  box-shadow: 0 8px 20px rgba(17, 24, 39, 0.06);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0.93) 22%, rgba(255, 255, 255, 0.96) 50%, rgba(255, 255, 255, 0.9) 78%, rgba(255, 255, 255, 0.62) 100%);
+  border-top: 1px solid rgba(165, 100, 5, 0.18);
+  border-bottom: 1px solid rgba(0, 84, 61, 0.12);
+  box-shadow: 0 14px 34px rgba(17, 24, 39, 0.08);
   transform: translateX(-50%);
 }
 
 .eyebrow {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   color: var(--gold);
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -302,7 +311,7 @@ img {
   margin: 0;
   color: var(--green);
   font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
-  font-size: clamp(36px, 4.1vw, 50px);
+  font-size: clamp(42px, 4.7vw, 58px);
   font-weight: 700;
   letter-spacing: 0;
   line-height: 1;
@@ -314,9 +323,9 @@ img {
 
 .hero-subtitle {
   max-width: none;
-  margin: 6px auto 12px;
+  margin: 8px auto 16px;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 500;
   line-height: 1.45;
 }
@@ -329,20 +338,11 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 18px;
 }
 
 .hero-actions .button {
-  width: 154px;
-  height: 38px;
-  gap: 8px;
-  padding: 0 18px;
-  font-size: 14px;
-}
-
-.hero-actions .button img {
-  width: 18px;
-  height: 18px;
+  width: 220px;
 }
 
 .button-primary {
@@ -395,7 +395,7 @@ img {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 310px;
+  min-height: 360px;
   object-fit: fill;
   object-position: center center;
   filter: none;
