@@ -345,7 +345,7 @@ function setCalendarDetail(event, index = 0) {
             : ""
         }
         ${event.description ? `<p class="calendar-detail-description">${escapeHtml(event.description)}</p>` : ""}
-        ${eventLink(event) ? `<a class="calendar-detail-link" href="${escapeHtml(eventLink(event))}" target="_blank" rel="noopener">Open Link</a>` : ""}
+        ${eventLink(event) ? `<a class="calendar-detail-link" href="${escapeHtml(eventLink(event))}" target="_blank" rel="noopener">Register</a>` : ""}
       </div>
       ${
         poster

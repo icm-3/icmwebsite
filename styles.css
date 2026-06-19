@@ -4,6 +4,8 @@
   --green-soft: #eaf4ee;
   --green-pale: #f4faf6;
   --gold: #a56405;
+  --poster-gold: #efd590;
+  --poster-brown: #8a5a49;
   --text: #121827;
   --muted: #5e6673;
   --border: #e2e8e5;
@@ -703,6 +705,7 @@ img {
 }
 
 .info-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 392px;
@@ -712,6 +715,22 @@ img {
   border: 1px solid rgba(165, 100, 5, 0.28);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(18, 24, 39, 0.035);
+}
+
+.info-card::before {
+  content: "";
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  width: 74px;
+  height: 30px;
+  opacity: 0.2;
+  background:
+    radial-gradient(circle at 18px 24px, var(--poster-gold) 0 6px, transparent 7px),
+    radial-gradient(circle at 48px 20px, transparent 0 7px, var(--poster-gold) 8px 9px, transparent 10px),
+    linear-gradient(var(--poster-gold), var(--poster-gold)) 18px 0 / 1px 20px no-repeat,
+    linear-gradient(var(--poster-gold), var(--poster-gold)) 48px 0 / 1px 14px no-repeat;
+  pointer-events: none;
 }
 
 .jummah-card {
@@ -741,7 +760,7 @@ img {
 }
 
 .jummah-card .card-title h2 {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 900;
 }
 
@@ -753,10 +772,11 @@ img {
 .card-title h2 {
   margin: 0;
   color: var(--green);
-  font-size: 15px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 21px;
   font-weight: 800;
-  letter-spacing: 0.02em;
-  line-height: 1.2;
+  letter-spacing: 0;
+  line-height: 1.02;
   text-transform: uppercase;
 }
 
@@ -1671,6 +1691,14 @@ body.is-news-detail-page .page-band {
   display: block;
 }
 
+.donation-start .section-heading h2 {
+  color: var(--green);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(42px, 5vw, 62px);
+  font-weight: 800;
+  line-height: 0.95;
+}
+
 .feature-grid,
 .program-grid,
 .contact-grid {
@@ -1967,7 +1995,7 @@ body:has(.program-detail-card:target) .program-overview {
 
 .program-facts {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   padding: 20px;
   background: #fbfdfc;
   border: 1px solid var(--border);
@@ -1975,8 +2003,45 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 .program-facts h3 {
-  margin-top: 0;
+  margin: 2px 0 0;
   color: var(--green);
+}
+
+.program-facts .check-list {
+  display: grid;
+  gap: 9px;
+  margin: 0 0 2px;
+}
+
+.program-fact-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.program-fact-list li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.program-fact-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.72em;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--poster-gold);
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+
+.program-fact-list strong {
+  color: var(--text);
 }
 
 .pantry-overview .program-full-copy h2 {
@@ -2716,7 +2781,7 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 .calendar-detail {
-  margin-top: 16px;
+  margin-top: 14px;
   scroll-margin-top: 24px;
 }
 
@@ -2757,24 +2822,42 @@ body:has(.program-detail-card:target) .program-overview {
 
 .calendar-detail-card {
   overflow: hidden;
-  padding: 18px;
+  padding: 14px;
   background: #ffffff;
-  border-color: rgba(0, 84, 61, 0.16);
+  border-color: rgba(165, 100, 5, 0.18);
   text-align: left;
 }
 
 .calendar-detail-body {
-  padding: 22px 24px;
+  position: relative;
+  padding: 18px 20px;
   background: #ffffff;
   border: 1px solid var(--border);
-  border-left: 4px solid var(--green);
+  border-top: 3px solid rgba(239, 213, 144, 0.9);
+  border-left: 3px solid var(--green);
   border-radius: 9px;
+}
+
+.calendar-detail-body::after {
+  content: "";
+  position: absolute;
+  top: 11px;
+  right: 16px;
+  width: 58px;
+  height: 22px;
+  opacity: 0.2;
+  background:
+    radial-gradient(circle at 14px 18px, var(--poster-gold) 0 5px, transparent 6px),
+    radial-gradient(circle at 40px 15px, transparent 0 6px, var(--poster-gold) 7px 8px, transparent 9px),
+    linear-gradient(var(--poster-gold), var(--poster-gold)) 14px 0 / 1px 15px no-repeat,
+    linear-gradient(var(--poster-gold), var(--poster-gold)) 40px 0 / 1px 11px no-repeat;
+  pointer-events: none;
 }
 
 .calendar-detail-eyebrow {
   display: block;
   margin-bottom: 8px;
-  color: var(--green);
+  color: var(--poster-brown);
   font-size: 13px;
   font-weight: 850;
   letter-spacing: 0.1em;
@@ -2793,15 +2876,15 @@ body:has(.program-detail-card:target) .program-overview {
 .calendar-detail-meta {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 16px;
+  gap: 10px;
+  margin-top: 14px;
 }
 
 .calendar-detail-meta time,
 .calendar-detail-meta span {
   min-width: 0;
-  padding: 12px 14px;
-  background: #ffffff;
+  padding: 10px 12px;
+  background: #fbfdfc;
   border: 1px solid var(--border);
   border-radius: 8px;
 }
@@ -2820,8 +2903,8 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 .calendar-detail-description {
-  margin-top: 14px !important;
-  padding: 14px 16px;
+  margin-top: 12px !important;
+  padding: 12px 14px;
   background: #fbfdfc;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -3234,31 +3317,38 @@ body:has(.program-detail-card:target) .program-overview {
   justify-content: center;
   margin-top: 16px;
   padding: 0 16px;
-  color: white;
-  background: var(--green);
+  color: var(--poster-brown);
+  background: white;
+  border: 1px solid rgba(138, 90, 73, 0.3);
   border-radius: 8px;
   font-weight: 850;
 }
 
 .calendar-detail-link:hover,
 .calendar-detail-link:focus-visible {
-  background: var(--green-dark);
+  color: white;
+  background: var(--poster-brown);
 }
 
 .calendar-detail-poster {
   display: block;
-  margin: 16px 0 0;
-  padding: 14px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 14px auto 0;
+  padding: 12px;
   background: #ffffff;
   border: 1px solid var(--border);
   border-radius: 10px;
   box-shadow: 0 10px 26px rgba(18, 24, 39, 0.045);
+  text-align: center;
 }
 
 .calendar-detail-poster img {
   display: block;
-  width: 100%;
-  max-height: min(900px, 86vh);
+  width: min(420px, 100%);
+  max-width: 100%;
+  max-height: min(480px, 54vh);
+  margin-inline: auto;
   background: #f6f8f7;
   border-radius: 8px;
   object-fit: contain;
