@@ -1402,18 +1402,21 @@ function renderEvents(content) {
   const today = prayerDateFor(/* @__PURE__ */ new Date()).getTime();
   const sourceEvents = content.events?.length ? content.events : defaultContent.events;
   const upcomingEvents = sourceEvents.filter((event) => eventSortValue(event) >= today).sort((first, second) => eventSortValue(first) - eventSortValue(second));
-  const events = upcomingEvents.length ? upcomingEvents : [...sourceEvents].sort((first, second) => eventSortValue(second) - eventSortValue(first));
+  const pastEvents = sourceEvents.filter((event) => eventSortValue(event) < today).sort((first, second) => eventSortValue(second) - eventSortValue(first));
+  const events = [...upcomingEvents, ...pastEvents];
   list.innerHTML = events.map((event, index) => {
     const badge = getDateBadgeParts(event.date);
     const meta = eventDateTimeLabel(event);
     const details = [meta, event.location].filter(Boolean);
+    const isPast = eventSortValue(event) < today;
     return `
-        <a class="event-item" href="./calendar.html#event-${escapeHtml(eventSlug(event, index))}">
+        <a class="event-item${isPast ? " is-past" : ""}" href="./calendar.html#event-${escapeHtml(eventSlug(event, index))}">
           <div class="date-badge"><span>${escapeHtml(badge.month)}</span><strong>${escapeHtml(badge.day)}</strong></div>
           <div>
             <h3>${escapeHtml(eventTitle(event))}</h3>
             ${details.length ? `<p>${details.map((item) => escapeHtml(item)).join("<br>")}</p>` : ""}
           </div>
+          ${isPast ? `<span class="event-status">Past</span>` : ""}
         </a>
       `;
   }).join("");
