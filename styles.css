@@ -66,7 +66,7 @@ img {
   display: flex;
   align-items: center;
   gap: 38px;
-  color: #111827;
+  color: #1f2937;
   font-size: 18px;
   font-weight: 700;
 }
@@ -3127,7 +3127,11 @@ body:has(.program-detail-card:target) .program-overview {
   align-items: center;
   padding: 18px;
   color: inherit;
-  border: 1px solid rgba(165, 100, 5, 0.24);
+  background:
+    linear-gradient(90deg, rgba(0, 84, 61, 0.045), rgba(255, 255, 255, 0) 28%),
+    #ffffff;
+  border: 1px solid rgba(0, 84, 61, 0.14);
+  border-left: 4px solid rgba(0, 84, 61, 0.72);
   border-radius: 8px;
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
@@ -3135,8 +3139,8 @@ body:has(.program-detail-card:target) .program-overview {
 .news-feature:hover,
 .news-feature:focus-visible {
   transform: translateY(-2px);
-  border-color: rgba(165, 100, 5, 0.42);
-  box-shadow: 0 12px 26px rgba(18, 24, 39, 0.08);
+  border-color: rgba(0, 84, 61, 0.3);
+  box-shadow: 0 12px 26px rgba(0, 84, 61, 0.08);
   outline: 0;
 }
 
@@ -3149,7 +3153,7 @@ body:has(.program-detail-card:target) .program-overview {
 
 .news-feature time {
   color: var(--gold);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -3157,11 +3161,16 @@ body:has(.program-detail-card:target) .program-overview {
 
 .news-feature h2 {
   margin-top: 6px;
+  color: #1f2937;
   font-size: 25px;
+  font-weight: 750;
+  line-height: 1.15;
 }
 
 .news-feature p {
   margin: 8px 0 0;
+  max-width: none;
+  line-height: 1.55;
 }
 
 .news-detail {
@@ -3215,11 +3224,11 @@ body:has(.program-detail-card:target) .program-overview {
 
 .news-detail-body {
   order: 1;
-  max-width: 920px;
+  max-width: none;
   padding: 20px 22px;
   background: #ffffff;
   border: 1px solid rgba(0, 84, 61, 0.11);
-  border-left: 4px solid var(--gold);
+  border-left: 4px solid var(--green);
   border-radius: 9px;
 }
 
@@ -3236,7 +3245,7 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 .news-detail-body h2 {
-  max-width: 980px;
+  max-width: none;
   margin: 8px 0 0;
   color: #1f2937;
   font-size: clamp(30px, 3.2vw, 44px);
@@ -3245,7 +3254,7 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 .news-detail-body p {
-  max-width: 860px;
+  max-width: none;
   margin: 12px 0 0;
   color: var(--muted);
   font-size: 17px;

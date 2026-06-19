@@ -969,6 +969,13 @@ var defaultContent = {
   ],
   news: [
     {
+      title: "Community Operations Update for Prayer Hall Access, Parking Flow, Program Registration, and Weekend Family Services",
+      date: "2026-06-18",
+      summary: "Please review this extended community update covering prayer hall entry, volunteer parking directions, class registration reminders, family services availability, and important notes for guests attending multiple programs on the same weekend.",
+      image: "./public/news/ramadan.png",
+      imageAlt: "Mosque lanterns for community operations update"
+    },
+    {
       title: "Friday Announcements - June 12, 2026",
       date: "2026-06-12",
       summary: "Monthly support, traffic reminders, summer programs, Eid celebration, Bukhari Circle, youth volunteer signups, and weekly lectures.",
