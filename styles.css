@@ -2884,23 +2884,30 @@ body:has(.program-detail-card:target) .program-overview {
   }
 
   .prayer-times-table {
+    display: grid;
+    gap: 12px;
     background: #f8fbfa;
     font-size: 13px;
   }
 
   .prayer-times-table tr {
+    display: grid;
+    gap: 8px;
     margin: 0;
-    padding: 10px 12px;
-    border-bottom: 1px solid rgba(165, 100, 5, 0.22);
+    padding: 14px 12px 16px;
     background: white;
+    border: 1px solid rgba(165, 100, 5, 0.22);
+    border-radius: 9px;
   }
 
   .prayer-times-table td {
     display: grid;
-    grid-template-columns: 92px minmax(0, 1fr);
+    grid-template-columns: 78px minmax(0, 1fr);
     align-items: center;
-    gap: 12px;
-    padding: 9px 0;
+    width: 100% !important;
+    box-sizing: border-box;
+    gap: 10px;
+    padding: 5px 0;
     border: 0;
     text-align: left;
   }
@@ -2914,11 +2921,77 @@ body:has(.program-detail-card:target) .program-overview {
   }
 
   .prayer-times-table .date-cell {
+    grid-template-columns: 1fr;
+    gap: 5px;
+    padding: 0 0 8px;
+    border-bottom: 1px solid rgba(0, 91, 64, 0.12);
     box-shadow: none;
   }
 
+  .prayer-times-table .date-cell::before {
+    display: none;
+  }
+
+  .prayer-times-table .date-cell span {
+    font-size: 13px;
+    white-space: normal;
+  }
+
+  .prayer-times-table .date-cell em {
+    margin-top: 0;
+    font-size: 12px;
+  }
+
+  .prayer-times-table .prayer-time-cell::before {
+    align-self: start;
+    padding-top: 2px;
+  }
+
+  .prayer-times-table .prayer-time-cell {
+    align-items: start;
+  }
+
   .prayer-times-table .prayer-time-cell span {
+    display: inline-flex;
+    width: fit-content;
     max-width: 240px;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .prayer-times-table .prayer-time-cell span + span {
+    margin-top: 4px;
+  }
+
+  .prayer-times-table .prayer-time-cell b {
+    min-width: 44px;
+    font-size: 10px;
+  }
+
+  .prayer-times-table .prayer-time-cell strong {
+    font-size: 13px;
+    text-align: left;
+  }
+
+  .prayer-times-table .single-time strong {
+    min-height: 0;
+    justify-content: flex-start;
+    font-size: 15px;
+  }
+
+  .prayer-times-table .iqamah-line {
+    padding: 4px 7px;
+  }
+}
+
+@media (max-width: 430px) {
+  .prayer-times-table tr {
+    padding-inline: 10px;
+  }
+
+  .prayer-times-table td {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 8px;
   }
 }
 
