@@ -3947,7 +3947,7 @@ body:has(.program-detail-card:target) .program-overview {
     margin-bottom: 10px;
     padding: 14px;
     background: white;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(166, 96, 3, 0.26);
     border-radius: 8px;
   }
 
@@ -3966,20 +3966,24 @@ body:has(.program-detail-card:target) .program-overview {
 
   .calendar-event-stack {
     margin-top: 0;
+    gap: 4px;
   }
 
   .calendar-event-chip {
     grid-template-columns: 18px minmax(0, 1fr);
     min-height: 38px;
+    padding: 7px 10px;
     font-size: 13px;
   }
 
   .calendar-event-chip span {
     white-space: normal;
+    font-size: inherit;
   }
 
   .calendar-event-more {
     min-height: 32px;
+    padding: 6px 10px;
     font-size: 12px;
   }
 
@@ -4155,5 +4159,67 @@ body:has(.program-detail-card:target) .program-overview {
   .amount-grid label > span,
   .segmented-options label > span {
     min-height: 48px;
+  }
+}
+
+@media (max-width: 520px) {
+  .jummah-card .card-header {
+    padding-inline: 14px;
+  }
+
+  .jummah-card .card-title {
+    min-width: 0;
+  }
+
+  .jummah-card .card-title h2 {
+    font-size: 14px;
+    line-height: 1.15;
+  }
+
+  .jummah-card .table-wrap {
+    overflow: hidden;
+  }
+
+  .jummah-card thead tr,
+  .jummah-card tbody tr {
+    grid-template-columns: 12% 20% 28% 40%;
+  }
+
+  .jummah-card th,
+  .jummah-card td {
+    min-width: 0;
+    padding-inline: 5px;
+  }
+
+  .jummah-card th {
+    font-size: 10px;
+  }
+
+  .jummah-card td:nth-child(2),
+  .jummah-card td:nth-child(3),
+  .jummah-card td:nth-child(4) {
+    font-size: clamp(10px, 2.8vw, 12px);
+  }
+
+  .jummah-card .time {
+    font-size: clamp(14px, 4vw, 16px);
+  }
+
+  .jummah-card .shift {
+    width: 23px;
+    height: 23px;
+  }
+
+  .speaker-name,
+  .topic-chip,
+  .topic-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .topic-chip {
+    gap: 5px;
+    padding: 5px 6px;
   }
 }
