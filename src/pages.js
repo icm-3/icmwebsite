@@ -506,11 +506,12 @@ function renderNews(content) {
     target.innerHTML = items
       .map(({ item, originalIndex }) => {
         const newsId = `news-${newsSlug(item, originalIndex)}`;
+        const shortTitleClass = newsTitle(item, originalIndex).length <= 42 ? " news-feature--compact" : "";
         return `
-          <a class="news-feature" id="${escapeHtml(newsId)}" href="./news.html#${escapeHtml(newsId)}">
+          <a class="news-feature${shortTitleClass}" id="${escapeHtml(newsId)}" href="./news.html#${escapeHtml(newsId)}">
             <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
+            <span class="news-feature-category">${escapeHtml(newsCategory(item))}</span>
             <div>
-              <span class="news-feature-category">${escapeHtml(newsCategory(item))}</span>
               ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
               ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
               ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
