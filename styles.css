@@ -5044,14 +5044,6 @@ input[type="checkbox"] {
     min-height: 0;
   }
 
-  .jummah-card tbody {
-    grid-template-rows: none;
-  }
-
-  .jummah-card tbody tr {
-    min-height: 72px;
-  }
-
   .jummah-card th,
   .jummah-card td {
     min-width: 0;
