@@ -2,13 +2,13 @@ import { createServer } from "node:http";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { fetchIcmMonthlyPrayerHtml } from "./src/icm-prayer-client.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT || 4173);
 const DATA_DIR = path.join(__dirname, "data");
 const CMS_FILE = path.join(DATA_DIR, "cms.json");
 const MAX_BODY_BYTES = 2_500_000;
-const ICM_PRAYER_ENDPOINT = "https://www.icmnc.org/wp-admin/admin-ajax.php";
 
 const mimeTypes = new Map([
   [".html", "text/html; charset=utf-8"],
@@ -91,27 +91,10 @@ async function handleApi(req, res) {
 
   if (requestUrl.pathname === "/api/prayer-times" && req.method === "GET") {
     try {
-      const month = Number(requestUrl.searchParams.get("month") || new Date().getMonth() + 1);
-      if (!Number.isInteger(month) || month < 1 || month > 13) {
-        sendJson(res, 400, { error: "Month must be between 1 and 13." });
-        return true;
-      }
-
-      const body = new URLSearchParams({
-        action: "get_monthly_timetable",
-        month: String(month),
-      });
-      const response = await fetch(ICM_PRAYER_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-        },
-        body,
-      });
-      if (!response.ok) throw new Error(`ICM schedule request failed with ${response.status}`);
-      sendHtml(res, 200, await response.text());
+      sendHtml(res, 200, await fetchIcmMonthlyPrayerHtml(requestUrl.searchParams.get("month")));
     } catch (error) {
-      sendJson(res, 502, { error: error.message || "Could not load prayer schedule." });
+      const message = error.message || "Could not load prayer schedule.";
+      sendJson(res, message.includes("Month must") ? 400 : 502, { error: message });
     }
     return true;
   }
