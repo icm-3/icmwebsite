@@ -460,7 +460,7 @@ function renderEvents(content) {
       return `
         <a class="event-item${isPast ? " is-past" : ""}" href="./calendar.html#event-${escapeHtml(eventSlug(event, originalIndex))}">
           <div class="date-badge"><span>${escapeHtml(badge.month)}</span><strong>${escapeHtml(badge.day)}</strong></div>
-          <div>
+          <div class="event-item-body">
             <h3>${escapeHtml(eventTitle(event))}</h3>
             ${details.length ? `<p>${details.map((item) => escapeHtml(item)).join("<br>")}</p>` : ""}
           </div>
@@ -482,10 +482,10 @@ function renderNews(content) {
       ({ item, originalIndex }) => `
         <a class="news-item" href="./news.html#news-${escapeHtml(newsSlug(item, originalIndex))}">
           <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
-          <div>
+          <div class="news-item-body">
             <span class="news-category">${escapeHtml(getNewsCategory(newsTitle(item, originalIndex)))}</span>
             ${item.title ? `<h3>${escapeHtml(item.title)}</h3>` : ""}
-            ${item.summary ? `<p class="news-item-summary">${escapeHtml(item.summary)}</p>` : ""}
+            ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
           </div>
           ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
         </a>

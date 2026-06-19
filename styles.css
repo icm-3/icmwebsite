@@ -1082,9 +1082,9 @@ tbody tr:last-child td {
 
 .event-item {
   display: grid;
-  grid-template-columns: 52px minmax(0, 1fr) auto;
+  grid-template-columns: 52px minmax(0, 1fr) max-content;
   align-items: start;
-  gap: 18px;
+  gap: 14px;
   min-height: 90px;
   padding: 0 0 15px;
   border-bottom: 1px solid var(--border);
@@ -1192,16 +1192,16 @@ tbody tr:last-child td {
   overflow-wrap: break-word;
 }
 
-.event-item > div:last-child,
-.news-item > div {
+.event-item-body,
+.news-item-body {
   min-width: 0;
 }
 
 .news-item {
   display: grid;
-  grid-template-columns: 76px 1fr auto;
+  grid-template-columns: 76px minmax(0, 1fr) max-content;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   padding: 8px;
   background: white;
   border: 1px solid rgba(18, 24, 39, 0.06);
@@ -1231,14 +1231,6 @@ tbody tr:last-child td {
 .news-item h3 {
   color: var(--text);
   font-size: 14px;
-}
-
-.news-item-summary {
-  width: fit-content;
-  max-width: 100%;
-  padding: 6px 8px;
-  background: #f7f8f5;
-  border-radius: 8px;
 }
 
 .news-category {
@@ -1922,6 +1914,28 @@ body:has(.program-detail-card:target) .program-overview {
   color: var(--green-dark);
 }
 
+.detail-page-back {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  min-height: 38px;
+  color: var(--green);
+  font-size: 15px;
+  font-weight: 850;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.detail-page-back:hover,
+.detail-page-back:focus-visible {
+  color: var(--green-dark);
+  transform: translateX(-2px);
+}
+
+.page-back-band {
+  padding-top: 22px;
+  padding-bottom: 0;
+}
+
 .program-detail-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1973,6 +1987,14 @@ body:has(.program-detail-card:target) .program-overview {
   margin: 20px 0 0;
   color: var(--green);
   font-size: 18px;
+}
+
+.program-full-copy .heading-black,
+.registration-panel .heading-black,
+.service-form-panel .heading-black,
+.service-notice .heading-black {
+  color: #151b29 !important;
+  font-weight: 850;
 }
 
 .program-full p,
@@ -3413,7 +3435,6 @@ body:has(.program-detail-card:target) .program-overview {
 
 .news-feature h2 {
   margin-top: 6px;
-  padding-right: 18px;
   color: #1f2937;
   font-size: 25px;
   font-weight: 750;
@@ -3423,7 +3444,6 @@ body:has(.program-detail-card:target) .program-overview {
 .news-feature p {
   margin: 8px 0 0;
   max-width: none;
-  padding-right: 18px;
   line-height: 1.55;
 }
 
@@ -3616,6 +3636,18 @@ body:has(.program-detail-card:target) .program-overview {
 .location-cards .feature-card {
   box-shadow: none;
   border-color: rgba(165, 100, 5, 0.24);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.location-cards .feature-card:hover,
+.location-cards .feature-card:focus-within,
+#contact .contact-grid .feature-card:hover,
+#contact .contact-grid .feature-card:focus-within,
+#giving .feature-card:hover,
+#giving .feature-card:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(0, 84, 61, 0.28);
+  box-shadow: 0 14px 30px rgba(18, 24, 39, 0.08);
 }
 
 .donation-form {
@@ -3636,6 +3668,7 @@ body:has(.program-detail-card:target) .program-overview {
 
 #giving .feature-card {
   border-color: rgba(165, 100, 5, 0.34);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
 .donation-form-main {
@@ -3759,7 +3792,13 @@ body:has(.program-detail-card:target) .program-overview {
   border-radius: 6px;
   font-weight: 800;
   cursor: pointer;
-  transition: border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+  transition: transform 180ms ease, border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+}
+
+.amount-grid label:hover > span,
+.segmented-options label:hover > span {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 84, 61, 0.08);
 }
 
 .amount-grid input[type="radio"]:checked + span,
@@ -3818,7 +3857,12 @@ body:has(.program-detail-card:target) .program-overview {
   border: 1px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
-  transition: border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+  transition: transform 180ms ease, border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+}
+
+.payment-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 84, 61, 0.08);
 }
 
 .payment-option input {
