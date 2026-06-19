@@ -48,6 +48,7 @@ img {
   padding: 0 48px 0 24px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 0 rgba(165, 100, 5, 0.22);
 }
 
 .brand {
@@ -324,6 +325,37 @@ img {
 
 .hero-actions .button {
   width: 220px;
+  overflow: visible;
+}
+
+.hero-actions .button::before {
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  content: "";
+  border-radius: 8px;
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+
+.hero-actions .button-primary::before {
+  background: radial-gradient(circle at 50% 50%, rgba(0, 84, 61, 0.22), rgba(0, 84, 61, 0));
+}
+
+.hero-actions .button-secondary::before {
+  background: radial-gradient(circle at 50% 50%, rgba(165, 100, 5, 0.18), rgba(165, 100, 5, 0));
+}
+
+.hero-actions .button:hover,
+.hero-actions .button:focus-visible {
+  transform: translateY(-3px);
+}
+
+.hero-actions .button:hover::before,
+.hero-actions .button:focus-visible::before {
+  opacity: 1;
+  transform: scale(1.06);
 }
 
 .button-primary {
@@ -495,7 +527,7 @@ img {
 }
 
 .next-label span {
-  color: var(--text);
+  color: var(--gold);
   font-size: 14px;
   font-weight: 800;
   line-height: 23px;
@@ -780,7 +812,7 @@ img {
 
 .jummah-card thead tr,
 .jummah-card tbody tr {
-  grid-template-columns: 11% 19% 28% 42%;
+  grid-template-columns: 11% 15% 31% 43%;
 }
 
 .jummah-card tbody {

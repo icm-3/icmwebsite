@@ -165,6 +165,15 @@ function getDateBadgeParts(dateString) {
   return { month, day };
 }
 
+function dateValue(dateString) {
+  const date = new Date(`${dateString}T12:00:00`);
+  return Number.isNaN(date.getTime()) ? 0 : date.getTime();
+}
+
+function eventSortValue(event) {
+  return dateValue(event.date) || Number.MAX_SAFE_INTEGER;
+}
+
 function eventTitle(event) {
   return String(event.title || "Community Event");
 }
@@ -401,7 +410,12 @@ function renderJummah(content) {
 function renderEvents(content) {
   const list = document.querySelector("[data-events-list]");
   if (!list) return;
-  const events = content.events?.length ? content.events : defaultContent.events;
+  const today = prayerDateFor(new Date()).getTime();
+  const sourceEvents = content.events?.length ? content.events : defaultContent.events;
+  const upcomingEvents = sourceEvents
+    .filter((event) => eventSortValue(event) >= today)
+    .sort((first, second) => eventSortValue(first) - eventSortValue(second));
+  const events = upcomingEvents.length ? upcomingEvents : [...sourceEvents].sort((first, second) => eventSortValue(second) - eventSortValue(first));
   list.innerHTML = events
     .map((event, index) => {
       const badge = getDateBadgeParts(event.date);
@@ -423,7 +437,7 @@ function renderEvents(content) {
 function renderNews(content) {
   const list = document.querySelector("[data-news-list]");
   if (!list) return;
-  const news = content.news?.length ? content.news : defaultContent.news;
+  const news = [...(content.news?.length ? content.news : defaultContent.news)].sort((first, second) => dateValue(second.date) - dateValue(first.date));
   list.innerHTML = news
     .map(
       (item, index) => `
