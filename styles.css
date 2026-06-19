@@ -2628,6 +2628,7 @@ body:has(.program-detail-card:target) .program-overview {
 
 .calendar-detail {
   margin-top: 16px;
+  scroll-margin-top: 24px;
 }
 
 .calendar-detail-empty,
@@ -2667,25 +2668,66 @@ body:has(.program-detail-card:target) .program-overview {
 
 .calendar-detail-card {
   overflow: hidden;
-  text-align: center;
+  padding: 18px;
+  background: linear-gradient(180deg, #ffffff, #fbfdfc);
+  border-color: rgba(165, 100, 5, 0.24);
+  text-align: left;
 }
 
 .calendar-detail-body {
-  padding: 26px 24px 22px;
+  padding: 22px 24px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 84, 61, 0.12);
+  border-left: 4px solid var(--gold);
+  border-radius: 9px;
+}
+
+.calendar-detail-eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .calendar-detail-body time {
   display: block;
-  margin-top: 10px;
   color: var(--gold);
-  font-size: inherit;
+  font-size: 15px;
   font-weight: 800;
   text-transform: none;
+}
+
+.calendar-detail-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.calendar-detail-meta time,
+.calendar-detail-meta span {
+  min-width: 0;
+  padding: 12px 14px;
+  background: #fbfdfc;
+  border: 1px solid rgba(0, 84, 61, 0.12);
+  border-radius: 8px;
 }
 
 .calendar-detail-location {
   color: var(--green) !important;
   font-weight: 800;
+}
+
+.calendar-detail-description {
+  margin-top: 14px !important;
+  padding: 14px 16px;
+  background: rgba(165, 100, 5, 0.055);
+  border: 1px solid rgba(165, 100, 5, 0.14);
+  border-radius: 8px;
 }
 
 .prayer-times-hero {
@@ -3108,10 +3150,20 @@ body:has(.program-detail-card:target) .program-overview {
 
 .calendar-detail-poster {
   display: block;
+  margin: 16px 0 0;
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 84, 61, 0.12);
+  border-radius: 10px;
+  box-shadow: 0 10px 26px rgba(18, 24, 39, 0.045);
+}
+
+.calendar-detail-poster img {
+  display: block;
   width: 100%;
   max-height: min(900px, 86vh);
-  border-top: 1px solid var(--border);
   background: #f6f8f7;
+  border-radius: 8px;
   object-fit: contain;
 }
 
@@ -3128,10 +3180,10 @@ body:has(.program-detail-card:target) .program-overview {
   padding: 18px;
   color: inherit;
   background:
-    linear-gradient(90deg, rgba(0, 84, 61, 0.045), rgba(255, 255, 255, 0) 28%),
+    linear-gradient(90deg, rgba(165, 100, 5, 0.05), rgba(255, 255, 255, 0) 28%),
     #ffffff;
-  border: 1px solid rgba(0, 84, 61, 0.14);
-  border-left: 4px solid rgba(0, 84, 61, 0.72);
+  border: 1px solid rgba(165, 100, 5, 0.18);
+  border-left: 4px solid rgba(165, 100, 5, 0.72);
   border-radius: 8px;
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
@@ -3139,8 +3191,8 @@ body:has(.program-detail-card:target) .program-overview {
 .news-feature:hover,
 .news-feature:focus-visible {
   transform: translateY(-2px);
-  border-color: rgba(0, 84, 61, 0.3);
-  box-shadow: 0 12px 26px rgba(0, 84, 61, 0.08);
+  border-color: rgba(165, 100, 5, 0.34);
+  box-shadow: 0 12px 26px rgba(165, 100, 5, 0.08);
   outline: 0;
 }
 
@@ -3228,7 +3280,7 @@ body:has(.program-detail-card:target) .program-overview {
   padding: 20px 22px;
   background: #ffffff;
   border: 1px solid rgba(0, 84, 61, 0.11);
-  border-left: 4px solid var(--green);
+  border-left: 4px solid var(--gold);
   border-radius: 9px;
 }
 

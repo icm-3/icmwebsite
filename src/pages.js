@@ -305,6 +305,16 @@ function eventMatchesDate(event, date) {
   );
 }
 
+function scrollToCalendarDetail(behavior = "smooth") {
+  requestAnimationFrame(() => {
+    const detail = document.querySelector("[data-calendar-detail]");
+    if (!detail) return;
+    const headerOffset = document.querySelector(".site-header")?.offsetHeight || 0;
+    const top = Math.max(0, detail.getBoundingClientRect().top + window.scrollY - headerOffset - 18);
+    window.scrollTo({ top, behavior });
+  });
+}
+
 function setCalendarDetail(event, index = 0) {
   const target = document.querySelector("[data-calendar-detail]");
   if (!target) return;
@@ -322,17 +332,24 @@ function setCalendarDetail(event, index = 0) {
   const poster = eventPoster(event);
   const meta = eventDateTimeLabel(event);
   target.innerHTML = `
-    <article class="calendar-detail-card" id="event-${escapeHtml(eventSlug(event, index))}">
+    <article class="calendar-detail-card" id="event-${escapeHtml(eventSlug(event, index))}" data-calendar-detail-card>
       <div class="calendar-detail-body">
+        <span class="calendar-detail-eyebrow">Event Details</span>
         <h3>${escapeHtml(eventTitle(event))}</h3>
-        ${meta ? `<time datetime="${escapeHtml(event.date || "")}">${escapeHtml(meta)}</time>` : ""}
-        ${event.location ? `<p class="calendar-detail-location">${escapeHtml(event.location)}</p>` : ""}
-        ${event.description ? `<p>${escapeHtml(event.description)}</p>` : ""}
+        ${
+          meta || event.location
+            ? `<div class="calendar-detail-meta">
+                ${meta ? `<time datetime="${escapeHtml(event.date || "")}">${escapeHtml(meta)}</time>` : ""}
+                ${event.location ? `<span class="calendar-detail-location">${escapeHtml(event.location)}</span>` : ""}
+              </div>`
+            : ""
+        }
+        ${event.description ? `<p class="calendar-detail-description">${escapeHtml(event.description)}</p>` : ""}
         ${eventLink(event) ? `<a class="calendar-detail-link" href="${escapeHtml(eventLink(event))}" target="_blank" rel="noopener">Open Link</a>` : ""}
       </div>
       ${
         poster
-          ? `<img class="calendar-detail-poster" src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}">`
+          ? `<figure class="calendar-detail-poster"><img src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}"></figure>`
           : ""
       }
     </article>
@@ -412,7 +429,7 @@ function renderCalendar(content) {
       selectedCalendarEventSlug = button.dataset.eventSlug;
       window.history.replaceState(null, "", `#event-${selectedCalendarEventSlug}`);
       renderCalendar(content);
-      document.querySelector("[data-calendar-detail]")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      scrollToCalendarDetail("smooth");
     });
   });
 }
@@ -447,9 +464,7 @@ function initCalendar(content) {
   renderCalendar(content);
 
   if (hashSlug) {
-    requestAnimationFrame(() => {
-      document.querySelector("[data-calendar-detail]")?.scrollIntoView({ behavior: "auto", block: "nearest" });
-    });
+    scrollToCalendarDetail("auto");
   }
 }
 
@@ -500,7 +515,7 @@ function renderNews(content) {
     const newsId = `news-${newsSlug(item, originalIndex)}`;
     document.body.classList.add("is-news-detail-page");
     target.innerHTML = `
-      <article class="news-detail" id="${escapeHtml(newsId)}">
+      <article class="news-detail" data-news-detail data-news-id="${escapeHtml(newsId)}">
         <a class="news-detail-back" href="./news.html">Back to news</a>
         <div class="news-detail-body">
           ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
@@ -512,6 +527,12 @@ function renderNews(content) {
         </figure>
       </article>
     `;
+    requestAnimationFrame(() => {
+      const detail = document.querySelector("[data-news-detail]");
+      const headerOffset = document.querySelector(".site-header")?.offsetHeight || 0;
+      const top = Math.max(0, detail.getBoundingClientRect().top + window.scrollY - headerOffset - 24);
+      window.scrollTo({ top, behavior: "auto" });
+    });
   };
 
   const renderCurrent = () => {
