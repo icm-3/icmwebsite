@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "Islamic Center of Morrisville homepage with prayer times and simple CMS",
   "type": "module",
-  "main": "server.js",
   "scripts": {
-    "build": "esbuild src/main.js src/admin.js src/pages.js src/site.js --bundle --format=esm --target=es2020 --outdir=public/app",
-    "serve": "node server.js",
-    "start": "npm run build && node server.js"
+    "build": "esbuild src/main.js src/admin.js src/pages.js src/site.js --bundle --format=esm --target=es2020 --outdir=public/app && node scripts/build-vercel-static.js",
+    "serve": "node local-server.js",
+    "start": "npm run build && node local-server.js"
   },
   "keywords": [],
   "author": "",
