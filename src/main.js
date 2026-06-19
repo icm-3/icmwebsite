@@ -485,7 +485,7 @@ function renderNews(content) {
           <div>
             <span class="news-category">${escapeHtml(getNewsCategory(newsTitle(item, originalIndex)))}</span>
             ${item.title ? `<h3>${escapeHtml(item.title)}</h3>` : ""}
-            ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
+            ${item.summary ? `<p class="news-item-summary">${escapeHtml(item.summary)}</p>` : ""}
           </div>
           ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
         </a>
