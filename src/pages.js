@@ -220,6 +220,18 @@ function newsSlug(item, index = 0) {
   return slugify([newsTitle(item, index), item.date, index].filter(Boolean).join("-")) || `announcement-${index}`;
 }
 
+function newsCategory(item) {
+  if (item.category) return item.category;
+
+  const text = `${item.title || ""} ${item.summary || ""}`.toLowerCase();
+  if (text.includes("ramadan") || text.includes("taraweeh")) return "Programs";
+  if (text.includes("youth") || text.includes("camp")) return "Youth";
+  if (text.includes("eid")) return "Announcement";
+  if (text.includes("program") || text.includes("workshop") || text.includes("class")) return "Programs";
+  if (text.includes("parking") || text.includes("arrival")) return "Notice";
+  return "Announcement";
+}
+
 function slugify(value) {
   return String(value ?? "")
     .toLowerCase()
@@ -498,6 +510,7 @@ function renderNews(content) {
           <a class="news-feature" id="${escapeHtml(newsId)}" href="./news.html#${escapeHtml(newsId)}">
             <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
             <div>
+              <span class="news-feature-category">${escapeHtml(newsCategory(item))}</span>
               ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
               ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
               ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
@@ -518,6 +531,7 @@ function renderNews(content) {
       <article class="news-detail" data-news-detail data-news-id="${escapeHtml(newsId)}">
         <a class="news-detail-back" href="./news.html">Back to news</a>
         <div class="news-detail-body">
+          <span class="news-feature-category">${escapeHtml(newsCategory(item))}</span>
           ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
           ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
           ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}

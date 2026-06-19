@@ -4,8 +4,6 @@
   --green-soft: #eaf4ee;
   --green-pale: #f4faf6;
   --gold: #a56405;
-  --poster-gold: #efd590;
-  --poster-brown: #8a5a49;
   --text: #121827;
   --muted: #5e6673;
   --border: #e2e8e5;
@@ -717,22 +715,6 @@ img {
   box-shadow: 0 8px 24px rgba(18, 24, 39, 0.035);
 }
 
-.info-card::before {
-  content: "";
-  position: absolute;
-  right: 18px;
-  bottom: 14px;
-  width: 74px;
-  height: 30px;
-  opacity: 0.2;
-  background:
-    radial-gradient(circle at 18px 24px, var(--poster-gold) 0 6px, transparent 7px),
-    radial-gradient(circle at 48px 20px, transparent 0 7px, var(--poster-gold) 8px 9px, transparent 10px),
-    linear-gradient(var(--poster-gold), var(--poster-gold)) 18px 0 / 1px 20px no-repeat,
-    linear-gradient(var(--poster-gold), var(--poster-gold)) 48px 0 / 1px 14px no-repeat;
-  pointer-events: none;
-}
-
 .jummah-card {
   padding: 0;
 }
@@ -760,7 +742,7 @@ img {
 }
 
 .jummah-card .card-title h2 {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 900;
 }
 
@@ -772,11 +754,10 @@ img {
 .card-title h2 {
   margin: 0;
   color: var(--green);
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 21px;
+  font-size: 15px;
   font-weight: 800;
-  letter-spacing: 0;
-  line-height: 1.02;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
   text-transform: uppercase;
 }
 
@@ -2035,7 +2016,7 @@ body:has(.program-detail-card:target) .program-overview {
   left: 0;
   width: 6px;
   height: 6px;
-  background: var(--poster-gold);
+  background: rgba(0, 84, 61, 0.32);
   border-radius: 999px;
   transform: translateY(-50%);
 }
@@ -2822,42 +2803,32 @@ body:has(.program-detail-card:target) .program-overview {
 
 .calendar-detail-card {
   overflow: hidden;
-  padding: 14px;
-  background: #ffffff;
-  border-color: rgba(165, 100, 5, 0.18);
+  padding: 16px;
+  background: linear-gradient(180deg, #f7fbf8, #ffffff);
+  border-color: rgba(0, 84, 61, 0.14);
+  box-shadow: 0 14px 34px rgba(18, 24, 39, 0.06);
   text-align: left;
 }
 
 .calendar-detail-body {
   position: relative;
-  padding: 18px 20px;
+  padding: 18px 20px 19px;
   background: #ffffff;
-  border: 1px solid var(--border);
-  border-top: 3px solid rgba(239, 213, 144, 0.9);
-  border-left: 3px solid var(--green);
+  border: 1px solid rgba(0, 84, 61, 0.12);
+  border-top: 2px solid rgba(165, 100, 5, 0.26);
+  border-left: 3px solid rgba(0, 84, 61, 0.58);
   border-radius: 9px;
+  box-shadow: 0 10px 24px rgba(18, 24, 39, 0.035);
 }
 
 .calendar-detail-body::after {
-  content: "";
-  position: absolute;
-  top: 11px;
-  right: 16px;
-  width: 58px;
-  height: 22px;
-  opacity: 0.2;
-  background:
-    radial-gradient(circle at 14px 18px, var(--poster-gold) 0 5px, transparent 6px),
-    radial-gradient(circle at 40px 15px, transparent 0 6px, var(--poster-gold) 7px 8px, transparent 9px),
-    linear-gradient(var(--poster-gold), var(--poster-gold)) 14px 0 / 1px 15px no-repeat,
-    linear-gradient(var(--poster-gold), var(--poster-gold)) 40px 0 / 1px 11px no-repeat;
-  pointer-events: none;
+  display: none;
 }
 
 .calendar-detail-eyebrow {
   display: block;
   margin-bottom: 8px;
-  color: var(--poster-brown);
+  color: var(--green);
   font-size: 13px;
   font-weight: 850;
   letter-spacing: 0.1em;
@@ -2884,9 +2855,10 @@ body:has(.program-detail-card:target) .program-overview {
 .calendar-detail-meta span {
   min-width: 0;
   padding: 10px 12px;
-  background: #fbfdfc;
-  border: 1px solid var(--border);
+  background: #ffffff;
+  border: 1px solid rgba(0, 84, 61, 0.12);
   border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(18, 24, 39, 0.025);
 }
 
 .calendar-detail-meta time {
@@ -2905,8 +2877,8 @@ body:has(.program-detail-card:target) .program-overview {
 .calendar-detail-description {
   margin-top: 12px !important;
   padding: 12px 14px;
-  background: #fbfdfc;
-  border: 1px solid var(--border);
+  background: #ffffff;
+  border: 1px solid rgba(18, 24, 39, 0.08);
   border-radius: 8px;
 }
 
@@ -3317,9 +3289,9 @@ body:has(.program-detail-card:target) .program-overview {
   justify-content: center;
   margin-top: 16px;
   padding: 0 16px;
-  color: var(--poster-brown);
+  color: var(--green);
   background: white;
-  border: 1px solid rgba(138, 90, 73, 0.3);
+  border: 1px solid rgba(0, 84, 61, 0.3);
   border-radius: 8px;
   font-weight: 850;
 }
@@ -3327,27 +3299,25 @@ body:has(.program-detail-card:target) .program-overview {
 .calendar-detail-link:hover,
 .calendar-detail-link:focus-visible {
   color: white;
-  background: var(--poster-brown);
+  background: var(--green);
 }
 
 .calendar-detail-poster {
   display: block;
-  width: fit-content;
-  max-width: 100%;
-  margin: 14px auto 0;
+  margin: 16px 0 0;
   padding: 12px;
   background: #ffffff;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(0, 84, 61, 0.12);
   border-radius: 10px;
-  box-shadow: 0 10px 26px rgba(18, 24, 39, 0.045);
+  box-shadow: 0 12px 28px rgba(18, 24, 39, 0.055);
   text-align: center;
 }
 
 .calendar-detail-poster img {
   display: block;
-  width: min(420px, 100%);
+  width: 100%;
   max-width: 100%;
-  max-height: min(480px, 54vh);
+  max-height: min(900px, 86vh);
   margin-inline: auto;
   background: #f6f8f7;
   border-radius: 8px;
@@ -3360,6 +3330,7 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 .news-feature {
+  position: relative;
   display: grid;
   grid-template-columns: 210px minmax(0, 1fr);
   gap: 22px;
@@ -3367,19 +3338,44 @@ body:has(.program-detail-card:target) .program-overview {
   padding: 18px;
   color: inherit;
   background:
-    linear-gradient(90deg, rgba(165, 100, 5, 0.05), rgba(255, 255, 255, 0) 28%),
+    linear-gradient(90deg, rgba(0, 84, 61, 0.045), rgba(255, 255, 255, 0) 28%),
     #ffffff;
-  border: 1px solid rgba(165, 100, 5, 0.18);
-  border-left: 4px solid rgba(165, 100, 5, 0.72);
+  border: 1px solid rgba(0, 84, 61, 0.22);
+  border-left: 4px solid var(--green);
   border-radius: 8px;
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.news-feature > div {
+  position: relative;
+  min-width: 0;
+  padding-right: 118px;
+}
+
+.news-feature-category {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  min-height: 22px;
+  align-items: center;
+  padding: 0 9px;
+  color: var(--green);
+  background: var(--green-pale);
+  border: 1px solid rgba(0, 84, 61, 0.18);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 850;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .news-feature:hover,
 .news-feature:focus-visible {
   transform: translateY(-2px);
-  border-color: rgba(165, 100, 5, 0.34);
-  box-shadow: 0 12px 26px rgba(165, 100, 5, 0.08);
+  border-color: var(--green);
+  box-shadow: 0 12px 26px rgba(0, 84, 61, 0.08);
   outline: 0;
 }
 
@@ -3391,7 +3387,7 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 .news-feature time {
-  color: var(--gold);
+  color: var(--green);
   font-size: 15px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -3462,13 +3458,25 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 .news-detail-body {
+  position: relative;
   order: 1;
   max-width: none;
   padding: 20px 22px;
   background: #ffffff;
-  border: 1px solid rgba(0, 84, 61, 0.11);
-  border-left: 4px solid var(--gold);
+  border: 1px solid rgba(0, 84, 61, 0.16);
+  border-left: 4px solid var(--green);
   border-radius: 9px;
+}
+
+.news-detail-body .news-feature-category {
+  top: 20px;
+  right: 22px;
+}
+
+.news-detail-body time,
+.news-detail-body h2,
+.news-detail-body p {
+  padding-right: 130px;
 }
 
 .news-detail-body:empty {
@@ -3476,7 +3484,7 @@ body:has(.program-detail-card:target) .program-overview {
 }
 
 .news-detail-body time {
-  color: var(--gold);
+  color: var(--green);
   font-size: 15px;
   font-weight: 850;
   letter-spacing: 0.08em;
