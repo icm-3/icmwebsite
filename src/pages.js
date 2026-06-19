@@ -491,6 +491,9 @@ function renderNews(content) {
         `;
       })
       .join("");
+    if (!window.location.hash) {
+      requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "auto" }));
+    }
   };
 
   const renderDetail = (item, originalIndex) => {
@@ -504,7 +507,9 @@ function renderNews(content) {
           ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
           ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
         </div>
-        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
+        <figure class="news-detail-poster">
+          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
+        </figure>
       </article>
     `;
   };

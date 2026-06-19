@@ -3167,10 +3167,10 @@ body:has(.program-detail-card:target) .program-overview {
 .news-detail {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 18px;
   overflow: hidden;
   padding: 24px 28px 28px;
-  background: white;
+  background: linear-gradient(180deg, #ffffff, #fbfdfc);
   border: 1px solid rgba(0, 84, 61, 0.14);
   border-radius: 10px;
   box-shadow: 0 14px 34px rgba(18, 24, 39, 0.06);
@@ -3193,14 +3193,22 @@ body:has(.program-detail-card:target) .program-overview {
   color: var(--green-dark);
 }
 
-.news-detail img {
+.news-detail-poster {
   order: 2;
+  margin: 0;
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 84, 61, 0.12);
+  border-radius: 10px;
+  box-shadow: 0 10px 26px rgba(18, 24, 39, 0.045);
+}
+
+.news-detail-poster img {
   display: block;
   width: 100%;
   height: auto;
   max-height: none;
   background: #fbfaf6;
-  border: 1px solid rgba(0, 84, 61, 0.08);
   border-radius: 8px;
   object-fit: contain;
 }
@@ -3208,7 +3216,11 @@ body:has(.program-detail-card:target) .program-overview {
 .news-detail-body {
   order: 1;
   max-width: 920px;
-  padding: 0 0 6px;
+  padding: 20px 22px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 84, 61, 0.11);
+  border-left: 4px solid var(--gold);
+  border-radius: 9px;
 }
 
 .news-detail-body:empty {
@@ -3217,7 +3229,7 @@ body:has(.program-detail-card:target) .program-overview {
 
 .news-detail-body time {
   color: var(--gold);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 850;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -3226,8 +3238,9 @@ body:has(.program-detail-card:target) .program-overview {
 .news-detail-body h2 {
   max-width: 980px;
   margin: 8px 0 0;
-  color: var(--text);
+  color: #1f2937;
   font-size: clamp(30px, 3.2vw, 44px);
+  font-weight: 750;
   line-height: 1.04;
 }
 
@@ -4016,7 +4029,7 @@ body:has(.program-detail-card:target) .program-overview {
     grid-template-columns: 1fr;
   }
 
-  .news-detail img {
+  .news-detail-poster img {
     max-height: 280px;
   }
 
@@ -4494,8 +4507,9 @@ body:has(.program-detail-card:target) .program-overview {
     padding: 16px;
   }
 
-  .news-detail-body {
-    padding-inline: 0;
+  .news-detail-body,
+  .news-detail-poster {
+    padding: 14px;
   }
 
   .news-detail-body time {
