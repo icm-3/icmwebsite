@@ -736,15 +736,15 @@ img {
 .prayer-tile.active {
   margin: 18px 8px;
   color: var(--green);
-  background: #eaf6ef;
-  border: 1px solid var(--green-dark);
+  background: transparent;
+  border: 1px solid transparent;
   border-radius: 8px;
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.1), 0 16px 34px rgba(0, 84, 61, 0.12);
+  box-shadow: none;
   animation: prayerTileActivate 680ms cubic-bezier(0.2, 0.85, 0.25, 1);
 }
 
 .prayer-tile.active::before {
-  opacity: 1;
+  opacity: 0;
   transform: translateX(0);
 }
 
@@ -804,10 +804,10 @@ img {
   height: 0;
   opacity: 0;
   overflow: hidden;
-  border: 1px solid rgba(0, 84, 61, 0.92);
+  border: 1px solid var(--green-dark);
   border-radius: 8px;
-  background: linear-gradient(135deg, rgba(229, 246, 237, 0.98), rgba(255, 255, 255, 0.74) 44%, rgba(0, 84, 61, 0.12));
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.14), 0 18px 38px rgba(0, 84, 61, 0.17), 0 0 0 1px rgba(0, 84, 61, 0.02);
+  background: linear-gradient(135deg, #eaf6ef, rgba(255, 255, 255, 0.72) 45%, rgba(0, 84, 61, 0.08));
+  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.1), 0 16px 34px rgba(0, 84, 61, 0.12);
   transform: translate3d(var(--glass-x, 0), var(--glass-y, 0), 0) scale(1);
   transition:
     width 860ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -839,15 +839,15 @@ img {
 
 @keyframes prayerGlassSettle {
   0% {
-    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.14), 0 18px 38px rgba(0, 84, 61, 0.17), 0 0 0 1px rgba(0, 84, 61, 0.02);
+    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.1), 0 16px 34px rgba(0, 84, 61, 0.12);
     transform: translate3d(var(--glass-x, 0), var(--glass-y, 0), 0) scale(1);
   }
   42% {
-    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.22), 0 22px 44px rgba(0, 84, 61, 0.22), 0 0 0 7px rgba(0, 84, 61, 0.055);
-    transform: translate3d(var(--glass-x, 0), var(--glass-y, 0), 0) scale(1.012);
+    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.13), 0 18px 36px rgba(0, 84, 61, 0.14), 0 0 0 5px rgba(0, 84, 61, 0.045);
+    transform: translate3d(var(--glass-x, 0), var(--glass-y, 0), 0) scale(1.008);
   }
   100% {
-    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.14), 0 18px 38px rgba(0, 84, 61, 0.17), 0 0 0 1px rgba(0, 84, 61, 0.02);
+    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.1), 0 16px 34px rgba(0, 84, 61, 0.12);
     transform: translate3d(var(--glass-x, 0), var(--glass-y, 0), 0) scale(1);
   }
 }
