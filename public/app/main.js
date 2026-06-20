@@ -1338,7 +1338,11 @@ function getJummahRowsForDate(content, targetDate) {
   const shifts = content.jummah.shifts?.length ? content.jummah.shifts : defaultContent.jummah.shifts;
   const postedDate = parseJummahDateLabel(content.jummah.dateLabel || defaultContent.jummah.dateLabel);
   if (isSameDate(postedDate, targetDate)) return shifts;
-  return shifts;
+  return shifts.map((shift) => ({
+    ...shift,
+    speaker: "TBD",
+    topic: "TBD"
+  }));
 }
 function textFitClass(value, thresholds) {
   const length = String(value ?? "").trim().length;
@@ -1466,12 +1470,12 @@ function renderNews(content) {
     ({ item, originalIndex }) => `
         <a class="news-item" href="./news.html#news-${escapeHtml(newsSlug(item, originalIndex))}">
           <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
+          <span class="news-category">${escapeHtml(getNewsCategory(newsTitle(item, originalIndex)))}</span>
           <div class="news-item-body">
-            <span class="news-category">${escapeHtml(getNewsCategory(newsTitle(item, originalIndex)))}</span>
+            ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
             ${item.title ? `<h3>${escapeHtml(item.title)}</h3>` : ""}
             ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
           </div>
-          ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
         </a>
       `
   ).join("");
