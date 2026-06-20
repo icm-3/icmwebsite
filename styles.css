@@ -1873,6 +1873,14 @@ body.is-news-detail-page .page-band {
   font-size: 15px;
 }
 
+.feature-card p strong,
+.program-card p strong,
+.callout p strong,
+.bio-panel p strong {
+  color: var(--text);
+  font-weight: 850;
+}
+
 .program-card .check-list {
   margin-bottom: 18px;
 }
@@ -2471,12 +2479,10 @@ input[type="checkbox"] {
   color: var(--text);
 }
 
-.file-field em {
-  color: var(--muted);
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 1.35;
+.service-choice-row > span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
 }
 
 .file-field input[type="file"] {
@@ -2494,6 +2500,9 @@ input[type="checkbox"] {
 
 .option-grid > span {
   grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
   color: var(--text);
   font-size: 13px;
   font-weight: 900;
@@ -2609,8 +2618,8 @@ input[type="checkbox"] {
 }
 
 .field-note {
-  align-self: baseline;
-  justify-self: start;
+  display: inline;
+  margin-left: 5px;
   color: var(--muted);
   font-size: 12px !important;
   font-style: italic;
