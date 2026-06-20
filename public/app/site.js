@@ -324,14 +324,15 @@ function initStaticFormValidation() {
     return expiresAt > new Date(now.getFullYear(), now.getMonth(), 1);
   };
   const addFieldNotes = () => {
-    document.querySelectorAll(".local-registration-form label, .form-field, .file-field, .checkbox-field, .amount-entry").forEach((label) => {
+    document.querySelectorAll(".local-registration-form label, .form-field, .file-field").forEach((label) => {
+      if (label.closest(".donation-form")) return;
       if (label.querySelector(".field-note")) return;
       const field = label.querySelector("input, select, textarea");
       const labelText = label.querySelector("span");
-      if (!field || !labelText) return;
+      if (!field || !labelText || field.required) return;
       const note = document.createElement("em");
-      note.className = `field-note${field.required ? " required" : ""}`;
-      note.textContent = field.required ? "Required" : "Optional";
+      note.className = "field-note";
+      note.textContent = "Optional";
       labelText.insertAdjacentElement("afterend", note);
     });
     document.querySelectorAll(".service-choice-row, .option-grid").forEach((group) => {
@@ -339,10 +340,11 @@ function initStaticFormValidation() {
       const labelText = group.querySelector(":scope > span");
       const fields = [...group.querySelectorAll("input, select, textarea")];
       if (!labelText || !fields.length) return;
-      const note = document.createElement("em");
       const isRequired = fields.some((field) => field.required);
-      note.className = `field-note${isRequired ? " required" : ""}`;
-      note.textContent = isRequired ? "Required" : "Optional";
+      if (isRequired) return;
+      const note = document.createElement("em");
+      note.className = "field-note";
+      note.textContent = "Optional";
       labelText.insertAdjacentElement("afterend", note);
     });
   };
