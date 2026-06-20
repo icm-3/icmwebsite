@@ -1172,9 +1172,9 @@ function nextPrayerForNow(now) {
   const tomorrowTimes = getIcmPrayerTimes(prayerDateFor(now, 1));
   return { key: "fajr", time: tomorrowTimes.fajr };
 }
-function currentPrayerForNow(now) {
+function currentPrayerPeriodForNow(now) {
   const todayTimes = getIcmPrayerTimes(prayerDateFor(now));
-  const current = nextPrayerOrder.map((key) => ({ key, time: todayTimes[key] })).filter((item) => item.time.getTime() <= now.getTime()).at(-1);
+  const current = prayerOrder.map((key) => ({ key, time: todayTimes[key] })).filter((item) => item.time.getTime() <= now.getTime()).at(-1);
   return current || { key: "isha", time: getIcmPrayerTimes(prayerDateFor(now, -1)).isha };
 }
 function getPrayerClockOffset() {
@@ -1191,7 +1191,7 @@ function getPrayerClockOffset() {
     prayerClockOffset = simulated.getTime() - now.getTime();
     return prayerClockOffset;
   }
-  if (nextPrayerOrder.includes(testPrayer)) {
+  if (prayerOrder.includes(testPrayer)) {
     const times = getIcmPrayerTimes(prayerDateFor(now));
     const simulated = new Date(times[testPrayer].getTime() + 60 * 1e3);
     prayerClockOffset = simulated.getTime() - now.getTime();
@@ -1416,10 +1416,11 @@ function renderPrayerTimes() {
   for (const key of prayerOrder) {
     setText(`[data-prayer-time="${key}"]`, formatTime(selectedTimes[key]));
   }
-  const current = currentPrayerForNow(now);
+  const current = currentPrayerPeriodForNow(now);
   const next = nextPrayerForNow(now);
   const currentLabel = prayerLabels[current.key];
   const nextLabel = prayerLabels[next.key];
+  setText(".next-label span", current.key === "sunrise" ? "Current Time" : "Current Prayer");
   setText("[data-next-name]", currentLabel);
   setText("[data-next-time]", formatTime(current.time));
   setText("[data-countdown-target]", nextLabel);
