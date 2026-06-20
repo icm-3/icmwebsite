@@ -682,7 +682,7 @@ img {
   border-left: 1px solid rgba(0, 84, 61, 0.2);
   color: var(--text);
   font-size: 17px;
-  transition: margin 460ms cubic-bezier(0.2, 0.85, 0.25, 1), transform 460ms cubic-bezier(0.2, 0.85, 0.25, 1);
+  transition: margin 460ms cubic-bezier(0.2, 0.85, 0.25, 1), background-color 460ms ease, border-color 460ms ease, box-shadow 460ms ease, transform 460ms cubic-bezier(0.2, 0.85, 0.25, 1);
 }
 
 .prayer-tile::before {
@@ -736,13 +736,15 @@ img {
 .prayer-tile.active {
   margin: 18px 8px;
   color: var(--green);
-  border: 1px solid transparent;
+  background: #eaf6ef;
+  border: 1px solid var(--green-dark);
   border-radius: 8px;
-  animation: prayerTileActivate 960ms cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.1), 0 16px 34px rgba(0, 84, 61, 0.12);
+  animation: prayerTileActivate 680ms cubic-bezier(0.2, 0.85, 0.25, 1);
 }
 
 .prayer-tile.active::before {
-  opacity: 0;
+  opacity: 1;
   transform: translateX(0);
 }
 
@@ -766,13 +768,16 @@ img {
 
 @keyframes prayerTileActivate {
   0% {
-    transform: translateY(0) scale(0.99);
+    transform: translateY(0) scale(0.985);
+    box-shadow: inset 0 0 0 1px rgba(0, 84, 61, 0.08), 0 0 0 rgba(0, 84, 61, 0);
   }
-  62% {
-    transform: translateY(-3px) scale(1.012);
+  55% {
+    transform: translateY(-2px) scale(1.008);
+    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.13), 0 18px 36px rgba(0, 84, 61, 0.14), 0 0 0 5px rgba(0, 84, 61, 0.045);
   }
   100% {
     transform: translateY(0) scale(1);
+    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.1), 0 16px 34px rgba(0, 84, 61, 0.12), 0 0 0 rgba(0, 84, 61, 0);
   }
 }
 
