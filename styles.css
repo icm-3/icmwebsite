@@ -709,19 +709,6 @@ img {
   filter: brightness(0) saturate(100%) invert(43%) sepia(93%) saturate(539%) hue-rotate(1deg) brightness(93%) contrast(95%);
 }
 
-.prayer-tile[data-prayer-tile="dhuhr"] img {
-  transform: scale(0.9);
-}
-
-.prayer-tile[data-prayer-tile="isha"] img {
-  transform: scale(1.08);
-}
-
-.prayer-tile[data-prayer-tile="fajr"] img,
-.prayer-tile[data-prayer-tile="sunrise"] img {
-  transform: scale(1.04);
-}
-
 .prayer-tile strong {
   color: var(--green);
   font-size: 19px;
