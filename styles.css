@@ -1272,12 +1272,11 @@ tbody tr:last-child td {
 }
 
 .news-item {
-  position: relative;
   display: grid;
-  grid-template-columns: 76px minmax(0, 1fr);
+  grid-template-columns: 76px minmax(0, 1fr) max-content;
   align-items: center;
   gap: 10px;
-  padding: 8px 84px 8px 8px;
+  padding: 8px;
   background: white;
   border: 1px solid rgba(18, 24, 39, 0.06);
   border-radius: 8px;
@@ -1309,12 +1308,10 @@ tbody tr:last-child td {
 }
 
 .news-category {
-  position: absolute;
-  top: 9px;
-  right: 9px;
   display: inline-flex;
   align-items: center;
   min-height: 17px;
+  margin-bottom: 5px;
   padding: 2px 7px;
   color: var(--green);
   background: #dfeee7;
@@ -1326,13 +1323,8 @@ tbody tr:last-child td {
 }
 
 .news-item time {
-  display: block;
-  margin-bottom: 5px;
-  color: var(--green);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  color: var(--text);
+  font-size: 13px;
   white-space: nowrap;
 }
 
