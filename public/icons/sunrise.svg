@@ -1,6 +1,7 @@
 <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#111827" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
   <path d="M6 43h52"/>
   <path d="M19 52h26"/>
+  <path d="M25 58h14"/>
   <path d="M18 43a14 14 0 0 1 28 0"/>
   <path d="M32 16v7"/>
   <path d="M16 22l5 5"/>
