@@ -264,6 +264,15 @@ function setText(selector, value) {
   if (element) element.textContent = value;
 }
 
+function setAnimatedText(selector, value) {
+  const element = document.querySelector(selector);
+  if (!element || element.textContent === value) return;
+  element.textContent = value;
+  element.classList.remove("is-changing");
+  void element.offsetWidth;
+  element.classList.add("is-changing");
+}
+
 function formatNavigatorDate(date) {
   return date.toLocaleDateString("en-US", {
     weekday: "short",
@@ -402,9 +411,9 @@ function renderPrayerTimes() {
   if (countdownTimer) window.clearInterval(countdownTimer);
   const tick = () => {
     const remaining = Math.max(0, Math.ceil((next.time.getTime() - Date.now()) / 1000));
-    setText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
-    setText("[data-countdown-minutes]", String(Math.floor((remaining % 3600) / 60)).padStart(2, "0"));
-    setText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));
+    setAnimatedText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
+    setAnimatedText("[data-countdown-minutes]", String(Math.floor((remaining % 3600) / 60)).padStart(2, "0"));
+    setAnimatedText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));
     if (remaining <= 0) renderPrayerTimes();
   };
 

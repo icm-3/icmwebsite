@@ -584,10 +584,17 @@ img {
 }
 
 .countdown-unit strong {
+  display: inline-block;
   font-size: 25px;
   font-weight: 800;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  transform-origin: 50% 70%;
+  will-change: transform, opacity;
+}
+
+.countdown-unit strong.is-changing {
+  animation: countdownFlip 420ms cubic-bezier(0.2, 0.85, 0.25, 1);
 }
 
 .countdown-unit em {
@@ -605,6 +612,21 @@ img {
   font-size: 23px;
   font-weight: 800;
   line-height: 1;
+}
+
+@keyframes countdownFlip {
+  0% {
+    opacity: 0.7;
+    transform: translateY(5px) rotateX(-64deg) scale(0.96);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(-2px) rotateX(12deg) scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0) scale(1);
+  }
 }
 
 .next-prayer a,
@@ -644,15 +666,34 @@ img {
 }
 
 .prayer-tile {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 26px 0;
   gap: 20px;
+  overflow: hidden;
   border-left: 1px solid rgba(0, 84, 61, 0.2);
   color: var(--text);
   font-size: 17px;
+  transition: margin 460ms cubic-bezier(0.2, 0.85, 0.25, 1), background-color 460ms ease, border-color 460ms ease, box-shadow 460ms ease, transform 460ms cubic-bezier(0.2, 0.85, 0.25, 1);
+}
+
+.prayer-tile::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  opacity: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.16) 42%, rgba(0, 84, 61, 0.08));
+  transform: translateX(-28%);
+  transition: opacity 420ms ease, transform 520ms cubic-bezier(0.2, 0.85, 0.25, 1);
+  pointer-events: none;
+}
+
+.prayer-tile > * {
+  position: relative;
+  z-index: 1;
 }
 
 .prayer-tile span {
@@ -693,7 +734,13 @@ img {
   background: #eaf6ef;
   border: 1px solid var(--green-dark);
   border-radius: 8px;
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.12);
+  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.1), 0 16px 34px rgba(0, 84, 61, 0.12);
+  animation: prayerTileActivate 560ms cubic-bezier(0.2, 0.85, 0.25, 1);
+}
+
+.prayer-tile.active::before {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .prayer-tile.active span {
@@ -708,6 +755,18 @@ img {
 
 .prayer-tile.active + .prayer-tile {
   border-left: 0;
+}
+
+@keyframes prayerTileActivate {
+  0% {
+    transform: translateY(0) scale(0.985);
+  }
+  55% {
+    transform: translateY(-4px) scale(1.015);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
 }
 
 .info-grid {
@@ -2400,7 +2459,7 @@ input[type="checkbox"] {
   gap: 14px;
   align-items: center;
   color: var(--text);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
 }
 
@@ -2544,6 +2603,24 @@ input[type="checkbox"] {
 
 .local-registration-form span {
   font-size: 13px;
+}
+
+.field-note {
+  justify-self: start;
+  padding: 2px 6px;
+  color: var(--muted);
+  background: #eef5f2;
+  border-radius: 999px;
+  font-size: 10px !important;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.field-note.required {
+  color: var(--green-dark);
+  background: var(--green-pale);
 }
 
 .local-registration-form input,

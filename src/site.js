@@ -310,6 +310,50 @@ function initStaticFormValidation() {
     return expiresAt > new Date(now.getFullYear(), now.getMonth(), 1);
   };
 
+  const addFieldNotes = () => {
+    document.querySelectorAll(".local-registration-form label, .form-field, .file-field, .checkbox-field, .amount-entry").forEach((label) => {
+      if (label.querySelector(".field-note")) return;
+      const field = label.querySelector("input, select, textarea");
+      const labelText = label.querySelector("span");
+      if (!field || !labelText) return;
+      const note = document.createElement("em");
+      note.className = `field-note${field.required ? " required" : ""}`;
+      note.textContent = field.required ? "Required" : "Optional";
+      labelText.insertAdjacentElement("afterend", note);
+    });
+    document.querySelectorAll(".service-choice-row, .option-grid").forEach((group) => {
+      if (group.querySelector(":scope > .field-note")) return;
+      const labelText = group.querySelector(":scope > span");
+      const fields = [...group.querySelectorAll("input, select, textarea")];
+      if (!labelText || !fields.length) return;
+      const note = document.createElement("em");
+      const isRequired = fields.some((field) => field.required);
+      note.className = `field-note${isRequired ? " required" : ""}`;
+      note.textContent = isRequired ? "Required" : "Optional";
+      labelText.insertAdjacentElement("afterend", note);
+    });
+  };
+
+  const validateBoundedFields = (scope = document) => {
+    scope.querySelectorAll("[data-validate='zip']").forEach((input) => {
+      input.setCustomValidity(/^\d{5}$/.test(input.value) ? "" : "Enter a valid 5-digit ZIP code.");
+    });
+    scope.querySelectorAll("[data-validate='age']").forEach((input) => {
+      if (!input.value) {
+        input.setCustomValidity("");
+        return;
+      }
+      const age = Number(input.value);
+      input.setCustomValidity(Number.isInteger(age) && age >= 1 && age <= 120 ? "" : "Enter an age between 1 and 120.");
+    });
+    scope.querySelectorAll("[data-validate='grade']").forEach((input) => {
+      const grade = Number(input.value);
+      input.setCustomValidity(Number.isInteger(grade) && grade >= 1 && grade <= 12 ? "" : "Enter a grade from 1 to 12.");
+    });
+  };
+
+  addFieldNotes();
+
   document.querySelectorAll("[data-format='phone']").forEach((input) => {
     input.addEventListener("input", () => {
       const phoneValue = formatPhone(input.value);
@@ -345,8 +389,10 @@ function initStaticFormValidation() {
 
   document.querySelectorAll("input[inputmode='numeric']:not([data-format]), input[data-numeric-only]").forEach((input) => {
     input.addEventListener("input", () => {
-      const numericValue = input.value.replace(/\D/g, "");
+      const maxLength = Number(input.getAttribute("maxlength")) || Infinity;
+      const numericValue = input.value.replace(/\D/g, "").slice(0, maxLength);
       if (input.value !== numericValue) input.value = numericValue;
+      validateBoundedFields(input.closest("form") || document);
     });
   });
 
@@ -372,6 +418,7 @@ function initStaticFormValidation() {
 
   document.querySelectorAll("form").forEach((form) => {
     const validateCustomFields = () => {
+      validateBoundedFields(form);
       form.querySelectorAll("[data-format='card-number']").forEach((input) => {
         input.setCustomValidity(luhnValid(input.value) ? "" : "Enter a valid card number.");
       });

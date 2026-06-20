@@ -44,7 +44,7 @@
           <div><p class="eyebrow">Register</p><h2 class="heading-black heading-charcoal">Al-Falah Registration</h2><p>Use this local form to collect student and parent information for the Al-Falah Quran School.</p></div>
           <form class="local-registration-form" aria-label="Al-Falah Quran School registration">
             <label><span>Student Name</span><input type="text" name="student-name" required></label>
-            <label><span>Grade</span><input type="text" name="grade" required></label>
+            <label><span>Grade</span><input type="text" name="grade" inputmode="numeric" pattern="(?:[1-9]|1[0-2])" maxlength="2" data-numeric-only data-validate="grade" title="Enter a grade from 1 to 12." required></label>
             <label class="form-field-wide"><span>Parent / Guardian Name</span><input type="text" name="guardian-name" required></label>
             <label><span>Email</span><input type="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Enter a valid email address with an @ sign" name="email" placeholder="parent@example.com"></label>
             <label><span>Phone</span><input type="tel" required inputmode="numeric" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" data-format="phone" title="Use 10 digits, formatted as 919-555-0123" name="phone" placeholder="919-555-0123"></label>
