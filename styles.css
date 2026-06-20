@@ -2076,7 +2076,7 @@ body:has(.program-detail-card:target) .program-overview {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
   gap: 24px;
-  align-items: center;
+  align-items: start;
   padding: 26px;
   background: white;
   border: 1px solid rgba(165, 100, 5, 0.28);
@@ -2300,6 +2300,17 @@ body:has(.program-detail-card:target) .program-overview {
   line-height: 1.4;
 }
 
+.form-status.is-error {
+  color: #9b1c1c;
+  background: #fff7f5;
+  border-color: rgba(155, 28, 28, 0.24);
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  accent-color: var(--green);
+}
+
 .form-progress {
   display: inline-flex;
   min-height: 30px;
@@ -2341,9 +2352,14 @@ body:has(.program-detail-card:target) .program-overview {
 .local-registration-form select {
   width: 100%;
   min-height: 46px;
-  padding: 11px 12px;
+  padding: 11px 42px 11px 12px;
   color: var(--text);
-  background: #fbfdfc;
+  appearance: none;
+  background-color: #fbfdfc;
+  background-image: linear-gradient(45deg, transparent 50%, var(--green) 50%), linear-gradient(135deg, var(--green) 50%, transparent 50%);
+  background-position: calc(100% - 22px) 19px, calc(100% - 16px) 19px;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
   border: 1px solid var(--border);
   border-radius: 6px;
   font: inherit;
@@ -4130,6 +4146,16 @@ body:has(.program-detail-card:target) .program-overview {
   font: inherit;
   font-size: 15px;
   font-weight: 500;
+}
+
+.form-field select {
+  appearance: none;
+  padding-right: 42px;
+  background-color: #fbfdfc;
+  background-image: linear-gradient(45deg, transparent 50%, var(--green) 50%), linear-gradient(135deg, var(--green) 50%, transparent 50%);
+  background-position: calc(100% - 22px) 19px, calc(100% - 16px) 19px;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
 }
 
 .form-field textarea {

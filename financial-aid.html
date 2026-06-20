@@ -54,7 +54,7 @@
                 <label><span>Last Name</span><input type="text" name="last-name" autocomplete="family-name" required></label>
                 <label><span>Other Name</span><input type="text" name="other-name"></label>
                 <label class="form-field-wide"><span>Street Address</span><input type="text" name="street-address" autocomplete="street-address" required></label>
-                <label><span>City</span><input type="text" name="city" autocomplete="address-level2" list="nc-city-options" placeholder="e.g. Morrisville" required></label>
+                <label><span>City</span><select name="city" autocomplete="address-level2" required><option value="">Please select</option><option>Morrisville</option><option>Cary</option><option>Apex</option><option>Raleigh</option><option>Durham</option><option>Wake Forest</option><option>Chapel Hill</option><option>Other</option></select></label>
                 <label><span>State</span><select name="state" autocomplete="address-level1" required><option value="">Please select</option><option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option><option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option><option>District of Columbia</option><option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option><option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option><option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option><option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option><option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option><option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option><option selected>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option><option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option><option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option><option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option><option>Wisconsin</option><option>Wyoming</option></select></label>
                 <label><span>Zip Code</span><input type="text" name="zip" inputmode="numeric" pattern="[0-9]*" data-numeric-only autocomplete="postal-code" required></label>
                 <label><span>Email address</span><input type="email" name="email" autocomplete="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Enter a valid email address with an @ sign" placeholder="name@example.com"></label>
@@ -129,15 +129,6 @@
 
             <button class="button button-primary" type="submit">Submit Financial Aid Request</button>
           </form>
-          <datalist id="nc-city-options">
-            <option value="Morrisville">
-            <option value="Cary">
-            <option value="Apex">
-            <option value="Raleigh">
-            <option value="Durham">
-            <option value="Wake Forest">
-            <option value="Chapel Hill">
-          </datalist>
         </article>
       </section>
     </main>

@@ -64,11 +64,11 @@
             <div class="donation-grid">
               <label class="form-field">
                 <span>First Name</span>
-                <input type="text" name="first-name" autocomplete="given-name">
+                <input type="text" name="first-name" autocomplete="given-name" required>
               </label>
               <label class="form-field">
                 <span>Last Name</span>
-                <input type="text" name="last-name" autocomplete="family-name">
+                <input type="text" name="last-name" autocomplete="family-name" required>
               </label>
               <label class="form-field">
                 <span>Email</span>
@@ -107,15 +107,15 @@
                   <p class="payment-note">This is a secure SSL encrypted payment.</p>
                   <label class="form-field form-field-wide">
                     <span>Card Number</span>
-                    <input type="text" name="card-number" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234">
+                    <input type="text" name="card-number" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234" data-format="card-number" required>
                   </label>
                   <label class="form-field">
                     <span>Expiration</span>
-                    <input type="text" name="card-expiration" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY">
+                    <input type="text" name="card-expiration" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY" data-format="card-expiration" required>
                   </label>
                   <label class="form-field">
                     <span>Security Code</span>
-                    <input type="text" name="card-security-code" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC">
+                    <input type="text" name="card-security-code" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC" data-format="card-cvc" required>
                   </label>
                 </div>
 

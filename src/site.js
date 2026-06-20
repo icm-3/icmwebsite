@@ -74,7 +74,11 @@ function initDonationForm() {
     if (!selectedPayment) return;
 
     paymentPanels.forEach((panel) => {
-      panel.hidden = panel.dataset.paymentPanel !== selectedPayment.value;
+      const isActive = panel.dataset.paymentPanel === selectedPayment.value;
+      panel.hidden = !isActive;
+      panel.querySelectorAll("input, select, textarea").forEach((input) => {
+        input.disabled = !isActive;
+      });
     });
   };
 
@@ -278,6 +282,34 @@ function initStaticFormValidation() {
     return `${normalizedDollars}.${cents.slice(0, 2)}`;
   };
 
+  const luhnValid = (value) => {
+    const digits = value.replace(/\D/g, "");
+    if (digits.length < 13 || digits.length > 19) return false;
+    let sum = 0;
+    let doubleDigit = false;
+    for (let index = digits.length - 1; index >= 0; index -= 1) {
+      let digit = Number(digits[index]);
+      if (doubleDigit) {
+        digit *= 2;
+        if (digit > 9) digit -= 9;
+      }
+      sum += digit;
+      doubleDigit = !doubleDigit;
+    }
+    return sum % 10 === 0;
+  };
+
+  const expirationValid = (value) => {
+    const digits = value.replace(/\D/g, "");
+    if (digits.length !== 4) return false;
+    const month = Number(digits.slice(0, 2));
+    const year = 2000 + Number(digits.slice(2));
+    if (month < 1 || month > 12) return false;
+    const now = new Date();
+    const expiresAt = new Date(year, month, 1);
+    return expiresAt > new Date(now.getFullYear(), now.getMonth(), 1);
+  };
+
   document.querySelectorAll("[data-format='phone']").forEach((input) => {
     input.addEventListener("input", () => {
       const phoneValue = formatPhone(input.value);
@@ -285,7 +317,33 @@ function initStaticFormValidation() {
     });
   });
 
-  document.querySelectorAll("input[inputmode='numeric']:not([data-format='phone']), input[data-numeric-only]").forEach((input) => {
+  document.querySelectorAll("[data-format='card-number']").forEach((input) => {
+    input.addEventListener("input", () => {
+      const digits = input.value.replace(/\D/g, "").slice(0, 19);
+      const cardValue = digits.replace(/(\d{4})(?=\d)/g, "$1 ").trim();
+      if (input.value !== cardValue) input.value = cardValue;
+      input.setCustomValidity(luhnValid(input.value) ? "" : "Enter a valid card number.");
+    });
+  });
+
+  document.querySelectorAll("[data-format='card-expiration']").forEach((input) => {
+    input.addEventListener("input", () => {
+      const digits = input.value.replace(/\D/g, "").slice(0, 4);
+      const expirationValue = digits.length > 2 ? `${digits.slice(0, 2)} / ${digits.slice(2)}` : digits;
+      if (input.value !== expirationValue) input.value = expirationValue;
+      input.setCustomValidity(expirationValid(input.value) ? "" : "Enter a valid future expiration date.");
+    });
+  });
+
+  document.querySelectorAll("[data-format='card-cvc']").forEach((input) => {
+    input.addEventListener("input", () => {
+      const cvcValue = input.value.replace(/\D/g, "").slice(0, 4);
+      if (input.value !== cvcValue) input.value = cvcValue;
+      input.setCustomValidity(/^\d{3,4}$/.test(input.value) ? "" : "Enter a valid security code.");
+    });
+  });
+
+  document.querySelectorAll("input[inputmode='numeric']:not([data-format]), input[data-numeric-only]").forEach((input) => {
     input.addEventListener("input", () => {
       const numericValue = input.value.replace(/\D/g, "");
       if (input.value !== numericValue) input.value = numericValue;
@@ -313,7 +371,19 @@ function initStaticFormValidation() {
   });
 
   document.querySelectorAll("form").forEach((form) => {
-    const showFormStatus = () => {
+    const validateCustomFields = () => {
+      form.querySelectorAll("[data-format='card-number']").forEach((input) => {
+        input.setCustomValidity(luhnValid(input.value) ? "" : "Enter a valid card number.");
+      });
+      form.querySelectorAll("[data-format='card-expiration']").forEach((input) => {
+        input.setCustomValidity(expirationValid(input.value) ? "" : "Enter a valid future expiration date.");
+      });
+      form.querySelectorAll("[data-format='card-cvc']").forEach((input) => {
+        input.setCustomValidity(/^\d{3,4}$/.test(input.value) ? "" : "Enter a valid security code.");
+      });
+    };
+
+    const showFormStatus = (isError = false) => {
       let status = form.querySelector(".form-status");
       if (!status) {
         status = document.createElement("p");
@@ -321,17 +391,24 @@ function initStaticFormValidation() {
         status.setAttribute("role", "status");
         form.append(status);
       }
-      status.textContent = "Form validation passed. This form is ready to connect to the website submission backend.";
+      status.classList.toggle("is-error", isError);
+      status.textContent = isError
+        ? "Please complete all required fields before submitting."
+        : "Form validation passed. This form is ready to connect to the website submission backend.";
     };
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
+      validateCustomFields();
+      showFormStatus(!form.reportValidity());
       if (form.reportValidity()) showFormStatus();
     });
 
     form.querySelectorAll("button").forEach((button) => {
       button.addEventListener("click", () => {
         if (button.type === "submit") return;
+        validateCustomFields();
+        showFormStatus(!form.reportValidity());
         if (form.reportValidity()) showFormStatus();
       });
     });
