@@ -2,6 +2,6 @@
   <path d="M7 45h50"/>
   <path d="M19 45a13 13 0 0 1 26 0"/>
   <path d="M32 14v7"/>
-  <path d="M14 27l5 5"/>
-  <path d="M50 27l-5 5"/>
+  <path d="M15.5 28.5l5 5"/>
+  <path d="M48.5 28.5l-5 5"/>
 </svg>
