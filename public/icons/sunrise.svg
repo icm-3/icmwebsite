@@ -3,9 +3,9 @@
   <path d="M16 50h32"/>
   <path d="M23 56h18"/>
   <path d="M18 43a14 14 0 0 1 28 0"/>
-  <path d="M32 15.5v7"/>
-  <path d="M12.5 23.5l5 5"/>
-  <path d="M51.5 23.5l-5 5"/>
-  <path d="M7 35h7"/>
-  <path d="M50 35h7"/>
+  <path d="M32 17v7"/>
+  <path d="M16 24l5 5"/>
+  <path d="M48 24l-5 5"/>
+  <path d="M8 35h7"/>
+  <path d="M49 35h7"/>
 </svg>
