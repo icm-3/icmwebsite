@@ -702,8 +702,8 @@ img {
 }
 
 .prayer-tile img {
-  width: 48px;
-  height: 48px;
+  width: 62px;
+  height: 62px;
   object-fit: contain;
   object-position: center;
   filter: brightness(0) saturate(100%) invert(43%) sepia(93%) saturate(539%) hue-rotate(1deg) brightness(93%) contrast(95%);
