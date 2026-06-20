@@ -1181,9 +1181,17 @@ function getPrayerClockOffset() {
   if (prayerClockOffset !== null) return prayerClockOffset;
   prayerClockOffset = 0;
   const params = new URLSearchParams(window.location.search);
+  const testTransition = params.get("testTransition")?.toLowerCase();
   const testTime = params.get("testTime");
   const testPrayer = params.get("testPrayer")?.toLowerCase();
   const now = /* @__PURE__ */ new Date();
+  const transitionSeconds = Math.min(Math.max(Number(params.get("transitionSeconds")) || 10, 4), 60);
+  if (testTransition === "sunrise-dhuhr") {
+    const times = getIcmPrayerTimes(prayerDateFor(now));
+    const simulated = new Date(times.dhuhr.getTime() - transitionSeconds * 1e3);
+    prayerClockOffset = simulated.getTime() - now.getTime();
+    return prayerClockOffset;
+  }
   if (/^\d{1,2}:\d{2}$/.test(testTime || "")) {
     const [hours, minutes] = testTime.split(":").map(Number);
     const simulated = new Date(now);
