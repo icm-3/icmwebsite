@@ -1324,9 +1324,8 @@ function setText(selector, value) {
 }
 function setAnimatedText(selector, value) {
   const element = document.querySelector(selector);
-  if (!element || element.dataset.value === value) return;
-  element.dataset.value = value;
-  element.innerHTML = `<span>${escapeHtml(value)}</span>`;
+  if (!element || element.textContent === value) return;
+  element.textContent = value;
   element.classList.remove("is-changing");
   void element.offsetWidth;
   element.classList.add("is-changing");
