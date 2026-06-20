@@ -1881,8 +1881,8 @@ body.is-news-detail-page .page-band {
 }
 
 .contact-line {
-  color: #334155;
-  font-weight: 760;
+  color: var(--muted);
+  font-weight: inherit;
 }
 
 .feature-card a,
