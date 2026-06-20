@@ -348,9 +348,12 @@ function updatePrayerGlass(activeTile) {
   glass.style.setProperty("--glass-x", `${x}px`);
   glass.style.setProperty("--glass-y", `${y}px`);
   glass.style.opacity = "1";
-  glass.classList.remove("is-moving");
+  glass.classList.remove("is-moving", "is-settling");
   void glass.offsetWidth;
   glass.classList.add("is-moving");
+  window.setTimeout(() => {
+    glass.classList.add("is-settling");
+  }, 520);
 }
 
 function formatNavigatorDate(date) {

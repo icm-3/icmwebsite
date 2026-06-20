@@ -738,7 +738,7 @@ img {
   color: var(--green);
   border: 1px solid transparent;
   border-radius: 8px;
-  animation: prayerTileActivate 820ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: prayerTileActivate 960ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .prayer-tile.active::before {
@@ -768,8 +768,8 @@ img {
   0% {
     transform: translateY(0) scale(0.99);
   }
-  55% {
-    transform: translateY(-2px) scale(1.006);
+  62% {
+    transform: translateY(-3px) scale(1.012);
   }
   100% {
     transform: translateY(0) scale(1);
@@ -799,11 +799,11 @@ img {
   height: 0;
   opacity: 0;
   overflow: hidden;
-  border: 1px solid var(--green-dark);
+  border: 1px solid rgba(0, 84, 61, 0.92);
   border-radius: 8px;
-  background: linear-gradient(135deg, rgba(234, 246, 239, 0.96), rgba(255, 255, 255, 0.72) 45%, rgba(0, 84, 61, 0.08));
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.1), 0 16px 34px rgba(0, 84, 61, 0.12);
-  transform: translate3d(var(--glass-x, 0), var(--glass-y, 0), 0);
+  background: linear-gradient(135deg, rgba(229, 246, 237, 0.98), rgba(255, 255, 255, 0.74) 44%, rgba(0, 84, 61, 0.12));
+  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.14), 0 18px 38px rgba(0, 84, 61, 0.17), 0 0 0 1px rgba(0, 84, 61, 0.02);
+  transform: translate3d(var(--glass-x, 0), var(--glass-y, 0), 0) scale(1);
   transition:
     width 860ms cubic-bezier(0.16, 1, 0.3, 1),
     height 860ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -826,6 +826,25 @@ img {
 
 .prayer-active-glass.is-moving::after {
   animation: prayerTileSweep 960ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.prayer-active-glass.is-settling {
+  animation: prayerGlassSettle 780ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes prayerGlassSettle {
+  0% {
+    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.14), 0 18px 38px rgba(0, 84, 61, 0.17), 0 0 0 1px rgba(0, 84, 61, 0.02);
+    transform: translate3d(var(--glass-x, 0), var(--glass-y, 0), 0) scale(1);
+  }
+  42% {
+    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.22), 0 22px 44px rgba(0, 84, 61, 0.22), 0 0 0 7px rgba(0, 84, 61, 0.055);
+    transform: translate3d(var(--glass-x, 0), var(--glass-y, 0), 0) scale(1.012);
+  }
+  100% {
+    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.14), 0 18px 38px rgba(0, 84, 61, 0.17), 0 0 0 1px rgba(0, 84, 61, 0.02);
+    transform: translate3d(var(--glass-x, 0), var(--glass-y, 0), 0) scale(1);
+  }
 }
 
 .info-grid {
