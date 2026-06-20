@@ -506,6 +506,10 @@ img {
   box-shadow: 0 18px 48px rgba(18, 24, 39, 0.1), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
 }
 
+.prayer-carousel {
+  display: contents;
+}
+
 .next-prayer {
   position: relative;
   z-index: 2;
@@ -4613,13 +4617,106 @@ input[type="checkbox"] {
   }
 
   .prayer-strip {
-    grid-template-columns: 230px repeat(6, 150px);
-    min-height: 190px;
+    display: block;
+    min-height: 0;
     margin-inline: 16px;
+    overflow: hidden;
   }
 
   .next-prayer {
-    padding: 22px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 10px 18px;
+    padding: 18px 20px 16px;
+    background: linear-gradient(180deg, rgba(0, 84, 61, 0.06), rgba(255, 255, 255, 0.96));
+    border-right: 0;
+    border-bottom: 1px solid rgba(0, 84, 61, 0.14);
+  }
+
+  .next-label,
+  .next-name,
+  .next-time,
+  .countdown-label,
+  .countdown,
+  .next-prayer a {
+    grid-column: 1;
+  }
+
+  .next-label {
+    align-self: start;
+  }
+
+  .next-name {
+    margin-top: 8px;
+    font-size: 24px;
+  }
+
+  .next-time {
+    margin-top: 4px;
+    font-size: clamp(31px, 8vw, 36px);
+  }
+
+  .countdown-label {
+    margin-top: 0;
+  }
+
+  .countdown {
+    grid-column: 2;
+    grid-row: 2 / span 3;
+    align-self: center;
+    justify-self: end;
+    margin: 0;
+  }
+
+  .countdown-unit {
+    min-width: 33px;
+  }
+
+  .countdown-unit strong {
+    font-size: 21px;
+  }
+
+  .countdown-separator {
+    font-size: 20px;
+  }
+
+  .next-prayer a {
+    margin-top: 2px;
+  }
+
+  .prayer-carousel {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+  }
+
+  .prayer-tile {
+    flex: 0 0 136px;
+    min-height: 132px;
+    margin: 10px 0;
+    gap: 13px;
+    scroll-snap-align: start;
+    border-left-color: rgba(0, 84, 61, 0.16);
+  }
+
+  .prayer-carousel .prayer-tile:first-child {
+    border-left: 0;
+  }
+
+  .prayer-tile.active {
+    margin: 8px 8px;
+  }
+
+  .prayer-tile img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .prayer-tile strong {
+    font-size: 17px;
   }
 
   .info-grid {
