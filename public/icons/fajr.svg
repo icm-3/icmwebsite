@@ -1,7 +1,7 @@
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#111827" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M9 45h46"/>
-  <path d="M20 45a12 12 0 0 1 24 0"/>
-  <path d="M32 17v9"/>
-  <path d="M17 28l7 7"/>
-  <path d="M47 28l-7 7"/>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#111827" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M7 45h50"/>
+  <path d="M19 45a13 13 0 0 1 26 0"/>
+  <path d="M32 16v9"/>
+  <path d="M15.5 28l7 7"/>
+  <path d="M48.5 28l-7 7"/>
 </svg>
