@@ -1338,11 +1338,7 @@ function getJummahRowsForDate(content, targetDate) {
   const shifts = content.jummah.shifts?.length ? content.jummah.shifts : defaultContent.jummah.shifts;
   const postedDate = parseJummahDateLabel(content.jummah.dateLabel || defaultContent.jummah.dateLabel);
   if (isSameDate(postedDate, targetDate)) return shifts;
-  return shifts.map((shift) => ({
-    ...shift,
-    speaker: "TBD",
-    topic: "TBD"
-  }));
+  return shifts;
 }
 function textFitClass(value, thresholds) {
   const length = String(value ?? "").trim().length;

@@ -329,11 +329,7 @@ function getJummahRowsForDate(content, targetDate) {
 
   if (isSameDate(postedDate, targetDate)) return shifts;
 
-  return shifts.map((shift) => ({
-    ...shift,
-    speaker: "TBD",
-    topic: "TBD",
-  }));
+  return shifts;
 }
 
 function textFitClass(value, thresholds) {
