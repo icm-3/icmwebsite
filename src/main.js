@@ -316,11 +316,42 @@ function setText(selector, value) {
 
 function setAnimatedText(selector, value) {
   const element = document.querySelector(selector);
-  if (!element || element.textContent === value) return;
-  element.textContent = value;
+  if (!element || element.dataset.value === value) return;
+  element.dataset.value = value;
+  element.innerHTML = `<span>${escapeHtml(value)}</span>`;
   element.classList.remove("is-changing");
   void element.offsetWidth;
   element.classList.add("is-changing");
+}
+
+function ensurePrayerGlass(strip) {
+  let glass = strip.querySelector(".prayer-active-glass");
+  if (glass) return glass;
+  glass = document.createElement("div");
+  glass.className = "prayer-active-glass";
+  glass.setAttribute("aria-hidden", "true");
+  strip.prepend(glass);
+  return glass;
+}
+
+function updatePrayerGlass(activeTile) {
+  const strip = document.querySelector(".prayer-strip");
+  if (!strip || !activeTile) return;
+
+  const glass = ensurePrayerGlass(strip);
+  const stripRect = strip.getBoundingClientRect();
+  const tileRect = activeTile.getBoundingClientRect();
+  const x = tileRect.left - stripRect.left;
+  const y = tileRect.top - stripRect.top;
+
+  glass.style.width = `${tileRect.width}px`;
+  glass.style.height = `${tileRect.height}px`;
+  glass.style.setProperty("--glass-x", `${x}px`);
+  glass.style.setProperty("--glass-y", `${y}px`);
+  glass.style.opacity = "1";
+  glass.classList.remove("is-moving");
+  void glass.offsetWidth;
+  glass.classList.add("is-moving");
 }
 
 function formatNavigatorDate(date) {
@@ -455,9 +486,12 @@ function renderPrayerTimes() {
   const countdown = document.querySelector("[data-countdown]");
   if (countdown) countdown.setAttribute("aria-label", `Time remaining until ${nextLabel}`);
 
+  let activeTile = null;
   document.querySelectorAll("[data-prayer-tile]").forEach((tile) => {
     tile.classList.toggle("active", tile.dataset.prayerTile === current.key);
+    if (tile.dataset.prayerTile === current.key) activeTile = tile;
   });
+  requestAnimationFrame(() => updatePrayerGlass(activeTile));
 
   if (countdownTimer) window.clearInterval(countdownTimer);
   const tick = () => {
@@ -560,6 +594,7 @@ async function boot() {
   const content = await loadCmsContent();
   renderHero(content);
   renderPrayerTimes();
+  window.addEventListener("resize", () => updatePrayerGlass(document.querySelector("[data-prayer-tile].active")));
   renderJummah(content);
   renderEvents(content);
   renderNews(content);
