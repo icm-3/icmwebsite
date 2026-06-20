@@ -1323,8 +1323,9 @@ tbody tr:last-child td {
 }
 
 .news-item time {
-  color: var(--text);
+  color: var(--green);
   font-size: 13px;
+  font-weight: 800;
   white-space: nowrap;
 }
 
