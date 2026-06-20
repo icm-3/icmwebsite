@@ -1107,6 +1107,7 @@ var topicIconRules = [
 var countdownTimer = null;
 var selectedPrayerDate = /* @__PURE__ */ new Date();
 var prayerDateTracksToday = true;
+var prayerClockOffset = null;
 function getIcmPrayerTimes(date) {
   const params = CalculationMethod_default.Karachi();
   params.madhab = Madhab.Hanafi;
@@ -1175,6 +1176,30 @@ function currentPrayerForNow(now) {
   const todayTimes = getIcmPrayerTimes(prayerDateFor(now));
   const current = nextPrayerOrder.map((key) => ({ key, time: todayTimes[key] })).filter((item) => item.time.getTime() <= now.getTime()).at(-1);
   return current || { key: "isha", time: getIcmPrayerTimes(prayerDateFor(now, -1)).isha };
+}
+function getPrayerClockOffset() {
+  if (prayerClockOffset !== null) return prayerClockOffset;
+  prayerClockOffset = 0;
+  const params = new URLSearchParams(window.location.search);
+  const testTime = params.get("testTime");
+  const testPrayer = params.get("testPrayer")?.toLowerCase();
+  const now = /* @__PURE__ */ new Date();
+  if (/^\d{1,2}:\d{2}$/.test(testTime || "")) {
+    const [hours, minutes] = testTime.split(":").map(Number);
+    const simulated = new Date(now);
+    simulated.setHours(hours, minutes, 0, 0);
+    prayerClockOffset = simulated.getTime() - now.getTime();
+    return prayerClockOffset;
+  }
+  if (nextPrayerOrder.includes(testPrayer)) {
+    const times = getIcmPrayerTimes(prayerDateFor(now));
+    const simulated = new Date(times[testPrayer].getTime() + 60 * 1e3);
+    prayerClockOffset = simulated.getTime() - now.getTime();
+  }
+  return prayerClockOffset;
+}
+function getPrayerNow() {
+  return new Date(Date.now() + getPrayerClockOffset());
 }
 function formatTime(date) {
   return new Intl.DateTimeFormat("en-US", {
@@ -1381,7 +1406,7 @@ function renderHero(content) {
   image.alt = content.hero.imageAlt || "";
 }
 function renderPrayerTimes() {
-  const now = /* @__PURE__ */ new Date();
+  const now = getPrayerNow();
   if (prayerDateTracksToday) {
     selectedPrayerDate = now;
     renderDateNavigator();
@@ -1405,7 +1430,7 @@ function renderPrayerTimes() {
   });
   if (countdownTimer) window.clearInterval(countdownTimer);
   const tick = () => {
-    const remaining = Math.max(0, Math.ceil((next.time.getTime() - Date.now()) / 1e3));
+    const remaining = Math.max(0, Math.ceil((next.time.getTime() - getPrayerNow().getTime()) / 1e3));
     setAnimatedText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
     setAnimatedText("[data-countdown-minutes]", String(Math.floor(remaining % 3600 / 60)).padStart(2, "0"));
     setAnimatedText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));

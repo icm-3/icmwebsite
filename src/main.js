@@ -32,6 +32,7 @@ const topicIconRules = [
 let countdownTimer = null;
 let selectedPrayerDate = new Date();
 let prayerDateTracksToday = true;
+let prayerClockOffset = null;
 
 export function getIcmPrayerTimes(date) {
   const params = CalculationMethod.Karachi();
@@ -123,6 +124,36 @@ function currentPrayerForNow(now) {
     .at(-1);
 
   return current || { key: "isha", time: getIcmPrayerTimes(prayerDateFor(now, -1)).isha };
+}
+
+function getPrayerClockOffset() {
+  if (prayerClockOffset !== null) return prayerClockOffset;
+  prayerClockOffset = 0;
+
+  const params = new URLSearchParams(window.location.search);
+  const testTime = params.get("testTime");
+  const testPrayer = params.get("testPrayer")?.toLowerCase();
+  const now = new Date();
+
+  if (/^\d{1,2}:\d{2}$/.test(testTime || "")) {
+    const [hours, minutes] = testTime.split(":").map(Number);
+    const simulated = new Date(now);
+    simulated.setHours(hours, minutes, 0, 0);
+    prayerClockOffset = simulated.getTime() - now.getTime();
+    return prayerClockOffset;
+  }
+
+  if (nextPrayerOrder.includes(testPrayer)) {
+    const times = getIcmPrayerTimes(prayerDateFor(now));
+    const simulated = new Date(times[testPrayer].getTime() + 60 * 1000);
+    prayerClockOffset = simulated.getTime() - now.getTime();
+  }
+
+  return prayerClockOffset;
+}
+
+function getPrayerNow() {
+  return new Date(Date.now() + getPrayerClockOffset());
 }
 
 function formatTime(date) {
@@ -381,7 +412,7 @@ function renderHero(content) {
 }
 
 function renderPrayerTimes() {
-  const now = new Date();
+  const now = getPrayerNow();
   if (prayerDateTracksToday) {
     selectedPrayerDate = now;
     renderDateNavigator();
@@ -410,7 +441,7 @@ function renderPrayerTimes() {
 
   if (countdownTimer) window.clearInterval(countdownTimer);
   const tick = () => {
-    const remaining = Math.max(0, Math.ceil((next.time.getTime() - Date.now()) / 1000));
+    const remaining = Math.max(0, Math.ceil((next.time.getTime() - getPrayerNow().getTime()) / 1000));
     setAnimatedText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
     setAnimatedText("[data-countdown-minutes]", String(Math.floor((remaining % 3600) / 60)).padStart(2, "0"));
     setAnimatedText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));
