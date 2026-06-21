@@ -5065,6 +5065,23 @@ input[type="checkbox"] {
     min-height: 0;
   }
 
+  .events-card {
+    height: auto;
+    min-height: 0;
+  }
+
+  .events-card .event-list {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  .top-nav.menu-open .menu-panel a {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
   .news-card .card-header,
   .events-card .card-header {
     align-items: flex-start;
