@@ -8,6 +8,14 @@ export function initMobileNav() {
   panel.id = "site-menu-panel";
   panel.hidden = true;
   panel.innerHTML = `
+    <div class="menu-panel-section menu-panel-primary">
+      <p>Main Pages</p>
+      <a href="./calendar.html">Calendar</a>
+      <a href="./prayer-times.html">Full Prayer Schedule</a>
+      <a href="./programs.html">Programs</a>
+      <a href="./news.html">News</a>
+      <a href="./about.html">About</a>
+    </div>
     <div class="menu-panel-section">
       <p>Education</p>
       <a href="./al-mizaan-academy.html">Al Mizaan Academy</a>
@@ -23,9 +31,6 @@ export function initMobileNav() {
     </div>
     <div class="menu-panel-section">
       <p>Community</p>
-      <a href="./calendar.html">Calendar</a>
-      <a href="./prayer-times.html">Full Prayer Schedule</a>
-      <a href="./news.html">Latest News</a>
       <a href="./about.html#imam">Our Imam</a>
       <a href="./about.html#contact">Contact Us</a>
     </div>

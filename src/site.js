@@ -132,6 +132,7 @@ function initPrayerTimesPage() {
   const target = document.querySelector("[data-prayer-table]");
   const prevButton = document.querySelector("[data-prayer-month-prev]");
   const nextButton = document.querySelector("[data-prayer-month-next]");
+  const todayButton = document.querySelector("[data-prayer-month-today]");
   if (!monthSelect || !target) return;
 
   const monthNames = {
@@ -169,6 +170,11 @@ function initPrayerTimesPage() {
     day: "numeric",
     year: "numeric",
   }).format(new Date());
+  const todayParts = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date());
   const splitDateText = (value) => {
     const match = value.match(/^(.*?, \w+ \d{1,2}, \d{4})\s+(.+)$/);
     return match ? { gregorian: match[1], hijri: match[2] } : { gregorian: value, hijri: "" };
@@ -200,10 +206,10 @@ function initPrayerTimesPage() {
             .map(
               (cells) => {
                 const dateParts = splitDateText(cells[0]);
-                const isToday = dateParts.gregorian === todayLabel;
+                const isToday = dateParts.gregorian === todayLabel || dateParts.gregorian.includes(todayParts);
                 const isFriday = cells[1] === "Friday";
                 return `
-                <tr class="${isToday ? "is-today" : ""}${isFriday ? " is-friday" : ""}">
+                <tr class="${isToday ? "is-today" : ""}${isFriday ? " is-friday" : ""}"${isToday ? " data-today-row" : ""}>
                   <td class="date-cell" data-label="Date"><span>${dateParts.gregorian}</span>${dateParts.hijri ? `<em>${dateParts.hijri}</em>` : ""}</td>
                   ${scheduleColumns
                     .map((column) => {
@@ -259,6 +265,15 @@ function initPrayerTimesPage() {
   });
   nextButton?.addEventListener("click", () => {
     setMonth(Number(monthSelect.value) + 1);
+  });
+  todayButton?.addEventListener("click", async () => {
+    const currentMonth = new Date().getMonth() + 1;
+    monthSelect.value = String(currentMonth);
+    await loadMonth(currentMonth);
+    const todayRow =
+      document.querySelector("[data-today-row]") ||
+      [...document.querySelectorAll(".date-cell span")].find((cell) => cell.textContent.includes(todayParts))?.closest("tr");
+    todayRow?.scrollIntoView({ behavior: "smooth", block: "center" });
   });
 
   loadMonth(Number(monthSelect.value));
