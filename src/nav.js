@@ -10,6 +10,7 @@ export function initMobileNav() {
   panel.innerHTML = `
     <details class="menu-panel-section menu-panel-primary" open>
       <summary>Main Pages</summary>
+      <a class="desktop-menu-only" href="./donate.html">Donate</a>
       <a href="./prayer-times.html">Monthly Prayer Schedule</a>
       <a href="./calendar.html">Event Calendar</a>
       <a href="./programs.html">Programs</a>

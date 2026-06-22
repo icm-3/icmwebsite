@@ -292,6 +292,10 @@ img {
   transform: translateX(4px);
 }
 
+.desktop-menu-only {
+  display: flex;
+}
+
 .hero {
   position: relative;
   display: grid;
@@ -3274,7 +3278,7 @@ input[type="checkbox"] {
 
 .prayer-month-controls button,
 .prayer-month-controls select,
-.prayer-date-jump {
+.prayer-day-select {
   min-height: 42px;
   color: var(--text);
   background: white;
@@ -3317,28 +3321,21 @@ input[type="checkbox"] {
   background-size: 14px 14px;
 }
 
-.prayer-date-jump {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-width: 160px;
-  padding: 0 16px;
-  cursor: pointer;
-  white-space: nowrap;
+.prayer-day-select {
+  min-width: 138px;
+  padding: 0 38px 0 14px;
+  appearance: none;
   border-left: 1px solid var(--border);
-}
-
-.prayer-date-input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.prayer-date-jump img {
-  flex: 0 0 auto;
+  cursor: pointer;
+  background-image: url("./public/icons/calendar.svg"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2300543d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-position:
+    left 13px center,
+    right 14px center;
+  background-repeat: no-repeat;
+  background-size:
+    16px 16px,
+    14px 14px;
+  text-indent: 23px;
 }
 
 .prayer-date-controls [data-prayer-month-next] {
@@ -5505,6 +5502,10 @@ input[type="checkbox"] {
     font-weight: 850;
   }
 
+  .top-nav.menu-open .menu-panel .desktop-menu-only {
+    display: none;
+  }
+
   .prayer-month-controls {
     width: min(100%, 390px);
   }
@@ -5547,33 +5548,25 @@ input[type="checkbox"] {
   }
 
   .prayer-month-controls select,
-  .prayer-date-jump {
+  .prayer-day-select {
     flex: 1 1 auto;
     min-width: 0;
   }
 
-  .prayer-date-jump {
+  .prayer-day-select {
     grid-column: 1 / 3;
     grid-row: 2;
-    gap: 8px;
-    padding-inline: 10px;
     font-size: 13px;
     border-left: 1px solid var(--border);
+    padding-left: 12px;
+    text-indent: 22px;
   }
 
   .prayer-month-controls .prayer-month-today {
     grid-column: 3;
     grid-row: 2;
-    min-width: 0;
-  }
-
-  .prayer-date-jump img {
-    width: 16px;
-    height: 16px;
-  }
-
-  .prayer-month-controls .prayer-month-today {
     flex: 0 0 auto;
+    min-width: 0;
     padding-inline: 10px;
     color: var(--green);
     font-size: 12px;
