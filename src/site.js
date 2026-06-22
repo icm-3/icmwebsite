@@ -229,7 +229,7 @@ function initPrayerTimesPage() {
       })
       .filter(Boolean)
       .join("");
-    daySelect.innerHTML = `<option value="">Choose day</option>${options}`;
+    daySelect.innerHTML = `<option value="">Select day</option>${options}`;
     const selectedValue = scheduleDayValue(selectedScheduleDate, month);
     daySelect.value = [...daySelect.options].some((option) => option.value === selectedValue) ? selectedValue : "";
   };

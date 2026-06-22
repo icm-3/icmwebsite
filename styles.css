@@ -3360,35 +3360,22 @@ input[type="checkbox"] {
 }
 
 .prayer-times-table .date-col {
-  width: 22%;
+  width: 19%;
 }
 
-.prayer-times-table .prayer-col {
-  width: 13%;
-}
-
+.prayer-times-table .prayer-col,
 .prayer-times-table .sunrise-col {
-  width: 13%;
+  width: 13.5%;
 }
 
 .prayer-times-table th:first-child,
 .prayer-times-table td:first-child {
-  width: 22%;
+  width: 19%;
 }
 
-.prayer-times-table th:nth-child(2),
-.prayer-times-table td:nth-child(2) {
-  width: 13%;
-}
-
-.prayer-times-table th:nth-child(3),
-.prayer-times-table td:nth-child(3) {
-  width: 13%;
-}
-
-.prayer-times-table th:nth-child(n + 4),
-.prayer-times-table td:nth-child(n + 4) {
-  width: 13%;
+.prayer-times-table th:nth-child(n + 2),
+.prayer-times-table td:nth-child(n + 2) {
+  width: 13.5%;
 }
 
 .prayer-times-table th {
@@ -3465,11 +3452,12 @@ input[type="checkbox"] {
 
 .prayer-times-table .prayer-time-cell span {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
+  box-sizing: border-box;
+  grid-template-columns: 44px minmax(0, 1fr);
   align-items: baseline;
-  gap: 4px;
+  gap: 3px;
   min-width: 0;
-  padding: 3px 4px;
+  padding: 3px 3px;
 }
 
 .prayer-times-table .prayer-time-cell span + span {
@@ -3478,7 +3466,7 @@ input[type="checkbox"] {
 
 .prayer-times-table .prayer-time-cell b {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 750;
   letter-spacing: 0;
   text-align: left;
@@ -3488,7 +3476,7 @@ input[type="checkbox"] {
 .prayer-times-table .prayer-time-cell strong {
   min-width: 0;
   color: var(--text);
-  font-size: clamp(14px, 1.02vw, 16px);
+  font-size: clamp(14px, 0.98vw, 15.6px);
   font-weight: 850;
   line-height: 1.15;
   overflow-wrap: normal;
@@ -3655,9 +3643,10 @@ input[type="checkbox"] {
     display: grid;
     width: 100%;
     max-width: 278px;
-    grid-template-columns: 78px minmax(0, 1fr);
+    box-sizing: border-box;
+    grid-template-columns: 56px minmax(0, 1fr);
     align-items: baseline;
-    gap: 8px;
+    gap: 5px;
     justify-items: start;
   }
 
@@ -3667,12 +3656,13 @@ input[type="checkbox"] {
 
   .prayer-times-table .prayer-time-cell b {
     min-width: 0;
-    font-size: 13.5px;
+    font-size: 12px;
   }
 
   .prayer-times-table .prayer-time-cell strong {
-    font-size: 17px;
+    font-size: clamp(15.5px, 4.1vw, 17px);
     text-align: left;
+    white-space: nowrap;
   }
 
   .prayer-times-table .single-time strong {
@@ -5563,7 +5553,7 @@ input[type="checkbox"] {
     grid-row: 2;
     min-width: 0 !important;
     font-size: clamp(11px, 3vw, 12px);
-    padding: 0 22px 0 7px !important;
+    padding: 0 22px 0 14px !important;
     background-position: right 7px center;
     text-indent: 0;
   }
@@ -5882,7 +5872,7 @@ input[type="checkbox"] {
   }
 
   .prayer-times-table .prayer-time-cell span {
-    grid-template-columns: 50px minmax(0, 1fr);
+    grid-template-columns: 54px minmax(0, 1fr);
     gap: 4px;
   }
 
