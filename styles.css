@@ -3311,7 +3311,7 @@ input[type="checkbox"] {
 }
 
 .prayer-month-controls select {
-  min-width: 176px;
+  min-width: 170px;
   padding: 0 42px 0 14px;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2300543d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
@@ -3321,7 +3321,7 @@ input[type="checkbox"] {
 }
 
 .prayer-month-controls .prayer-day-select {
-  min-width: 282px;
+  min-width: 290px;
   padding: 0 42px 0 14px;
   appearance: none;
   border-left: 1px solid rgba(0, 84, 61, 0.22);
@@ -3360,35 +3360,35 @@ input[type="checkbox"] {
 }
 
 .prayer-times-table .date-col {
-  width: 24.5%;
+  width: 22%;
 }
 
 .prayer-times-table .prayer-col {
-  width: 13.5%;
+  width: 13%;
 }
 
 .prayer-times-table .sunrise-col {
-  width: 8%;
+  width: 13%;
 }
 
 .prayer-times-table th:first-child,
 .prayer-times-table td:first-child {
-  width: 24.5%;
+  width: 22%;
 }
 
 .prayer-times-table th:nth-child(2),
 .prayer-times-table td:nth-child(2) {
-  width: 13.5%;
+  width: 13%;
 }
 
 .prayer-times-table th:nth-child(3),
 .prayer-times-table td:nth-child(3) {
-  width: 8%;
+  width: 13%;
 }
 
 .prayer-times-table th:nth-child(n + 4),
 .prayer-times-table td:nth-child(n + 4) {
-  width: 13.5%;
+  width: 13%;
 }
 
 .prayer-times-table th {
@@ -3431,8 +3431,8 @@ input[type="checkbox"] {
 .prayer-times-table .date-cell {
   color: var(--text);
   font-weight: 800;
-  padding-left: 14px;
-  padding-right: 10px;
+  padding-left: 11px;
+  padding-right: 7px;
   text-align: left;
   box-shadow: inset 3px 0 0 rgba(0, 91, 64, 0.12);
 }
@@ -3443,7 +3443,7 @@ input[type="checkbox"] {
 }
 
 .prayer-times-table .date-cell span {
-  font-size: clamp(12.4px, 0.94vw, 15.2px);
+  font-size: clamp(11.4px, 0.88vw, 14px);
   line-height: 1.2;
   overflow-wrap: normal;
   text-wrap: auto;
@@ -3460,16 +3460,16 @@ input[type="checkbox"] {
 }
 
 .prayer-times-table .prayer-time-cell {
-  padding-inline: 6px;
+  padding-inline: 4px;
 }
 
 .prayer-times-table .prayer-time-cell span {
   display: grid;
-  grid-template-columns: 61px minmax(0, 1fr);
+  grid-template-columns: 48px minmax(0, 1fr);
   align-items: baseline;
-  gap: 5px;
+  gap: 4px;
   min-width: 0;
-  padding: 3px 6px;
+  padding: 3px 4px;
 }
 
 .prayer-times-table .prayer-time-cell span + span {
@@ -3478,7 +3478,7 @@ input[type="checkbox"] {
 
 .prayer-times-table .prayer-time-cell b {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 750;
   letter-spacing: 0;
   text-align: left;
@@ -3488,7 +3488,7 @@ input[type="checkbox"] {
 .prayer-times-table .prayer-time-cell strong {
   min-width: 0;
   color: var(--text);
-  font-size: clamp(15.4px, 1.16vw, 17.2px);
+  font-size: clamp(14px, 1.02vw, 16px);
   font-weight: 850;
   line-height: 1.15;
   overflow-wrap: normal;
@@ -5531,7 +5531,7 @@ input[type="checkbox"] {
 
   .prayer-date-controls {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 78px;
     overflow: visible;
     background: transparent;
     border: 0;
@@ -5559,21 +5559,22 @@ input[type="checkbox"] {
   }
 
   .prayer-day-select {
-    grid-column: 1 / -1;
+    grid-column: 1;
     grid-row: 2;
     min-width: 0 !important;
-    font-size: 13px;
-    padding-left: 12px;
+    font-size: clamp(11px, 3vw, 12px);
+    padding: 0 22px 0 7px !important;
+    background-position: right 7px center;
     text-indent: 0;
   }
 
   .prayer-month-controls .prayer-month-today {
-    grid-column: 1 / -1;
-    grid-row: 3;
+    grid-column: 2;
+    grid-row: 2;
     justify-self: stretch;
     width: 100%;
     min-height: 42px;
-    padding-inline: 12px !important;
+    padding-inline: 8px !important;
     color: var(--green);
     font-size: 12px;
   }
