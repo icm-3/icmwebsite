@@ -12,23 +12,22 @@ function initMobileNav() {
       <summary>Main Pages</summary>
       <a href="./prayer-times.html">Monthly Prayer Schedule</a>
       <a href="./calendar.html">Event Calendar</a>
-      <a href="./donate.html">Donate</a>
       <a href="./programs.html">Programs</a>
       <a href="./news.html">News</a>
       <a href="./about.html">About</a>
+    </details>
+    <details class="menu-panel-section">
+      <summary>Programs & Services</summary>
+      <a href="./programs.html#services">Services Overview</a>
+      <a href="./volunteer.html">Volunteer</a>
+      <a href="./food-pantry.html">Food Pantry</a>
+      <a href="./financial-aid.html">Financial Aid</a>
     </details>
     <details class="menu-panel-section">
       <summary>Education</summary>
       <a href="./al-mizaan-academy.html">Al Mizaan Academy</a>
       <a href="./nibraas-institute.html">Nibraas Institute</a>
       <a href="./al-falah-quran-school.html">Al-Falah Quran School</a>
-    </details>
-    <details class="menu-panel-section">
-      <summary>Programs & Services</summary>
-      <a href="./programs.html#services">Services Overview</a>
-      <a href="./financial-aid.html">Financial Aid</a>
-      <a href="./food-pantry.html">Food Pantry</a>
-      <a href="./volunteer.html">Volunteer</a>
     </details>
     <details class="menu-panel-section">
       <summary>Community</summary>
@@ -174,6 +173,7 @@ function initPrayerTimesPage() {
   const target = document.querySelector("[data-prayer-table]");
   const monthSelect = document.querySelector("[data-prayer-month]");
   const dateInput = document.querySelector("[data-prayer-date]");
+  const dateOpenButton = document.querySelector("[data-prayer-date-open]");
   const dateLabel = document.querySelector("[data-prayer-date-label]");
   const prevButton = document.querySelector("[data-prayer-month-prev]");
   const nextButton = document.querySelector("[data-prayer-month-next]");
@@ -334,6 +334,15 @@ function initPrayerTimesPage() {
   };
   monthSelect?.addEventListener("change", () => {
     setScheduleMonth(Number(monthSelect.value));
+  });
+  dateOpenButton?.addEventListener("click", () => {
+    if (!dateInput) return;
+    if (typeof dateInput.showPicker === "function") {
+      dateInput.showPicker();
+      return;
+    }
+    dateInput.focus();
+    dateInput.click();
   });
   dateInput?.addEventListener("change", () => {
     if (!dateInput.value) return;

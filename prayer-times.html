@@ -46,11 +46,11 @@
               <option value="12">December</option>
               <option value="13">Ramadan</option>
             </select>
-            <label class="prayer-date-jump">
+            <button class="prayer-date-jump" type="button" data-prayer-date-open>
               <img src="./public/icons/calendar.svg" alt="" aria-hidden="true">
               <span data-prayer-date-label>Choose day</span>
-              <input type="date" data-prayer-date aria-label="Choose prayer schedule day">
-            </label>
+            </button>
+            <input class="prayer-date-input" type="date" data-prayer-date aria-label="Choose prayer schedule day">
             <button type="button" data-prayer-month-next aria-label="Next month"><img src="./public/icons/chevron-right.svg" alt="" aria-hidden="true"></button>
             <button class="prayer-month-today" type="button" data-prayer-month-today>Today</button>
           </div>
