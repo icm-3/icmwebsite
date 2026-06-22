@@ -178,11 +178,12 @@ function initPrayerTimesPage() {
   const todayParts = () => datePartsFormatter.format(new Date());
   const selectedParts = () => datePartsFormatter.format(selectedScheduleDate);
   const dayOptionFormatter = new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
     month: "short",
     day: "numeric",
-    weekday: "short",
   });
   const ramadanDayOptionFormatter = new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
     month: "short",
     day: "numeric",
   });
@@ -210,7 +211,7 @@ function initPrayerTimesPage() {
   };
   const ramadanLabel = (dateParts) => {
     const match = dateParts.hijri.match(/(\d{1,2})\s+Ramadan\s+\d{4}/);
-    return match ? `Ram ${match[1]}` : "";
+    return match ? ` / ${match[1]} Ramadan` : "";
   };
   const scheduleTitle = (month, rowModels) => {
     if (month !== 13) return `${monthNames[month]} 2026`;
@@ -223,7 +224,7 @@ function initPrayerTimesPage() {
       .map(({ dateParts }) => {
         const date = parseGregorianDate(dateParts.gregorian);
         if (!date) return "";
-        const label = month === 13 ? `${ramadanLabel(dateParts)} - ${ramadanDayOptionFormatter.format(date)}` : dayOptionFormatter.format(date);
+        const label = month === 13 ? `${ramadanDayOptionFormatter.format(date)}${ramadanLabel(dateParts)}` : dayOptionFormatter.format(date);
         return `<option value="${scheduleDayValue(date, month)}">${label}</option>`;
       })
       .filter(Boolean)

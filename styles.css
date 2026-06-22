@@ -3311,7 +3311,7 @@ input[type="checkbox"] {
 }
 
 .prayer-month-controls select {
-  min-width: 182px;
+  min-width: 176px;
   padding: 0 42px 0 14px;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2300543d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
@@ -3321,7 +3321,7 @@ input[type="checkbox"] {
 }
 
 .prayer-month-controls .prayer-day-select {
-  min-width: 238px;
+  min-width: 282px;
   padding: 0 42px 0 14px;
   appearance: none;
   border-left: 1px solid rgba(0, 84, 61, 0.22);
@@ -3360,11 +3360,11 @@ input[type="checkbox"] {
 }
 
 .prayer-times-table .date-col {
-  width: 27%;
+  width: 24.5%;
 }
 
 .prayer-times-table .prayer-col {
-  width: 13%;
+  width: 13.5%;
 }
 
 .prayer-times-table .sunrise-col {
@@ -3373,12 +3373,12 @@ input[type="checkbox"] {
 
 .prayer-times-table th:first-child,
 .prayer-times-table td:first-child {
-  width: 27%;
+  width: 24.5%;
 }
 
 .prayer-times-table th:nth-child(2),
 .prayer-times-table td:nth-child(2) {
-  width: 13%;
+  width: 13.5%;
 }
 
 .prayer-times-table th:nth-child(3),
@@ -3388,7 +3388,7 @@ input[type="checkbox"] {
 
 .prayer-times-table th:nth-child(n + 4),
 .prayer-times-table td:nth-child(n + 4) {
-  width: 13%;
+  width: 13.5%;
 }
 
 .prayer-times-table th {
@@ -3443,7 +3443,7 @@ input[type="checkbox"] {
 }
 
 .prayer-times-table .date-cell span {
-  font-size: clamp(13.2px, 1vw, 15.8px);
+  font-size: clamp(12.4px, 0.94vw, 15.2px);
   line-height: 1.2;
   overflow-wrap: normal;
   text-wrap: auto;
@@ -5531,7 +5531,7 @@ input[type="checkbox"] {
 
   .prayer-date-controls {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(92px, 0.7fr);
+    grid-template-columns: minmax(0, 1fr);
     overflow: visible;
     background: transparent;
     border: 0;
@@ -5559,7 +5559,7 @@ input[type="checkbox"] {
   }
 
   .prayer-day-select {
-    grid-column: 1;
+    grid-column: 1 / -1;
     grid-row: 2;
     min-width: 0 !important;
     font-size: 13px;
@@ -5568,8 +5568,8 @@ input[type="checkbox"] {
   }
 
   .prayer-month-controls .prayer-month-today {
-    grid-column: 2;
-    grid-row: 2;
+    grid-column: 1 / -1;
+    grid-row: 3;
     justify-self: stretch;
     width: 100%;
     min-height: 42px;
