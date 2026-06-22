@@ -19,7 +19,7 @@ const prayerLabels = {
   isha: "Isha",
 };
 const prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
-const nextPrayerOrder = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
+const nextPrayerOrder = prayerOrder;
 const topicIconRules = [
   { icon: "leaf", words: ["gratitude", "shukr", "blessing", "thanks", "worship", "ibadah", "prayer", "salah", "daily", "green", "environment", "deen", "stewardship", "earth", "creation", "sustainability", "nature", "cleanliness", "purity"] },
   { icon: "heart", words: ["love", "mercy", "rahma", "compassion", "kindness", "service", "sincerity", "ikhlas", "charity", "giving", "donation", "zakat", "sadaqah", "muhasaba", "self reflection", "forgiveness", "healing", "care"] },
@@ -447,7 +447,7 @@ function renderPrayerTimes() {
   const next = nextPrayerForNow(now);
   const currentLabel = prayerLabels[current.key];
   const nextLabel = prayerLabels[next.key];
-  setText(".next-label span", current.key === "sunrise" ? "Current Time" : "Current Prayer");
+  setText(".next-label span", current.key === "sunrise" ? "Current Period" : "Current Prayer");
   setText("[data-next-name]", currentLabel);
   setText("[data-next-time]", formatTime(current.time));
   setText("[data-countdown-target]", nextLabel);

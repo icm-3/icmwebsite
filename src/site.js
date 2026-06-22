@@ -126,14 +126,15 @@ function initDonationForm() {
 }
 
 function initPrayerTimesPage() {
-  const monthSelect = document.querySelector("[data-prayer-month]");
   const title = document.querySelector("[data-prayer-month-title]");
   const status = document.querySelector("[data-prayer-status]");
   const target = document.querySelector("[data-prayer-table]");
-  const prevButton = document.querySelector("[data-prayer-month-prev]");
-  const nextButton = document.querySelector("[data-prayer-month-next]");
+  const dateInput = document.querySelector("[data-prayer-date]");
+  const dateLabel = document.querySelector("[data-prayer-date-label]");
+  const prevButton = document.querySelector("[data-prayer-day-prev]");
+  const nextButton = document.querySelector("[data-prayer-day-next]");
   const todayButton = document.querySelector("[data-prayer-month-today]");
-  if (!monthSelect || !target) return;
+  if (!target) return;
 
   const monthNames = {
     1: "January",
@@ -160,24 +161,51 @@ function initPrayerTimesPage() {
     { label: "Isha", adhan: 11, iqamah: 12, colClass: "prayer-col" },
   ];
 
-  const selectedMonth = new Date().getMonth() + 1;
-  monthSelect.value = String(selectedMonth);
-
   const cleanCellText = (cell) => cell.textContent.replace(/\s+/g, " ").trim();
-  const todayLabel = new Intl.DateTimeFormat("en-US", {
+  let selectedScheduleDate = new Date();
+  let loadedMonth = null;
+
+  const longDateFormatter = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
-  }).format(new Date());
-  const todayParts = new Intl.DateTimeFormat("en-US", {
+  });
+  const datePartsFormatter = new Intl.DateTimeFormat("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
-  }).format(new Date());
+  });
+  const shortDateFormatter = new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "long",
+    day: "numeric",
+  });
+  const todayLabel = () => longDateFormatter.format(new Date());
+  const todayParts = () => datePartsFormatter.format(new Date());
+  const selectedParts = () => datePartsFormatter.format(selectedScheduleDate);
+  const inputDateValue = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  const updateDateControl = () => {
+    if (dateInput) dateInput.value = inputDateValue(selectedScheduleDate);
+    if (dateLabel) dateLabel.textContent = shortDateFormatter.format(selectedScheduleDate);
+  };
   const splitDateText = (value) => {
     const match = value.match(/^(.*?, \w+ \d{1,2}, \d{4})\s+(.+)$/);
     return match ? { gregorian: match[1], hijri: match[2] } : { gregorian: value, hijri: "" };
+  };
+  const findDateRow = (dateText) => [...document.querySelectorAll(".date-cell span")].find((cell) => cell.textContent.includes(dateText))?.closest("tr");
+  const markSelectedDay = () => {
+    document.querySelectorAll(".prayer-times-table tr.is-selected-day").forEach((row) => row.classList.remove("is-selected-day"));
+    findDateRow(selectedParts())?.classList.add("is-selected-day");
+  };
+  const scrollToSelectedDay = () => {
+    markSelectedDay();
+    findDateRow(selectedParts())?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   const renderTable = (html, month) => {
@@ -206,10 +234,11 @@ function initPrayerTimesPage() {
             .map(
               (cells) => {
                 const dateParts = splitDateText(cells[0]);
-                const isToday = dateParts.gregorian === todayLabel || dateParts.gregorian.includes(todayParts);
+                const isToday = dateParts.gregorian === todayLabel() || dateParts.gregorian.includes(todayParts());
+                const isSelected = dateParts.gregorian.includes(selectedParts());
                 const isFriday = cells[1] === "Friday";
                 return `
-                <tr class="${isToday ? "is-today" : ""}${isFriday ? " is-friday" : ""}"${isToday ? " data-today-row" : ""}>
+                <tr class="${isToday ? "is-today" : ""}${isFriday ? " is-friday" : ""}${isSelected ? " is-selected-day" : ""}"${isToday ? " data-today-row" : ""}>
                   <td class="date-cell" data-label="Date"><span>${dateParts.gregorian}</span>${dateParts.hijri ? `<em>${dateParts.hijri}</em>` : ""}</td>
                   ${scheduleColumns
                     .map((column) => {
@@ -232,6 +261,7 @@ function initPrayerTimesPage() {
         </tbody>
       </table>
     `;
+    loadedMonth = month;
   };
 
   const loadMonth = async (month) => {
@@ -251,32 +281,43 @@ function initPrayerTimesPage() {
     }
   };
 
-  const setMonth = (month) => {
-    const nextMonth = month < 1 ? 12 : month > 12 ? 1 : month;
-    monthSelect.value = String(nextMonth);
-    loadMonth(nextMonth);
+  const setScheduleDate = async (date, { scroll = true } = {}) => {
+    selectedScheduleDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    updateDateControl();
+    const month = selectedScheduleDate.getMonth() + 1;
+    if (loadedMonth !== month) {
+      await loadMonth(month);
+    } else {
+      markSelectedDay();
+    }
+    if (scroll) scrollToSelectedDay();
   };
 
-  monthSelect.addEventListener("change", () => {
-    loadMonth(Number(monthSelect.value));
+  dateInput?.addEventListener("change", () => {
+    if (!dateInput.value) return;
+    const [year, month, day] = dateInput.value.split("-").map(Number);
+    if (!year || !month || !day) return;
+    setScheduleDate(new Date(year, month - 1, day));
   });
   prevButton?.addEventListener("click", () => {
-    setMonth(Number(monthSelect.value) - 1);
+    setScheduleDate(new Date(selectedScheduleDate.getFullYear(), selectedScheduleDate.getMonth(), selectedScheduleDate.getDate() - 1));
   });
   nextButton?.addEventListener("click", () => {
-    setMonth(Number(monthSelect.value) + 1);
+    setScheduleDate(new Date(selectedScheduleDate.getFullYear(), selectedScheduleDate.getMonth(), selectedScheduleDate.getDate() + 1));
   });
   todayButton?.addEventListener("click", async () => {
-    const currentMonth = new Date().getMonth() + 1;
-    monthSelect.value = String(currentMonth);
-    await loadMonth(currentMonth);
+    selectedScheduleDate = new Date();
+    updateDateControl();
+    await loadMonth(selectedScheduleDate.getMonth() + 1);
     const todayRow =
       document.querySelector("[data-today-row]") ||
-      [...document.querySelectorAll(".date-cell span")].find((cell) => cell.textContent.includes(todayParts))?.closest("tr");
+      [...document.querySelectorAll(".date-cell span")].find((cell) => cell.textContent.includes(todayParts()))?.closest("tr");
+    markSelectedDay();
     todayRow?.scrollIntoView({ behavior: "smooth", block: "center" });
   });
 
-  loadMonth(Number(monthSelect.value));
+  updateDateControl();
+  loadMonth(selectedScheduleDate.getMonth() + 1).then(() => scrollToSelectedDay());
 }
 
 function initStaticFormValidation() {

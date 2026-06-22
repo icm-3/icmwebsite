@@ -1030,32 +1030,33 @@ function initMobileNav() {
   panel.id = "site-menu-panel";
   panel.hidden = true;
   panel.innerHTML = `
-    <div class="menu-panel-section menu-panel-primary">
-      <p>Main Pages</p>
-      <a href="./calendar.html">Calendar</a>
-      <a href="./prayer-times.html">Full Prayer Schedule</a>
+    <details class="menu-panel-section menu-panel-primary" open>
+      <summary>Main Pages</summary>
+      <a href="./calendar.html">Event Calendar</a>
+      <a href="./prayer-times.html">Monthly Prayer Schedule</a>
       <a href="./programs.html">Programs</a>
       <a href="./news.html">News</a>
       <a href="./about.html">About</a>
-    </div>
-    <div class="menu-panel-section">
-      <p>Education</p>
+    </details>
+    <details class="menu-panel-section">
+      <summary>Education Programs</summary>
+      <a href="./programs.html#education">Education Overview</a>
       <a href="./al-mizaan-academy.html">Al Mizaan Academy</a>
       <a href="./nibraas-institute.html">Nibraas Institute</a>
       <a href="./al-falah-quran-school.html">Al-Falah Quran School</a>
-    </div>
-    <div class="menu-panel-section">
-      <p>Programs & Services</p>
+    </details>
+    <details class="menu-panel-section">
+      <summary>Programs & Services</summary>
       <a href="./programs.html#services">Services Overview</a>
       <a href="./financial-aid.html">Financial Aid</a>
       <a href="./food-pantry.html">Food Pantry</a>
       <a href="./volunteer.html">Volunteer</a>
-    </div>
-    <div class="menu-panel-section">
-      <p>Community</p>
+    </details>
+    <details class="menu-panel-section">
+      <summary>Community</summary>
       <a href="./about.html#imam">Our Imam</a>
       <a href="./about.html#contact">Contact Us</a>
-    </div>
+    </details>
   `;
   button.after(panel);
   const closeMenu = () => {
@@ -1100,7 +1101,7 @@ var prayerLabels = {
   isha: "Isha"
 };
 var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
-var nextPrayerOrder = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
+var nextPrayerOrder = prayerOrder;
 var topicIconRules = [
   { icon: "leaf", words: ["gratitude", "shukr", "blessing", "thanks", "worship", "ibadah", "prayer", "salah", "daily", "green", "environment", "deen", "stewardship", "earth", "creation", "sustainability", "nature", "cleanliness", "purity"] },
   { icon: "heart", words: ["love", "mercy", "rahma", "compassion", "kindness", "service", "sincerity", "ikhlas", "charity", "giving", "donation", "zakat", "sadaqah", "muhasaba", "self reflection", "forgiveness", "healing", "care"] },
@@ -1433,7 +1434,7 @@ function renderPrayerTimes() {
   const next = nextPrayerForNow(now);
   const currentLabel = prayerLabels[current.key];
   const nextLabel = prayerLabels[next.key];
-  setText(".next-label span", current.key === "sunrise" ? "Current Time" : "Current Prayer");
+  setText(".next-label span", current.key === "sunrise" ? "Current Period" : "Current Prayer");
   setText("[data-next-name]", currentLabel);
   setText("[data-next-time]", formatTime(current.time));
   setText("[data-countdown-target]", nextLabel);

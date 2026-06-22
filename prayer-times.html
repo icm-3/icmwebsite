@@ -23,36 +23,20 @@
     </header>
 
     <main class="page-main">
-      <section class="page-hero prayer-times-hero">
-        <p class="eyebrow">Adhan and iqamah</p>
-        <h1>Prayer Times</h1>
-        <p>Monthly prayer schedule for the Islamic Center of Morrisville, including daily Adhan and Iqamah times.</p>
-      </section>
-
       <section class="page-band prayer-times-band" id="monthly">
         <div class="section-heading">
           <div>
             <p class="eyebrow">Monthly schedule</p>
             <h2 data-prayer-month-title>Monthly Times</h2>
           </div>
-          <div class="prayer-month-controls" aria-label="Prayer schedule month">
-            <button type="button" data-prayer-month-prev aria-label="Previous month"><img src="./public/icons/chevron-left.svg" alt="" aria-hidden="true"></button>
-            <select data-prayer-month aria-label="Select month">
-              <option value="1">January</option>
-              <option value="2">February</option>
-              <option value="3">March</option>
-              <option value="4">April</option>
-              <option value="5">May</option>
-              <option value="6">June</option>
-              <option value="7">July</option>
-              <option value="8">August</option>
-              <option value="9">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
-              <option value="13">Ramadan</option>
-            </select>
-            <button type="button" data-prayer-month-next aria-label="Next month"><img src="./public/icons/chevron-right.svg" alt="" aria-hidden="true"></button>
+          <div class="prayer-month-controls prayer-date-controls" aria-label="Prayer schedule day">
+            <button type="button" data-prayer-day-prev aria-label="Previous day"><img src="./public/icons/chevron-left.svg" alt="" aria-hidden="true"></button>
+            <label class="prayer-date-jump">
+              <img src="./public/icons/calendar.svg" alt="" aria-hidden="true">
+              <span data-prayer-date-label>Today</span>
+              <input type="date" data-prayer-date aria-label="Choose prayer schedule day">
+            </label>
+            <button type="button" data-prayer-day-next aria-label="Next day"><img src="./public/icons/chevron-right.svg" alt="" aria-hidden="true"></button>
             <button class="prayer-month-today" type="button" data-prayer-month-today>Today</button>
           </div>
         </div>

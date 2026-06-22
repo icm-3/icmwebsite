@@ -222,6 +222,45 @@ img {
   gap: 4px;
 }
 
+.menu-panel-section summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 4px;
+  color: var(--gold);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  list-style: none;
+  text-transform: uppercase;
+}
+
+.menu-panel-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.menu-panel-section summary::after {
+  content: "";
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+  background: currentColor;
+  clip-path: polygon(50% 72%, 8% 30%, 20% 18%, 50% 48%, 80% 18%, 92% 30%);
+  transition: transform 180ms ease;
+}
+
+.menu-panel-section[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.menu-panel-section summary:focus-visible {
+  outline: 2px solid rgba(0, 84, 61, 0.35);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
 .menu-panel-section p {
   margin: 0 0 4px;
   color: var(--gold);
@@ -3234,7 +3273,8 @@ input[type="checkbox"] {
 }
 
 .prayer-month-controls button,
-.prayer-month-controls select {
+.prayer-month-controls select,
+.prayer-date-jump {
   min-height: 42px;
   color: var(--text);
   background: white;
@@ -3275,6 +3315,35 @@ input[type="checkbox"] {
   background-repeat: no-repeat;
   background-position: right 16px center;
   background-size: 14px 14px;
+}
+
+.prayer-date-jump {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 210px;
+  padding: 0 16px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.prayer-date-jump input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.prayer-date-jump img {
+  flex: 0 0 auto;
+}
+
+.prayer-date-controls [data-prayer-day-next] {
+  border-left: 1px solid var(--border);
 }
 
 .prayer-table-status {
@@ -3458,6 +3527,17 @@ input[type="checkbox"] {
   background: linear-gradient(90deg, rgba(165, 100, 5, 0.14), rgba(255, 255, 255, 0.96));
   box-shadow: inset 0 0 0 2px rgba(165, 100, 5, 0.34), 0 8px 18px rgba(18, 24, 39, 0.05);
   position: relative;
+}
+
+.prayer-times-table tbody tr.is-selected-day {
+  background: linear-gradient(90deg, rgba(0, 84, 61, 0.09), rgba(255, 255, 255, 0.98));
+  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.24), 0 8px 18px rgba(18, 24, 39, 0.045);
+  position: relative;
+}
+
+.prayer-times-table tbody tr.is-today.is-selected-day {
+  background: linear-gradient(90deg, rgba(165, 100, 5, 0.16), rgba(0, 84, 61, 0.06), rgba(255, 255, 255, 0.98));
+  box-shadow: inset 0 0 0 2px rgba(165, 100, 5, 0.38), 0 8px 18px rgba(18, 24, 39, 0.055);
 }
 
 @media (max-width: 760px) {
@@ -5413,6 +5493,7 @@ input[type="checkbox"] {
     overscroll-behavior: contain;
   }
 
+  .menu-panel-section summary,
   .menu-panel-section p {
     margin-bottom: 6px;
   }
@@ -5434,12 +5515,25 @@ input[type="checkbox"] {
     min-width: 42px;
   }
 
-  .prayer-month-controls select {
+  .prayer-month-controls select,
+  .prayer-date-jump {
     flex: 1 1 auto;
     min-width: 0;
   }
 
-  .prayer-month-controls [data-prayer-month-next] {
+  .prayer-date-jump {
+    gap: 8px;
+    padding-inline: 10px;
+    font-size: 13px;
+  }
+
+  .prayer-date-jump img {
+    width: 16px;
+    height: 16px;
+  }
+
+  .prayer-month-controls [data-prayer-month-next],
+  .prayer-month-controls [data-prayer-day-next] {
     border-left: 1px solid var(--border);
   }
 
