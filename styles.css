@@ -3360,22 +3360,32 @@ input[type="checkbox"] {
 }
 
 .prayer-times-table .date-col {
-  width: 19%;
+  width: 22%;
 }
 
-.prayer-times-table .prayer-col,
+.prayer-times-table .prayer-col {
+  width: 13.8%;
+}
+
 .prayer-times-table .sunrise-col {
-  width: 13.5%;
+  width: 9%;
 }
 
 .prayer-times-table th:first-child,
 .prayer-times-table td:first-child {
-  width: 19%;
+  width: 22%;
 }
 
-.prayer-times-table th:nth-child(n + 2),
-.prayer-times-table td:nth-child(n + 2) {
-  width: 13.5%;
+.prayer-times-table th:nth-child(2),
+.prayer-times-table td:nth-child(2),
+.prayer-times-table th:nth-child(n + 4),
+.prayer-times-table td:nth-child(n + 4) {
+  width: 13.8%;
+}
+
+.prayer-times-table th:nth-child(3),
+.prayer-times-table td:nth-child(3) {
+  width: 9%;
 }
 
 .prayer-times-table th {
@@ -3453,7 +3463,8 @@ input[type="checkbox"] {
 .prayer-times-table .prayer-time-cell span {
   display: grid;
   box-sizing: border-box;
-  grid-template-columns: 44px minmax(0, 1fr);
+  width: 100%;
+  grid-template-columns: 42px minmax(0, 1fr);
   align-items: baseline;
   gap: 3px;
   min-width: 0;
@@ -3647,7 +3658,7 @@ input[type="checkbox"] {
     grid-template-columns: 56px minmax(0, 1fr);
     align-items: baseline;
     gap: 5px;
-    justify-items: start;
+    justify-items: stretch;
   }
 
   .prayer-times-table .prayer-time-cell span + span {
@@ -3661,7 +3672,7 @@ input[type="checkbox"] {
 
   .prayer-times-table .prayer-time-cell strong {
     font-size: clamp(15.5px, 4.1vw, 17px);
-    text-align: left;
+    text-align: right;
     white-space: nowrap;
   }
 
