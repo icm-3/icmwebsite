@@ -129,10 +129,11 @@ function initPrayerTimesPage() {
   const title = document.querySelector("[data-prayer-month-title]");
   const status = document.querySelector("[data-prayer-status]");
   const target = document.querySelector("[data-prayer-table]");
+  const monthSelect = document.querySelector("[data-prayer-month]");
   const dateInput = document.querySelector("[data-prayer-date]");
   const dateLabel = document.querySelector("[data-prayer-date-label]");
-  const prevButton = document.querySelector("[data-prayer-day-prev]");
-  const nextButton = document.querySelector("[data-prayer-day-next]");
+  const prevButton = document.querySelector("[data-prayer-month-prev]");
+  const nextButton = document.querySelector("[data-prayer-month-next]");
   const todayButton = document.querySelector("[data-prayer-month-today]");
   if (!target) return;
 
@@ -193,6 +194,10 @@ function initPrayerTimesPage() {
   const updateDateControl = () => {
     if (dateInput) dateInput.value = inputDateValue(selectedScheduleDate);
     if (dateLabel) dateLabel.textContent = shortDateFormatter.format(selectedScheduleDate);
+  };
+  const clearSelectedDay = () => {
+    document.querySelectorAll(".prayer-times-table tr.is-selected-day").forEach((row) => row.classList.remove("is-selected-day"));
+    if (dateLabel) dateLabel.textContent = "Choose day";
   };
   const splitDateText = (value) => {
     const match = value.match(/^(.*?, \w+ \d{1,2}, \d{4})\s+(.+)$/);
@@ -262,6 +267,7 @@ function initPrayerTimesPage() {
       </table>
     `;
     loadedMonth = month;
+    if (monthSelect) monthSelect.value = String(month);
   };
 
   const loadMonth = async (month) => {
@@ -281,6 +287,13 @@ function initPrayerTimesPage() {
     }
   };
 
+  const setScheduleMonth = async (month) => {
+    const nextMonth = month < 1 ? 12 : month > 12 ? 1 : month;
+    await loadMonth(nextMonth);
+    clearSelectedDay();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const setScheduleDate = async (date, { scroll = true } = {}) => {
     selectedScheduleDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     updateDateControl();
@@ -293,6 +306,9 @@ function initPrayerTimesPage() {
     if (scroll) scrollToSelectedDay();
   };
 
+  monthSelect?.addEventListener("change", () => {
+    setScheduleMonth(Number(monthSelect.value));
+  });
   dateInput?.addEventListener("change", () => {
     if (!dateInput.value) return;
     const [year, month, day] = dateInput.value.split("-").map(Number);
@@ -300,10 +316,10 @@ function initPrayerTimesPage() {
     setScheduleDate(new Date(year, month - 1, day));
   });
   prevButton?.addEventListener("click", () => {
-    setScheduleDate(new Date(selectedScheduleDate.getFullYear(), selectedScheduleDate.getMonth(), selectedScheduleDate.getDate() - 1));
+    setScheduleMonth((loadedMonth || selectedScheduleDate.getMonth() + 1) - 1);
   });
   nextButton?.addEventListener("click", () => {
-    setScheduleDate(new Date(selectedScheduleDate.getFullYear(), selectedScheduleDate.getMonth(), selectedScheduleDate.getDate() + 1));
+    setScheduleMonth((loadedMonth || selectedScheduleDate.getMonth() + 1) + 1);
   });
   todayButton?.addEventListener("click", async () => {
     selectedScheduleDate = new Date();
@@ -317,7 +333,10 @@ function initPrayerTimesPage() {
   });
 
   updateDateControl();
-  loadMonth(selectedScheduleDate.getMonth() + 1).then(() => scrollToSelectedDay());
+  loadMonth(selectedScheduleDate.getMonth() + 1).then(() => {
+    if (dateInput) dateInput.value = inputDateValue(selectedScheduleDate);
+    clearSelectedDay();
+  });
 }
 
 function initStaticFormValidation() {

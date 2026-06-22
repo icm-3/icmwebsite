@@ -1032,15 +1032,15 @@ function initMobileNav() {
   panel.innerHTML = `
     <details class="menu-panel-section menu-panel-primary" open>
       <summary>Main Pages</summary>
-      <a href="./calendar.html">Event Calendar</a>
       <a href="./prayer-times.html">Monthly Prayer Schedule</a>
+      <a href="./calendar.html">Event Calendar</a>
+      <a href="./donate.html">Donate</a>
       <a href="./programs.html">Programs</a>
       <a href="./news.html">News</a>
       <a href="./about.html">About</a>
     </details>
     <details class="menu-panel-section">
-      <summary>Education Programs</summary>
-      <a href="./programs.html#education">Education Overview</a>
+      <summary>Education</summary>
       <a href="./al-mizaan-academy.html">Al Mizaan Academy</a>
       <a href="./nibraas-institute.html">Nibraas Institute</a>
       <a href="./al-falah-quran-school.html">Al-Falah Quran School</a>
