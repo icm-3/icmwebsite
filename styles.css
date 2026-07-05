@@ -13862,7 +13862,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
     --calendar-active-border: var(--calendar-edge-green);
     z-index: 5 !important;
-    border: 2px solid var(--calendar-active-border) !important;
+    border: 1px solid var(--calendar-active-border) !important;
     box-shadow: none !important;
   }
 
@@ -13870,7 +13870,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-day.is-expanded {
     --calendar-active-border: var(--calendar-edge-gold);
     z-index: 5 !important;
-    border: 2px solid var(--calendar-active-border) !important;
+    border: 1px solid var(--calendar-active-border) !important;
     box-shadow: none !important;
   }
 
@@ -13916,7 +13916,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
     width: calc(100% + 1px) !important;
     margin-left: -1px !important;
-    border-left: 2px solid var(--calendar-active-border) !important;
+    border-left: 1px solid var(--calendar-active-border) !important;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n)::after,
@@ -13942,7 +13942,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-day.is-expanded:nth-child(7n + 7),
   .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
     width: calc(100% + 1px) !important;
-    border-right: 2px solid var(--calendar-active-border) !important;
+    border-right: 1px solid var(--calendar-active-border) !important;
   }
 
   .calendar-grid .calendar-day:nth-last-child(-n+7)::after {
@@ -13954,7 +13954,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-day.is-selected:nth-last-child(-n+7),
   .calendar-day.is-expanded:nth-last-child(-n+7) {
     height: calc(100% + 1px) !important;
-    border-bottom: 2px solid var(--calendar-active-border) !important;
+    border-bottom: 1px solid var(--calendar-active-border) !important;
   }
 
   .calendar-detail-empty,
