@@ -13771,7 +13771,7 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 }
 
-/* Calendar edge correction: keep test/current/selected outlines inside the cell box. */
+/* Calendar edge correction: active cells own edge borders without shadows. */
 .date-picker-grid button.is-today,
 .date-picker-grid button.is-selected {
   box-shadow: inset 0 0 0 2px currentColor !important;
@@ -13780,8 +13780,7 @@ body:has(.about-community-copy) .page-hero h1 {
 @media (min-width: 769px) {
   .calendar-grid {
     overflow: hidden !important;
-    border-color: rgba(165, 100, 5, 0.42) !important;
-    border-bottom-color: rgba(165, 100, 5, 0.56) !important;
+    border: 1px solid rgba(165, 100, 5, 0.5) !important;
     box-shadow: none !important;
   }
 
@@ -13795,18 +13794,50 @@ body:has(.about-community-copy) .page-hero h1 {
     display: none !important;
   }
 
+  .calendar-grid:has(.calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1)) {
+    border-left-color: rgba(0, 84, 61, 0.68) !important;
+  }
+
+  .calendar-grid:has(.calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n)),
+  .calendar-grid:has(.calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 7)) {
+    border-right-color: rgba(0, 84, 61, 0.68) !important;
+  }
+
+  .calendar-grid:has(.calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-last-child(-n+7)) {
+    border-bottom-color: rgba(0, 84, 61, 0.68) !important;
+  }
+
+  .calendar-grid:has(.calendar-day.is-selected.is-selected:nth-child(7n + 1)),
+  .calendar-grid:has(.calendar-day.is-expanded.is-expanded:nth-child(7n + 1)) {
+    border-left-color: rgba(165, 100, 5, 0.72) !important;
+  }
+
+  .calendar-grid:has(.calendar-day.is-selected.is-selected:nth-child(7n)),
+  .calendar-grid:has(.calendar-day.is-selected.is-selected:nth-child(7n + 7)),
+  .calendar-grid:has(.calendar-day.is-expanded.is-expanded:nth-child(7n)),
+  .calendar-grid:has(.calendar-day.is-expanded.is-expanded:nth-child(7n + 7)) {
+    border-right-color: rgba(165, 100, 5, 0.72) !important;
+  }
+
+  .calendar-grid:has(.calendar-day.is-selected.is-selected:nth-last-child(-n+7)),
+  .calendar-grid:has(.calendar-day.is-expanded.is-expanded:nth-last-child(-n+7)) {
+    border-bottom-color: rgba(165, 100, 5, 0.72) !important;
+  }
+
   .calendar-day.is-today:not(.is-selected):not(.is-expanded),
   .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded),
   .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
+    --calendar-active-border: rgba(0, 84, 61, 0.68);
     z-index: 5 !important;
-    border-color: rgba(0, 84, 61, 0.38) !important;
+    border: 1px solid var(--calendar-active-border) !important;
     box-shadow: none !important;
   }
 
   .calendar-day.is-selected,
   .calendar-day.is-expanded {
+    --calendar-active-border: rgba(165, 100, 5, 0.72);
     z-index: 5 !important;
-    border-color: rgba(165, 100, 5, 0.48) !important;
+    border: 1px solid var(--calendar-active-border) !important;
     box-shadow: none !important;
   }
 
@@ -13818,7 +13849,7 @@ body:has(.about-community-copy) .page-hero h1 {
     position: absolute !important;
     inset: 0 !important;
     z-index: 4 !important;
-    border: 2px solid rgba(0, 84, 61, 0.52) !important;
+    border: 2px solid var(--calendar-active-border) !important;
     border-radius: 0 !important;
     pointer-events: none !important;
   }
@@ -13830,7 +13861,7 @@ body:has(.about-community-copy) .page-hero h1 {
     position: absolute !important;
     inset: 0 !important;
     z-index: 4 !important;
-    border: 2px solid rgba(165, 100, 5, 0.58) !important;
+    border: 2px solid var(--calendar-active-border) !important;
     border-radius: 0 !important;
     pointer-events: none !important;
   }
@@ -13848,24 +13879,24 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14)::after {
-    top: -1px !important;
-    border-top: 2px solid rgba(0, 84, 61, 0.52) !important;
+    top: 0 !important;
+    border-top: 2px solid var(--calendar-active-border) !important;
   }
 
   .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14)::after,
   .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14)::after {
-    top: -1px !important;
-    border-top: 2px solid rgba(165, 100, 5, 0.58) !important;
+    top: 0 !important;
+    border-top: 2px solid var(--calendar-active-border) !important;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1)::after,
   .calendar-day.is-selected:nth-child(7n + 1)::after,
   .calendar-day.is-expanded:nth-child(7n + 1)::after {
-    left: -1px !important;
+    left: 0 !important;
   }
 
   .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after {
-    left: -1px !important;
+    left: 0 !important;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n)::after,
@@ -13873,23 +13904,47 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-day.is-selected:nth-child(7n)::after,
   .calendar-day.is-selected:nth-child(7n + 7)::after,
   .calendar-day.is-expanded:nth-child(7n)::after {
-    right: -1px !important;
+    right: 0 !important;
   }
 
   .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after {
-    right: -1px !important;
+    right: 0 !important;
   }
 
   .calendar-day.is-expanded:nth-child(7n + 7)::after {
-    right: -1px !important;
+    right: 0 !important;
   }
 
   .calendar-grid .calendar-day:nth-last-child(-n+7)::after {
-    bottom: -1px !important;
+    bottom: 0 !important;
   }
 
   .calendar-day.is-selected:nth-child(7n),
   .calendar-day.is-expanded:nth-child(7n) {
-    border-right: 1px solid rgba(165, 100, 5, 0.48) !important;
+    border-right: 1px solid var(--calendar-active-border) !important;
+  }
+
+  .calendar-detail-empty,
+  .calendar-detail-card,
+  .calendar-detail-body,
+  .calendar-detail-poster {
+    box-shadow: none !important;
+  }
+
+  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-selected:nth-child(7n + 1)),
+  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-expanded:nth-child(7n + 1)) {
+    border-left-color: rgba(165, 100, 5, 0.72) !important;
+  }
+
+  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-selected:nth-child(7n)),
+  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-selected:nth-child(7n + 7)),
+  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-expanded:nth-child(7n)),
+  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-expanded:nth-child(7n + 7)) {
+    border-right-color: rgba(165, 100, 5, 0.72) !important;
+  }
+
+  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-selected:nth-last-child(-n+7)),
+  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-expanded:nth-last-child(-n+7)) {
+    border-bottom-color: rgba(165, 100, 5, 0.72) !important;
   }
 }
