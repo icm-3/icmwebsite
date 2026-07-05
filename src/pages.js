@@ -11,6 +11,7 @@ import { initMobileNav } from "./nav.js";
 const ICM_COORDS = new Coordinates(35.8111, -78.8231);
 const TIME_ZONE = "America/New_York";
 const prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
+const calendarTodayOverride = "2026-06-06";
 const prayerLabels = {
   fajr: "Fajr",
   sunrise: "Sunrise",
@@ -20,10 +21,9 @@ const prayerLabels = {
   isha: "Isha",
 };
 let selectedPrayerDate = new Date();
-let selectedCalendarMonth = new Date();
+let selectedCalendarMonth = getCalendarOverrideDate() || new Date();
 let selectedCalendarEventSlug = "";
 let expandedCalendarDateKey = "";
-const calendarTodayOverride = "2026-06-28";
 
 const fallbackNews = [
   {
@@ -327,10 +327,14 @@ function eventMatchesDate(event, date) {
   );
 }
 
-function getCalendarTodayDate() {
-  if (!calendarTodayOverride) return prayerDateFor(new Date());
+function getCalendarOverrideDate() {
+  if (!calendarTodayOverride) return null;
   const [year, month, day] = calendarTodayOverride.split("-").map(Number);
   return new Date(year, month - 1, day);
+}
+
+function getCalendarTodayDate() {
+  return getCalendarOverrideDate() || prayerDateFor(new Date());
 }
 
 function scrollToCalendarDetail(behavior = "smooth") {
@@ -518,7 +522,7 @@ function initCalendar(content) {
     if (!button) return;
 
     if (button.dataset.calendarNav === "today") {
-      selectedCalendarMonth = new Date();
+      selectedCalendarMonth = getCalendarTodayDate();
     } else {
       selectedCalendarMonth = new Date(selectedCalendarMonth);
       selectedCalendarMonth.setMonth(selectedCalendarMonth.getMonth() + (button.dataset.calendarNav === "next" ? 1 : -1));

@@ -34,6 +34,24 @@
   },
   "events": [
     {
+      "title": "June 6 Calendar Edge Test",
+      "date": "2026-06-06",
+      "time": "10:00 AM",
+      "location": "ICM",
+      "description": "Temporary calendar fixture for checking the June 6 Saturday current-day border.",
+      "poster": "./public/news/icm-live/friday-announcements-june-19-2026.png",
+      "posterAlt": "ICM Friday Announcements flyer"
+    },
+    {
+      "title": "June 31 Calendar Normalization Test",
+      "date": "2026-06-31",
+      "time": "7:00 PM",
+      "location": "ICM",
+      "description": "Temporary calendar fixture requested for June 31; JavaScript normalizes this invalid date to July 1.",
+      "poster": "./public/news/icm-live/friday-bukhari-circle.jpeg",
+      "posterAlt": "ICM Friday Night Bukhari Circle flyer"
+    },
+    {
       "title": "Tuesday Quran Study Circle And Community Reflections",
       "date": "2026-06-28",
       "time": "7:00 PM",

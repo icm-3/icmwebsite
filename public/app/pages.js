@@ -894,6 +894,24 @@ var defaultContent = {
   },
   "events": [
     {
+      "title": "June 6 Calendar Edge Test",
+      "date": "2026-06-06",
+      "time": "10:00 AM",
+      "location": "ICM",
+      "description": "Temporary calendar fixture for checking the June 6 Saturday current-day border.",
+      "poster": "./public/news/icm-live/friday-announcements-june-19-2026.png",
+      "posterAlt": "ICM Friday Announcements flyer"
+    },
+    {
+      "title": "June 31 Calendar Normalization Test",
+      "date": "2026-06-31",
+      "time": "7:00 PM",
+      "location": "ICM",
+      "description": "Temporary calendar fixture requested for June 31; JavaScript normalizes this invalid date to July 1.",
+      "poster": "./public/news/icm-live/friday-bukhari-circle.jpeg",
+      "posterAlt": "ICM Friday Night Bukhari Circle flyer"
+    },
+    {
       "title": "Tuesday Quran Study Circle And Community Reflections",
       "date": "2026-06-28",
       "time": "7:00 PM",
@@ -1236,6 +1254,7 @@ function initMobileNav() {
 var ICM_COORDS = new Coordinates(35.8111, -78.8231);
 var TIME_ZONE = "America/New_York";
 var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
+var calendarTodayOverride = "2026-06-06";
 var prayerLabels = {
   fajr: "Fajr",
   sunrise: "Sunrise",
@@ -1245,10 +1264,9 @@ var prayerLabels = {
   isha: "Isha"
 };
 var selectedPrayerDate = /* @__PURE__ */ new Date();
-var selectedCalendarMonth = /* @__PURE__ */ new Date();
+var selectedCalendarMonth = getCalendarOverrideDate() || /* @__PURE__ */ new Date();
 var selectedCalendarEventSlug = "";
 var expandedCalendarDateKey = "";
-var calendarTodayOverride = "2026-06-28";
 var fallbackNews = [
   {
     title: "Community Programs Continue Through Summer",
@@ -1488,10 +1506,13 @@ function eventMatchesDate(event, date) {
   const eventDate = getEventDate(event);
   return eventDate && eventDate.getFullYear() === date.getFullYear() && eventDate.getMonth() === date.getMonth() && eventDate.getDate() === date.getDate();
 }
-function getCalendarTodayDate() {
-  if (!calendarTodayOverride) return prayerDateFor(/* @__PURE__ */ new Date());
+function getCalendarOverrideDate() {
+  if (!calendarTodayOverride) return null;
   const [year, month, day] = calendarTodayOverride.split("-").map(Number);
   return new Date(year, month - 1, day);
+}
+function getCalendarTodayDate() {
+  return getCalendarOverrideDate() || prayerDateFor(/* @__PURE__ */ new Date());
 }
 function scrollToCalendarDetail(behavior = "smooth") {
   requestAnimationFrame(() => {
@@ -1638,7 +1659,7 @@ function initCalendar(content) {
     const button = event.target.closest("[data-calendar-nav]");
     if (!button) return;
     if (button.dataset.calendarNav === "today") {
-      selectedCalendarMonth = /* @__PURE__ */ new Date();
+      selectedCalendarMonth = getCalendarTodayDate();
     } else {
       selectedCalendarMonth = new Date(selectedCalendarMonth);
       selectedCalendarMonth.setMonth(selectedCalendarMonth.getMonth() + (button.dataset.calendarNav === "next" ? 1 : -1));
