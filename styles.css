@@ -13709,10 +13709,10 @@ body:has(.about-community-copy) .page-hero h1 {
     content: "" !important;
     display: block !important;
     position: absolute;
-    top: var(--calendar-today-top);
+    top: calc(var(--calendar-today-top) + 1px);
     z-index: 9;
-    width: 2px;
-    height: var(--calendar-today-height);
+    width: 1px;
+    height: calc(var(--calendar-today-height) - 2px);
     background: rgba(0, 84, 61, 0.58);
     pointer-events: none;
   }
