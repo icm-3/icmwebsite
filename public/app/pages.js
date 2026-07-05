@@ -913,6 +913,42 @@ var defaultContent = {
       "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
     },
     {
+      "title": "Saturday Quran Review And Family Program Planning",
+      "date": "2026-07-04",
+      "time": "10:00 AM",
+      "location": "ICM Classroom",
+      "description": "Saturday morning Quran review and planning time for family programs.",
+      "poster": "./public/news/icm-live/summer-quran-islamic-studies.png",
+      "posterAlt": "ICM Summer Quran and Islamic Studies Program flyer"
+    },
+    {
+      "title": "Community Volunteer Setup For Weekend Services",
+      "date": "2026-07-04",
+      "time": "12:30 PM",
+      "location": "ICM",
+      "description": "Volunteer setup window for weekend programs and community service support.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
+    },
+    {
+      "title": "Youth Activity Coordination And Parent Check In",
+      "date": "2026-07-04",
+      "time": "2:00 PM",
+      "location": "ICM Multipurpose Room",
+      "description": "Coordination meeting for youth activities, parent communication, and volunteer roles.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
+    },
+    {
+      "title": "Evening Community Reminder Circle",
+      "date": "2026-07-04",
+      "time": "After Maghrib",
+      "location": "ICM Prayer Hall",
+      "description": "Short evening reminder and community check-in after Maghrib.",
+      "poster": "./public/news/icm-live/friday-bukhari-circle.jpeg",
+      "posterAlt": "ICM Friday Night Bukhari Circle flyer"
+    },
+    {
       "title": "Friday Night Bukhari Circle With Community Reflections And Weekly Family Reminders",
       "date": "2026-07-03",
       "time": "Between Maghrib & Isha",
@@ -1185,6 +1221,7 @@ var selectedPrayerDate = /* @__PURE__ */ new Date();
 var selectedCalendarMonth = /* @__PURE__ */ new Date();
 var selectedCalendarEventSlug = "";
 var expandedCalendarDateKey = "";
+var calendarTodayOverride = "2026-07-04";
 var fallbackNews = [
   {
     title: "Community Programs Continue Through Summer",
@@ -1424,6 +1461,11 @@ function eventMatchesDate(event, date) {
   const eventDate = getEventDate(event);
   return eventDate && eventDate.getFullYear() === date.getFullYear() && eventDate.getMonth() === date.getMonth() && eventDate.getDate() === date.getDate();
 }
+function getCalendarTodayDate() {
+  if (!calendarTodayOverride) return prayerDateFor(/* @__PURE__ */ new Date());
+  const [year, month, day] = calendarTodayOverride.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
 function scrollToCalendarDetail(behavior = "smooth") {
   requestAnimationFrame(() => {
     const detail = document.querySelector("[data-calendar-detail]");
@@ -1492,7 +1534,7 @@ function renderCalendar(content) {
   if (title) title.textContent = formatMonthTitle(monthStart);
   if (hijri) hijri.textContent = formatHijriMonth(selectedCalendarMonth);
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const todayDate = prayerDateFor(/* @__PURE__ */ new Date());
+  const todayDate = getCalendarTodayDate();
   const cells = Array.from({ length: 42 }, (_, index) => {
     const date = new Date(firstGridDate);
     date.setDate(firstGridDate.getDate() + index);

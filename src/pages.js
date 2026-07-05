@@ -23,6 +23,7 @@ let selectedPrayerDate = new Date();
 let selectedCalendarMonth = new Date();
 let selectedCalendarEventSlug = "";
 let expandedCalendarDateKey = "";
+const calendarTodayOverride = "2026-07-04";
 
 const fallbackNews = [
   {
@@ -326,6 +327,12 @@ function eventMatchesDate(event, date) {
   );
 }
 
+function getCalendarTodayDate() {
+  if (!calendarTodayOverride) return prayerDateFor(new Date());
+  const [year, month, day] = calendarTodayOverride.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
 function scrollToCalendarDetail(behavior = "smooth") {
   requestAnimationFrame(() => {
     const detail = document.querySelector("[data-calendar-detail]");
@@ -413,7 +420,7 @@ function renderCalendar(content) {
   if (hijri) hijri.textContent = formatHijriMonth(selectedCalendarMonth);
 
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const todayDate = prayerDateFor(new Date());
+  const todayDate = getCalendarTodayDate();
   const cells = Array.from({ length: 42 }, (_, index) => {
     const date = new Date(firstGridDate);
     date.setDate(firstGridDate.getDate() + index);

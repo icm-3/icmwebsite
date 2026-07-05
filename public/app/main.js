@@ -913,6 +913,42 @@ var defaultContent = {
       "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
     },
     {
+      "title": "Saturday Quran Review And Family Program Planning",
+      "date": "2026-07-04",
+      "time": "10:00 AM",
+      "location": "ICM Classroom",
+      "description": "Saturday morning Quran review and planning time for family programs.",
+      "poster": "./public/news/icm-live/summer-quran-islamic-studies.png",
+      "posterAlt": "ICM Summer Quran and Islamic Studies Program flyer"
+    },
+    {
+      "title": "Community Volunteer Setup For Weekend Services",
+      "date": "2026-07-04",
+      "time": "12:30 PM",
+      "location": "ICM",
+      "description": "Volunteer setup window for weekend programs and community service support.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
+    },
+    {
+      "title": "Youth Activity Coordination And Parent Check In",
+      "date": "2026-07-04",
+      "time": "2:00 PM",
+      "location": "ICM Multipurpose Room",
+      "description": "Coordination meeting for youth activities, parent communication, and volunteer roles.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
+    },
+    {
+      "title": "Evening Community Reminder Circle",
+      "date": "2026-07-04",
+      "time": "After Maghrib",
+      "location": "ICM Prayer Hall",
+      "description": "Short evening reminder and community check-in after Maghrib.",
+      "poster": "./public/news/icm-live/friday-bukhari-circle.jpeg",
+      "posterAlt": "ICM Friday Night Bukhari Circle flyer"
+    },
+    {
       "title": "Friday Night Bukhari Circle With Community Reflections And Weekly Family Reminders",
       "date": "2026-07-03",
       "time": "Between Maghrib & Isha",
