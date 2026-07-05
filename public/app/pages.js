@@ -894,6 +894,33 @@ var defaultContent = {
   },
   "events": [
     {
+      "title": "Tuesday Quran Study Circle And Community Reflections",
+      "date": "2026-07-28",
+      "time": "7:00 PM",
+      "location": "ICM Prayer Hall",
+      "description": "Quran study circle with short reflections and community reminders.",
+      "poster": "./public/news/icm-live/friday-bukhari-circle.jpeg",
+      "posterAlt": "ICM Friday Night Bukhari Circle flyer"
+    },
+    {
+      "title": "Youth Service Planning Meeting",
+      "date": "2026-07-28",
+      "time": "8:00 PM",
+      "location": "ICM Classroom",
+      "description": "Planning meeting for youth service projects and volunteer coordination.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
+    },
+    {
+      "title": "Family Program Volunteer Check In",
+      "date": "2026-07-28",
+      "time": "After Isha",
+      "location": "ICM",
+      "description": "Volunteer check-in for family programs and upcoming community activities.",
+      "poster": "./public/news/icm-live/summer-quran-islamic-studies.png",
+      "posterAlt": "ICM Summer Quran and Islamic Studies Program flyer"
+    },
+    {
       "title": "Summer Quran And Islamic Studies Program With Student Activities And Parent Updates For Families",
       "date": "2026-07-06",
       "time": "Monday - Thursday, 10:00 AM - 1:00 PM",

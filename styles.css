@@ -13729,4 +13729,25 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 7)::after {
     inset: -1px !important;
   }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14)::after {
+    top: -4px !important;
+  }
+
+  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14)::after,
+  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14)::after {
+    top: -4px !important;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1)::after,
+  .calendar-day.is-selected:nth-child(7n + 1)::after,
+  .calendar-day.is-expanded:nth-child(7n + 1)::after {
+    left: -2px !important;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 7)::after,
+  .calendar-day.is-selected:nth-child(7n + 7)::after,
+  .calendar-day.is-expanded:nth-child(7n + 7)::after {
+    right: -2px !important;
+  }
 }
