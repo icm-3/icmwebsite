@@ -13749,13 +13749,13 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14)::after {
     top: -1px !important;
-    border-top: 0 !important;
+    border-top: 2px solid rgba(0, 84, 61, 0.42) !important;
   }
 
   .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14)::after,
   .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14)::after {
     top: -1px !important;
-    border-top: 0 !important;
+    border-top: 2px solid rgba(165, 100, 5, 0.42) !important;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1)::after,
