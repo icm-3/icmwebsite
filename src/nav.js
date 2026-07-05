@@ -38,18 +38,98 @@ export function initMobileNav() {
   `;
   button.after(panel);
 
+  let closeTimer = null;
+  const menuSections = panel.querySelectorAll(".menu-panel-section");
+
+  const clearSectionAnimation = (section) => {
+    section.style.height = "";
+    section.style.overflow = "";
+    section.classList.remove("is-animating");
+  };
+
+  const setSectionOpen = (section, shouldOpen) => {
+    if (section.open === shouldOpen || section.classList.contains("is-animating")) return;
+
+    const startHeight = section.offsetHeight;
+    let endHeight;
+    if (shouldOpen) {
+      section.open = true;
+      endHeight = section.offsetHeight;
+    } else {
+      section.open = false;
+      endHeight = section.offsetHeight;
+      section.open = true;
+    }
+    section.classList.add("is-animating");
+    section.style.overflow = "hidden";
+    section.style.height = `${startHeight}px`;
+
+    requestAnimationFrame(() => {
+      section.style.height = `${endHeight}px`;
+    });
+
+    const finish = () => {
+      if (!shouldOpen) section.open = false;
+      clearSectionAnimation(section);
+      section.removeEventListener("transitionend", finish);
+    };
+    section.addEventListener("transitionend", finish);
+    window.setTimeout(finish, 260);
+  };
+
+  menuSections.forEach((section) => {
+    section.addEventListener("click", (event) => {
+      const summary = event.target.closest("summary");
+      if (!summary || !section.contains(summary)) return;
+      event.preventDefault();
+      setSectionOpen(section, !section.open);
+    });
+  });
+
   const closeMenu = () => {
-    nav.classList.remove("menu-open");
-    panel.hidden = true;
+    if (!nav.classList.contains("menu-open")) return;
+    window.clearTimeout(closeTimer);
+    panel.classList.remove("is-open");
+    panel.classList.add("is-closing");
+    nav.classList.add("menu-closing");
+    nav.classList.remove("menu-exit");
+    nav.classList.remove("menu-visible");
+    void nav.offsetHeight;
+    requestAnimationFrame(() => {
+      nav.classList.add("menu-exit");
+    });
     button.setAttribute("aria-expanded", "false");
     button.setAttribute("aria-label", "Open menu");
+    closeTimer = window.setTimeout(() => {
+      nav.classList.remove("menu-open");
+      nav.classList.remove("menu-closing");
+      nav.classList.remove("menu-exit");
+      panel.classList.remove("is-closing");
+      panel.hidden = true;
+    }, 220);
   };
 
   const setMenuOpen = (isOpen) => {
-    nav.classList.toggle("menu-open", isOpen);
-    panel.hidden = !isOpen;
-    button.setAttribute("aria-expanded", String(isOpen));
-    button.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+    window.clearTimeout(closeTimer);
+    if (!isOpen) {
+      closeMenu();
+      return;
+    }
+
+    panel.hidden = false;
+    panel.classList.remove("is-closing");
+    nav.classList.add("menu-open");
+    nav.classList.remove("menu-closing");
+    nav.classList.remove("menu-exit");
+    nav.classList.remove("menu-visible");
+    void nav.offsetHeight;
+    void panel.offsetHeight;
+    requestAnimationFrame(() => {
+      nav.classList.add("menu-visible");
+      panel.classList.add("is-open");
+    });
+    button.setAttribute("aria-expanded", "true");
+    button.setAttribute("aria-label", "Close menu");
   };
 
   button.setAttribute("aria-controls", panel.id);
@@ -57,7 +137,7 @@ export function initMobileNav() {
 
   button.addEventListener("click", (event) => {
     event.stopPropagation();
-    setMenuOpen(!nav.classList.contains("menu-open"));
+    setMenuOpen(!panel.classList.contains("is-open"));
   });
 
   nav.querySelectorAll("a").forEach((link) => {

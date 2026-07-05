@@ -6,3 +6,6 @@ work/
 .DS_Store
 Thumbs.db
 .vercel
+.playwright-cli/
+outputs/
+mobile-preview.html

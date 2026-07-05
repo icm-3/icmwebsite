@@ -859,163 +859,171 @@ var PrayerTimes = class {
 
 // src/default-content.js
 var defaultContent = {
-  hero: {
-    image: "./public/images/masjid-interior-hero-clean.png",
-    imageAlt: "Islamic Center of Morrisville prayer hall interior"
+  "hero": {
+    "image": "./public/images/masjid-interior-hero-clean.png",
+    "imageAlt": "Islamic Center of Morrisville main prayer hall interior with carpet rows, qibla wall, and open worship space for homepage image alt text testing"
   },
-  jummah: {
-    dateLabel: "Friday, June 19, 2026",
-    shifts: [
+  "jummah": {
+    "dateLabel": "Friday, June 26, 2026",
+    "shifts": [
       {
-        shift: "1",
-        time: "1:00 PM",
-        speaker: "Imam Sami Kocak",
-        topic: "Muhasaba: Self Reflection"
+        "shift": "1",
+        "time": "1:00 PM",
+        "speaker": "Imam Sami Ko\xE7ak",
+        "topic": "Reflections on Karbala"
       },
       {
-        shift: "2",
-        time: "2:00 PM",
-        speaker: "Mikael Raza",
-        topic: "Gaining Taqwa by Avoiding Ostentation"
+        "shift": "2",
+        "time": "2:00 PM",
+        "speaker": "Hisham Sarsour",
+        "topic": "Understanding Our Reality in America"
       },
       {
-        shift: "3",
-        time: "3:00 PM",
-        speaker: "Mansoor Kazi",
-        topic: "The Green Deen"
+        "shift": "3",
+        "time": "3:00 PM",
+        "speaker": "Shaykh Umair Haseeb",
+        "topic": "Reflections on Karbala"
       },
       {
-        shift: "4",
-        time: "4:00 PM",
-        speaker: "Mansoor Syed",
-        topic: "Ghaflah: Spiritual Negligence"
+        "shift": "4",
+        "time": "4:00 PM",
+        "speaker": "Imam Manzar ul Islam",
+        "topic": "Karbal\u0101\u02BE: When Truth Refused to Surrender"
       }
     ]
   },
-  events: [
+  "events": [
     {
-      title: "Women's Eid Celebration",
-      date: "2026-06-14",
-      time: "4:00 PM",
-      location: "ICM Banquet Hall",
-      description: "A women's community potluck with games, socializing, prizes, and time together after Eid.",
-      link: "https://tinyurl.com/ICM-EID-2026",
-      poster: "./public/news/womens-eid-2026.png",
-      posterAlt: "Women's Eid Celebration event poster"
+      "title": "Summer Quran And Islamic Studies Program With Student Activities And Parent Updates For Families",
+      "date": "2026-07-06",
+      "time": "Monday - Thursday, 10:00 AM - 1:00 PM",
+      "location": "ICM",
+      "description": "Nibras Institute summer classes continue Monday through Thursday through August 20 with Quran, Islamic studies, and student activities.",
+      "poster": "./public/news/icm-live/summer-quran-islamic-studies.png",
+      "posterAlt": "ICM Summer Quran and Islamic Studies Program flyer"
     },
     {
-      title: "Youth Hike & BBQ",
-      date: "2026-06-21",
-      time: "10:00 AM",
-      location: "William B. Umstead State Park",
-      description: "A morning hike followed by lunch and games.",
-      poster: "./public/news/camp.png",
-      posterAlt: "Youth outdoor activity poster"
+      "title": "Sisters Zumba Fitness Class And Weekly Wellness Gathering With Community Health Reminders",
+      "date": "2026-07-05",
+      "time": "6:30 PM",
+      "location": "ICM",
+      "description": "Sisters fitness class held weekly on Thursday at 6:30 PM with movement, wellness, and community connection.",
+      "link": "https://tinyurl.com/ICM-Zumba-2026",
+      "poster": "./public/news/icm-live/sisters-zumba-fitness.png",
+      "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
     },
     {
-      title: "Sisters' Tea & Talk",
-      date: "2026-06-27",
-      time: "6:30 PM",
-      location: "ICM Community Hall",
-      description: "An evening gathering for reflection and connection.",
-      poster: "./public/news/ramadan.png",
-      posterAlt: "Community program poster"
+      "title": "Friday Night Bukhari Circle With Community Reflections And Weekly Family Reminders",
+      "date": "2026-07-03",
+      "time": "Between Maghrib & Isha",
+      "location": "ICM Prayer Hall",
+      "description": "Weekly reading from Sahih al-Bukhari between Maghrib and Isha with short reminders and community reflections.",
+      "poster": "./public/news/icm-live/friday-bukhari-circle.jpeg",
+      "posterAlt": "ICM Friday Night Bukhari Circle flyer"
     },
     {
-      title: "Youth Qiyam Night",
-      date: "2026-06-27",
-      time: "9:45 PM",
-      location: "ICM Prayer Hall",
-      description: "A night program for youth with reminders, worship, and community time.",
-      poster: "./public/news/camp.png",
-      posterAlt: "Youth night program poster"
+      "title": "40 Principles Of The Religion With Practical Lessons For Community Life",
+      "date": "2026-07-03",
+      "time": "6:30 PM",
+      "location": "ICM",
+      "description": "Weekly Friday lecture series on the 40 principles of the religion.",
+      "poster": "./public/news/icm-live/friday-announcements-june-19-2026.png",
+      "posterAlt": "ICM Friday Announcements flyer"
     },
     {
-      title: "Family Seerah Workshop",
-      date: "2026-06-27",
-      time: "11:00 AM",
-      location: "ICM Multipurpose Room",
-      description: "A family learning session with activities and discussion for parents and children.",
-      poster: "./public/news/eid.png",
-      posterAlt: "Family workshop poster"
+      "title": "Volunteer For ICM Youth Program Planning Team And Weekend Activities",
+      "date": "2026-07-03",
+      "time": "Volunteer signup",
+      "location": "ICM",
+      "description": "ICM Youth Program is recruiting volunteers to help plan activities, support youth leaders, and serve the community.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
     },
     {
-      title: "Independence Day Potluck",
-      date: "2026-07-04",
-      time: "1:00 PM",
-      location: "ICM Community Hall",
-      description: "Bring a dish and spend the afternoon with the community.",
-      poster: "./public/news/eid.png",
-      posterAlt: "Community potluck poster"
+      "title": "Youth Volunteer Orientation For Upcoming Programs And Service Projects",
+      "date": "2026-07-03",
+      "time": "5:30 PM",
+      "location": "ICM Multipurpose Room",
+      "description": "Orientation for youth volunteers supporting upcoming ICM programs and community activities.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
     },
     {
-      title: "Community Service Day & Food Pantry Support",
-      date: "2026-07-12",
-      time: "9:30 AM",
-      location: "ICM Social Services Entrance",
-      description: "Help sort donations, prepare family grocery bags, and support neighbors across Morrisville.",
-      poster: "./public/news/camp.png",
-      posterAlt: "Community service day poster"
+      "title": "Community Dinner Setup And Hospitality Volunteer Coordination",
+      "date": "2026-07-03",
+      "time": "7:15 PM",
+      "location": "ICM Banquet Hall",
+      "description": "Volunteer setup window for the community dinner and Friday evening program support.",
+      "poster": "./public/news/icm-live/friday-announcements-june-19-2026.png",
+      "posterAlt": "ICM Friday Announcements flyer"
     },
     {
-      title: "New Muslim Welcome Circle and Family Dinner",
-      date: "2026-07-18",
-      time: "7:15 PM",
-      location: "ICM Multipurpose Room",
-      description: "A welcoming evening for new Muslims, families, mentors, and community members.",
-      poster: "./public/news/ramadan.png",
-      posterAlt: "Welcome circle poster"
+      "title": "Sisters Program Planning Circle With Long Community Coordination Updates",
+      "date": "2026-07-03",
+      "time": "8:15 PM",
+      "location": "ICM Classroom",
+      "description": "Planning circle for sisters programs, class ideas, and upcoming community support.",
+      "poster": "./public/news/icm-live/sisters-zumba-fitness.png",
+      "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
+    },
+    {
+      "title": "Henna Beginner Class",
+      "date": "2026-06-27",
+      "time": "12:00 PM - 2:00 PM",
+      "location": "ICM",
+      "description": "Beginner henna class for ages 15 and above.",
+      "link": "https://tinyurl.com/ICM-BeginnersHenna-2026",
+      "poster": "./public/news/icm-live/henna-beginner-class.png",
+      "posterAlt": "ICM Henna Beginner Class flyer"
+    },
+    {
+      "title": "Nibras Hiking Day Trip",
+      "date": "2026-06-27",
+      "time": "Trip day",
+      "location": "Raven Rock State Park",
+      "description": "Nibras Institute hiking day trip for ages 13 and above.",
+      "poster": "./public/news/icm-live/friday-announcements-june-19-2026.png",
+      "posterAlt": "ICM Friday Announcements flyer mentioning the Nibras hiking day trip and extended logistics"
+    },
+    {
+      "title": "Sisters Zumba Fitness Class",
+      "date": "2026-06-25",
+      "time": "6:30 PM",
+      "location": "ICM",
+      "description": "Sisters fitness class held every Thursday at 6:30 PM.",
+      "link": "https://tinyurl.com/ICM-Zumba-2026",
+      "poster": "./public/news/icm-live/sisters-zumba-fitness.png",
+      "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
     }
   ],
-  news: [
+  "news": [
     {
-      title: "Community Operations Update for Prayer Hall Access, Parking Flow, Program Registration, and Weekend Family Services",
-      date: "2026-06-18",
-      summary: "Please review this extended community update covering prayer hall entry, volunteer parking directions, class registration reminders, family services availability, and important notes for guests attending multiple programs on the same weekend.",
-      image: "./public/news/ramadan.png",
-      imageAlt: "Mosque lanterns for community operations update"
+      "title": "Friday Announcements, Parking Notes, Youth Volunteers And Weekly Programs - June 19, 2026",
+      "date": "2026-06-19",
+      "summary": "Community reminders covering monthly support, parking and traffic flow, youth volunteer signups, Nibras hiking, Friday Night Bukhari Circle, and the regular weekly program schedule.",
+      "image": "./public/news/icm-live/friday-announcements-june-19-2026.png",
+      "imageAlt": "ICM Friday Announcements flyer for June 19, 2026 with volunteer updates traffic notes youth programs and weekly community reminders"
     },
     {
-      title: "Friday Announcements - June 12, 2026",
-      date: "2026-06-12",
-      summary: "Monthly support, traffic reminders, summer programs, Eid celebration, Bukhari Circle, youth volunteer signups, and weekly lectures.",
-      image: "./public/news/friday-announcements-june-12-2026.png",
-      imageAlt: "Friday Announcements flyer for June 12, 2026"
+      "title": "Youth Volunteers Needed",
+      "date": "2026-06-19",
+      "summary": "Help plan programs and serve the community.",
+      "image": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "imageAlt": "Volunteer for ICM Youth Program flyer"
     },
     {
-      title: "Ramadan Programs & Taraweeh Schedule",
-      date: "2026-04-28",
-      summary: "Join us for special programs throughout Ramadan.",
-      image: "./public/news/ramadan.png",
-      imageAlt: "Mosque at sunset during Ramadan"
+      "title": "Summer Quran And Islamic Studies Registration",
+      "date": "2026-05-30",
+      "summary": "Nibras classes run Monday through Thursday through August 20 with Quran, Islamic studies, student activities, parent updates, and registration reminders.",
+      "image": "./public/news/icm-live/summer-quran-islamic-studies.png",
+      "imageAlt": "ICM Summer Quran and Islamic Studies Program flyer with registration details for students and families"
     },
     {
-      title: "Eid Al-Adha Announcements",
-      date: "2026-04-24",
-      summary: "Important information for Eid prayers and events.",
-      image: "./public/news/eid.png",
-      imageAlt: "Mosque scene for Eid announcement"
-    },
-    {
-      title: "Youth Summer Camp Registration Open",
-      date: "2026-04-18",
-      summary: "Fun, faith, and friends this summer!",
-      image: "./public/news/camp.png",
-      imageAlt: "Youth summer camp activity"
-    },
-    {
-      title: "Parking and Arrival Guidance for Busy Friday Prayer Shifts",
-      date: "2026-04-12",
-      summary: "Please arrive early, follow volunteer directions, and leave extra time for entry.",
-      image: "./public/news/eid.png",
-      imageAlt: "Masjid evening scene for community announcement"
-    },
-    {
-      title: "Weekend Learning Programs Add New Family Workshop Series",
-      date: "2026-04-05",
-      summary: "Families can join monthly workshops focused on worship, service, and home routines.",
-      image: "./public/news/ramadan.png",
-      imageAlt: "Mosque lanterns for program announcement"
+      "title": "ICM App And Community Updates For Prayer Times, Programs, And Announcements",
+      "date": "2026-06-28",
+      "summary": "Use ICM's official app and website for prayer times, Jumu'ah updates, weekly program changes, registration reminders, volunteer needs, youth activities, social welfare notices, and community announcements that families need to check throughout the week.",
+      "image": "./public/images/icm-logo-provided-transparent.png",
+      "imageAlt": "Islamic Center of Morrisville logo"
     }
   ]
 };
@@ -1059,23 +1067,95 @@ function initMobileNav() {
     </details>
   `;
   button.after(panel);
+  let closeTimer = null;
+  const menuSections = panel.querySelectorAll(".menu-panel-section");
+  const clearSectionAnimation = (section) => {
+    section.style.height = "";
+    section.style.overflow = "";
+    section.classList.remove("is-animating");
+  };
+  const setSectionOpen = (section, shouldOpen) => {
+    if (section.open === shouldOpen || section.classList.contains("is-animating")) return;
+    const startHeight = section.offsetHeight;
+    let endHeight;
+    if (shouldOpen) {
+      section.open = true;
+      endHeight = section.offsetHeight;
+    } else {
+      section.open = false;
+      endHeight = section.offsetHeight;
+      section.open = true;
+    }
+    section.classList.add("is-animating");
+    section.style.overflow = "hidden";
+    section.style.height = `${startHeight}px`;
+    requestAnimationFrame(() => {
+      section.style.height = `${endHeight}px`;
+    });
+    const finish = () => {
+      if (!shouldOpen) section.open = false;
+      clearSectionAnimation(section);
+      section.removeEventListener("transitionend", finish);
+    };
+    section.addEventListener("transitionend", finish);
+    window.setTimeout(finish, 260);
+  };
+  menuSections.forEach((section) => {
+    section.addEventListener("click", (event) => {
+      const summary = event.target.closest("summary");
+      if (!summary || !section.contains(summary)) return;
+      event.preventDefault();
+      setSectionOpen(section, !section.open);
+    });
+  });
   const closeMenu = () => {
-    nav.classList.remove("menu-open");
-    panel.hidden = true;
+    if (!nav.classList.contains("menu-open")) return;
+    window.clearTimeout(closeTimer);
+    panel.classList.remove("is-open");
+    panel.classList.add("is-closing");
+    nav.classList.add("menu-closing");
+    nav.classList.remove("menu-exit");
+    nav.classList.remove("menu-visible");
+    void nav.offsetHeight;
+    requestAnimationFrame(() => {
+      nav.classList.add("menu-exit");
+    });
     button.setAttribute("aria-expanded", "false");
     button.setAttribute("aria-label", "Open menu");
+    closeTimer = window.setTimeout(() => {
+      nav.classList.remove("menu-open");
+      nav.classList.remove("menu-closing");
+      nav.classList.remove("menu-exit");
+      panel.classList.remove("is-closing");
+      panel.hidden = true;
+    }, 220);
   };
   const setMenuOpen = (isOpen) => {
-    nav.classList.toggle("menu-open", isOpen);
-    panel.hidden = !isOpen;
-    button.setAttribute("aria-expanded", String(isOpen));
-    button.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+    window.clearTimeout(closeTimer);
+    if (!isOpen) {
+      closeMenu();
+      return;
+    }
+    panel.hidden = false;
+    panel.classList.remove("is-closing");
+    nav.classList.add("menu-open");
+    nav.classList.remove("menu-closing");
+    nav.classList.remove("menu-exit");
+    nav.classList.remove("menu-visible");
+    void nav.offsetHeight;
+    void panel.offsetHeight;
+    requestAnimationFrame(() => {
+      nav.classList.add("menu-visible");
+      panel.classList.add("is-open");
+    });
+    button.setAttribute("aria-expanded", "true");
+    button.setAttribute("aria-label", "Close menu");
   };
   button.setAttribute("aria-controls", panel.id);
   button.setAttribute("aria-expanded", "false");
   button.addEventListener("click", (event) => {
     event.stopPropagation();
-    setMenuOpen(!nav.classList.contains("menu-open"));
+    setMenuOpen(!panel.classList.contains("is-open"));
   });
   nav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", closeMenu);
@@ -1112,7 +1192,9 @@ var topicIconRules = [
 ];
 var countdownTimer = null;
 var selectedPrayerDate = /* @__PURE__ */ new Date();
+var selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
 var prayerDateTracksToday = true;
+var datePickerCloseTimers = /* @__PURE__ */ new WeakMap();
 var prayerClockOffset = null;
 function getIcmPrayerTimes(date) {
   const params = CalculationMethod_default.Karachi();
@@ -1244,13 +1326,6 @@ function formatShortDate(dateString) {
     timeZone: TIME_ZONE
   }).format(date);
 }
-function getDateBadgeParts(dateString) {
-  const date = /* @__PURE__ */ new Date(`${dateString}T12:00:00`);
-  if (Number.isNaN(date.getTime())) return { month: "---", day: "--" };
-  const month = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: TIME_ZONE }).format(date);
-  const day = new Intl.DateTimeFormat("en-US", { day: "2-digit", timeZone: TIME_ZONE }).format(date);
-  return { month, day };
-}
 function dateValue(dateString, hour = 12, minute = 0) {
   const date = /* @__PURE__ */ new Date(`${dateString}T12:00:00`);
   if (Number.isNaN(date.getTime())) return 0;
@@ -1290,12 +1365,15 @@ function eventTitle(event) {
 function eventSlug(event, index = 0) {
   return slugify([eventTitle(event), event.date, event.time, index].filter(Boolean).join("-")) || `event-${index}`;
 }
-function eventDateTimeLabel(event) {
-  return [formatLongDate(event.date), event.time].filter(Boolean).join(" \u2022 ");
+function eventPoster(event) {
+  return event.poster || event.image || "";
+}
+function eventPosterAlt(event) {
+  return event.posterAlt || event.imageAlt || `${eventTitle(event)} event poster`;
 }
 function getNewsCategory(title) {
   const normalized = title.toLowerCase();
-  if (normalized.includes("ramadan") || normalized.includes("taraweeh")) return "Programs";
+  if (normalized.includes("ramadan") || normalized.includes("taraweeh")) return "Program";
   if (normalized.includes("camp") || normalized.includes("youth")) return "Youth";
   return "Announcement";
 }
@@ -1343,6 +1421,97 @@ function formatNavigatorDate(date) {
     day: "numeric"
   });
 }
+function dateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+function formatPickerMonth(date) {
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric"
+  });
+}
+function ensureDatePicker(navigator) {
+  let picker = navigator.querySelector("[data-prayer-date-picker]");
+  if (picker) return picker;
+  picker = document.createElement("div");
+  picker.className = "date-picker-popover";
+  picker.dataset.prayerDatePicker = "";
+  picker.hidden = true;
+  navigator.append(picker);
+  return picker;
+}
+function showDatePicker(picker) {
+  window.clearTimeout(datePickerCloseTimers.get(picker));
+  picker.hidden = false;
+  picker.classList.remove("is-closing");
+  requestAnimationFrame(() => {
+    picker.classList.add("is-open");
+  });
+}
+function hideDatePicker(picker) {
+  if (picker.hidden) return;
+  window.clearTimeout(datePickerCloseTimers.get(picker));
+  picker.classList.remove("is-open");
+  picker.classList.add("is-closing");
+  const timer = window.setTimeout(() => {
+    if (!picker.classList.contains("is-open")) {
+      picker.hidden = true;
+      picker.classList.remove("is-closing");
+    }
+  }, 190);
+  datePickerCloseTimers.set(picker, timer);
+}
+function toggleDatePicker(picker) {
+  if (picker.hidden || !picker.classList.contains("is-open")) {
+    showDatePicker(picker);
+  } else {
+    hideDatePicker(picker);
+  }
+}
+function renderDatePicker(navigator) {
+  const picker = ensureDatePicker(navigator);
+  const monthStart = new Date(selectedDatePickerMonth.getFullYear(), selectedDatePickerMonth.getMonth(), 1);
+  const daysInMonth = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0).getDate();
+  const visibleDayCount = Math.ceil((monthStart.getDay() + daysInMonth) / 7) * 7;
+  const firstGridDate = new Date(monthStart);
+  firstGridDate.setDate(firstGridDate.getDate() - firstGridDate.getDay());
+  const todayKey = dateKey(prayerDateFor(/* @__PURE__ */ new Date()));
+  const selectedKey = dateKey(prayerDateFor(selectedPrayerDate));
+  const weekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  picker.innerHTML = `
+    <div class="date-picker-toolbar">
+      <button type="button" data-date-picker-month="prev" aria-label="Previous month">
+        <img src="/public/icons/chevron-left.svg" alt="" aria-hidden="true">
+      </button>
+      <strong>${escapeHtml(formatPickerMonth(monthStart))}</strong>
+      <button type="button" data-date-picker-month="next" aria-label="Next month">
+        <img src="/public/icons/chevron-right.svg" alt="" aria-hidden="true">
+      </button>
+    </div>
+    <div class="date-picker-weekdays">${weekdays.map((day) => `<span>${day}</span>`).join("")}</div>
+    <div class="date-picker-grid">
+      ${Array.from({ length: visibleDayCount }, (_, index) => {
+    const date = new Date(firstGridDate);
+    date.setDate(firstGridDate.getDate() + index);
+    const key = dateKey(date);
+    return `
+          <button
+            type="button"
+            class="${date.getMonth() !== monthStart.getMonth() ? "is-muted" : ""}${key === todayKey ? " is-today" : ""}${key === selectedKey ? " is-selected" : ""}"
+            data-date-picker-day="${escapeHtml(key)}"
+            aria-label="${escapeHtml(formatNavigatorDate(date))}"
+          >${date.getDate()}</button>
+        `;
+  }).join("")}
+    </div>
+    <div class="date-picker-actions">
+      <button type="button" data-date-picker-today>Today</button>
+    </div>
+  `;
+}
 function getNextJummahDate(fromDate = /* @__PURE__ */ new Date()) {
   const current = prayerDateFor(fromDate);
   const day = current.getDay();
@@ -1377,11 +1546,7 @@ function getJummahRowsForDate(content, targetDate) {
   const shifts = content.jummah.shifts?.length ? content.jummah.shifts : defaultContent.jummah.shifts;
   const postedDate = parseJummahDateLabel(content.jummah.dateLabel || defaultContent.jummah.dateLabel);
   if (isSameDate(postedDate, targetDate)) return shifts;
-  return shifts.map((shift) => ({
-    ...shift,
-    speaker: "TBD",
-    topic: "TBD"
-  }));
+  return shifts;
 }
 function textFitClass(value, thresholds) {
   const length = String(value ?? "").trim().length;
@@ -1392,24 +1557,84 @@ function textFitClass(value, thresholds) {
 }
 function renderDateNavigator() {
   setText("[data-date-label]", formatNavigatorDate(selectedPrayerDate));
+  const navigator = document.querySelector(".date-navigator");
+  if (navigator) renderDatePicker(navigator);
 }
 function initDateNavigator() {
   const navigator = document.querySelector(".date-navigator");
   if (!navigator) return;
-  navigator.addEventListener("click", (event) => {
+  const mainButton = navigator.querySelector(".date-nav-main");
+  renderDatePicker(navigator);
+  let monthPointerHandled = false;
+  const handleNavigatorAction = (event) => {
+    const monthButton = event.target.closest("[data-date-picker-month]");
+    if (monthButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.type === "click" && monthPointerHandled) {
+        monthPointerHandled = false;
+        return;
+      }
+      if (event.type === "pointerdown") monthPointerHandled = true;
+      selectedDatePickerMonth = new Date(selectedDatePickerMonth);
+      selectedDatePickerMonth.setMonth(selectedDatePickerMonth.getMonth() + (monthButton.dataset.datePickerMonth === "next" ? 1 : -1));
+      renderDatePicker(navigator);
+      showDatePicker(ensureDatePicker(navigator));
+      return;
+    }
+    const dayButton = event.target.closest("[data-date-picker-day]");
+    if (dayButton) {
+      event.stopPropagation();
+      selectedPrayerDate = prayerDateFor(/* @__PURE__ */ new Date(`${dayButton.dataset.datePickerDay}T12:00:00`));
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
+      prayerDateTracksToday = isSameDate(selectedPrayerDate, prayerDateFor(/* @__PURE__ */ new Date()));
+      hideDatePicker(ensureDatePicker(navigator));
+      renderDateNavigator();
+      renderPrayerTimes();
+      return;
+    }
+    if (event.target.closest("[data-date-picker-today]")) {
+      event.stopPropagation();
+      selectedPrayerDate = /* @__PURE__ */ new Date();
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
+      prayerDateTracksToday = true;
+      hideDatePicker(ensureDatePicker(navigator));
+      renderDateNavigator();
+      renderPrayerTimes();
+      return;
+    }
+    if (event.target.closest(".date-nav-main")) {
+      const picker = ensureDatePicker(navigator);
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
+      renderDatePicker(navigator);
+      toggleDatePicker(picker);
+      return;
+    }
     const button = event.target.closest("[data-date-nav]");
     if (!button) return;
     if (button.dataset.dateNav === "today") {
       selectedPrayerDate = /* @__PURE__ */ new Date();
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
       prayerDateTracksToday = true;
     } else {
       const offset = button.dataset.dateNav === "prev" ? -1 : 1;
       selectedPrayerDate = new Date(selectedPrayerDate);
       selectedPrayerDate.setDate(selectedPrayerDate.getDate() + offset);
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
       prayerDateTracksToday = false;
     }
+    hideDatePicker(ensureDatePicker(navigator));
     renderDateNavigator();
     renderPrayerTimes();
+  };
+  navigator.addEventListener("pointerdown", (event) => {
+    if (!event.target.closest("[data-date-picker-month]")) return;
+    handleNavigatorAction(event);
+  });
+  navigator.addEventListener("click", handleNavigatorAction);
+  document.addEventListener("click", (event) => {
+    if (navigator.contains(event.target) || mainButton?.contains(event.target)) return;
+    hideDatePicker(ensureDatePicker(navigator));
   });
   renderDateNavigator();
 }
@@ -1456,7 +1681,8 @@ function renderPrayerTimes() {
 }
 function renderJummah(content) {
   const targetDate = getNextJummahDate();
-  setText("[data-jummah-date]", `- ${formatJummahDate(targetDate)}`);
+  const postedDate = parseJummahDateLabel(content.jummah.dateLabel || defaultContent.jummah.dateLabel);
+  setText("[data-jummah-date]", `- ${formatJummahDate(postedDate || targetDate)}`);
   const tbody = document.querySelector("[data-jummah-body]");
   if (!tbody) return;
   const shifts = getJummahRowsForDate(content, targetDate);
@@ -1485,22 +1711,22 @@ function renderEvents(content) {
   const upcomingEvents = sourceEvents.filter(({ event }) => eventEndValue(event) > now).sort((first, second) => eventStartValue(first.event) - eventStartValue(second.event));
   const pastEvents = sourceEvents.filter(({ event }) => eventEndValue(event) <= now).sort((first, second) => eventEndValue(second.event) - eventEndValue(first.event));
   const events = [...upcomingEvents, ...pastEvents];
-  list.innerHTML = events.map(({ event, originalIndex }) => {
-    const badge = getDateBadgeParts(event.date);
-    const meta = eventDateTimeLabel(event);
-    const details = [meta, event.location].filter(Boolean);
+  list.innerHTML = events.map(({ event, originalIndex }, displayIndex) => {
+    const eventDate = formatLongDate(event.date);
     const isPast = eventEndValue(event) <= now;
+    const poster = eventPoster(event);
     return `
-        <a class="event-item${isPast ? " is-past" : ""}" href="./calendar.html#event-${escapeHtml(eventSlug(event, originalIndex))}">
-          <div class="date-badge"><span>${escapeHtml(badge.month)}</span><strong>${escapeHtml(badge.day)}</strong></div>
+        <a class="event-item${isPast ? " is-past" : ""}${displayIndex > 2 ? " is-scroll-extra" : ""}" href="./calendar.html#event-${escapeHtml(eventSlug(event, originalIndex))}">
+          ${poster ? `<img class="event-thumb" src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}">` : ""}
           <div class="event-item-body">
             <h3>${escapeHtml(eventTitle(event))}</h3>
-            ${details.length ? `<p>${details.map((item) => escapeHtml(item)).join("<br>")}</p>` : ""}
+            ${eventDate || event.time || event.location ? `<p>${eventDate ? `<span class="event-date-line">${escapeHtml(eventDate)}</span>` : ""}${event.time ? `<span class="event-time-line">${escapeHtml(event.time)}</span>` : ""}${event.location ? `<span class="event-location">${escapeHtml(event.location)}</span>` : ""}</p>` : ""}
           </div>
           ${isPast ? `<span class="event-status">Past</span>` : ""}
         </a>
       `;
   }).join("");
+  markCardImageShapes(list, ".event-item", ".event-thumb");
 }
 function renderNews(content) {
   const list = document.querySelector("[data-news-list]");
@@ -1508,7 +1734,7 @@ function renderNews(content) {
   const news = (content.news?.length ? content.news : defaultContent.news).map((item, originalIndex) => ({ item, originalIndex })).sort((first, second) => dateValue(second.item.date) - dateValue(first.item.date));
   list.innerHTML = news.map(
     ({ item, originalIndex }) => `
-        <a class="news-item" href="./news.html#news-${escapeHtml(newsSlug(item, originalIndex))}">
+        <a class="news-item${newsTitle(item, originalIndex).length <= 42 ? " news-item--short-title" : ""}" href="./news.html#news-${escapeHtml(newsSlug(item, originalIndex))}">
           <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
           <span class="news-category">${escapeHtml(getNewsCategory(newsTitle(item, originalIndex)))}</span>
           <div class="news-item-body">
@@ -1519,6 +1745,20 @@ function renderNews(content) {
         </a>
       `
   ).join("");
+  markCardImageShapes(list, ".news-item", "img");
+}
+function markCardImageShapes(root, cardSelector, imageSelector) {
+  root.querySelectorAll(imageSelector).forEach((image) => {
+    const applyShape = () => {
+      const card = image.closest(cardSelector);
+      if (!card || !image.naturalWidth || !image.naturalHeight) return;
+      const isPortrait = image.naturalHeight / image.naturalWidth > 1.08;
+      card.classList.toggle("is-portrait-media", isPortrait);
+      card.classList.toggle("is-wide-media", !isPortrait);
+    };
+    if (image.complete) applyShape();
+    else image.addEventListener("load", applyShape, { once: true });
+  });
 }
 async function boot() {
   initMobileNav();

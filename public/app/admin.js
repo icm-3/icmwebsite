@@ -1,162 +1,170 @@
 // src/default-content.js
 var defaultContent = {
-  hero: {
-    image: "./public/images/masjid-interior-hero-clean.png",
-    imageAlt: "Islamic Center of Morrisville prayer hall interior"
+  "hero": {
+    "image": "./public/images/masjid-interior-hero-clean.png",
+    "imageAlt": "Islamic Center of Morrisville main prayer hall interior with carpet rows, qibla wall, and open worship space for homepage image alt text testing"
   },
-  jummah: {
-    dateLabel: "Friday, June 19, 2026",
-    shifts: [
+  "jummah": {
+    "dateLabel": "Friday, June 26, 2026",
+    "shifts": [
       {
-        shift: "1",
-        time: "1:00 PM",
-        speaker: "Imam Sami Kocak",
-        topic: "Muhasaba: Self Reflection"
+        "shift": "1",
+        "time": "1:00 PM",
+        "speaker": "Imam Sami Ko\xE7ak",
+        "topic": "Reflections on Karbala"
       },
       {
-        shift: "2",
-        time: "2:00 PM",
-        speaker: "Mikael Raza",
-        topic: "Gaining Taqwa by Avoiding Ostentation"
+        "shift": "2",
+        "time": "2:00 PM",
+        "speaker": "Hisham Sarsour",
+        "topic": "Understanding Our Reality in America"
       },
       {
-        shift: "3",
-        time: "3:00 PM",
-        speaker: "Mansoor Kazi",
-        topic: "The Green Deen"
+        "shift": "3",
+        "time": "3:00 PM",
+        "speaker": "Shaykh Umair Haseeb",
+        "topic": "Reflections on Karbala"
       },
       {
-        shift: "4",
-        time: "4:00 PM",
-        speaker: "Mansoor Syed",
-        topic: "Ghaflah: Spiritual Negligence"
+        "shift": "4",
+        "time": "4:00 PM",
+        "speaker": "Imam Manzar ul Islam",
+        "topic": "Karbal\u0101\u02BE: When Truth Refused to Surrender"
       }
     ]
   },
-  events: [
+  "events": [
     {
-      title: "Women's Eid Celebration",
-      date: "2026-06-14",
-      time: "4:00 PM",
-      location: "ICM Banquet Hall",
-      description: "A women's community potluck with games, socializing, prizes, and time together after Eid.",
-      link: "https://tinyurl.com/ICM-EID-2026",
-      poster: "./public/news/womens-eid-2026.png",
-      posterAlt: "Women's Eid Celebration event poster"
+      "title": "Summer Quran And Islamic Studies Program With Student Activities And Parent Updates For Families",
+      "date": "2026-07-06",
+      "time": "Monday - Thursday, 10:00 AM - 1:00 PM",
+      "location": "ICM",
+      "description": "Nibras Institute summer classes continue Monday through Thursday through August 20 with Quran, Islamic studies, and student activities.",
+      "poster": "./public/news/icm-live/summer-quran-islamic-studies.png",
+      "posterAlt": "ICM Summer Quran and Islamic Studies Program flyer"
     },
     {
-      title: "Youth Hike & BBQ",
-      date: "2026-06-21",
-      time: "10:00 AM",
-      location: "William B. Umstead State Park",
-      description: "A morning hike followed by lunch and games.",
-      poster: "./public/news/camp.png",
-      posterAlt: "Youth outdoor activity poster"
+      "title": "Sisters Zumba Fitness Class And Weekly Wellness Gathering With Community Health Reminders",
+      "date": "2026-07-05",
+      "time": "6:30 PM",
+      "location": "ICM",
+      "description": "Sisters fitness class held weekly on Thursday at 6:30 PM with movement, wellness, and community connection.",
+      "link": "https://tinyurl.com/ICM-Zumba-2026",
+      "poster": "./public/news/icm-live/sisters-zumba-fitness.png",
+      "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
     },
     {
-      title: "Sisters' Tea & Talk",
-      date: "2026-06-27",
-      time: "6:30 PM",
-      location: "ICM Community Hall",
-      description: "An evening gathering for reflection and connection.",
-      poster: "./public/news/ramadan.png",
-      posterAlt: "Community program poster"
+      "title": "Friday Night Bukhari Circle With Community Reflections And Weekly Family Reminders",
+      "date": "2026-07-03",
+      "time": "Between Maghrib & Isha",
+      "location": "ICM Prayer Hall",
+      "description": "Weekly reading from Sahih al-Bukhari between Maghrib and Isha with short reminders and community reflections.",
+      "poster": "./public/news/icm-live/friday-bukhari-circle.jpeg",
+      "posterAlt": "ICM Friday Night Bukhari Circle flyer"
     },
     {
-      title: "Youth Qiyam Night",
-      date: "2026-06-27",
-      time: "9:45 PM",
-      location: "ICM Prayer Hall",
-      description: "A night program for youth with reminders, worship, and community time.",
-      poster: "./public/news/camp.png",
-      posterAlt: "Youth night program poster"
+      "title": "40 Principles Of The Religion With Practical Lessons For Community Life",
+      "date": "2026-07-03",
+      "time": "6:30 PM",
+      "location": "ICM",
+      "description": "Weekly Friday lecture series on the 40 principles of the religion.",
+      "poster": "./public/news/icm-live/friday-announcements-june-19-2026.png",
+      "posterAlt": "ICM Friday Announcements flyer"
     },
     {
-      title: "Family Seerah Workshop",
-      date: "2026-06-27",
-      time: "11:00 AM",
-      location: "ICM Multipurpose Room",
-      description: "A family learning session with activities and discussion for parents and children.",
-      poster: "./public/news/eid.png",
-      posterAlt: "Family workshop poster"
+      "title": "Volunteer For ICM Youth Program Planning Team And Weekend Activities",
+      "date": "2026-07-03",
+      "time": "Volunteer signup",
+      "location": "ICM",
+      "description": "ICM Youth Program is recruiting volunteers to help plan activities, support youth leaders, and serve the community.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
     },
     {
-      title: "Independence Day Potluck",
-      date: "2026-07-04",
-      time: "1:00 PM",
-      location: "ICM Community Hall",
-      description: "Bring a dish and spend the afternoon with the community.",
-      poster: "./public/news/eid.png",
-      posterAlt: "Community potluck poster"
+      "title": "Youth Volunteer Orientation For Upcoming Programs And Service Projects",
+      "date": "2026-07-03",
+      "time": "5:30 PM",
+      "location": "ICM Multipurpose Room",
+      "description": "Orientation for youth volunteers supporting upcoming ICM programs and community activities.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
     },
     {
-      title: "Community Service Day & Food Pantry Support",
-      date: "2026-07-12",
-      time: "9:30 AM",
-      location: "ICM Social Services Entrance",
-      description: "Help sort donations, prepare family grocery bags, and support neighbors across Morrisville.",
-      poster: "./public/news/camp.png",
-      posterAlt: "Community service day poster"
+      "title": "Community Dinner Setup And Hospitality Volunteer Coordination",
+      "date": "2026-07-03",
+      "time": "7:15 PM",
+      "location": "ICM Banquet Hall",
+      "description": "Volunteer setup window for the community dinner and Friday evening program support.",
+      "poster": "./public/news/icm-live/friday-announcements-june-19-2026.png",
+      "posterAlt": "ICM Friday Announcements flyer"
     },
     {
-      title: "New Muslim Welcome Circle and Family Dinner",
-      date: "2026-07-18",
-      time: "7:15 PM",
-      location: "ICM Multipurpose Room",
-      description: "A welcoming evening for new Muslims, families, mentors, and community members.",
-      poster: "./public/news/ramadan.png",
-      posterAlt: "Welcome circle poster"
+      "title": "Sisters Program Planning Circle With Long Community Coordination Updates",
+      "date": "2026-07-03",
+      "time": "8:15 PM",
+      "location": "ICM Classroom",
+      "description": "Planning circle for sisters programs, class ideas, and upcoming community support.",
+      "poster": "./public/news/icm-live/sisters-zumba-fitness.png",
+      "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
+    },
+    {
+      "title": "Henna Beginner Class",
+      "date": "2026-06-27",
+      "time": "12:00 PM - 2:00 PM",
+      "location": "ICM",
+      "description": "Beginner henna class for ages 15 and above.",
+      "link": "https://tinyurl.com/ICM-BeginnersHenna-2026",
+      "poster": "./public/news/icm-live/henna-beginner-class.png",
+      "posterAlt": "ICM Henna Beginner Class flyer"
+    },
+    {
+      "title": "Nibras Hiking Day Trip",
+      "date": "2026-06-27",
+      "time": "Trip day",
+      "location": "Raven Rock State Park",
+      "description": "Nibras Institute hiking day trip for ages 13 and above.",
+      "poster": "./public/news/icm-live/friday-announcements-june-19-2026.png",
+      "posterAlt": "ICM Friday Announcements flyer mentioning the Nibras hiking day trip and extended logistics"
+    },
+    {
+      "title": "Sisters Zumba Fitness Class",
+      "date": "2026-06-25",
+      "time": "6:30 PM",
+      "location": "ICM",
+      "description": "Sisters fitness class held every Thursday at 6:30 PM.",
+      "link": "https://tinyurl.com/ICM-Zumba-2026",
+      "poster": "./public/news/icm-live/sisters-zumba-fitness.png",
+      "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
     }
   ],
-  news: [
+  "news": [
     {
-      title: "Community Operations Update for Prayer Hall Access, Parking Flow, Program Registration, and Weekend Family Services",
-      date: "2026-06-18",
-      summary: "Please review this extended community update covering prayer hall entry, volunteer parking directions, class registration reminders, family services availability, and important notes for guests attending multiple programs on the same weekend.",
-      image: "./public/news/ramadan.png",
-      imageAlt: "Mosque lanterns for community operations update"
+      "title": "Friday Announcements, Parking Notes, Youth Volunteers And Weekly Programs - June 19, 2026",
+      "date": "2026-06-19",
+      "summary": "Community reminders covering monthly support, parking and traffic flow, youth volunteer signups, Nibras hiking, Friday Night Bukhari Circle, and the regular weekly program schedule.",
+      "image": "./public/news/icm-live/friday-announcements-june-19-2026.png",
+      "imageAlt": "ICM Friday Announcements flyer for June 19, 2026 with volunteer updates traffic notes youth programs and weekly community reminders"
     },
     {
-      title: "Friday Announcements - June 12, 2026",
-      date: "2026-06-12",
-      summary: "Monthly support, traffic reminders, summer programs, Eid celebration, Bukhari Circle, youth volunteer signups, and weekly lectures.",
-      image: "./public/news/friday-announcements-june-12-2026.png",
-      imageAlt: "Friday Announcements flyer for June 12, 2026"
+      "title": "Youth Volunteers Needed",
+      "date": "2026-06-19",
+      "summary": "Help plan programs and serve the community.",
+      "image": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "imageAlt": "Volunteer for ICM Youth Program flyer"
     },
     {
-      title: "Ramadan Programs & Taraweeh Schedule",
-      date: "2026-04-28",
-      summary: "Join us for special programs throughout Ramadan.",
-      image: "./public/news/ramadan.png",
-      imageAlt: "Mosque at sunset during Ramadan"
+      "title": "Summer Quran And Islamic Studies Registration",
+      "date": "2026-05-30",
+      "summary": "Nibras classes run Monday through Thursday through August 20 with Quran, Islamic studies, student activities, parent updates, and registration reminders.",
+      "image": "./public/news/icm-live/summer-quran-islamic-studies.png",
+      "imageAlt": "ICM Summer Quran and Islamic Studies Program flyer with registration details for students and families"
     },
     {
-      title: "Eid Al-Adha Announcements",
-      date: "2026-04-24",
-      summary: "Important information for Eid prayers and events.",
-      image: "./public/news/eid.png",
-      imageAlt: "Mosque scene for Eid announcement"
-    },
-    {
-      title: "Youth Summer Camp Registration Open",
-      date: "2026-04-18",
-      summary: "Fun, faith, and friends this summer!",
-      image: "./public/news/camp.png",
-      imageAlt: "Youth summer camp activity"
-    },
-    {
-      title: "Parking and Arrival Guidance for Busy Friday Prayer Shifts",
-      date: "2026-04-12",
-      summary: "Please arrive early, follow volunteer directions, and leave extra time for entry.",
-      image: "./public/news/eid.png",
-      imageAlt: "Masjid evening scene for community announcement"
-    },
-    {
-      title: "Weekend Learning Programs Add New Family Workshop Series",
-      date: "2026-04-05",
-      summary: "Families can join monthly workshops focused on worship, service, and home routines.",
-      image: "./public/news/ramadan.png",
-      imageAlt: "Mosque lanterns for program announcement"
+      "title": "ICM App And Community Updates For Prayer Times, Programs, And Announcements",
+      "date": "2026-06-28",
+      "summary": "Use ICM's official app and website for prayer times, Jumu'ah updates, weekly program changes, registration reminders, volunteer needs, youth activities, social welfare notices, and community announcements that families need to check throughout the week.",
+      "image": "./public/images/icm-logo-provided-transparent.png",
+      "imageAlt": "Islamic Center of Morrisville logo"
     }
   ]
 };
@@ -185,7 +193,7 @@ function field(path, value, label, type = "text", options = {}) {
   return `
     <label class="cms-field">
       <span>${escapeHtml(label)}</span>
-      <input type="${type}" value="${escapeHtml(value)}" data-path="${escapeHtml(path)}"${options.required ? " required" : ""}>
+      <input type="${type}" value="${escapeHtml(value)}" data-path="${escapeHtml(path)}"${options.required ? " required" : ""}${options.maxlength ? ` maxlength="${Number(options.maxlength)}"` : ""}>
     </label>
   `;
 }
@@ -237,8 +245,8 @@ function renderJummah() {
           <div class="cms-grid">
             ${field(`jummah.shifts.${index}.shift`, shift.shift, "Shift")}
             ${field(`jummah.shifts.${index}.time`, shift.time, "Time")}
-            ${field(`jummah.shifts.${index}.speaker`, shift.speaker, "Speaker")}
-            ${field(`jummah.shifts.${index}.topic`, shift.topic, "Topic")}
+            ${field(`jummah.shifts.${index}.speaker`, shift.speaker, "Speaker", "text", { maxlength: 34 })}
+            ${field(`jummah.shifts.${index}.topic`, shift.topic, "Topic", "text", { maxlength: 68 })}
           </div>
         </article>
       `

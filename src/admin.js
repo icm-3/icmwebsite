@@ -31,7 +31,7 @@ function field(path, value, label, type = "text", options = {}) {
   return `
     <label class="cms-field">
       <span>${escapeHtml(label)}</span>
-      <input type="${type}" value="${escapeHtml(value)}" data-path="${escapeHtml(path)}"${options.required ? " required" : ""}>
+      <input type="${type}" value="${escapeHtml(value)}" data-path="${escapeHtml(path)}"${options.required ? " required" : ""}${options.maxlength ? ` maxlength="${Number(options.maxlength)}"` : ""}>
     </label>
   `;
 }
@@ -88,8 +88,8 @@ function renderJummah() {
           <div class="cms-grid">
             ${field(`jummah.shifts.${index}.shift`, shift.shift, "Shift")}
             ${field(`jummah.shifts.${index}.time`, shift.time, "Time")}
-            ${field(`jummah.shifts.${index}.speaker`, shift.speaker, "Speaker")}
-            ${field(`jummah.shifts.${index}.topic`, shift.topic, "Topic")}
+            ${field(`jummah.shifts.${index}.speaker`, shift.speaker, "Speaker", "text", { maxlength: 34 })}
+            ${field(`jummah.shifts.${index}.topic`, shift.topic, "Topic", "text", { maxlength: 68 })}
           </div>
         </article>
       `,

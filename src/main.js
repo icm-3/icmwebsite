@@ -31,7 +31,9 @@ const topicIconRules = [
 
 let countdownTimer = null;
 let selectedPrayerDate = new Date();
+let selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
 let prayerDateTracksToday = true;
+const datePickerCloseTimers = new WeakMap();
 let prayerClockOffset = null;
 
 export function getIcmPrayerTimes(date) {
@@ -264,13 +266,21 @@ function eventSlug(event, index = 0) {
   return slugify([eventTitle(event), event.date, event.time, index].filter(Boolean).join("-")) || `event-${index}`;
 }
 
+function eventPoster(event) {
+  return event.poster || event.image || "";
+}
+
+function eventPosterAlt(event) {
+  return event.posterAlt || event.imageAlt || `${eventTitle(event)} event poster`;
+}
+
 function eventDateTimeLabel(event) {
   return [formatLongDate(event.date), event.time].filter(Boolean).join(" • ");
 }
 
 function getNewsCategory(title) {
   const normalized = title.toLowerCase();
-  if (normalized.includes("ramadan") || normalized.includes("taraweeh")) return "Programs";
+  if (normalized.includes("ramadan") || normalized.includes("taraweeh")) return "Program";
   if (normalized.includes("camp") || normalized.includes("youth")) return "Youth";
   return "Announcement";
 }
@@ -331,6 +341,106 @@ function formatNavigatorDate(date) {
   });
 }
 
+function dateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function formatPickerMonth(date) {
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function ensureDatePicker(navigator) {
+  let picker = navigator.querySelector("[data-prayer-date-picker]");
+  if (picker) return picker;
+
+  picker = document.createElement("div");
+  picker.className = "date-picker-popover";
+  picker.dataset.prayerDatePicker = "";
+  picker.hidden = true;
+  navigator.append(picker);
+  return picker;
+}
+
+function showDatePicker(picker) {
+  window.clearTimeout(datePickerCloseTimers.get(picker));
+  picker.hidden = false;
+  picker.classList.remove("is-closing");
+  requestAnimationFrame(() => {
+    picker.classList.add("is-open");
+  });
+}
+
+function hideDatePicker(picker) {
+  if (picker.hidden) return;
+  window.clearTimeout(datePickerCloseTimers.get(picker));
+  picker.classList.remove("is-open");
+  picker.classList.add("is-closing");
+  const timer = window.setTimeout(() => {
+    if (!picker.classList.contains("is-open")) {
+      picker.hidden = true;
+      picker.classList.remove("is-closing");
+    }
+  }, 190);
+  datePickerCloseTimers.set(picker, timer);
+}
+
+function toggleDatePicker(picker) {
+  if (picker.hidden || !picker.classList.contains("is-open")) {
+    showDatePicker(picker);
+  } else {
+    hideDatePicker(picker);
+  }
+}
+
+function renderDatePicker(navigator) {
+  const picker = ensureDatePicker(navigator);
+  const monthStart = new Date(selectedDatePickerMonth.getFullYear(), selectedDatePickerMonth.getMonth(), 1);
+  const daysInMonth = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0).getDate();
+  const visibleDayCount = Math.ceil((monthStart.getDay() + daysInMonth) / 7) * 7;
+  const firstGridDate = new Date(monthStart);
+  firstGridDate.setDate(firstGridDate.getDate() - firstGridDate.getDay());
+  const todayKey = dateKey(prayerDateFor(new Date()));
+  const selectedKey = dateKey(prayerDateFor(selectedPrayerDate));
+  const weekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+
+  picker.innerHTML = `
+    <div class="date-picker-toolbar">
+      <button type="button" data-date-picker-month="prev" aria-label="Previous month">
+        <img src="/public/icons/chevron-left.svg" alt="" aria-hidden="true">
+      </button>
+      <strong>${escapeHtml(formatPickerMonth(monthStart))}</strong>
+      <button type="button" data-date-picker-month="next" aria-label="Next month">
+        <img src="/public/icons/chevron-right.svg" alt="" aria-hidden="true">
+      </button>
+    </div>
+    <div class="date-picker-weekdays">${weekdays.map((day) => `<span>${day}</span>`).join("")}</div>
+    <div class="date-picker-grid">
+      ${Array.from({ length: visibleDayCount }, (_, index) => {
+        const date = new Date(firstGridDate);
+        date.setDate(firstGridDate.getDate() + index);
+        const key = dateKey(date);
+        return `
+          <button
+            type="button"
+            class="${date.getMonth() !== monthStart.getMonth() ? "is-muted" : ""}${key === todayKey ? " is-today" : ""}${key === selectedKey ? " is-selected" : ""}"
+            data-date-picker-day="${escapeHtml(key)}"
+            aria-label="${escapeHtml(formatNavigatorDate(date))}"
+          >${date.getDate()}</button>
+        `;
+      }).join("")}
+    </div>
+    <div class="date-picker-actions">
+      <button type="button" data-date-picker-today>Today</button>
+    </div>
+  `;
+}
+
 function getNextJummahDate(fromDate = new Date()) {
   const current = prayerDateFor(fromDate);
   const day = current.getDay();
@@ -379,11 +489,7 @@ function getJummahRowsForDate(content, targetDate) {
 
   if (isSameDate(postedDate, targetDate)) return shifts;
 
-  return shifts.map((shift) => ({
-    ...shift,
-    speaker: "TBD",
-    topic: "TBD",
-  }));
+  return shifts;
 }
 
 function textFitClass(value, thresholds) {
@@ -396,28 +502,95 @@ function textFitClass(value, thresholds) {
 
 function renderDateNavigator() {
   setText("[data-date-label]", formatNavigatorDate(selectedPrayerDate));
+  const navigator = document.querySelector(".date-navigator");
+  if (navigator) renderDatePicker(navigator);
 }
 
 function initDateNavigator() {
   const navigator = document.querySelector(".date-navigator");
   if (!navigator) return;
+  const mainButton = navigator.querySelector(".date-nav-main");
+  renderDatePicker(navigator);
 
-  navigator.addEventListener("click", (event) => {
+  let monthPointerHandled = false;
+  const handleNavigatorAction = (event) => {
+    const monthButton = event.target.closest("[data-date-picker-month]");
+    if (monthButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.type === "click" && monthPointerHandled) {
+        monthPointerHandled = false;
+        return;
+      }
+      if (event.type === "pointerdown") monthPointerHandled = true;
+      selectedDatePickerMonth = new Date(selectedDatePickerMonth);
+      selectedDatePickerMonth.setMonth(selectedDatePickerMonth.getMonth() + (monthButton.dataset.datePickerMonth === "next" ? 1 : -1));
+      renderDatePicker(navigator);
+      showDatePicker(ensureDatePicker(navigator));
+      return;
+    }
+
+    const dayButton = event.target.closest("[data-date-picker-day]");
+    if (dayButton) {
+      event.stopPropagation();
+      selectedPrayerDate = prayerDateFor(new Date(`${dayButton.dataset.datePickerDay}T12:00:00`));
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
+      prayerDateTracksToday = isSameDate(selectedPrayerDate, prayerDateFor(new Date()));
+      hideDatePicker(ensureDatePicker(navigator));
+      renderDateNavigator();
+      renderPrayerTimes();
+      return;
+    }
+
+    if (event.target.closest("[data-date-picker-today]")) {
+      event.stopPropagation();
+      selectedPrayerDate = new Date();
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
+      prayerDateTracksToday = true;
+      hideDatePicker(ensureDatePicker(navigator));
+      renderDateNavigator();
+      renderPrayerTimes();
+      return;
+    }
+
+    if (event.target.closest(".date-nav-main")) {
+      const picker = ensureDatePicker(navigator);
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
+      renderDatePicker(navigator);
+      toggleDatePicker(picker);
+      return;
+    }
+
     const button = event.target.closest("[data-date-nav]");
     if (!button) return;
 
     if (button.dataset.dateNav === "today") {
       selectedPrayerDate = new Date();
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
       prayerDateTracksToday = true;
     } else {
       const offset = button.dataset.dateNav === "prev" ? -1 : 1;
       selectedPrayerDate = new Date(selectedPrayerDate);
       selectedPrayerDate.setDate(selectedPrayerDate.getDate() + offset);
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
       prayerDateTracksToday = false;
     }
 
+    hideDatePicker(ensureDatePicker(navigator));
     renderDateNavigator();
     renderPrayerTimes();
+  };
+
+  navigator.addEventListener("pointerdown", (event) => {
+    if (!event.target.closest("[data-date-picker-month]")) return;
+    handleNavigatorAction(event);
+  });
+
+  navigator.addEventListener("click", handleNavigatorAction);
+
+  document.addEventListener("click", (event) => {
+    if (navigator.contains(event.target) || mainButton?.contains(event.target)) return;
+    hideDatePicker(ensureDatePicker(navigator));
   });
 
   renderDateNavigator();
@@ -474,7 +647,8 @@ function renderPrayerTimes() {
 
 function renderJummah(content) {
   const targetDate = getNextJummahDate();
-  setText("[data-jummah-date]", `- ${formatJummahDate(targetDate)}`);
+  const postedDate = parseJummahDateLabel(content.jummah.dateLabel || defaultContent.jummah.dateLabel);
+  setText("[data-jummah-date]", `- ${formatJummahDate(postedDate || targetDate)}`);
 
   const tbody = document.querySelector("[data-jummah-body]");
   if (!tbody) return;
@@ -512,23 +686,23 @@ function renderEvents(content) {
     .sort((first, second) => eventEndValue(second.event) - eventEndValue(first.event));
   const events = [...upcomingEvents, ...pastEvents];
   list.innerHTML = events
-    .map(({ event, originalIndex }) => {
-      const badge = getDateBadgeParts(event.date);
-      const meta = eventDateTimeLabel(event);
-      const details = [meta, event.location].filter(Boolean);
+    .map(({ event, originalIndex }, displayIndex) => {
+      const eventDate = formatLongDate(event.date);
       const isPast = eventEndValue(event) <= now;
+      const poster = eventPoster(event);
       return `
-        <a class="event-item${isPast ? " is-past" : ""}" href="./calendar.html#event-${escapeHtml(eventSlug(event, originalIndex))}">
-          <div class="date-badge"><span>${escapeHtml(badge.month)}</span><strong>${escapeHtml(badge.day)}</strong></div>
+        <a class="event-item${isPast ? " is-past" : ""}${displayIndex > 2 ? " is-scroll-extra" : ""}" href="./calendar.html#event-${escapeHtml(eventSlug(event, originalIndex))}">
+          ${poster ? `<img class="event-thumb" src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}">` : ""}
           <div class="event-item-body">
             <h3>${escapeHtml(eventTitle(event))}</h3>
-            ${details.length ? `<p>${details.map((item) => escapeHtml(item)).join("<br>")}</p>` : ""}
+            ${eventDate || event.time || event.location ? `<p>${eventDate ? `<span class="event-date-line">${escapeHtml(eventDate)}</span>` : ""}${event.time ? `<span class="event-time-line">${escapeHtml(event.time)}</span>` : ""}${event.location ? `<span class="event-location">${escapeHtml(event.location)}</span>` : ""}</p>` : ""}
           </div>
           ${isPast ? `<span class="event-status">Past</span>` : ""}
         </a>
       `;
     })
     .join("");
+  markCardImageShapes(list, ".event-item", ".event-thumb");
 }
 
 function renderNews(content) {
@@ -540,7 +714,7 @@ function renderNews(content) {
   list.innerHTML = news
     .map(
       ({ item, originalIndex }) => `
-        <a class="news-item" href="./news.html#news-${escapeHtml(newsSlug(item, originalIndex))}">
+        <a class="news-item${newsTitle(item, originalIndex).length <= 42 ? " news-item--short-title" : ""}" href="./news.html#news-${escapeHtml(newsSlug(item, originalIndex))}">
           <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
           <span class="news-category">${escapeHtml(getNewsCategory(newsTitle(item, originalIndex)))}</span>
           <div class="news-item-body">
@@ -552,6 +726,21 @@ function renderNews(content) {
       `,
     )
     .join("");
+  markCardImageShapes(list, ".news-item", "img");
+}
+
+function markCardImageShapes(root, cardSelector, imageSelector) {
+  root.querySelectorAll(imageSelector).forEach((image) => {
+    const applyShape = () => {
+      const card = image.closest(cardSelector);
+      if (!card || !image.naturalWidth || !image.naturalHeight) return;
+      const isPortrait = image.naturalHeight / image.naturalWidth > 1.08;
+      card.classList.toggle("is-portrait-media", isPortrait);
+      card.classList.toggle("is-wide-media", !isPortrait);
+    };
+    if (image.complete) applyShape();
+    else image.addEventListener("load", applyShape, { once: true });
+  });
 }
 
 async function boot() {

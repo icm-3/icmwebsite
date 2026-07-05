@@ -22,6 +22,7 @@ const prayerLabels = {
 let selectedPrayerDate = new Date();
 let selectedCalendarMonth = new Date();
 let selectedCalendarEventSlug = "";
+let expandedCalendarDateKey = "";
 
 const fallbackNews = [
   {
@@ -207,6 +208,14 @@ function eventDateTimeLabel(event) {
   return [formatLongDate(event.date), event.time].filter(Boolean).join(" • ");
 }
 
+function eventDateLabel(event) {
+  return formatLongDate(event.date);
+}
+
+function eventTimeLabel(event) {
+  return event.time || "";
+}
+
 function eventSlugFromHash() {
   const rawHash = window.location.hash.replace(/^#/, "");
   return rawHash.startsWith("event-") ? rawHash.slice(6) : "";
@@ -224,10 +233,10 @@ function newsCategory(item) {
   if (item.category) return item.category;
 
   const text = `${item.title || ""} ${item.summary || ""}`.toLowerCase();
-  if (text.includes("ramadan") || text.includes("taraweeh")) return "Programs";
+  if (text.includes("ramadan") || text.includes("taraweeh")) return "Program";
   if (text.includes("youth") || text.includes("camp")) return "Youth";
   if (text.includes("eid")) return "Announcement";
-  if (text.includes("program") || text.includes("workshop") || text.includes("class")) return "Programs";
+  if (text.includes("program") || text.includes("workshop") || text.includes("class")) return "Program";
   if (text.includes("parking") || text.includes("arrival")) return "Notice";
   return "Announcement";
 }
@@ -342,17 +351,18 @@ function setCalendarDetail(event, index = 0) {
   }
 
   const poster = eventPoster(event);
-  const meta = eventDateTimeLabel(event);
+  const eventDate = formatLongDate(event.date);
   target.innerHTML = `
     <article class="calendar-detail-card" id="event-${escapeHtml(eventSlug(event, index))}" data-calendar-detail-card>
       <div class="calendar-detail-body">
         <span class="calendar-detail-eyebrow">Event Details</span>
         <h3>${escapeHtml(eventTitle(event))}</h3>
         ${
-          meta || event.location
+          eventDate || event.time || event.location
             ? `<div class="calendar-detail-meta">
-                ${meta ? `<time datetime="${escapeHtml(event.date || "")}">${escapeHtml(meta)}</time>` : ""}
-                ${event.location ? `<span class="calendar-detail-location">${escapeHtml(event.location)}</span>` : ""}
+                ${eventDate ? `<time datetime="${escapeHtml(event.date || "")}"><b>Date</b><span>${escapeHtml(eventDate)}</span></time>` : ""}
+                ${event.time ? `<span class="calendar-detail-time"><b>Time</b><span>${escapeHtml(event.time)}</span></span>` : ""}
+                ${event.location ? `<span class="calendar-detail-location"><b>Location</b><span>${escapeHtml(event.location)}</span></span>` : ""}
               </div>`
             : ""
         }
@@ -366,6 +376,23 @@ function setCalendarDetail(event, index = 0) {
       }
     </article>
   `;
+}
+
+function syncCalendarTodayEdge(grid) {
+  grid.classList.remove("has-today-left-edge", "has-today-right-edge");
+  grid.style.removeProperty("--calendar-today-top");
+  grid.style.removeProperty("--calendar-today-height");
+
+  const todayCell = grid.querySelector(".calendar-day.is-today:not(.is-selected):not(.is-expanded)");
+  if (!todayCell) return;
+
+  const cellIndex = [...grid.children].indexOf(todayCell);
+  const columnIndex = cellIndex % 7;
+  if (columnIndex !== 0 && columnIndex !== 6) return;
+
+  grid.style.setProperty("--calendar-today-top", `${todayCell.offsetTop}px`);
+  grid.style.setProperty("--calendar-today-height", `${todayCell.offsetHeight}px`);
+  grid.classList.add(columnIndex === 0 ? "has-today-left-edge" : "has-today-right-edge");
 }
 
 function renderCalendar(content) {
@@ -390,9 +417,11 @@ function renderCalendar(content) {
   const cells = Array.from({ length: 42 }, (_, index) => {
     const date = new Date(firstGridDate);
     date.setDate(firstGridDate.getDate() + index);
+    const dateKey = date.toISOString().slice(0, 10);
     const dateEvents = content.events.filter((event) => eventMatchesDate(event, date));
-    const visibleEvents = dateEvents.slice(0, 2);
-    const hiddenEvents = dateEvents.slice(2);
+    const isExpandedDate = expandedCalendarDateKey === dateKey;
+    const visibleEvents = isExpandedDate ? dateEvents : dateEvents.slice(0, 2);
+    const hiddenEvents = isExpandedDate ? [] : dateEvents.slice(2);
     const hasSelectedEvent = dateEvents.some(
       (event) => eventSlug(event, content.events.indexOf(event)) === selectedCalendarEventSlug,
     );
@@ -401,10 +430,11 @@ function renderCalendar(content) {
       todayDate.getFullYear() === date.getFullYear() &&
       todayDate.getMonth() === date.getMonth() &&
       todayDate.getDate() === date.getDate();
+    const badge = getDateBadgeParts(dateKey);
 
     return `
-      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}" data-date-label="${escapeHtml(formatShortDate(date.toISOString().slice(0, 10)))}">
-        <span class="calendar-day-number">${date.getDate()}</span>
+      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
+        <span class="calendar-day-number"><span>${escapeHtml(badge.month)}</span><strong>${date.getDate()}</strong></span>
         <div class="calendar-event-stack">
           ${visibleEvents
             .map(
@@ -421,9 +451,11 @@ function renderCalendar(content) {
             )
             .join("")}
           ${
-            hiddenEvents.length
-              ? `<button class="calendar-event-more" type="button" data-event-slug="${escapeHtml(eventSlug(hiddenEvents[0], content.events.indexOf(hiddenEvents[0])))}" title="${escapeHtml(hiddenEvents.map((event) => eventTitle(event)).join(" - "))}">+${hiddenEvents.length} more</button>`
-              : ""
+            isExpandedDate
+              ? `<button class="calendar-event-more is-collapse" type="button" data-collapse-date="${escapeHtml(dateKey)}">Show less</button>`
+              : hiddenEvents.length
+                ? `<button class="calendar-event-more" type="button" data-expand-date="${escapeHtml(dateKey)}" title="${escapeHtml(hiddenEvents.map((event) => eventTitle(event)).join(" - "))}">+${hiddenEvents.length} more</button>`
+                : ""
           }
         </div>
       </div>
@@ -431,6 +463,7 @@ function renderCalendar(content) {
   }).join("");
 
   grid.innerHTML = weekdays.map((day) => `<div class="calendar-weekday">${day}</div>`).join("") + cells;
+  syncCalendarTodayEdge(grid);
 
   const selectedIndex = content.events.findIndex((event, index) => eventSlug(event, index) === selectedCalendarEventSlug);
   const selectedEvent = selectedIndex >= 0 ? content.events[selectedIndex] : null;
@@ -442,6 +475,20 @@ function renderCalendar(content) {
       window.history.replaceState(null, "", `#event-${selectedCalendarEventSlug}`);
       renderCalendar(content);
       scrollToCalendarDetail("smooth");
+    });
+  });
+
+  grid.querySelectorAll("[data-expand-date]").forEach((button) => {
+    button.addEventListener("click", () => {
+      expandedCalendarDateKey = button.dataset.expandDate;
+      renderCalendar(content);
+    });
+  });
+
+  grid.querySelectorAll("[data-collapse-date]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (expandedCalendarDateKey === button.dataset.collapseDate) expandedCalendarDateKey = "";
+      renderCalendar(content);
     });
   });
 }
@@ -470,6 +517,7 @@ function initCalendar(content) {
       selectedCalendarMonth.setMonth(selectedCalendarMonth.getMonth() + (button.dataset.calendarNav === "next" ? 1 : -1));
     }
     selectedCalendarEventSlug = "";
+    expandedCalendarDateKey = "";
     renderCalendar(content);
   });
 
@@ -498,9 +546,22 @@ function renderJummah(content) {
 function renderNews(content) {
   const target = document.querySelector("[data-page-news]");
   if (!target) return;
-  const items = [...content.news.map((item, originalIndex) => ({ item, originalIndex })), ...fallbackNews.map((item, fallbackIndex) => ({ item, originalIndex: content.news.length + fallbackIndex }))].sort(
+  const newsSource = content.news?.length ? content.news : fallbackNews;
+  const items = newsSource.map((item, originalIndex) => ({ item, originalIndex })).sort(
     (first, second) => dateValue(second.item.date) - dateValue(first.item.date),
   );
+  const markNewsImageShape = () => {
+    target.querySelectorAll(".news-feature img").forEach((image) => {
+      const applyShape = () => {
+        const card = image.closest(".news-feature");
+        if (!card || !image.naturalWidth || !image.naturalHeight) return;
+        card.classList.toggle("news-feature--portrait", image.naturalHeight / image.naturalWidth > 1.08);
+        card.classList.toggle("news-feature--wide", image.naturalHeight / image.naturalWidth <= 1.08);
+      };
+      if (image.complete) applyShape();
+      else image.addEventListener("load", applyShape, { once: true });
+    });
+  };
   const renderList = () => {
     document.body.classList.remove("is-news-detail-page");
     target.innerHTML = items
@@ -520,6 +581,7 @@ function renderNews(content) {
         `;
       })
       .join("");
+    markNewsImageShape();
     if (!window.location.hash) {
       requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "auto" }));
     }
