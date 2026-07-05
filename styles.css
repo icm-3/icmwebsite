@@ -13948,6 +13948,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-day.is-expanded:nth-child(7n + 7),
   .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
     width: calc(100% + 2px) !important;
+    height: calc(100% + 2px) !important;
     border-right: 2px solid var(--calendar-active-border) !important;
   }
 
