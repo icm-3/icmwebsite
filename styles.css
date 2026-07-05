@@ -13052,7 +13052,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-grid.has-today-left-edge::before,
   .calendar-grid.has-today-right-edge::before {
     content: "" !important;
-    display: block !important;
+    display: none !important;
     position: absolute;
     top: 0;
     right: 0;
@@ -13640,7 +13640,8 @@ body:has(.about-community-copy) .page-hero h1 {
 @media (min-width: 769px) {
   .calendar-grid {
     overflow: visible !important;
-    background: #ffffff !important;
+    background: linear-gradient(180deg, var(--green) 0 40px, #ffffff 40px 100%) !important;
+    background-clip: border-box !important;
     border-color: rgba(165, 100, 5, 0.32) !important;
     border-bottom-color: rgba(165, 100, 5, 0.32) !important;
     box-shadow: none !important;
@@ -13650,7 +13651,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-grid.has-today-left-edge::before,
   .calendar-grid.has-today-right-edge::before {
     content: "" !important;
-    display: block !important;
+    display: none !important;
     position: absolute;
     top: 0;
     right: 0;
