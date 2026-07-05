@@ -13784,10 +13784,11 @@ body:has(.about-community-copy) .page-hero h1 {
     --calendar-edge-green: rgba(0, 84, 61, 0.88);
     --calendar-edge-gold: rgba(165, 100, 5, 0.88);
     position: relative !important;
-    overflow: hidden !important;
+    overflow: visible !important;
     background: linear-gradient(180deg, var(--green) 0 40px, #ffffff 40px 100%) !important;
     background-clip: padding-box !important;
     border: 1px solid var(--calendar-edge-default) !important;
+    clip-path: inset(0 round 10px) !important;
     box-shadow: none !important;
   }
 
@@ -13913,6 +13914,8 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-day.is-selected:nth-child(7n + 1),
   .calendar-day.is-expanded:nth-child(7n + 1),
   .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
+    width: calc(100% + 1px) !important;
+    margin-left: -1px !important;
     border-left: 2px solid var(--calendar-active-border) !important;
   }
 
@@ -13938,6 +13941,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-day.is-expanded:nth-child(7n),
   .calendar-day.is-expanded:nth-child(7n + 7),
   .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
+    width: calc(100% + 1px) !important;
     border-right: 2px solid var(--calendar-active-border) !important;
   }
 
@@ -13949,6 +13953,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-last-child(-n+7),
   .calendar-day.is-selected:nth-last-child(-n+7),
   .calendar-day.is-expanded:nth-last-child(-n+7) {
+    height: calc(100% + 1px) !important;
     border-bottom: 2px solid var(--calendar-active-border) !important;
   }
 
