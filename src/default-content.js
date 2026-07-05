@@ -43,6 +43,24 @@ export const defaultContent = {
       "posterAlt": "ICM Friday Announcements flyer"
     },
     {
+      "title": "Sunday 31 Calendar Edge Test",
+      "date": "2026-05-31",
+      "time": "11:00 AM",
+      "location": "ICM",
+      "description": "Temporary calendar fixture for checking the Sunday 31 top-left calendar border.",
+      "poster": "./public/news/icm-live/friday-announcements-june-19-2026.png",
+      "posterAlt": "ICM Friday Announcements flyer"
+    },
+    {
+      "title": "Sunday 31 Second Event Test",
+      "date": "2026-05-31",
+      "time": "12:00 PM",
+      "location": "ICM",
+      "description": "Second temporary calendar fixture for checking stacked events on Sunday 31.",
+      "poster": "./public/news/icm-live/friday-bukhari-circle.jpeg",
+      "posterAlt": "ICM Friday Night Bukhari Circle flyer"
+    },
+    {
       "title": "June 31 Calendar Normalization Test",
       "date": "2026-06-31",
       "time": "7:00 PM",
