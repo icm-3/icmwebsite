@@ -13048,9 +13048,20 @@ body:has(.about-community-copy) .page-hero h1 {
 }
 
 @media (max-width: 768px) {
-  .calendar-grid::before {
-    content: none !important;
-    display: none !important;
+  .calendar-grid::before,
+  .calendar-grid.has-today-left-edge::before,
+  .calendar-grid.has-today-right-edge::before {
+    content: "" !important;
+    display: block !important;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    height: 40px;
+    background: var(--green);
+    border-radius: 9px 9px 0 0;
+    pointer-events: none;
   }
 
   .service-form-page .local-registration-form,
@@ -13635,9 +13646,20 @@ body:has(.about-community-copy) .page-hero h1 {
     box-shadow: none !important;
   }
 
-  .calendar-grid::before {
-    content: none !important;
-    display: none !important;
+  .calendar-grid::before,
+  .calendar-grid.has-today-left-edge::before,
+  .calendar-grid.has-today-right-edge::before {
+    content: "" !important;
+    display: block !important;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    height: 40px;
+    background: var(--green);
+    border-radius: 9px 9px 0 0;
+    pointer-events: none;
   }
 
   .calendar-grid .calendar-day {
