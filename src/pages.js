@@ -23,7 +23,7 @@ let selectedPrayerDate = new Date();
 let selectedCalendarMonth = new Date();
 let selectedCalendarEventSlug = "";
 let expandedCalendarDateKey = "";
-const calendarTodayOverride = "2026-07-04";
+const calendarTodayOverride = "2026-06-28";
 
 const fallbackNews = [
   {

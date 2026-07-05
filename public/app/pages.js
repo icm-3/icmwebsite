@@ -895,7 +895,7 @@ var defaultContent = {
   "events": [
     {
       "title": "Tuesday Quran Study Circle And Community Reflections",
-      "date": "2026-07-28",
+      "date": "2026-06-28",
       "time": "7:00 PM",
       "location": "ICM Prayer Hall",
       "description": "Quran study circle with short reflections and community reminders.",
@@ -904,7 +904,7 @@ var defaultContent = {
     },
     {
       "title": "Youth Service Planning Meeting",
-      "date": "2026-07-28",
+      "date": "2026-06-28",
       "time": "8:00 PM",
       "location": "ICM Classroom",
       "description": "Planning meeting for youth service projects and volunteer coordination.",
@@ -913,7 +913,7 @@ var defaultContent = {
     },
     {
       "title": "Family Program Volunteer Check In",
-      "date": "2026-07-28",
+      "date": "2026-06-28",
       "time": "After Isha",
       "location": "ICM",
       "description": "Volunteer check-in for family programs and upcoming community activities.",
@@ -1248,7 +1248,7 @@ var selectedPrayerDate = /* @__PURE__ */ new Date();
 var selectedCalendarMonth = /* @__PURE__ */ new Date();
 var selectedCalendarEventSlug = "";
 var expandedCalendarDateKey = "";
-var calendarTodayOverride = "2026-07-04";
+var calendarTodayOverride = "2026-06-28";
 var fallbackNews = [
   {
     title: "Community Programs Continue Through Summer",
