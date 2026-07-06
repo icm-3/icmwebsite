@@ -14430,10 +14430,10 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .jummah-card tbody tr {
     grid-template-columns: 30px minmax(0, 1fr) !important;
-    grid-template-rows: 19px minmax(31px, 0.95fr) minmax(42px, 1.25fr) !important;
-    gap: 2px 8px !important;
+    grid-template-rows: 19px minmax(28px, 0.85fr) minmax(44px, auto) !important;
+    gap: 1px 8px !important;
     min-height: 0 !important;
-    padding: 4px 8px !important;
+    padding: 3px 8px !important;
     background: #f7fbf8 !important;
     border: 1px solid rgba(0, 84, 61, 0.16) !important;
     border-radius: 10px !important;
