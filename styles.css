@@ -5297,6 +5297,7 @@ input[type="checkbox"] {
   }
 
   .calendar-weekday,
+  .calendar-day.is-muted,
   .calendar-day:not(.has-events) {
     display: none;
   }
@@ -14330,6 +14331,10 @@ body:has(.about-community-copy) .page-hero h1 {
   .page-main .calendar-band .calendar-grid .calendar-day.has-events.is-selected::after,
   .page-main .calendar-band .calendar-grid .calendar-day.has-events.is-expanded::after {
     content: none !important;
+    display: none !important;
+  }
+
+  .calendar-day.has-events.is-muted {
     display: none !important;
   }
 }

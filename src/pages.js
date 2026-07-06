@@ -417,6 +417,8 @@ function renderCalendar(content) {
   const title = document.querySelector("[data-calendar-title]");
   const hijri = document.querySelector("[data-calendar-hijri]");
   const monthStart = new Date(selectedCalendarMonth.getFullYear(), selectedCalendarMonth.getMonth(), 1);
+  const daysInMonth = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0).getDate();
+  const visibleDayCount = Math.ceil((monthStart.getDay() + daysInMonth) / 7) * 7;
   const firstGridDate = new Date(monthStart);
   firstGridDate.setDate(firstGridDate.getDate() - firstGridDate.getDay());
   const monthEvents = content.events.filter((event) => {
@@ -429,7 +431,7 @@ function renderCalendar(content) {
 
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const todayDate = getCalendarTodayDate();
-  const cells = Array.from({ length: 42 }, (_, index) => {
+  const cells = Array.from({ length: visibleDayCount }, (_, index) => {
     const date = new Date(firstGridDate);
     date.setDate(firstGridDate.getDate() + index);
     const dateKey = calendarDateKey(date);
