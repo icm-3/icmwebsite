@@ -14611,12 +14611,31 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .events-card .event-list,
   .news-card .news-list {
+    position: relative !important;
     flex: 1 1 auto !important;
     height: auto !important;
     max-height: none !important;
-    border-top: 1px solid rgba(0, 84, 61, 0.24) !important;
+    border-top: 0 !important;
     border-bottom: 0 !important;
-    box-shadow: inset 0 7px 10px -12px rgba(0, 84, 61, 0.8) !important;
+    box-shadow: inset 0 10px 12px -13px rgba(0, 84, 61, 0.95) !important;
+  }
+
+  .events-card .event-list::before,
+  .news-card .news-list::before {
+    content: "" !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 5 !important;
+    display: block !important;
+    height: 0 !important;
+    margin-inline: 2px 6px !important;
+    border-top: 2px solid rgba(0, 84, 61, 0.36) !important;
+    box-shadow: 0 2px 6px rgba(0, 84, 61, 0.16) !important;
+    pointer-events: none !important;
+  }
+
+  .events-card .event-list::before {
+    grid-column: 1 / -1 !important;
   }
 
   .events-card .card-header,
@@ -14650,12 +14669,31 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .events-card .event-list,
   .news-card .news-list {
+    position: relative !important;
     flex: 1 1 auto !important;
     height: auto !important;
     max-height: none !important;
-    border-top: 1px solid rgba(0, 84, 61, 0.26) !important;
+    border-top: 0 !important;
     border-bottom: 0 !important;
-    box-shadow: inset 0 7px 10px -12px rgba(0, 84, 61, 0.85) !important;
+    box-shadow: inset 0 10px 12px -13px rgba(0, 84, 61, 0.98) !important;
+  }
+
+  .events-card .event-list::before,
+  .news-card .news-list::before {
+    content: "" !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 5 !important;
+    display: block !important;
+    height: 0 !important;
+    margin-inline: 1px 4px !important;
+    border-top: 2px solid rgba(0, 84, 61, 0.4) !important;
+    box-shadow: 0 2px 6px rgba(0, 84, 61, 0.18) !important;
+    pointer-events: none !important;
+  }
+
+  .events-card .event-list::before {
+    grid-column: 1 / -1 !important;
   }
 
   .events-card .card-header,
@@ -14672,7 +14710,7 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 
   .news-card .news-item {
-    min-height: 137px !important;
-    height: 137px !important;
+    min-height: 136px !important;
+    height: 136px !important;
   }
 }
