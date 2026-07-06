@@ -9,26 +9,26 @@ export const defaultContent = {
       {
         "shift": "1",
         "time": "1:00 PM",
-        "speaker": "Imam Sami Koçak",
-        "topic": "Reflections on Karbala"
+        "speaker": "Shaykh Muhammad Abdul Rahman Al Morrisville",
+        "topic": "Building Strong Families Through Prayer, Service, Youth Education, And Weekly Spiritual Reflection"
       },
       {
         "shift": "2",
         "time": "2:00 PM",
-        "speaker": "Hisham Sarsour",
-        "topic": "Understanding Our Reality in America"
+        "speaker": "Imam Abdul Latif Hasan Al Qasimi",
+        "topic": "Understanding Our Reality In America With Patience, Service, And Trust In Allah"
       },
       {
         "shift": "3",
         "time": "3:00 PM",
-        "speaker": "Shaykh Umair Haseeb",
-        "topic": "Reflections on Karbala"
+        "speaker": "Shaykh Umair Haseeb And Community Guests",
+        "topic": "Reflections On Karbala, Courage, Truth, And Steadfast Faith In Difficult Times"
       },
       {
         "shift": "4",
         "time": "4:00 PM",
-        "speaker": "Imam Manzar ul Islam",
-        "topic": "Karbalāʾ: When Truth Refused to Surrender"
+        "speaker": "Imam Manzar ul Islam And Youth Mentors",
+        "topic": "Karbalāʾ: When Truth Refused To Surrender And Communities Chose Moral Clarity"
       }
     ]
   },
