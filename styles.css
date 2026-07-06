@@ -10082,7 +10082,7 @@ input[type="checkbox"] {
 
   .jummah-card .topic-chip {
     align-items: start !important;
-    gap: 6px !important;
+    gap: 4px !important;
     padding: 7px 9px 8px !important;
   }
 
@@ -14430,8 +14430,8 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .jummah-card tbody tr {
     grid-template-columns: 30px minmax(0, 1fr) !important;
-    grid-template-rows: 20px minmax(24px, 0.75fr) minmax(43px, 1.45fr) !important;
-    gap: 3px 8px !important;
+    grid-template-rows: 19px minmax(31px, 0.95fr) minmax(42px, 1.25fr) !important;
+    gap: 2px 8px !important;
     min-height: 0 !important;
     padding: 4px 8px !important;
     background: #f7fbf8 !important;
@@ -14515,17 +14515,17 @@ body:has(.about-community-copy) .page-hero h1 {
   .jummah-card .speaker-name {
     display: grid !important;
     grid-template-rows: auto minmax(0, 1fr) !important;
-    gap: 3px !important;
+    gap: 2px !important;
     width: 100% !important;
     height: 100% !important;
     min-height: 23px !important;
     align-items: start !important;
-    padding: 2px 8px 3px !important;
+    padding: 3px 8px !important;
     background: #ffffff !important;
     border: 1px solid rgba(0, 84, 61, 0.16) !important;
     border-radius: 9px !important;
     font-size: 12.5px !important;
-    line-height: 1.03 !important;
+    line-height: 1.06 !important;
     text-align: left !important;
     overflow: hidden !important;
     overflow-wrap: anywhere !important;
@@ -14545,13 +14545,13 @@ body:has(.about-community-copy) .page-hero h1 {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) !important;
     grid-template-rows: auto minmax(0, 1fr) !important;
-    gap: 4px !important;
+    gap: 3px !important;
     width: 100% !important;
     height: 100% !important;
     min-height: 25px !important;
     align-items: stretch !important;
     justify-content: stretch !important;
-    padding: 3px 8px 5px !important;
+    padding: 3px 8px 4px !important;
     background: #eaf4ee !important;
     border: 1px solid rgba(0, 84, 61, 0.16) !important;
     border-radius: 9px !important;
