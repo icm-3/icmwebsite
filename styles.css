@@ -13930,7 +13930,7 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected),
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) {
-    border-right-color: var(--calendar-edge-green) !important;
+    border-right-color: transparent !important;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected) + .calendar-day.is-selected,
@@ -13940,7 +13940,7 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .calendar-day.is-selected + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)),
   .calendar-day.is-expanded + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)) {
-    border-left-color: var(--calendar-edge-green) !important;
+    border-left-color: transparent !important;
   }
 
   .calendar-day.is-selected:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1))),
@@ -13950,7 +13950,7 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected),
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) {
-    border-bottom-color: var(--calendar-edge-green) !important;
+    border-bottom-color: transparent !important;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected,
@@ -13960,7 +13960,7 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .calendar-day.is-selected + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded),
   .calendar-day.is-expanded + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    border-top-color: var(--calendar-edge-green) !important;
+    border-top-color: transparent !important;
   }
 
   .calendar-day.is-selected:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded)),
@@ -13979,6 +13979,60 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-day.is-expanded::after {
     content: none !important;
     display: none !important;
+  }
+
+  .calendar-day.is-selected::before,
+  .calendar-day.is-expanded::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected) + .calendar-day.is-selected::before,
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) + .calendar-day.is-expanded::before,
+  .calendar-day.is-selected:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)))::before,
+  .calendar-day.is-expanded:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)))::before,
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected::before,
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded::before,
+  .calendar-day.is-selected:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded))::before,
+  .calendar-day.is-expanded:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded))::before {
+    content: "" !important;
+    display: block !important;
+    position: absolute;
+    z-index: 9;
+    background: var(--calendar-edge-gold);
+    pointer-events: none;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected) + .calendar-day.is-selected::before,
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) + .calendar-day.is-expanded::before {
+    top: -2px;
+    bottom: -2px;
+    left: -2px;
+    width: 2px;
+  }
+
+  .calendar-day.is-selected:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)))::before,
+  .calendar-day.is-expanded:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)))::before {
+    top: -2px;
+    right: -2px;
+    bottom: -2px;
+    width: 2px;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected::before,
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded::before {
+    top: -2px;
+    right: -2px;
+    left: -2px;
+    height: 2px;
+  }
+
+  .calendar-day.is-selected:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded))::before,
+  .calendar-day.is-expanded:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded))::before {
+    right: -2px;
+    bottom: -2px;
+    left: -2px;
+    height: 2px;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14)::after {
