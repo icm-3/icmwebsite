@@ -14311,14 +14311,16 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 
   .calendar-day.has-events.is-today:not(.is-selected):not(.is-expanded) {
-    background: linear-gradient(180deg, #f2faf6, #ffffff) !important;
-    border-color: rgba(0, 84, 61, 0.28) !important;
+    background: linear-gradient(180deg, #eef9f3, #ffffff) !important;
+    border-color: rgba(0, 84, 61, 0.48) !important;
+    box-shadow: inset 0 0 0 1px rgba(0, 84, 61, 0.12), 0 3px 10px rgba(0, 84, 61, 0.08) !important;
   }
 
   .calendar-day.has-events.is-selected,
   .calendar-day.has-events.is-expanded {
-    background: linear-gradient(180deg, #fff8e9, #ffffff) !important;
-    border-color: rgba(165, 100, 5, 0.36) !important;
+    background: linear-gradient(180deg, #fff5df, #ffffff) !important;
+    border-color: rgba(165, 100, 5, 0.58) !important;
+    box-shadow: inset 0 0 0 1px rgba(165, 100, 5, 0.14), 0 3px 10px rgba(165, 100, 5, 0.1) !important;
   }
 
   .calendar-day.has-events.is-today::after,
