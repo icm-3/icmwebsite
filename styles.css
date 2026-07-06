@@ -14344,7 +14344,7 @@ body:has(.about-community-copy) .page-hero h1 {
 /* Desktop Jummah experiment: use the mobile card-style shift layout. */
 @media (min-width: 769px) {
   .info-card.jummah-card {
-    height: auto !important;
+    height: 500px !important;
     min-height: 0 !important;
   }
 
@@ -14382,7 +14382,8 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 
   .jummah-card .table-wrap {
-    flex: 0 0 auto !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
     padding: 14px 18px 18px !important;
     overflow: hidden !important;
   }
@@ -14409,7 +14410,7 @@ body:has(.about-community-copy) .page-hero h1 {
     grid-auto-rows: max-content !important;
     grid-template-rows: none !important;
     max-height: none !important;
-    overflow: visible !important;
+    overflow: hidden !important;
     padding-right: 0 !important;
   }
 
