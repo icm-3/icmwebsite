@@ -13781,8 +13781,8 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-grid {
     --calendar-line-gold: rgba(165, 100, 5, 0.42);
     --calendar-edge-default: var(--calendar-line-gold);
-    --calendar-edge-green: rgba(0, 84, 61, 0.88);
-    --calendar-edge-gold: rgba(165, 100, 5, 0.88);
+    --calendar-edge-green: #00543d;
+    --calendar-edge-gold: #a56405;
     position: relative !important;
     overflow: hidden !important;
     background: linear-gradient(180deg, var(--green) 0 40px, #ffffff 40px 100%) !important;
@@ -14004,74 +14004,68 @@ body:has(.about-community-copy) .page-hero h1 {
     display: none !important;
   }
 
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1),
-  .calendar-day.is-selected:nth-child(7n + 1),
-  .calendar-day.is-expanded:nth-child(7n + 1),
-  .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    width: calc(100% + 1px) !important;
-    margin-left: -1px !important;
-    border-left: 2px solid var(--calendar-active-border) !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n)::after,
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 7)::after,
-  .calendar-day.is-selected:nth-child(7n)::after,
-  .calendar-day.is-selected:nth-child(7n + 7)::after,
-  .calendar-day.is-expanded:nth-child(7n)::after,
-  .calendar-day.is-expanded:nth-child(7n + 7)::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n),
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 7),
-  .calendar-day.is-selected:nth-child(7n),
-  .calendar-day.is-selected:nth-child(7n + 7),
-  .calendar-day.is-expanded:nth-child(7n),
-  .calendar-day.is-expanded:nth-child(7n + 7),
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    width: calc(100% + 3px) !important;
-    height: calc(100% + 2px) !important;
-    border-right: 2px solid var(--calendar-active-border) !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14),
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14),
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14) {
-    height: 100% !important;
-    margin-top: 0 !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14) {
+  .calendar-grid .calendar-day.is-today:not(.is-selected):not(.is-expanded),
+  .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded),
+  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded),
+  .calendar-grid .calendar-day.is-selected,
+  .calendar-grid .calendar-day.is-expanded {
     width: calc(100% + 2px) !important;
-    height: calc(100% + 1px) !important;
+    height: calc(100% + 2px) !important;
+    margin: -1px !important;
+    border-width: 2px !important;
+    border-style: solid !important;
+    border-radius: 0 !important;
   }
 
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 1),
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 1),
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 1) {
-    border-top-left-radius: 2px !important;
+  .calendar-grid .calendar-day.is-today:not(.is-selected):not(.is-expanded),
+  .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded),
+  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
+    border-color: var(--calendar-edge-green) !important;
   }
 
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14) {
-    border-top-right-radius: 2px !important;
+  .calendar-grid .calendar-day.is-selected,
+  .calendar-grid .calendar-day.is-expanded {
+    border-color: var(--calendar-edge-gold) !important;
+  }
+
+  .calendar-grid .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected),
+  .calendar-grid .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) {
+    border-right-color: var(--calendar-edge-gold) !important;
+  }
+
+  .calendar-grid .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected) + .calendar-day.is-selected,
+  .calendar-grid .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) + .calendar-day.is-expanded {
+    border-left-color: transparent !important;
+  }
+
+  .calendar-grid .calendar-day.is-selected + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)),
+  .calendar-grid .calendar-day.is-expanded + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)) {
+    border-left-color: var(--calendar-edge-gold) !important;
+  }
+
+  .calendar-grid .calendar-day.is-selected:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1))),
+  .calendar-grid .calendar-day.is-expanded:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1))) {
+    border-right-color: transparent !important;
+  }
+
+  .calendar-grid .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected),
+  .calendar-grid .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) {
+    border-bottom-color: var(--calendar-edge-gold) !important;
+  }
+
+  .calendar-grid .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected,
+  .calendar-grid .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded {
+    border-top-color: transparent !important;
+  }
+
+  .calendar-grid .calendar-day.is-selected + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded),
+  .calendar-grid .calendar-day.is-expanded + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
+    border-top-color: var(--calendar-edge-gold) !important;
+  }
+
+  .calendar-grid .calendar-day.is-selected:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded)),
+  .calendar-grid .calendar-day.is-expanded:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded)) {
+    border-bottom-color: transparent !important;
   }
 
   .calendar-grid .calendar-day:nth-last-child(-n+7)::after {
