@@ -13784,6 +13784,8 @@ body:has(.about-community-copy) .page-hero h1 {
     --calendar-edge-green: rgba(0, 84, 61, 0.88);
     --calendar-edge-gold: rgba(165, 100, 5, 0.88);
     position: relative !important;
+    grid-template-rows: 40px !important;
+    grid-auto-rows: 157px !important;
     overflow: visible !important;
     background: linear-gradient(180deg, var(--green) 0 40px, #ffffff 40px 100%) !important;
     background-clip: padding-box !important;
@@ -13878,6 +13880,14 @@ body:has(.about-community-copy) .page-hero h1 {
     margin: -1px 0 0 -1px !important;
     border: 2px solid var(--calendar-active-border) !important;
     box-shadow: none !important;
+  }
+
+  .calendar-day.is-expanded {
+    min-height: 116px !important;
+  }
+
+  .calendar-day.is-expanded .calendar-event-stack {
+    max-height: 106px !important;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after,
