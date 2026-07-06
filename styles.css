@@ -14116,4 +14116,26 @@ body:has(.about-community-copy) .page-hero h1 {
   .page-main .calendar-band .calendar-grid {
     border-right-color: transparent !important;
   }
+
+  .calendar-day:not(.is-selected):not(.is-expanded):has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded)) {
+    border-right-color: transparent !important;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded) + .calendar-day:not(.is-selected):not(.is-expanded),
+  .calendar-day.is-selected + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded),
+  .calendar-day.is-expanded + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded) {
+    border-left-color: transparent !important;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day:not(.is-selected):not(.is-expanded)) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day:not(.is-selected):not(.is-expanded),
+  .calendar-day.is-selected:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded)) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded),
+  .calendar-day.is-expanded:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded)) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded) {
+    border-top-color: transparent !important;
+  }
+
+  .calendar-day:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded)),
+  .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected),
+  .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) {
+    border-bottom-color: transparent !important;
+  }
 }
