@@ -14360,8 +14360,8 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 
   .jummah-card .card-header {
-    min-height: 62px !important;
-    padding: 18px 24px 13px !important;
+    min-height: 56px !important;
+    padding: 14px 24px 10px !important;
     background: linear-gradient(180deg, #f6fbf8, #ffffff) !important;
     border-bottom: 1px solid rgba(0, 84, 61, 0.18) !important;
   }
@@ -14384,7 +14384,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .jummah-card .table-wrap {
     flex: 1 1 auto !important;
     min-height: 0 !important;
-    padding: 14px 18px 18px !important;
+    padding: 10px 18px 12px !important;
     overflow: hidden !important;
   }
 
@@ -14406,7 +14406,7 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 
   .jummah-card tbody {
-    gap: 10px !important;
+    gap: 5px !important;
     grid-auto-rows: max-content !important;
     grid-template-rows: none !important;
     max-height: none !important;
@@ -14415,10 +14415,10 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 
   .jummah-card tbody tr {
-    grid-template-columns: 34px minmax(0, 1fr) !important;
-    gap: 7px 10px !important;
+    grid-template-columns: 30px minmax(0, 1fr) !important;
+    gap: 3px 8px !important;
     min-height: 0 !important;
-    padding: 10px !important;
+    padding: 5px 8px !important;
     background: #f7fbf8 !important;
     border: 1px solid rgba(0, 84, 61, 0.16) !important;
     border-radius: 10px !important;
@@ -14447,10 +14447,10 @@ body:has(.about-community-copy) .page-hero h1 {
   .jummah-card td:nth-child(2) {
     grid-column: 2 !important;
     grid-row: 1 !important;
-    min-height: 27px !important;
+    min-height: 20px !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 3px 10px !important;
+    padding: 1px 8px !important;
     color: #ffffff !important;
     background: var(--green) !important;
     border-radius: 999px !important;
@@ -14459,15 +14459,15 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .jummah-card td.time {
     display: flex !important;
-    font-size: 16px !important;
+    font-size: 13px !important;
     font-weight: 900 !important;
   }
 
   .jummah-card td.time::before {
     content: "Time";
-    margin-right: 8px;
+    margin-right: 7px;
     color: rgba(255, 255, 255, 0.78);
-    font-size: 9px;
+    font-size: 7.5px;
     font-weight: 900;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -14490,37 +14490,37 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 
   .jummah-card .shift {
-    width: 28px !important;
-    height: 28px !important;
-    min-width: 28px !important;
-    font-size: 13px !important;
+    width: 25px !important;
+    height: 25px !important;
+    min-width: 25px !important;
+    font-size: 12px !important;
   }
 
   .jummah-card .speaker-name {
     display: grid !important;
     width: 100% !important;
-    min-height: 34px !important;
+    min-height: 23px !important;
     align-items: center !important;
-    padding: 5px 10px !important;
+    padding: 2px 8px !important;
     background: #ffffff !important;
     border: 1px solid rgba(0, 84, 61, 0.16) !important;
     border-radius: 9px !important;
-    font-size: 14px !important;
-    line-height: 1.12 !important;
+    font-size: 12.5px !important;
+    line-height: 1.08 !important;
     text-align: left !important;
     overflow-wrap: anywhere !important;
   }
 
   .jummah-card .topic-chip {
     width: 100% !important;
-    min-height: 36px !important;
+    min-height: 25px !important;
     justify-content: flex-start !important;
-    padding: 6px 10px !important;
+    padding: 3px 8px !important;
     background: #eaf4ee !important;
     border: 1px solid rgba(0, 84, 61, 0.16) !important;
     border-radius: 9px !important;
-    font-size: 14px !important;
-    line-height: 1.12 !important;
+    font-size: 12.5px !important;
+    line-height: 1.08 !important;
     overflow-wrap: anywhere !important;
   }
 }
