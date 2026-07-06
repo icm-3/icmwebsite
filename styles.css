@@ -10079,6 +10079,17 @@ input[type="checkbox"] {
     overflow: visible !important;
     -webkit-line-clamp: initial !important;
   }
+
+  .jummah-card .topic-chip {
+    align-items: start !important;
+    gap: 6px !important;
+    padding: 7px 9px 8px !important;
+  }
+
+  .jummah-card .topic-text {
+    align-self: start !important;
+    line-height: 1.14 !important;
+  }
 }
 
 @media (min-width: 769px) {
@@ -12669,8 +12680,10 @@ body:has(.about-community-copy) .page-hero h1 {
 }
 
 .events-card .event-item.is-past h3 {
-  width: calc(100% + 1px) !important;
-  max-width: calc(100% + 1px) !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-right: 70px !important;
 }
 
 .events-card .event-item.is-past p {
@@ -13159,7 +13172,7 @@ body:has(.about-community-copy) .page-hero h1 {
 
 @media (max-width: 520px) {
   .events-card .event-item.is-past h3 {
-    padding-right: 42px !important;
+    padding-right: 66px !important;
   }
 
   .events-card .event-item:not(.is-past) h3,
@@ -13171,7 +13184,7 @@ body:has(.about-community-copy) .page-hero h1 {
 
 @media (max-width: 380px) {
   .events-card .event-item.is-past h3 {
-    padding-right: 39px !important;
+    padding-right: 62px !important;
   }
 }
 
@@ -13237,7 +13250,7 @@ body:has(.about-community-copy) .page-hero h1 {
     box-sizing: border-box !important;
     width: 100% !important;
     max-width: 100% !important;
-    padding-right: 58px !important;
+    padding-right: 66px !important;
   }
 
   .events-card .event-item .event-status {
@@ -13248,7 +13261,7 @@ body:has(.about-community-copy) .page-hero h1 {
 @media (max-width: 380px) {
   .events-card .event-item.is-past h3,
   .events-card .event-item:has(.event-status) h3 {
-    padding-right: 54px !important;
+    padding-right: 62px !important;
   }
 }
 
@@ -14417,10 +14430,10 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .jummah-card tbody tr {
     grid-template-columns: 30px minmax(0, 1fr) !important;
-    grid-template-rows: 20px minmax(28px, 0.9fr) minmax(36px, 1.25fr) !important;
-    gap: 4px 8px !important;
+    grid-template-rows: 20px minmax(24px, 0.75fr) minmax(43px, 1.45fr) !important;
+    gap: 3px 8px !important;
     min-height: 0 !important;
-    padding: 5px 8px !important;
+    padding: 4px 8px !important;
     background: #f7fbf8 !important;
     border: 1px solid rgba(0, 84, 61, 0.16) !important;
     border-radius: 10px !important;
@@ -14502,17 +14515,17 @@ body:has(.about-community-copy) .page-hero h1 {
   .jummah-card .speaker-name {
     display: grid !important;
     grid-template-rows: auto minmax(0, 1fr) !important;
-    gap: 2px !important;
+    gap: 3px !important;
     width: 100% !important;
     height: 100% !important;
     min-height: 23px !important;
     align-items: start !important;
-    padding: 2px 8px !important;
+    padding: 2px 8px 3px !important;
     background: #ffffff !important;
     border: 1px solid rgba(0, 84, 61, 0.16) !important;
     border-radius: 9px !important;
     font-size: 12.5px !important;
-    line-height: 1.08 !important;
+    line-height: 1.03 !important;
     text-align: left !important;
     overflow: hidden !important;
     overflow-wrap: anywhere !important;
@@ -14532,13 +14545,13 @@ body:has(.about-community-copy) .page-hero h1 {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) !important;
     grid-template-rows: auto minmax(0, 1fr) !important;
-    gap: 2px !important;
+    gap: 4px !important;
     width: 100% !important;
     height: 100% !important;
     min-height: 25px !important;
     align-items: stretch !important;
     justify-content: stretch !important;
-    padding: 3px 8px !important;
+    padding: 3px 8px 5px !important;
     background: #eaf4ee !important;
     border: 1px solid rgba(0, 84, 61, 0.16) !important;
     border-radius: 9px !important;
@@ -14569,7 +14582,8 @@ body:has(.about-community-copy) .page-hero h1 {
     grid-row: 2 !important;
     display: -webkit-box !important;
     min-width: 0 !important;
-    align-self: center !important;
+    align-self: start !important;
+    line-height: 1.03 !important;
     overflow: hidden !important;
     -webkit-box-orient: vertical !important;
     -webkit-line-clamp: 2 !important;
