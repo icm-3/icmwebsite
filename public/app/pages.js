@@ -966,6 +966,24 @@ var defaultContent = {
       "posterAlt": "ICM Friday Night Bukhari Circle flyer"
     },
     {
+      "title": "Shared Edge Test Above Expanded Fixture One",
+      "date": "2026-06-29",
+      "time": "6:30 PM",
+      "location": "ICM",
+      "description": "Calendar fixture for verifying the expanded gold highlight above the current day.",
+      "poster": "./public/news/icm-live/friday-bukhari-circle.jpeg",
+      "posterAlt": "ICM Friday Night Bukhari Circle flyer"
+    },
+    {
+      "title": "Shared Edge Test Above Expanded Fixture Two",
+      "date": "2026-06-29",
+      "time": "7:00 PM",
+      "location": "ICM",
+      "description": "Calendar fixture for verifying the expanded gold highlight above the current day.",
+      "poster": "./public/news/icm-live/friday-bukhari-circle.jpeg",
+      "posterAlt": "ICM Friday Night Bukhari Circle flyer"
+    },
+    {
       "title": "Summer Quran And Islamic Studies Program With Student Activities And Parent Updates For Families",
       "date": "2026-07-06",
       "time": "Monday - Thursday, 10:00 AM - 1:00 PM",
@@ -985,6 +1003,24 @@ var defaultContent = {
       "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
     },
     {
+      "title": "Shared Edge Test Left Expanded Fixture One",
+      "date": "2026-07-05",
+      "time": "7:00 PM",
+      "location": "ICM",
+      "description": "Calendar fixture for verifying the expanded gold highlight left of the current day.",
+      "poster": "./public/news/icm-live/sisters-zumba-fitness.png",
+      "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
+    },
+    {
+      "title": "Shared Edge Test Left Expanded Fixture Two",
+      "date": "2026-07-05",
+      "time": "7:30 PM",
+      "location": "ICM",
+      "description": "Calendar fixture for verifying the expanded gold highlight left of the current day.",
+      "poster": "./public/news/icm-live/sisters-zumba-fitness.png",
+      "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
+    },
+    {
       "title": "Shared Edge Test Right Of Current Day",
       "date": "2026-07-07",
       "time": "6:00 PM",
@@ -994,11 +1030,47 @@ var defaultContent = {
       "posterAlt": "ICM Summer Quran and Islamic Studies Program flyer"
     },
     {
+      "title": "Shared Edge Test Right Expanded Fixture One",
+      "date": "2026-07-07",
+      "time": "6:30 PM",
+      "location": "ICM",
+      "description": "Calendar fixture for verifying the expanded gold highlight right of the current day.",
+      "poster": "./public/news/icm-live/summer-quran-islamic-studies.png",
+      "posterAlt": "ICM Summer Quran and Islamic Studies Program flyer"
+    },
+    {
+      "title": "Shared Edge Test Right Expanded Fixture Two",
+      "date": "2026-07-07",
+      "time": "7:00 PM",
+      "location": "ICM",
+      "description": "Calendar fixture for verifying the expanded gold highlight right of the current day.",
+      "poster": "./public/news/icm-live/summer-quran-islamic-studies.png",
+      "posterAlt": "ICM Summer Quran and Islamic Studies Program flyer"
+    },
+    {
       "title": "Shared Edge Test Below Current Day",
       "date": "2026-07-13",
       "time": "6:00 PM",
       "location": "ICM",
       "description": "Calendar fixture for verifying the selected gold highlight below the current day.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
+    },
+    {
+      "title": "Shared Edge Test Below Expanded Fixture One",
+      "date": "2026-07-13",
+      "time": "6:30 PM",
+      "location": "ICM",
+      "description": "Calendar fixture for verifying the expanded gold highlight below the current day.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
+    },
+    {
+      "title": "Shared Edge Test Below Expanded Fixture Two",
+      "date": "2026-07-13",
+      "time": "7:00 PM",
+      "location": "ICM",
+      "description": "Calendar fixture for verifying the expanded gold highlight below the current day.",
       "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
       "posterAlt": "Volunteer for ICM Youth Program flyer"
     },
