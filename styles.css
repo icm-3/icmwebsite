@@ -14249,3 +14249,85 @@ body:has(.about-community-copy) .page-hero h1 {
     pointer-events: none;
   }
 }
+
+/* Mobile calendar cards should not inherit desktop highlight corner overlays. */
+@media (max-width: 768px) {
+  .calendar-grid,
+  .calendar-grid.has-today-left-edge,
+  .calendar-grid.has-today-right-edge,
+  .page-main .calendar-band .calendar-grid {
+    display: block !important;
+    overflow: visible !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    clip-path: none !important;
+  }
+
+  .calendar-grid::before,
+  .calendar-grid::after,
+  .calendar-grid.has-today-left-edge::before,
+  .calendar-grid.has-today-left-edge::after,
+  .calendar-grid.has-today-right-edge::before,
+  .calendar-grid.has-today-right-edge::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .calendar-day.has-events,
+  .calendar-day.has-events.is-today,
+  .calendar-day.has-events.is-selected,
+  .calendar-day.has-events.is-expanded {
+    display: grid !important;
+    grid-template-columns: 76px minmax(0, 1fr) !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 0 10px !important;
+    padding: 14px !important;
+    border: 1px solid rgba(166, 96, 3, 0.26) !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    clip-path: none !important;
+    overflow: visible !important;
+  }
+
+  .calendar-day.has-events::before,
+  .calendar-day.has-events.is-today::before,
+  .calendar-day.has-events.is-selected::before,
+  .calendar-day.has-events.is-expanded::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .calendar-day.has-events .calendar-day-number,
+  .calendar-day.has-events.is-today .calendar-day-number,
+  .calendar-day.has-events.is-selected .calendar-day-number,
+  .calendar-day.has-events.is-expanded .calendar-day-number {
+    display: block !important;
+    align-self: start !important;
+    pointer-events: none !important;
+  }
+
+  .calendar-day.has-events.is-today:not(.is-selected):not(.is-expanded) {
+    background: linear-gradient(180deg, #f2faf6, #ffffff) !important;
+    border-color: rgba(0, 84, 61, 0.28) !important;
+  }
+
+  .calendar-day.has-events.is-selected,
+  .calendar-day.has-events.is-expanded {
+    background: linear-gradient(180deg, #fff8e9, #ffffff) !important;
+    border-color: rgba(165, 100, 5, 0.36) !important;
+  }
+
+  .calendar-day.has-events.is-today::after,
+  .calendar-day.has-events.is-selected::after,
+  .calendar-day.has-events.is-expanded::after,
+  .page-main .calendar-band .calendar-grid .calendar-day.has-events.is-today::after,
+  .page-main .calendar-band .calendar-grid .calendar-day.has-events.is-selected::after,
+  .page-main .calendar-band .calendar-grid .calendar-day.has-events.is-expanded::after {
+    content: none !important;
+    display: none !important;
+  }
+}
