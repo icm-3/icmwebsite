@@ -14175,6 +14175,11 @@ body:has(.about-community-copy) .page-hero h1 {
     border-right-color: transparent !important;
   }
 
+  .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded):has(+ .calendar-day.is-selected),
+  .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded):has(+ .calendar-day.is-expanded) {
+    border-right-color: transparent !important;
+  }
+
   .calendar-day.is-today:not(.is-selected):not(.is-expanded) + .calendar-day:not(.is-selected):not(.is-expanded),
   .calendar-day.is-selected + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded),
   .calendar-day.is-expanded + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded) {
@@ -14191,5 +14196,46 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected),
   .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) {
     border-bottom-color: transparent !important;
+  }
+
+  .calendar-day.is-selected,
+  .calendar-day.is-expanded {
+    border-color: transparent !important;
+  }
+
+  .calendar-day.is-selected::before,
+  .calendar-day.is-expanded::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .calendar-day.is-selected::after,
+  .calendar-day.is-expanded::after {
+    content: "" !important;
+    display: block !important;
+    position: absolute;
+    inset: -2px;
+    z-index: 10;
+    border: 2px solid var(--calendar-edge-gold);
+    border-radius: 0;
+    pointer-events: none;
+  }
+
+  .page-main .calendar-band .calendar-grid .calendar-day.is-selected::before,
+  .page-main .calendar-band .calendar-grid .calendar-day.is-expanded::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .page-main .calendar-band .calendar-grid .calendar-day.is-selected::after,
+  .page-main .calendar-band .calendar-grid .calendar-day.is-expanded::after {
+    content: "" !important;
+    display: block !important;
+    position: absolute;
+    inset: -2px !important;
+    z-index: 10;
+    border: 2px solid var(--calendar-edge-gold) !important;
+    border-radius: 0;
+    pointer-events: none;
   }
 }
