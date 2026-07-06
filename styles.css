@@ -13788,6 +13788,7 @@ body:has(.about-community-copy) .page-hero h1 {
     background: linear-gradient(180deg, var(--green) 0 40px, #ffffff 40px 100%) !important;
     background-clip: padding-box !important;
     border: 1px solid var(--calendar-edge-default) !important;
+    border-right-color: transparent !important;
     clip-path: inset(0 round 10px) !important;
     box-shadow: none !important;
   }
@@ -13802,8 +13803,54 @@ body:has(.about-community-copy) .page-hero h1 {
     display: none !important;
   }
 
+  .calendar-grid::before,
+  .calendar-grid.has-today-left-edge::before,
+  .calendar-grid.has-today-right-edge::before {
+    content: "" !important;
+    display: block !important;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    z-index: 3;
+    width: 1px;
+    height: auto;
+    background: var(--calendar-edge-default);
+    border-radius: 0;
+    pointer-events: none;
+  }
+
   .calendar-grid .calendar-weekday {
     border-right-color: var(--calendar-line-gold) !important;
+  }
+
+  .calendar-grid .calendar-weekday:first-child {
+    border-top-left-radius: 9px !important;
+  }
+
+  .calendar-grid .calendar-weekday:nth-child(7) {
+    position: relative !important;
+    z-index: 11 !important;
+    border-top-right-radius: 9px !important;
+  }
+
+  .calendar-grid .calendar-weekday:nth-child(7)::before {
+    content: "" !important;
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    z-index: 10;
+    width: 3px;
+    height: 41px;
+    background: var(--green);
+    border-top-right-radius: 9px;
+    pointer-events: none;
+  }
+
+  .calendar-grid .calendar-weekday:nth-child(7)::after {
+    content: none !important;
+    display: none !important;
   }
 
   .calendar-grid:has(.calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1)) {
@@ -13877,27 +13924,48 @@ body:has(.about-community-copy) .page-hero h1 {
     height: calc(100% + 1px) !important;
     margin: -1px 0 0 -1px !important;
     border: 2px solid var(--calendar-active-border) !important;
+    background-clip: padding-box !important;
     box-shadow: none !important;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected),
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) {
-    border-right-color: transparent !important;
+    border-right-color: var(--calendar-edge-gold) !important;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected) + .calendar-day.is-selected,
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) + .calendar-day.is-expanded {
+    border-left-color: transparent !important;
   }
 
   .calendar-day.is-selected + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)),
   .calendar-day.is-expanded + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)) {
-    border-left-color: transparent !important;
+    border-left-color: var(--calendar-edge-gold) !important;
+  }
+
+  .calendar-day.is-selected:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1))),
+  .calendar-day.is-expanded:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1))) {
+    border-right-color: transparent !important;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected),
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) {
-    border-bottom-color: transparent !important;
+    border-bottom-color: var(--calendar-edge-gold) !important;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected,
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded {
+    border-top-color: transparent !important;
   }
 
   .calendar-day.is-selected + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded),
   .calendar-day.is-expanded + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    border-top-color: transparent !important;
+    border-top-color: var(--calendar-edge-gold) !important;
+  }
+
+  .calendar-day.is-selected:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded)),
+  .calendar-day.is-expanded:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded)) {
+    border-bottom-color: transparent !important;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after,
@@ -14040,5 +14108,12 @@ body:has(.about-community-copy) .page-hero h1 {
   .page-main .calendar-band .calendar-grid:has(.calendar-day.is-selected:nth-last-child(-n+7)),
   .page-main .calendar-band .calendar-grid:has(.calendar-day.is-expanded:nth-last-child(-n+7)) {
     border-bottom-color: var(--calendar-edge-default) !important;
+  }
+
+  .calendar-grid,
+  .calendar-grid.has-today-left-edge,
+  .calendar-grid.has-today-right-edge,
+  .page-main .calendar-band .calendar-grid {
+    border-right-color: transparent !important;
   }
 }

@@ -499,7 +499,9 @@ function renderCalendar(content) {
 
   grid.querySelectorAll("[data-expand-date]").forEach((button) => {
     button.addEventListener("click", () => {
+      selectedCalendarEventSlug = "";
       expandedCalendarDateKey = button.dataset.expandDate;
+      window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
       renderCalendar(content);
     });
   });
