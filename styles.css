@@ -14216,8 +14216,13 @@ body:has(.about-community-copy) .page-hero h1 {
     position: absolute;
     inset: -2px;
     z-index: 10;
-    border: 2px solid var(--calendar-edge-gold);
+    border: 0;
     border-radius: 0;
+    background:
+      linear-gradient(var(--calendar-edge-gold), var(--calendar-edge-gold)) 0 0 / 100% 2px no-repeat,
+      linear-gradient(var(--calendar-edge-gold), var(--calendar-edge-gold)) 100% 2px / 2px calc(100% - 4px) no-repeat,
+      linear-gradient(var(--calendar-edge-gold), var(--calendar-edge-gold)) 0 100% / 100% 2px no-repeat,
+      linear-gradient(var(--calendar-edge-gold), var(--calendar-edge-gold)) 0 2px / 2px calc(100% - 4px) no-repeat;
     pointer-events: none;
   }
 
@@ -14234,8 +14239,13 @@ body:has(.about-community-copy) .page-hero h1 {
     position: absolute;
     inset: -2px !important;
     z-index: 10;
-    border: 2px solid var(--calendar-edge-gold) !important;
+    border: 0 !important;
     border-radius: 0;
+    background:
+      linear-gradient(var(--calendar-edge-gold), var(--calendar-edge-gold)) 0 0 / 100% 2px no-repeat,
+      linear-gradient(var(--calendar-edge-gold), var(--calendar-edge-gold)) 100% 2px / 2px calc(100% - 4px) no-repeat,
+      linear-gradient(var(--calendar-edge-gold), var(--calendar-edge-gold)) 0 100% / 100% 2px no-repeat,
+      linear-gradient(var(--calendar-edge-gold), var(--calendar-edge-gold)) 0 2px / 2px calc(100% - 4px) no-repeat !important;
     pointer-events: none;
   }
 }
