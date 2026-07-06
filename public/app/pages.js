@@ -1524,6 +1524,9 @@ function eventMatchesDate(event, date) {
   const eventDate = getEventDate(event);
   return eventDate && eventDate.getFullYear() === date.getFullYear() && eventDate.getMonth() === date.getMonth() && eventDate.getDate() === date.getDate();
 }
+function calendarDateKey(date) {
+  return date.toISOString().slice(0, 10);
+}
 function getCalendarOverrideDate() {
   if (!calendarTodayOverride) return null;
   const [year, month, day] = calendarTodayOverride.split("-").map(Number);
@@ -1604,7 +1607,7 @@ function renderCalendar(content) {
   const cells = Array.from({ length: 42 }, (_, index) => {
     const date = new Date(firstGridDate);
     date.setDate(firstGridDate.getDate() + index);
-    const dateKey = date.toISOString().slice(0, 10);
+    const dateKey = calendarDateKey(date);
     const dateEvents = content.events.filter((event) => eventMatchesDate(event, date));
     const isExpandedDate = expandedCalendarDateKey === dateKey;
     const visibleEvents = isExpandedDate ? dateEvents : dateEvents.slice(0, 2);
@@ -1644,6 +1647,10 @@ function renderCalendar(content) {
   grid.querySelectorAll("[data-event-slug]").forEach((button) => {
     button.addEventListener("click", () => {
       selectedCalendarEventSlug = button.dataset.eventSlug;
+      const selectedEvent2 = content.events.find((event, index) => eventSlug(event, index) === selectedCalendarEventSlug);
+      const selectedEventDate = selectedEvent2 ? getEventDate(selectedEvent2) : null;
+      const selectedEventDateKey = selectedEventDate ? calendarDateKey(selectedEventDate) : "";
+      if (expandedCalendarDateKey !== selectedEventDateKey) expandedCalendarDateKey = "";
       window.history.replaceState(null, "", `#event-${selectedCalendarEventSlug}`);
       renderCalendar(content);
       scrollToCalendarDetail("smooth");
