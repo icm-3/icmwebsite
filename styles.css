@@ -12967,830 +12967,19 @@ body:has(.about-community-copy) .page-hero h1 {
   min-width: 292px;
 }
 
-.calendar-day.is-today {
-  z-index: 1;
-  outline: 2px solid rgba(0, 84, 61, 0.2);
-  outline-offset: -1px;
-  box-shadow: none !important;
-}
 
-@media (min-width: 769px) {
-  .calendar-day.is-today:nth-child(7n + 7) {
-    border-right: 1px solid rgba(165, 100, 5, 0.18);
-  }
-}
-
-@media (max-width: 520px) {
-  .birthdate-picker-popover {
-    min-width: min(292px, calc(100vw - 48px));
-  }
-}
-
-/* Current correction pass: calendar border balance, event wrapping, mobile form density */
-.calendar-grid {
-  position: relative;
-  isolation: isolate;
-  background: linear-gradient(180deg, var(--green) 0 40px, #ffffff 40px 100%) !important;
-  border-color: rgba(165, 100, 5, 0.34) !important;
-}
-
-.calendar-grid::before {
-  content: none !important;
-  display: none !important;
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 0;
-  height: 40px;
-  background: var(--green);
-  pointer-events: none;
-}
-
-.calendar-weekday,
-.calendar-day {
-  position: relative;
-  z-index: 1;
-}
-
-.calendar-weekday:first-child {
-  border-top-left-radius: 9px;
-}
-
-.calendar-weekday:nth-child(7) {
-  border-top-right-radius: 9px;
-}
-
-.calendar-day.is-today {
-  background: linear-gradient(180deg, #f2faf6, #ffffff) !important;
-  outline: 0 !important;
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.16) !important;
-}
-
-.calendar-day.is-selected,
-.calendar-day.is-expanded {
-  background: linear-gradient(180deg, #edf8f1, #ffffff) !important;
-  border-color: rgba(0, 84, 61, 0.24) !important;
-  outline: 0 !important;
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.2), 0 8px 18px rgba(18, 24, 39, 0.06) !important;
-}
-
-.calendar-day.is-today:nth-child(7n + 7) {
-  border-right: 0 !important;
-}
-
-.events-card .event-item:not(.is-past) h3 {
-  padding-right: 0 !important;
-}
-
-.events-card .event-item:not(.is-past) h3,
-.events-card .event-item:not(.is-past) p {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-@media (max-width: 768px) {
-  .calendar-grid::before,
-  .calendar-grid.has-today-left-edge::before,
-  .calendar-grid.has-today-right-edge::before {
-    content: "" !important;
-    display: none !important;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 0;
-    height: 40px;
-    background: var(--green);
-    border-radius: 9px 9px 0 0;
-    pointer-events: none;
-  }
-
-  .service-form-page .local-registration-form,
-  .registration-panel .local-registration-form {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 10px !important;
-  }
-
-  .service-form-page .form-grid-3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-
-  .service-form-page .local-registration-form label.form-field-wide,
-  .registration-panel .local-registration-form label.form-field-wide,
-  .service-form-page .local-registration-form label:has(.field-note),
-  .registration-panel .local-registration-form label:has(.field-note),
-  .service-form-page .local-registration-form label:has(select[name="marital-status"]),
-  .service-form-page .local-registration-form label:has(select[name="sex"]),
-  .service-form-page .local-registration-form label:has(input[name="email"]),
-  .service-form-page .local-registration-form label:has(input[name="birthdate"]),
-  .service-form-page .local-registration-form label:has(input[name="middle-name"]),
-  .service-form-page .local-registration-form label:has(input[name="other-name"]),
-  .service-form-page .local-registration-form label:has(input[name="religion"]),
-  .service-form-page .local-registration-form label:has(input[name="occupation"]),
-  .service-form-page .local-registration-form label:has(input[name="request-purpose"]),
-  .service-form-page .local-registration-form label:has(input[name="availability"]),
-  .service-form-page .local-registration-form label:has(textarea),
-  .registration-panel .local-registration-form label:has(textarea),
-  .service-form-page .local-registration-form label:has(input[type="file"]),
-  .registration-panel .local-registration-form label:has(input[type="file"]),
-  .service-form-page .standalone-field,
-  .service-form-page .checkbox-field {
-    grid-column: 1 / -1 !important;
-  }
-
-  .service-form-page .local-registration-form label,
-  .registration-panel .local-registration-form label {
-    min-width: 0 !important;
-  }
-
-  .volunteer-form label:has(input[name="availability"]) {
-    grid-column: auto !important;
-  }
-
-  .volunteer-form .local-registration-form label:has(input[name="availability"]) {
-    grid-column: auto !important;
-  }
-
-  .volunteer-form .local-registration-form label:has(select[name="service-hours"]) {
-    grid-column: auto !important;
-  }
-
-  .volunteer-form .local-registration-form label:has(input[name="availability"]) > span,
-  .volunteer-form .local-registration-form label:has(select[name="service-hours"]) > span {
-    font-size: 11px !important;
-    line-height: 1.15 !important;
-  }
-
-  .volunteer-form .local-registration-form label:has(input[name="email"]),
-  .volunteer-form .local-registration-form label:has(input[name="occupation"]) {
-    grid-column: 1 / -1 !important;
-  }
-
-  .service-form-page .local-registration-form span,
-  .registration-panel .local-registration-form span {
-    font-size: 12px !important;
-    line-height: 1.25 !important;
-  }
-
-  .service-form-page .local-registration-form input,
-  .service-form-page .local-registration-form select,
-  .registration-panel .local-registration-form input,
-  .registration-panel .local-registration-form select {
-    min-width: 0 !important;
-    min-height: 44px !important;
-    padding-inline: 9px !important;
-    font-size: 14px !important;
-  }
-
-  .service-form-page .local-registration-form select,
-  .registration-panel .local-registration-form select {
-    padding-right: 22px !important;
-    font-size: 13px !important;
-    background-position: calc(100% - 12px) 19px, calc(100% - 7px) 19px !important;
-  }
-
-  .service-form-page .local-registration-form textarea,
-  .registration-panel .local-registration-form textarea {
-    min-height: 82px !important;
-  }
-}
-
-@media (max-width: 520px) {
-  .events-card .event-item.is-past h3 {
-    padding-right: 42px !important;
-  }
-
-  .events-card .event-item:not(.is-past) h3,
-  .events-card .event-item:not(.is-past) p {
-    width: calc(100% + 3px) !important;
-    max-width: calc(100% + 3px) !important;
-  }
-}
-
-@media (max-width: 380px) {
-  .events-card .event-item.is-past h3 {
-    padding-right: 39px !important;
-  }
-}
-
-/* Current targeted fixes: calendar selected state, mobile pill wrapping, mobile field pairing */
-@media (min-width: 769px) {
-  .calendar-day:not(.is-expanded) {
-    height: auto !important;
-    min-height: 156px !important;
-    border-color: rgba(165, 100, 5, 0.2) !important;
-  }
-
-  .calendar-day.is-expanded {
-    height: auto !important;
-    min-height: 222px !important;
-  }
-
-  .calendar-day:nth-child(7n + 7) {
-    border-right: 0 !important;
-  }
-}
-
-.calendar-day.is-today {
-  background: linear-gradient(180deg, #f2faf6, #ffffff) !important;
-  border-color: rgba(0, 84, 61, 0.2) !important;
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.16), inset -2px 0 0 rgba(0, 84, 61, 0.26) !important;
-}
-
-.calendar-day.is-today::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  z-index: 3;
-  border: 2px solid rgba(0, 84, 61, 0.32);
-  border-radius: 0;
-  pointer-events: none;
-}
-
-.calendar-day.is-today:nth-child(7n + 7) {
-  border-right: 1px solid rgba(0, 84, 61, 0.24) !important;
-}
-
-.calendar-day.is-selected,
-.calendar-day.is-expanded {
-  background: linear-gradient(180deg, #fff8e9, #ffffff) !important;
-  border-color: rgba(165, 100, 5, 0.36) !important;
-  box-shadow: inset 0 0 0 2px rgba(165, 100, 5, 0.38) !important;
-}
-
-.calendar-day.is-selected::after,
-.calendar-day.is-expanded::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  z-index: 3;
-  border: 2px solid rgba(165, 100, 5, 0.42);
-  border-radius: 0;
-  pointer-events: none;
-}
-
-@media (max-width: 520px) {
-  .events-card .event-item.is-past h3,
-  .events-card .event-item:has(.event-status) h3 {
-    box-sizing: border-box !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-right: 58px !important;
-  }
-
-  .events-card .event-item .event-status {
-    right: 8px !important;
-  }
-}
-
-@media (max-width: 380px) {
-  .events-card .event-item.is-past h3,
-  .events-card .event-item:has(.event-status) h3 {
-    padding-right: 54px !important;
-  }
-}
-
-@media (max-width: 768px) {
-  form[aria-label="Nibraas Institute registration"] > label {
-    grid-column: 1 / -1 !important;
-  }
-
-  .service-form-page .local-registration-form label:has(input[name="middle-name"]),
-  .service-form-page .local-registration-form label:has(input[name="other-name"]) {
-    grid-column: auto !important;
-  }
-
-  .service-form-page .local-registration-form label:has(input[name="zip"]),
-  .service-form-page .local-registration-form label:has(input[name="phone"]),
-  .service-form-page .local-registration-form label:has(input[name="family-income"]),
-  .service-form-page .local-registration-form label:has(input[name="additional-income"]),
-  .service-form-page .local-registration-form label:has(input[name="amount-requested"]),
-  .service-form-page .local-registration-form label:has(input[name="signature-date"]),
-  .registration-panel .local-registration-form label:has(input[type="email"]),
-  .registration-panel .local-registration-form label:has(input[type="tel"]) {
-    grid-column: 1 / -1 !important;
-  }
-
-  .service-form-page .local-registration-form label:has(input[name="age"]),
-  .service-form-page .local-registration-form label:has(select[name="sex"]),
-  .service-form-page .local-registration-form label:has(input[name="religion"]),
-  .service-form-page .local-registration-form label:has(select[name="marital-status"]) {
-    grid-column: auto !important;
-  }
-
-  .field-note {
-    margin-left: 3px !important;
-    font-size: 10px !important;
-    line-height: 1 !important;
-  }
-}
-
-/* Final requested corrections: desktop calendar edge state and mobile-only form pairing */
+/* Clean desktop calendar highlight model. Keep all active strokes in one place. */
 @media (min-width: 769px) {
   .calendar-grid {
-    border-color: rgba(165, 100, 5, 0.26) !important;
-  }
-
-  .calendar-day:not(.is-selected):not(.is-expanded) {
-    border-color: rgba(165, 100, 5, 0.2) !important;
-    border-bottom-color: rgba(165, 100, 5, 0.26) !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    background: linear-gradient(180deg, #f2faf6, #ffffff) !important;
-    border-top-color: rgba(0, 84, 61, 0.2) !important;
-    border-right-color: rgba(0, 84, 61, 0.2) !important;
-    border-left-color: rgba(0, 84, 61, 0.2) !important;
-    border-bottom-color: rgba(165, 100, 5, 0.28) !important;
-    box-shadow: none !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after {
-    content: "";
-    position: absolute;
-    inset: -1px -3px 2px -1px;
-    z-index: 4;
-    border: 2px solid rgba(0, 84, 61, 0.34);
-    border-bottom: 0;
-    border-radius: 0;
-    pointer-events: none;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1)::after {
-    left: -3px;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 7)::after {
-    right: -3px;
-  }
-
-  .calendar-grid.has-today-left-edge::after,
-  .calendar-grid.has-today-right-edge::after {
-    content: "";
-    position: absolute;
-    top: calc(var(--calendar-today-top) - 1px);
-    z-index: 8;
-    width: 4px;
-    height: calc(var(--calendar-today-height) - 5px);
-    background: rgba(0, 84, 61, 0.38);
-    pointer-events: none;
-  }
-
-  .calendar-grid.has-today-left-edge::before,
-  .calendar-grid.has-today-right-edge::before {
-    content: "" !important;
-    display: block !important;
-    position: absolute;
-    top: -1px;
-    z-index: 8;
-    width: 4px;
-    height: calc(var(--calendar-today-top) + 1px);
-    background: var(--green);
-    pointer-events: none;
-  }
-
-  .calendar-grid.has-today-left-edge::before {
-    left: -2px;
-  }
-
-  .calendar-grid.has-today-right-edge::before {
-    right: -2px;
-  }
-
-  .calendar-grid.has-today-left-edge::after {
-    left: -2px;
-  }
-
-  .calendar-grid.has-today-right-edge::after {
-    right: -2px;
-  }
-
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    border-right-color: rgba(165, 100, 5, 0.22) !important;
-  }
-
-  .calendar-grid.has-today-left-edge::before,
-  .calendar-grid.has-today-right-edge::before,
-  .calendar-grid.has-today-left-edge::after,
-  .calendar-grid.has-today-right-edge::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded),
-  .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded),
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    background: linear-gradient(180deg, #f4faf6, #ffffff) !important;
-    border-top-color: rgba(165, 100, 5, 0.2) !important;
-    border-right-color: rgba(165, 100, 5, 0.2) !important;
-    border-bottom-color: rgba(165, 100, 5, 0.28) !important;
-    border-left-color: rgba(165, 100, 5, 0.2) !important;
-    box-shadow: none !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .registration-panel form.local-registration-form[aria-label="Al-Falah Quran School registration"] > label:has(input[type="email"]),
-  .registration-panel form.local-registration-form[aria-label="Al Mizaan Leadership Academy registration"] > label:has(input[type="email"]) {
-    grid-column: 1 / -1 !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .service-form-page .local-registration-form,
-  .registration-panel .local-registration-form {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    column-gap: 10px !important;
-    row-gap: 12px !important;
-  }
-
-  .service-form-page .local-registration-form label,
-  .registration-panel .local-registration-form label {
-    grid-column: auto !important;
-    min-width: 0 !important;
-  }
-
-  .service-form-page .local-registration-form label.form-field-wide,
-  .registration-panel .local-registration-form label.form-field-wide,
-  .service-form-page .local-registration-form label:has(textarea),
-  .registration-panel .local-registration-form label:has(textarea),
-  .service-form-page .local-registration-form label:has(input[type="file"]),
-  .registration-panel .local-registration-form label:has(input[type="file"]),
-  .service-form-page .standalone-field,
-  .service-form-page .checkbox-field {
-    grid-column: 1 / -1 !important;
-  }
-
-  .registration-panel .local-registration-form label:has(input[type="email"]),
-  .service-form-page .local-registration-form label:has(input[name="email"]),
-  .service-form-page .local-registration-form label:has(input[name="street-address"]),
-  .service-form-page .local-registration-form label:has(input[name="occupation"]),
-  .service-form-page .local-registration-form label:has(input[name="request-purpose"]),
-  .service-form-page .local-registration-form label:has(input[name="amount-requested"]),
-  .service-form-page .local-registration-form label:has(input[name="signature-name"]),
-  .service-form-page .local-registration-form label:has(input[name="signature-date"]),
-  .volunteer-form fieldset:first-of-type .local-registration-form label:has(input[name="email"]),
-  .volunteer-form fieldset:first-of-type .local-registration-form label:has(input[name="address"]) {
-    grid-column: 1 / -1 !important;
-  }
-
-  form[aria-label="Nibraas Institute registration"] > label:nth-of-type(1),
-  form[aria-label="Nibraas Institute registration"] > label:nth-of-type(2),
-  form[aria-label="Al-Falah Quran School registration"] > label:nth-of-type(3),
-  form[aria-label="Al-Falah Quran School registration"] > label:nth-of-type(4),
-  form[aria-label="Al Mizaan Leadership Academy registration"] > label:nth-of-type(2),
-  form[aria-label="Al Mizaan Leadership Academy registration"] > label:nth-of-type(3) {
-    grid-column: auto !important;
-  }
-
-  form[aria-label="Nibraas Institute registration"] > label:nth-of-type(3),
-  form[aria-label="Nibraas Institute registration"] > label:nth-of-type(4),
-  form[aria-label="Al-Falah Quran School registration"] > label:nth-of-type(5),
-  form[aria-label="Al Mizaan Leadership Academy registration"] > label:nth-of-type(1),
-  form[aria-label="Al Mizaan Leadership Academy registration"] > label:nth-of-type(4) {
-    grid-column: 1 / -1 !important;
-  }
-
-  .volunteer-form fieldset:first-of-type .local-registration-form label:has(input[name="full-name"]) {
-    order: 1;
-    grid-column: auto !important;
-  }
-
-  .volunteer-form fieldset:first-of-type .local-registration-form label:has(input[name="phone"]) {
-    order: 2;
-    grid-column: auto !important;
-  }
-
-  .volunteer-form fieldset:first-of-type .local-registration-form label:has(input[name="email"]) {
-    order: 3;
-  }
-
-  .volunteer-form fieldset:first-of-type .local-registration-form label:has(input[name="address"]) {
-    order: 4;
-  }
-
-  .volunteer-form .local-registration-form label:has(input[name="availability"]),
-  .volunteer-form .local-registration-form label:has(select[name="service-hours"]) {
-    grid-column: 1 / -1 !important;
-  }
-
-  .aid-form fieldset:first-of-type .local-registration-form label:has(input[name="zip"]) {
-    order: 8;
-    grid-column: auto !important;
-  }
-
-  .aid-form fieldset:first-of-type .local-registration-form label:has(input[name="phone"]) {
-    order: 9;
-    grid-column: auto !important;
-  }
-
-  .aid-form fieldset:first-of-type .local-registration-form label:has(input[name="email"]) {
-    order: 10;
-    grid-column: 1 / -1 !important;
-  }
-
-  .aid-form fieldset:first-of-type .local-registration-form label:has(input[name="age"]) {
-    order: 11;
-  }
-
-  .aid-form fieldset:first-of-type .local-registration-form label:has(select[name="sex"]) {
-    order: 12;
-  }
-
-  .aid-form fieldset:first-of-type .local-registration-form label:has(input[name="religion"]) {
-    order: 13;
-  }
-
-  .aid-form fieldset:first-of-type .local-registration-form label:has(select[name="marital-status"]) {
-    order: 14;
-  }
-
-  .aid-form fieldset:first-of-type .local-registration-form label:has(input[name="birthdate"]),
-  .aid-form fieldset:first-of-type .local-registration-form label:has(input[name="children"]) {
-    order: 15;
-    grid-column: 1 / -1 !important;
-  }
-
-  .aid-form fieldset:nth-of-type(2) .local-registration-form label:has(input[name^="reference-"][name$="-name"]),
-  .aid-form fieldset:nth-of-type(2) .local-registration-form label:has(input[name^="reference-"][name$="-phone"]),
-  .aid-form fieldset:nth-of-type(3) .local-registration-form label:has(select[name="employed"]),
-  .aid-form fieldset:nth-of-type(3) .local-registration-form label:has(input[name="dependents"]),
-  .aid-form fieldset:nth-of-type(3) .local-registration-form label:has(input[name="family-income"]),
-  .aid-form fieldset:nth-of-type(3) .local-registration-form label:has(input[name="additional-income"]) {
-    grid-column: auto !important;
-  }
-
-  .local-registration-form .money-input::before {
-    left: 10px !important;
-    font-size: 14px !important;
-  }
-
-  .local-registration-form .money-input input {
-    padding-left: 27px !important;
-    padding-right: 8px !important;
-  }
-
-  .service-form-page .local-registration-form select,
-  .registration-panel .local-registration-form select {
-    padding-left: 8px !important;
-    padding-right: 24px !important;
-    background-position: calc(100% - 14px) 19px, calc(100% - 9px) 19px !important;
-  }
-
-  .registration-panel form.local-registration-form[aria-label="Nibraas Institute registration"] > label:nth-of-type(1),
-  .registration-panel form.local-registration-form[aria-label="Nibraas Institute registration"] > label:nth-of-type(2),
-  .registration-panel form.local-registration-form[aria-label="Al-Falah Quran School registration"] > label:nth-of-type(3),
-  .registration-panel form.local-registration-form[aria-label="Al-Falah Quran School registration"] > label:nth-of-type(4),
-  .registration-panel form.local-registration-form[aria-label="Al Mizaan Leadership Academy registration"] > label:nth-of-type(2),
-  .registration-panel form.local-registration-form[aria-label="Al Mizaan Leadership Academy registration"] > label:nth-of-type(3),
-  .service-form-page .volunteer-form fieldset:first-of-type .local-registration-form label:has(input[name="full-name"]),
-  .service-form-page .volunteer-form fieldset:first-of-type .local-registration-form label:has(input[name="phone"]) {
-    grid-column: auto !important;
-  }
-
-  .service-form-page .volunteer-form fieldset:first-of-type .local-registration-form label:has(input[name="full-name"]) {
-    order: 1 !important;
-  }
-
-  .service-form-page .volunteer-form fieldset:first-of-type .local-registration-form label:has(input[name="phone"]) {
-    order: 2 !important;
-  }
-
-  .service-form-page .volunteer-form fieldset:first-of-type .local-registration-form label:has(input[name="email"]) {
-    order: 3 !important;
-    grid-column: 1 / -1 !important;
-  }
-
-  .service-form-page .volunteer-form fieldset:first-of-type .local-registration-form label:has(input[name="address"]) {
-    order: 4 !important;
-    grid-column: 1 / -1 !important;
-  }
-}
-
-/* Desktop calendar final edge model: outer border owns Saturday/right edge, cells own row dividers */
-@media (min-width: 769px) {
-  .calendar-grid {
-    border-color: rgba(165, 100, 5, 0.32) !important;
-    border-bottom-color: rgba(165, 100, 5, 0.58) !important;
-    box-shadow: 0 8px 24px rgba(18, 24, 39, 0.035), inset 0 -1px 0 rgba(165, 100, 5, 0.46) !important;
-  }
-
-  .calendar-day:nth-child(7n) {
-    border-right: 0 !important;
-  }
-
-  .calendar-grid .calendar-day:nth-last-child(-n+7) {
-    border-bottom: 1px solid rgba(165, 100, 5, 0.52) !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded),
-  .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded),
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    background: linear-gradient(180deg, #f2faf6, #ffffff) !important;
-    border-top: 1px solid rgba(0, 84, 61, 0.4) !important;
-    border-bottom: 1px solid rgba(0, 84, 61, 0.4) !important;
-    border-left: 1px solid rgba(0, 84, 61, 0.4) !important;
-    border-right: 1px solid rgba(0, 84, 61, 0.4) !important;
-    box-shadow: none !important;
-  }
-
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    border-right: 0 !important;
-  }
-
-  .calendar-grid.has-today-right-edge::after {
-    content: "" !important;
-    display: block !important;
-    position: absolute;
-    top: var(--calendar-today-top);
-    right: 0;
-    z-index: 8;
-    width: 1px;
-    height: var(--calendar-today-height);
-    background: rgba(0, 84, 61, 0.42);
-    pointer-events: none;
-  }
-
-  .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    border-left: 0 !important;
-  }
-
-  .calendar-grid.has-today-left-edge::after {
-    content: "" !important;
-    display: block !important;
-    position: absolute;
-    top: var(--calendar-today-top);
-    left: 0;
-    z-index: 8;
-    width: 1px;
-    height: var(--calendar-today-height);
-    background: rgba(0, 84, 61, 0.42);
-    pointer-events: none;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after {
-    content: none !important;
-    display: none !important;
-  }
-}
-
-/* Desktop calendar final polish: current day uses a green selected-style outline, grid bottom stays normal gold */
-@media (min-width: 769px) {
-  .calendar-grid {
-    overflow: hidden !important;
-    background: linear-gradient(180deg, var(--green) 0 40px, #ffffff 40px 100%) !important;
-    background-clip: border-box !important;
-    border-color: rgba(165, 100, 5, 0.32) !important;
-    border-bottom-color: #dec79d !important;
-    box-shadow: inset 0 -2px 0 #dec79d !important;
-  }
-
-  .calendar-grid::after {
-    content: "" !important;
-    display: block !important;
-    position: absolute;
-    left: 1px;
-    right: 1px;
-    bottom: 0;
-    z-index: 10;
-    height: 2px;
-    background: #dec79d;
-    border-radius: 0 0 9px 9px;
-    pointer-events: none;
-  }
-
-  .calendar-grid::before,
-  .calendar-grid.has-today-left-edge::before,
-  .calendar-grid.has-today-right-edge::before {
-    content: "" !important;
-    display: none !important;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 0;
-    height: 40px;
-    background: var(--green);
-    border-radius: 9px 9px 0 0;
-    pointer-events: none;
-  }
-
-  .calendar-grid .calendar-day {
-    border-top-color: rgba(165, 100, 5, 0.2) !important;
-    border-right-color: rgba(165, 100, 5, 0.2) !important;
-  }
-
-  .calendar-grid .calendar-day:nth-child(7n) {
-    border-right: 0 !important;
-  }
-
-  .calendar-grid .calendar-day:nth-last-child(-n+7) {
-    border-bottom: 0 !important;
-  }
-
-  .calendar-grid .calendar-day:nth-last-child(7) {
-    border-bottom-left-radius: 9px;
-  }
-
-  .calendar-grid .calendar-day:last-child {
-    border-bottom-right-radius: 9px;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded),
-  .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded),
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    z-index: 6;
-    background: linear-gradient(180deg, #eef9f3, #ffffff) !important;
-    border-color: rgba(0, 84, 61, 0.36) !important;
-    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.38) !important;
-  }
-
-  .calendar-grid.has-today-right-edge::after,
-  .calendar-grid.has-today-left-edge::after {
-    content: "" !important;
-    display: block !important;
-    position: absolute;
-    left: 1px;
-    right: 1px;
-    bottom: 0;
-    z-index: 10;
-    width: auto;
-    height: 2px;
-    background: #dec79d;
-    border-radius: 0 0 9px 9px;
-    pointer-events: none;
-  }
-
-  .calendar-grid.has-today-right-edge::after {
-    right: 1px;
-  }
-
-  .calendar-grid.has-today-left-edge::after {
-    left: 1px;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after {
-    content: "" !important;
-    display: block !important;
-    position: absolute;
-    inset: -1px;
-    z-index: 4;
-    border: 2px solid rgba(0, 84, 61, 0.42);
-    border-radius: 0;
-    pointer-events: none;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1)::after,
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 7)::after {
-    inset: -1px !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14)::after {
-    top: -1px !important;
-    border-top: 2px solid rgba(0, 84, 61, 0.42) !important;
-  }
-
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14)::after,
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14)::after {
-    top: -1px !important;
-    border-top: 2px solid rgba(165, 100, 5, 0.42) !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1)::after,
-  .calendar-day.is-selected:nth-child(7n + 1)::after,
-  .calendar-day.is-expanded:nth-child(7n + 1)::after {
-    left: -1px !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 7)::after,
-  .calendar-day.is-selected:nth-child(7n + 7)::after,
-  .calendar-day.is-expanded:nth-child(7n + 7)::after {
-    right: -1px !important;
-  }
-}
-
-/* Calendar edge correction: base grid stays normal; highlights use the cell border itself. */
-.date-picker-grid button.is-today,
-.date-picker-grid button.is-selected {
-  box-shadow: none !important;
-}
-
-@media (min-width: 769px) {
-  .calendar-grid {
-    --calendar-line-gold: rgba(165, 100, 5, 0.42);
-    --calendar-edge-default: var(--calendar-line-gold);
-    --calendar-edge-green: #00543d;
-    --calendar-edge-gold: #a56405;
-    position: relative !important;
-    overflow: hidden !important;
-    background: linear-gradient(180deg, var(--green) 0 40px, #ffffff 40px 100%) !important;
-    background-clip: padding-box !important;
-    border: 1px solid var(--calendar-edge-default) !important;
-    border-right-color: transparent !important;
-    clip-path: inset(0 round 10px) !important;
-    box-shadow: none !important;
+    --calendar-grid-line: rgba(165, 100, 5, 0.42);
+    --calendar-current-line: #00543d;
+    --calendar-selected-line: #a56405;
+    --calendar-active-width: 2px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--calendar-grid-line);
+    border-radius: 10px;
+    box-shadow: none;
   }
 
   .calendar-grid::before,
@@ -13799,443 +12988,138 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-grid.has-today-left-edge::after,
   .calendar-grid.has-today-right-edge::before,
   .calendar-grid.has-today-right-edge::after {
-    content: none !important;
-    display: none !important;
+    content: none;
+    display: none;
   }
 
-  .calendar-grid::before,
-  .calendar-grid.has-today-left-edge::before,
-  .calendar-grid.has-today-right-edge::before {
-    content: "" !important;
-    display: block !important;
-    position: absolute;
-    top: 40px;
-    right: 0;
-    bottom: 0;
-    left: auto;
-    z-index: 3;
-    width: 1px;
-    height: auto;
-    background: var(--calendar-edge-default);
-    border-radius: 0;
-    pointer-events: none;
+  .calendar-weekday {
+    border-right: 1px solid var(--calendar-grid-line);
   }
 
-  .calendar-grid .calendar-weekday {
-    border-right-color: var(--calendar-line-gold) !important;
+  .calendar-weekday:nth-child(7) {
+    border-right: 0;
   }
 
-  .calendar-grid .calendar-weekday:first-child {
-    border-top-left-radius: 9px !important;
+  .calendar-day {
+    position: relative;
+    z-index: 1;
+    min-height: 157px;
+    border-top: 1px solid var(--calendar-grid-line);
+    border-right: 1px solid var(--calendar-grid-line);
+    border-bottom: 0;
+    border-left: 0;
+    box-shadow: none;
   }
 
-  .calendar-grid .calendar-weekday:nth-child(7) {
-    position: relative !important;
-    z-index: 11 !important;
-    border-top-right-radius: 9px !important;
-  }
-
-  .calendar-grid .calendar-weekday:nth-child(7)::before {
-    content: "" !important;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 10;
-    width: 2px;
-    height: 40px;
-    background: var(--green);
-    border-top-right-radius: 9px;
-    pointer-events: none;
-  }
-
-  .calendar-grid .calendar-weekday:nth-child(7)::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-grid:has(.calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1)) {
-    border-left-color: var(--calendar-edge-default) !important;
-  }
-
-  .calendar-grid:has(.calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n)),
-  .calendar-grid:has(.calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 7)) {
-    border-right-color: var(--calendar-edge-default) !important;
-  }
-
-  .calendar-grid:has(.calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-last-child(-n+7)) {
-    border-bottom-color: var(--calendar-edge-default) !important;
-  }
-
-  .calendar-grid:has(.calendar-day.is-selected.is-selected:nth-child(7n + 1)),
-  .calendar-grid:has(.calendar-day.is-expanded.is-expanded:nth-child(7n + 1)) {
-    border-left-color: var(--calendar-edge-default) !important;
-  }
-
-  .calendar-grid:has(.calendar-day.is-selected.is-selected:nth-child(7n)),
-  .calendar-grid:has(.calendar-day.is-selected.is-selected:nth-child(7n + 7)),
-  .calendar-grid:has(.calendar-day.is-expanded.is-expanded:nth-child(7n)),
-  .calendar-grid:has(.calendar-day.is-expanded.is-expanded:nth-child(7n + 7)) {
-    border-right-color: var(--calendar-edge-default) !important;
-  }
-
-  .calendar-grid:has(.calendar-day.is-selected.is-selected:nth-last-child(-n+7)),
-  .calendar-grid:has(.calendar-day.is-expanded.is-expanded:nth-last-child(-n+7)) {
-    border-bottom-color: var(--calendar-edge-default) !important;
-  }
-
-  .calendar-grid .calendar-day {
-    box-sizing: border-box !important;
-    border-top-color: var(--calendar-line-gold) !important;
-    border-right-color: var(--calendar-line-gold) !important;
-    box-shadow: none !important;
-  }
-
-  .calendar-grid .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded) {
-    border-top-color: var(--calendar-line-gold) !important;
-    border-right-color: var(--calendar-line-gold) !important;
-  }
-
-  .calendar-grid .calendar-day:nth-child(7n),
-  .calendar-grid .calendar-day:nth-child(7n + 7) {
-    border-right: 0 !important;
-  }
-
-  .calendar-grid .calendar-day:nth-last-child(-n+7) {
-    border-bottom: 0 !important;
+  .calendar-day:nth-child(7n) {
+    border-right: 0;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded),
-  .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded),
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    --calendar-active-border: var(--calendar-edge-green);
-    z-index: 7 !important;
-    width: calc(100% + 1px) !important;
-    height: calc(100% + 1px) !important;
-    margin: -1px 0 0 -1px !important;
-    border: 2px solid var(--calendar-active-border) !important;
-    box-shadow: none !important;
+  .calendar-day.is-selected,
+  .calendar-day.is-expanded {
+    z-index: 3;
+    box-shadow: none;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
+    --calendar-active-line: var(--calendar-current-line);
+    background: linear-gradient(180deg, #eef9f3, #ffffff);
   }
 
   .calendar-day.is-selected,
   .calendar-day.is-expanded {
-    --calendar-active-border: var(--calendar-edge-gold);
-    z-index: 8 !important;
-    width: calc(100% + 1px) !important;
-    height: calc(100% + 1px) !important;
-    margin: -1px 0 0 -1px !important;
-    border: 2px solid var(--calendar-active-border) !important;
-    background-clip: padding-box !important;
-    box-shadow: none !important;
+    --calendar-active-line: var(--calendar-selected-line);
+    --calendar-active-top-color: var(--calendar-active-line);
+    --calendar-active-right-color: var(--calendar-active-line);
+    --calendar-active-bottom-color: var(--calendar-active-line);
+    --calendar-active-left-color: var(--calendar-active-line);
+    --calendar-active-top-x: -1px;
+    --calendar-active-bottom-x: -1px;
+    --calendar-active-top-width: calc(100% + 2px);
+    --calendar-active-bottom-width: calc(100% + 2px);
+    --calendar-active-left-y: 0;
+    --calendar-active-right-y: 0;
+    --calendar-active-left-height: 100%;
+    --calendar-active-right-height: 100%;
+    z-index: 4;
+    background: linear-gradient(180deg, #fff8e9, #ffffff);
   }
 
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected),
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) {
-    border-right-color: transparent !important;
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
+    --calendar-active-top-color: var(--calendar-active-line);
+    --calendar-active-right-color: var(--calendar-active-line);
+    --calendar-active-bottom-color: var(--calendar-active-line);
+    --calendar-active-left-color: var(--calendar-active-line);
+    --calendar-active-top-x: -1px;
+    --calendar-active-bottom-x: -1px;
+    --calendar-active-top-width: calc(100% + 2px);
+    --calendar-active-bottom-width: calc(100% + 2px);
+    --calendar-active-left-y: 0;
+    --calendar-active-right-y: 0;
+    --calendar-active-left-height: 100%;
+    --calendar-active-right-height: 100%;
   }
 
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected) + .calendar-day.is-selected,
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) + .calendar-day.is-expanded {
-    border-left-color: var(--calendar-edge-gold) !important;
+  .calendar-day.is-expanded {
+    min-height: 157px;
   }
 
-  .calendar-day.is-selected + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)),
-  .calendar-day.is-expanded + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)) {
-    border-left-color: transparent !important;
-  }
-
-  .calendar-day.is-selected:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1))),
-  .calendar-day.is-expanded:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1))) {
-    border-right-color: var(--calendar-edge-gold) !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected),
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) {
-    border-bottom-color: transparent !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected,
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded {
-    border-top-color: var(--calendar-edge-gold) !important;
-  }
-
-  .calendar-day.is-selected + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded),
-  .calendar-day.is-expanded + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    border-top-color: transparent !important;
-  }
-
-  .calendar-day.is-selected:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded)),
-  .calendar-day.is-expanded:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded)) {
-    border-bottom-color: var(--calendar-edge-gold) !important;
+  .calendar-day.is-expanded .calendar-event-stack {
+    max-height: 106px;
+    overflow-y: auto;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after,
-  .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after,
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after {
-    content: none !important;
-    display: none !important;
+  .calendar-day.is-selected::after,
+  .calendar-day.is-expanded::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after,
+  .calendar-day.is-selected::after,
+  .calendar-day.is-expanded::after {
+    z-index: 3;
+    background:
+      linear-gradient(var(--calendar-active-top-color), var(--calendar-active-top-color)) var(--calendar-active-top-x) 0 / var(--calendar-active-top-width) var(--calendar-active-width) no-repeat,
+      linear-gradient(var(--calendar-active-right-color), var(--calendar-active-right-color)) 100% var(--calendar-active-right-y) / var(--calendar-active-width) var(--calendar-active-right-height) no-repeat,
+      linear-gradient(var(--calendar-active-bottom-color), var(--calendar-active-bottom-color)) var(--calendar-active-bottom-x) 100% / var(--calendar-active-bottom-width) var(--calendar-active-width) no-repeat,
+      linear-gradient(var(--calendar-active-left-color), var(--calendar-active-left-color)) 0 var(--calendar-active-left-y) / var(--calendar-active-width) var(--calendar-active-left-height) no-repeat;
   }
 
   .calendar-day.is-selected::after,
   .calendar-day.is-expanded::after {
-    content: none !important;
-    display: none !important;
+    z-index: 4;
   }
 
-  .calendar-day.is-selected::before,
-  .calendar-day.is-expanded::before {
-    content: none !important;
-    display: none !important;
+  .calendar-day.is-today.is-shared-gold-right:not(.is-selected):not(.is-expanded) {
+    --calendar-active-right-color: transparent;
+    --calendar-active-top-width: calc(100% - 2px);
+    --calendar-active-bottom-width: calc(100% - 2px);
   }
 
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected) + .calendar-day.is-selected::before,
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) + .calendar-day.is-expanded::before,
-  .calendar-day.is-selected:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)))::before,
-  .calendar-day.is-expanded:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)))::before,
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected::before,
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded::before,
-  .calendar-day.is-selected:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded))::before,
-  .calendar-day.is-expanded:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded))::before {
-    content: "" !important;
-    display: block !important;
-    position: absolute;
-    z-index: 9;
-    background: var(--calendar-edge-gold);
-    pointer-events: none;
+  .calendar-day.is-today.is-shared-gold-left:not(.is-selected):not(.is-expanded) {
+    --calendar-active-left-color: transparent;
+    --calendar-active-top-x: 2px;
+    --calendar-active-bottom-x: 2px;
+    --calendar-active-top-width: calc(100% - 2px);
+    --calendar-active-bottom-width: calc(100% - 2px);
   }
 
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected) + .calendar-day.is-selected::before,
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) + .calendar-day.is-expanded::before {
-    top: -2px;
-    bottom: -2px;
-    left: -2px;
-    width: 2px;
+  .calendar-day.is-today.is-shared-gold-bottom:not(.is-selected):not(.is-expanded) {
+    --calendar-active-bottom-color: transparent;
+    --calendar-active-left-height: calc(100% - 2px);
+    --calendar-active-right-height: calc(100% - 2px);
   }
 
-  .calendar-day.is-selected:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)))::before,
-  .calendar-day.is-expanded:has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)))::before {
-    top: -2px;
-    right: -2px;
-    bottom: -2px;
-    width: 2px;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected::before,
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded::before {
-    top: -2px;
-    right: -2px;
-    left: -2px;
-    height: 2px;
-  }
-
-  .calendar-day.is-selected:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded))::before,
-  .calendar-day.is-expanded:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded))::before {
-    right: -2px;
-    bottom: -2px;
-    left: -2px;
-    height: 2px;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14)::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14)::after,
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14)::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1)::after,
-  .calendar-day.is-selected:nth-child(7n + 1)::after,
-  .calendar-day.is-expanded:nth-child(7n + 1)::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1),
-  .calendar-day.is-selected:nth-child(7n + 1),
-  .calendar-day.is-expanded:nth-child(7n + 1),
-  .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    width: calc(100% + 1px) !important;
-    margin-left: -1px !important;
-    border-left: 2px solid var(--calendar-active-border) !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n)::after,
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 7)::after,
-  .calendar-day.is-selected:nth-child(7n)::after,
-  .calendar-day.is-selected:nth-child(7n + 7)::after,
-  .calendar-day.is-expanded:nth-child(7n)::after,
-  .calendar-day.is-expanded:nth-child(7n + 7)::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n),
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 7),
-  .calendar-day.is-selected:nth-child(7n),
-  .calendar-day.is-selected:nth-child(7n + 7),
-  .calendar-day.is-expanded:nth-child(7n),
-  .calendar-day.is-expanded:nth-child(7n + 7),
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    width: calc(100% + 3px) !important;
-    height: calc(100% + 2px) !important;
-    border-right: 2px solid var(--calendar-active-border) !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14),
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14),
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14) {
-    height: 100% !important;
-    margin-top: 0 !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14) {
-    width: calc(100% + 2px) !important;
-    height: calc(100% + 1px) !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 1),
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 1),
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 1) {
-    border-top-left-radius: 2px !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
-  .calendar-day.is-selected:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
-  .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14) {
-    border-top-right-radius: 2px !important;
-  }
-
-  .calendar-grid .calendar-day:nth-last-child(-n+7)::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-last-child(-n+7),
-  .calendar-day.is-selected:nth-last-child(-n+7),
-  .calendar-day.is-expanded:nth-last-child(-n+7) {
-    height: calc(100% + 2px) !important;
-    border-bottom: 2px solid var(--calendar-active-border) !important;
-  }
-
-  .calendar-detail-empty,
-  .calendar-detail-card,
-  .calendar-detail-body,
-  .calendar-detail-poster {
-    box-shadow: none !important;
-  }
-
-  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-selected:nth-child(7n + 1)),
-  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-expanded:nth-child(7n + 1)) {
-    border-left-color: var(--calendar-edge-default) !important;
-  }
-
-  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-selected:nth-child(7n)),
-  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-selected:nth-child(7n + 7)),
-  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-expanded:nth-child(7n)),
-  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-expanded:nth-child(7n + 7)) {
-    border-right-color: var(--calendar-edge-default) !important;
-  }
-
-  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-selected:nth-last-child(-n+7)),
-  .page-main .calendar-band .calendar-grid:has(.calendar-day.is-expanded:nth-last-child(-n+7)) {
-    border-bottom-color: var(--calendar-edge-default) !important;
-  }
-
-  .calendar-grid,
-  .calendar-grid.has-today-left-edge,
-  .calendar-grid.has-today-right-edge,
-  .page-main .calendar-band .calendar-grid {
-    border-right-color: transparent !important;
-  }
-
-  .calendar-day:not(.is-selected):not(.is-expanded):has(+ .calendar-day.is-today:not(.is-selected):not(.is-expanded)) {
-    border-right-color: transparent !important;
-  }
-
-  .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded):has(+ .calendar-day.is-selected),
-  .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded):has(+ .calendar-day.is-expanded) {
-    border-right-color: transparent !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded) + .calendar-day:not(.is-selected):not(.is-expanded),
-  .calendar-day.is-selected + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded),
-  .calendar-day.is-expanded + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded) {
-    border-left-color: transparent !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day:not(.is-selected):not(.is-expanded)) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day:not(.is-selected):not(.is-expanded),
-  .calendar-day.is-selected:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded)) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded),
-  .calendar-day.is-expanded:has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded)) + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded) {
-    border-top-color: transparent !important;
-  }
-
-  .calendar-day:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded)),
-  .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected),
-  .calendar-day:not(.is-today):not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) {
-    border-bottom-color: transparent !important;
-  }
-
-  .calendar-day.is-selected,
-  .calendar-day.is-expanded {
-    border-color: transparent !important;
-  }
-
-  .calendar-day.is-selected::before,
-  .calendar-day.is-expanded::before {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-day.is-selected::after,
-  .calendar-day.is-expanded::after {
-    content: "" !important;
-    display: block !important;
-    position: absolute;
-    inset: -2px;
-    z-index: 10;
-    border: 2px solid var(--calendar-edge-gold);
-    border-radius: 0;
-    pointer-events: none;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-selected::before,
-  .page-main .calendar-band .calendar-grid .calendar-day.is-expanded::before {
-    content: none !important;
-    display: none !important;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-selected::after,
-  .page-main .calendar-band .calendar-grid .calendar-day.is-expanded::after {
-    content: "" !important;
-    display: block !important;
-    position: absolute;
-    inset: -2px !important;
-    z-index: 10;
-    border: 2px solid var(--calendar-edge-gold) !important;
-    border-radius: 0;
-    pointer-events: none;
+  .calendar-day.is-today.is-shared-gold-top:not(.is-selected):not(.is-expanded) {
+    --calendar-active-top-color: transparent;
+    --calendar-active-left-y: 2px;
+    --calendar-active-right-y: 2px;
+    --calendar-active-left-height: calc(100% - 2px);
+    --calendar-active-right-height: calc(100% - 2px);
   }
 }
