@@ -1272,7 +1272,7 @@ function initMobileNav() {
 var ICM_COORDS = new Coordinates(35.8111, -78.8231);
 var TIME_ZONE = "America/New_York";
 var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
-var calendarTodayOverride = "2026-06-06";
+var calendarTodayOverride = "";
 var prayerLabels = {
   fajr: "Fajr",
   sunrise: "Sunrise",

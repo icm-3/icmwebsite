@@ -11,7 +11,7 @@ import { initMobileNav } from "./nav.js";
 const ICM_COORDS = new Coordinates(35.8111, -78.8231);
 const TIME_ZONE = "America/New_York";
 const prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
-const calendarTodayOverride = "2026-06-06";
+const calendarTodayOverride = "";
 const prayerLabels = {
   fajr: "Fajr",
   sunrise: "Sunrise",
