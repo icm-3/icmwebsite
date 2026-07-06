@@ -14601,3 +14601,20 @@ body:has(.about-community-copy) .page-hero h1 {
     -webkit-line-clamp: 2 !important;
   }
 }
+
+@media (min-width: 769px) {
+  .events-card,
+  .news-card {
+    height: 565px !important;
+  }
+
+  .events-card .event-list {
+    height: 426px !important;
+    max-height: 426px !important;
+  }
+
+  .news-card .news-list {
+    height: 392px !important;
+    max-height: 392px !important;
+  }
+}
