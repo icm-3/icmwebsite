@@ -14606,15 +14606,55 @@ body:has(.about-community-copy) .page-hero h1 {
   .events-card,
   .news-card {
     height: 565px !important;
+    padding-bottom: 0 !important;
+  }
+
+  .events-card .event-list,
+  .news-card .news-list {
+    flex: 1 1 auto !important;
+    height: auto !important;
+    max-height: none !important;
+    border-bottom: 1px solid rgba(165, 100, 5, 0.28) !important;
   }
 
   .events-card .event-list {
-    height: 426px !important;
-    max-height: 426px !important;
+    align-content: start !important;
   }
 
+  .events-card .event-item,
+  .events-card .event-item:has(.event-status) {
+    min-height: 159px !important;
+    height: 159px !important;
+  }
+
+  .news-card .news-item {
+    min-height: 158px !important;
+    height: 158px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .events-card,
+  .news-card {
+    padding-bottom: 0 !important;
+  }
+
+  .events-card .event-list,
   .news-card .news-list {
-    height: 392px !important;
-    max-height: 392px !important;
+    flex: 1 1 auto !important;
+    height: auto !important;
+    max-height: none !important;
+    border-bottom: 1px solid rgba(165, 100, 5, 0.28) !important;
+  }
+
+  .events-card .event-item,
+  .events-card .event-item:has(.event-status) {
+    min-height: 136px !important;
+    height: 136px !important;
+  }
+
+  .news-card .news-item {
+    min-height: 132px !important;
+    height: 132px !important;
   }
 }
