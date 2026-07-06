@@ -14544,12 +14544,13 @@ body:has(.about-community-copy) .page-hero h1 {
   .jummah-card .topic-chip {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-rows: auto minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
     gap: 3px !important;
     width: 100% !important;
-    height: 100% !important;
-    min-height: 25px !important;
-    align-items: stretch !important;
+    height: auto !important;
+    min-height: 31px !important;
+    align-self: start !important;
+    align-items: start !important;
     justify-content: stretch !important;
     padding: 3px 8px 4px !important;
     background: #eaf4ee !important;
