@@ -13639,7 +13639,7 @@ body:has(.about-community-copy) .page-hero h1 {
 /* Desktop calendar final polish: current day uses a green selected-style outline, grid bottom stays normal gold */
 @media (min-width: 769px) {
   .calendar-grid {
-    overflow: visible !important;
+    overflow: hidden !important;
     background: linear-gradient(180deg, var(--green) 0 40px, #ffffff 40px 100%) !important;
     background-clip: border-box !important;
     border-color: rgba(165, 100, 5, 0.32) !important;
@@ -13784,7 +13784,7 @@ body:has(.about-community-copy) .page-hero h1 {
     --calendar-edge-green: rgba(0, 84, 61, 0.88);
     --calendar-edge-gold: rgba(165, 100, 5, 0.88);
     position: relative !important;
-    overflow: visible !important;
+    overflow: hidden !important;
     background: linear-gradient(180deg, var(--green) 0 40px, #ffffff 40px 100%) !important;
     background-clip: padding-box !important;
     border: 1px solid var(--calendar-edge-default) !important;
@@ -13882,22 +13882,22 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected),
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) {
-    border-right-color: var(--calendar-edge-gold) !important;
+    border-right-color: transparent !important;
   }
 
   .calendar-day.is-selected + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)),
   .calendar-day.is-expanded + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)) {
-    border-left-color: var(--calendar-edge-gold) !important;
+    border-left-color: transparent !important;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected),
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) {
-    border-bottom-color: var(--calendar-edge-gold) !important;
+    border-bottom-color: transparent !important;
   }
 
   .calendar-day.is-selected + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded),
   .calendar-day.is-expanded + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    border-top-color: var(--calendar-edge-gold) !important;
+    border-top-color: transparent !important;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after,
