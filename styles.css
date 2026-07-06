@@ -13986,6 +13986,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14):nth-child(7n),
   .calendar-day.is-expanded:nth-child(n + 8):nth-child(-n + 14):nth-child(7n + 7),
   .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(n + 8):nth-child(-n + 14) {
+    width: calc(100% + 2px) !important;
     height: calc(100% + 1px) !important;
   }
 
