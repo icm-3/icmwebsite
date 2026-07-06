@@ -10086,9 +10086,19 @@ input[type="checkbox"] {
     padding: 7px 9px 8px !important;
   }
 
+  .jummah-card .speaker-name,
+  .jummah-card .topic-text {
+    font-size: 12.6px !important;
+    line-height: 1.18 !important;
+  }
+
+  .jummah-card .speaker-name::before,
+  .jummah-card .topic-chip::before {
+    font-size: 8px !important;
+  }
+
   .jummah-card .topic-text {
     align-self: start !important;
-    line-height: 1.14 !important;
   }
 }
 
@@ -14357,7 +14367,7 @@ body:has(.about-community-copy) .page-hero h1 {
 /* Desktop Jummah experiment: use the mobile card-style shift layout. */
 @media (min-width: 769px) {
   .info-card.jummah-card {
-    height: 500px !important;
+    height: 540px !important;
     min-height: 0 !important;
   }
 
@@ -14397,7 +14407,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .jummah-card .table-wrap {
     flex: 1 1 auto !important;
     min-height: 0 !important;
-    padding: 8px 18px 4px !important;
+    padding: 10px 18px 8px !important;
     overflow: hidden !important;
   }
 
@@ -14420,7 +14430,7 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .jummah-card tbody {
     height: 100% !important;
-    gap: 6px !important;
+    gap: 8px !important;
     grid-auto-rows: auto !important;
     grid-template-rows: repeat(4, minmax(0, 1fr)) !important;
     max-height: none !important;
@@ -14430,10 +14440,10 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .jummah-card tbody tr {
     grid-template-columns: 30px minmax(0, 1fr) !important;
-    grid-template-rows: 19px minmax(28px, 0.85fr) minmax(44px, auto) !important;
-    gap: 1px 8px !important;
+    grid-template-rows: 19px minmax(28px, 0.85fr) 48px !important;
+    gap: 2px 8px !important;
     min-height: 0 !important;
-    padding: 3px 8px !important;
+    padding: 4px 8px !important;
     background: #f7fbf8 !important;
     border: 1px solid rgba(0, 84, 61, 0.16) !important;
     border-radius: 10px !important;
@@ -14518,14 +14528,14 @@ body:has(.about-community-copy) .page-hero h1 {
     gap: 2px !important;
     width: 100% !important;
     height: 100% !important;
-    min-height: 23px !important;
+    min-height: 30px !important;
     align-items: start !important;
-    padding: 3px 8px !important;
+    padding: 4px 8px !important;
     background: #ffffff !important;
     border: 1px solid rgba(0, 84, 61, 0.16) !important;
     border-radius: 9px !important;
-    font-size: 12.5px !important;
-    line-height: 1.06 !important;
+    font-size: 12.8px !important;
+    line-height: 1.1 !important;
     text-align: left !important;
     overflow: hidden !important;
     overflow-wrap: anywhere !important;
@@ -14545,19 +14555,19 @@ body:has(.about-community-copy) .page-hero h1 {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) !important;
     grid-template-rows: auto auto !important;
-    gap: 3px !important;
+    gap: 5px !important;
     width: 100% !important;
-    height: auto !important;
-    min-height: 31px !important;
+    height: 48px !important;
+    min-height: 48px !important;
     align-self: start !important;
     align-items: start !important;
     justify-content: stretch !important;
-    padding: 3px 8px 4px !important;
+    padding: 4px 8px !important;
     background: #eaf4ee !important;
     border: 1px solid rgba(0, 84, 61, 0.16) !important;
     border-radius: 9px !important;
-    font-size: 12.5px !important;
-    line-height: 1.08 !important;
+    font-size: 12.8px !important;
+    line-height: 1.1 !important;
     overflow: hidden !important;
     overflow-wrap: anywhere !important;
   }
@@ -14585,7 +14595,7 @@ body:has(.about-community-copy) .page-hero h1 {
     max-width: 540px !important;
     min-width: 0 !important;
     align-self: start !important;
-    line-height: 1.03 !important;
+    line-height: 1.1 !important;
     overflow: hidden !important;
     -webkit-box-orient: vertical !important;
     -webkit-line-clamp: 2 !important;
