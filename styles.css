@@ -12977,7 +12977,7 @@ body:has(.about-community-copy) .page-hero h1 {
     --calendar-active-width: 2px;
     position: relative;
     overflow: hidden;
-    border: 1px solid var(--calendar-grid-line);
+    border: 2px solid var(--calendar-selected-line);
     border-radius: 10px;
     box-shadow: none;
   }
