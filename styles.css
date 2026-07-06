@@ -14582,6 +14582,7 @@ body:has(.about-community-copy) .page-hero h1 {
     grid-column: 1 !important;
     grid-row: 2 !important;
     display: -webkit-box !important;
+    max-width: 540px !important;
     min-width: 0 !important;
     align-self: start !important;
     line-height: 1.03 !important;
