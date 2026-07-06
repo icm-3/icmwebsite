@@ -14506,10 +14506,10 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 
   .jummah-card .shift {
-    width: 22px !important;
-    height: 22px !important;
-    min-width: 22px !important;
-    font-size: 11px !important;
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    font-size: 10px !important;
   }
 
   .jummah-card .speaker-name {
