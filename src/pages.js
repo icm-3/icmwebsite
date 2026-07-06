@@ -410,20 +410,6 @@ function syncCalendarTodayEdge(grid) {
   grid.classList.add(columnIndex === 0 ? "has-today-left-edge" : "has-today-right-edge");
 }
 
-function calendarSharedGoldEdgeClass(currentIndex, activeGoldIndex) {
-  if (activeGoldIndex < 0) return "";
-
-  const currentRow = Math.floor(currentIndex / 7);
-  const goldRow = Math.floor(activeGoldIndex / 7);
-  const diff = activeGoldIndex - currentIndex;
-
-  if (diff === -7) return " is-shared-gold-top";
-  if (diff === 7) return " is-shared-gold-bottom";
-  if (diff === -1 && currentRow === goldRow) return " is-shared-gold-left";
-  if (diff === 1 && currentRow === goldRow) return " is-shared-gold-right";
-  return "";
-}
-
 function renderCalendar(content) {
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
@@ -443,12 +429,6 @@ function renderCalendar(content) {
 
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const todayDate = getCalendarTodayDate();
-  const selectedEvent = content.events.find((event, index) => eventSlug(event, index) === selectedCalendarEventSlug);
-  const selectedEventDate = selectedEvent ? getEventDate(selectedEvent) : null;
-  const activeGoldDateKey = selectedEventDate ? calendarDateKey(selectedEventDate) : expandedCalendarDateKey;
-  const activeGoldIndex = activeGoldDateKey
-    ? Math.round((dateValue(activeGoldDateKey) - dateValue(calendarDateKey(firstGridDate))) / 86400000)
-    : -1;
   const cells = Array.from({ length: 42 }, (_, index) => {
     const date = new Date(firstGridDate);
     date.setDate(firstGridDate.getDate() + index);
@@ -466,11 +446,9 @@ function renderCalendar(content) {
       todayDate.getMonth() === date.getMonth() &&
       todayDate.getDate() === date.getDate();
     const badge = getDateBadgeParts(dateKey);
-    const sharedGoldEdgeClass =
-      isToday && !hasSelectedEvent && !isExpandedDate ? calendarSharedGoldEdgeClass(index, activeGoldIndex) : "";
 
     return `
-      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}${sharedGoldEdgeClass}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
+      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
         <span class="calendar-day-number"><span>${escapeHtml(badge.month)}</span><strong>${date.getDate()}</strong></span>
         <div class="calendar-event-stack">
           ${visibleEvents
@@ -503,7 +481,8 @@ function renderCalendar(content) {
   syncCalendarTodayEdge(grid);
 
   const selectedIndex = content.events.findIndex((event, index) => eventSlug(event, index) === selectedCalendarEventSlug);
-  setCalendarDetail(selectedIndex >= 0 ? selectedEvent : null, selectedIndex);
+  const selectedEvent = selectedIndex >= 0 ? content.events[selectedIndex] : null;
+  setCalendarDetail(selectedEvent, selectedIndex);
 
   grid.querySelectorAll("[data-event-slug]").forEach((button) => {
     button.addEventListener("click", () => {
