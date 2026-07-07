@@ -648,7 +648,7 @@ function renderPrayerTimes() {
 function renderJummah(content) {
   const targetDate = getNextJummahDate();
   const postedDate = parseJummahDateLabel(content.jummah.dateLabel || defaultContent.jummah.dateLabel);
-  setText("[data-jummah-date]", `- ${formatJummahDate(postedDate || targetDate)}`);
+  setText("[data-jummah-date]", formatJummahDate(postedDate || targetDate));
 
   const tbody = document.querySelector("[data-jummah-body]");
   if (!tbody) return;

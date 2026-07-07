@@ -14461,6 +14461,10 @@ body:has(.about-community-copy) .page-hero h1 {
     line-height: 1.1 !important;
   }
 
+  .jummah-card .card-title h2 span::before {
+    content: " - ";
+  }
+
   .jummah-card .table-wrap {
     flex: 1 1 auto !important;
     min-height: 0 !important;
@@ -14730,6 +14734,8 @@ body:has(.about-community-copy) .page-hero h1 {
   .events-card,
   .news-card {
     padding-bottom: 0 !important;
+    border-left-color: rgba(165, 100, 5, 0.28) !important;
+    border-right-color: rgba(165, 100, 5, 0.28) !important;
   }
 
   .events-card .event-list,
@@ -14778,7 +14784,37 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .jummah-card .card-header {
     position: relative !important;
+    align-items: center !important;
+    justify-content: center !important;
     border-bottom: 0 !important;
+  }
+
+  .jummah-card .card-title {
+    width: 100% !important;
+    justify-content: center !important;
+    gap: 9px !important;
+  }
+
+  .jummah-card .card-title h2 {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 2px !important;
+    max-width: 280px !important;
+    font-size: 15.8px !important;
+    line-height: 1.02 !important;
+    text-align: center !important;
+  }
+
+  .jummah-card .card-title h2 span {
+    display: block !important;
+    font-size: 12.6px !important;
+    line-height: 1.05 !important;
+    letter-spacing: 0.035em !important;
+  }
+
+  .jummah-card .card-title h2 span::before {
+    content: none !important;
   }
 
   .jummah-card .card-header::after {
