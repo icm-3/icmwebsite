@@ -14862,8 +14862,8 @@ body:has(.about-community-copy) .page-hero h1 {
 
 .events-card .event-item .event-status {
   position: absolute !important;
-  top: 6px !important;
-  right: 8px !important;
+  top: 3px !important;
+  right: 6px !important;
   z-index: 2 !important;
 }
 
@@ -14872,19 +14872,33 @@ body:has(.about-community-copy) .page-hero h1 {
   box-sizing: border-box !important;
   width: 100% !important;
   max-width: 100% !important;
-  padding-right: 62px !important;
+  padding-right: 0 !important;
 }
 
 @media (max-width: 520px) {
   .events-card .event-item.is-past h3,
   .events-card .event-item:has(.event-status) h3 {
-    padding-right: 56px !important;
+    padding-right: 0 !important;
   }
 }
 
 @media (max-width: 380px) {
   .events-card .event-item.is-past h3,
   .events-card .event-item:has(.event-status) h3 {
-    padding-right: 54px !important;
+    padding-right: 0 !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .events-card,
+  .news-card {
+    height: 505px !important;
+  }
+
+  .events-card .event-item,
+  .events-card .event-item:has(.event-status),
+  .news-card .news-item {
+    min-height: 142px !important;
+    height: 142px !important;
   }
 }
