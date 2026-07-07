@@ -5,7 +5,7 @@ var defaultContent = {
     "imageAlt": "Islamic Center of Morrisville main prayer hall interior with carpet rows, qibla wall, and open worship space for homepage image alt text testing"
   },
   "jummah": {
-    "dateLabel": "Friday, June 26, 2026",
+    "dateLabel": "Wednesday, September 30, 2026",
     "shifts": [
       {
         "shift": "1",
