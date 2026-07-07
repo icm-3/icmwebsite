@@ -694,10 +694,9 @@ function renderEvents(content) {
         <a class="event-item${isPast ? " is-past" : ""}${displayIndex > 2 ? " is-scroll-extra" : ""}" href="./calendar.html#event-${escapeHtml(eventSlug(event, originalIndex))}">
           ${poster ? `<img class="event-thumb" src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}">` : ""}
           <div class="event-item-body">
-            <h3>${escapeHtml(eventTitle(event))}</h3>
+            <h3>${isPast ? `<span class="event-status">Past</span> ` : ""}${escapeHtml(eventTitle(event))}</h3>
             ${eventDate || event.time || event.location ? `<p>${eventDate ? `<span class="event-date-line">${escapeHtml(eventDate)}</span>` : ""}${event.time ? `<span class="event-time-line">${escapeHtml(event.time)}</span>` : ""}${event.location ? `<span class="event-location">${escapeHtml(event.location)}</span>` : ""}</p>` : ""}
           </div>
-          ${isPast ? `<span class="event-status">Past</span>` : ""}
         </a>
       `;
     })

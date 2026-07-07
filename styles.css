@@ -14849,3 +14849,31 @@ body:has(.about-community-copy) .page-hero h1 {
     margin-inline: auto !important;
   }
 }
+
+/* Past event badges should reserve space only beside the badge, not on every title line. */
+.events-card .event-item.is-past .event-item-body {
+  min-width: 0 !important;
+}
+
+.events-card .event-item.is-past .event-status {
+  position: static !important;
+  float: right !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 0 4px 10px !important;
+}
+
+.events-card .event-item.is-past h3,
+.events-card .event-item:has(.event-status) h3 {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-right: 0 !important;
+}
+
+.events-card .event-item.is-past h3::after {
+  content: "";
+  display: block;
+  clear: both;
+}
