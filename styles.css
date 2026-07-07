@@ -14784,26 +14784,26 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .jummah-card .card-header {
     position: relative !important;
-    align-items: center !important;
-    justify-content: center !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
     border-bottom: 0 !important;
   }
 
   .jummah-card .card-title {
-    width: 100% !important;
-    justify-content: center !important;
-    gap: 9px !important;
+    width: auto !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
   }
 
   .jummah-card .card-title h2 {
     display: flex !important;
     flex-direction: column !important;
-    align-items: center !important;
+    align-items: flex-start !important;
     gap: 2px !important;
     max-width: 280px !important;
     font-size: 15.8px !important;
     line-height: 1.02 !important;
-    text-align: center !important;
+    text-align: left !important;
   }
 
   .jummah-card .card-title h2 span {
