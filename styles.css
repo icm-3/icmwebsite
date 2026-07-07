@@ -14428,10 +14428,22 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 
   .jummah-card .card-header {
+    position: relative !important;
     min-height: 56px !important;
     padding: 14px 24px 10px !important;
     background: linear-gradient(180deg, #f6fbf8, #ffffff) !important;
-    border-bottom: 1px solid rgba(0, 84, 61, 0.18) !important;
+    border-bottom: 0 !important;
+  }
+
+  .jummah-card .card-header::after {
+    content: "" !important;
+    position: absolute !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 5 !important;
+    border-top: 2px solid rgba(0, 84, 61, 0.68) !important;
+    pointer-events: none !important;
   }
 
   .jummah-card .card-title {
@@ -14779,5 +14791,9 @@ body:has(.about-community-copy) .page-hero h1 {
     width: calc(100% - 12px) !important;
     justify-self: center !important;
     margin-inline: auto !important;
+  }
+
+  .jummah-card tbody tr {
+    box-shadow: none !important;
   }
 }
