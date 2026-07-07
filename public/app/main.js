@@ -1909,16 +1909,19 @@ function renderEvents(content) {
   const upcomingEvents = sourceEvents.filter(({ event }) => eventEndValue(event) > now).sort((first, second) => eventStartValue(first.event) - eventStartValue(second.event));
   const pastEvents = sourceEvents.filter(({ event }) => eventEndValue(event) <= now).sort((first, second) => eventEndValue(second.event) - eventEndValue(first.event));
   const events = [...upcomingEvents, ...pastEvents];
+  const firstPastDisplayIndex = events.findIndex(({ event }) => eventEndValue(event) <= now);
   list.innerHTML = events.map(({ event, originalIndex }, displayIndex) => {
     const eventDate = formatLongDate(event.date);
     const isPast = eventEndValue(event) <= now;
     const poster = eventPoster(event);
+    const pastDivider = displayIndex === firstPastDisplayIndex ? `<div class="event-group-divider" data-group="past">Recently Passed</div>` : "";
     return `
+        ${pastDivider}
         <a class="event-item${isPast ? " is-past" : ""}${displayIndex > 2 ? " is-scroll-extra" : ""}" href="./calendar.html#event-${escapeHtml(eventSlug(event, originalIndex))}">
           ${poster ? `<img class="event-thumb" src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}">` : ""}
           <div class="event-item-body">
             <h3>${escapeHtml(eventTitle(event))}</h3>
-            ${eventDate || event.time || event.location || isPast ? `<p>${eventDate || isPast ? `<span class="event-date-line">${isPast ? `<span class="event-status">Past</span>` : ""}${eventDate ? escapeHtml(eventDate) : ""}</span>` : ""}${event.time ? `<span class="event-time-line">${escapeHtml(event.time)}</span>` : ""}${event.location ? `<span class="event-location">${escapeHtml(event.location)}</span>` : ""}</p>` : ""}
+            ${eventDate || event.time || event.location ? `<p>${eventDate ? `<span class="event-date-line">${escapeHtml(eventDate)}</span>` : ""}${event.time ? `<span class="event-time-line">${escapeHtml(event.time)}</span>` : ""}${event.location ? `<span class="event-location">${escapeHtml(event.location)}</span>` : ""}</p>` : ""}
           </div>
         </a>
       `;
