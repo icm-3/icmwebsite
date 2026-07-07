@@ -14862,14 +14862,14 @@ body:has(.about-community-copy) .page-hero h1 {
 
 .events-card .event-item .event-status {
   position: absolute !important;
-  top: 7px !important;
+  top: 5px !important;
   right: 2px !important;
   z-index: 2 !important;
   padding: 2px 7px !important;
   color: #00543d !important;
   background: rgba(0, 84, 61, 0.16) !important;
   border-color: rgba(0, 84, 61, 0.36) !important;
-  box-shadow: 0 3px 8px rgba(0, 84, 61, 0.16) !important;
+  box-shadow: none !important;
   font-size: 9px !important;
   line-height: 1.1 !important;
 }
@@ -14879,7 +14879,15 @@ body:has(.about-community-copy) .page-hero h1 {
   box-sizing: border-box !important;
   width: 100% !important;
   max-width: 100% !important;
-  padding-right: 54px !important;
+  padding-right: 0 !important;
+}
+
+.events-card .event-item.is-past h3::before,
+.events-card .event-item:has(.event-status) h3::before {
+  content: "" !important;
+  float: right !important;
+  width: 54px !important;
+  height: 1.2em !important;
 }
 
 @media (max-width: 520px) {
@@ -14901,11 +14909,16 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .events-card .event-item.is-past h3,
   .events-card .event-item:has(.event-status) h3 {
-    padding-right: 36px !important;
+    padding-right: 0 !important;
+  }
+
+  .events-card .event-item.is-past h3::before,
+  .events-card .event-item:has(.event-status) h3::before {
+    width: 38px !important;
   }
 
   .events-card .event-item .event-status {
-    top: 7px !important;
+    top: 5px !important;
     right: 3px !important;
     padding: 2px 6px !important;
     font-size: 8.5px !important;
@@ -14915,7 +14928,12 @@ body:has(.about-community-copy) .page-hero h1 {
 @media (max-width: 380px) {
   .events-card .event-item.is-past h3,
   .events-card .event-item:has(.event-status) h3 {
-    padding-right: 34px !important;
+    padding-right: 0 !important;
+  }
+
+  .events-card .event-item.is-past h3::before,
+  .events-card .event-item:has(.event-status) h3::before {
+    width: 36px !important;
   }
 }
 
@@ -14927,7 +14945,10 @@ body:has(.about-community-copy) .page-hero h1 {
 
   .events-card .event-list,
   .news-card .news-list {
-    row-gap: 25px !important;
+    flex: 0 0 455px !important;
+    height: 455px !important;
+    max-height: 455px !important;
+    row-gap: normal !important;
   }
 
   .events-card .event-item,
