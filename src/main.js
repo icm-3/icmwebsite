@@ -695,9 +695,8 @@ function renderEvents(content) {
           ${poster ? `<img class="event-thumb" src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}">` : ""}
           <div class="event-item-body">
             <h3>${escapeHtml(eventTitle(event))}</h3>
-            ${eventDate || event.time || event.location ? `<p>${eventDate ? `<span class="event-date-line">${escapeHtml(eventDate)}</span>` : ""}${event.time ? `<span class="event-time-line">${escapeHtml(event.time)}</span>` : ""}${event.location ? `<span class="event-location">${escapeHtml(event.location)}</span>` : ""}</p>` : ""}
+            ${eventDate || event.time || event.location || isPast ? `<p>${eventDate || isPast ? `<span class="event-date-line">${isPast ? `<span class="event-status">Past</span>` : ""}${eventDate ? escapeHtml(eventDate) : ""}</span>` : ""}${event.time ? `<span class="event-time-line">${escapeHtml(event.time)}</span>` : ""}${event.location ? `<span class="event-location">${escapeHtml(event.location)}</span>` : ""}</p>` : ""}
           </div>
-          ${isPast ? `<span class="event-status">Past</span>` : ""}
         </a>
       `;
     })

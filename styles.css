@@ -14985,3 +14985,59 @@ body:has(.about-community-copy) .page-hero h1 {
     height: 118px !important;
   }
 }
+
+/* Past events use a small metadata chip so the title wraps normally. */
+.events-card .event-item.is-past,
+.events-card .event-item:has(.event-status) {
+  padding-right: 0 !important;
+}
+
+.events-card .event-item.is-past h3,
+.events-card .event-item:has(.event-status) h3 {
+  padding-right: 0 !important;
+}
+
+.events-card .event-item.is-past h3::before,
+.events-card .event-item:has(.event-status) h3::before {
+  content: none !important;
+  display: none !important;
+  float: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.events-card .event-item .event-status {
+  position: static !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  margin: 0 6px 0 0 !important;
+  padding: 2px 6px !important;
+  transform: translateY(-1px) !important;
+  color: #00543d !important;
+  background: #dfeee7 !important;
+  border: 1px solid rgba(0, 84, 61, 0.2) !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  font-size: 8.5px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.035em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  vertical-align: middle !important;
+}
+
+.events-card .event-date-line:has(.event-status) {
+  display: block !important;
+}
+
+@media (min-width: 769px) {
+  .events-card .event-item .event-status {
+    padding: 2px 7px !important;
+    font-size: 9px !important;
+  }
+}
