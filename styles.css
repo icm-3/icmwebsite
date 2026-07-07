@@ -818,7 +818,18 @@ img {
   z-index: 2;
   padding: 24px 28px;
   background: linear-gradient(180deg, rgba(0, 84, 61, 0.055), rgba(255, 255, 255, 0));
-  border-right: 1px solid rgba(0, 84, 61, 0.12);
+  border-right: 0;
+}
+
+.next-prayer::after {
+  content: "";
+  position: absolute;
+  top: 26px;
+  right: 0;
+  bottom: 26px;
+  width: 1px;
+  background: rgba(0, 84, 61, 0.12);
+  pointer-events: none;
 }
 
 .next-label,
@@ -5093,7 +5104,17 @@ input[type="checkbox"] {
     padding: 18px 20px 16px;
     background: linear-gradient(180deg, rgba(0, 84, 61, 0.06), rgba(255, 255, 255, 0.96));
     border-right: 0;
-    border-bottom: 1px solid rgba(0, 84, 61, 0.14);
+    border-bottom: 0;
+  }
+
+  .next-prayer::after {
+    top: auto;
+    right: 16px;
+    bottom: 0;
+    left: 16px;
+    width: auto;
+    height: 1px;
+    background: rgba(0, 84, 61, 0.14);
   }
 
   .next-label,
@@ -9208,15 +9229,27 @@ input[type="checkbox"] {
 
   .next-countdown {
     grid-area: countdown !important;
+    position: relative !important;
     align-self: center !important;
     justify-items: center !important;
     min-height: 72px !important;
     padding: 5px 0 5px 10px !important;
     background: transparent !important;
     border: 0 !important;
-    border-left: 1px solid rgba(0, 84, 61, 0.2) !important;
+    border-left: 0 !important;
     border-radius: 0 !important;
     box-shadow: none !important;
+  }
+
+  .next-countdown::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 9px !important;
+    bottom: 9px !important;
+    left: 0 !important;
+    width: 1px !important;
+    background: rgba(0, 84, 61, 0.2) !important;
+    pointer-events: none !important;
   }
 
   .next-countdown .countdown-label {
@@ -10497,6 +10530,7 @@ input[type="checkbox"] {
 
   .next-countdown {
     grid-area: countdown !important;
+    position: relative !important;
     align-self: stretch !important;
     display: flex !important;
     flex-direction: column !important;
@@ -10505,8 +10539,19 @@ input[type="checkbox"] {
     padding: 2px 0 2px 12px !important;
     background: transparent !important;
     border: 0 !important;
-    border-left: 1px solid rgba(0, 84, 61, 0.22) !important;
+    border-left: 0 !important;
     border-radius: 0 !important;
+  }
+
+  .next-countdown::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 9px !important;
+    bottom: 9px !important;
+    left: 0 !important;
+    width: 1px !important;
+    background: rgba(0, 84, 61, 0.22) !important;
+    pointer-events: none !important;
   }
 
   .next-countdown .countdown-label {
