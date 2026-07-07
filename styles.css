@@ -14990,9 +14990,9 @@ body:has(.about-community-copy) .page-hero h1 {
 .events-card .event-group-divider {
   display: flex !important;
   align-items: center !important;
-  gap: 10px !important;
+  gap: 8px !important;
   height: 24px !important;
-  margin: 1px 0 0 !important;
+  margin: 4px 0 6px !important;
   padding: 0 2px !important;
   color: #8a5a0a !important;
   font-size: 11px !important;
@@ -15002,11 +15002,29 @@ body:has(.about-community-copy) .page-hero h1 {
   text-transform: uppercase !important;
 }
 
+.events-card .event-group-divider::before {
+  content: "" !important;
+  flex: 0 0 auto !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 999px !important;
+  background: #b7791f !important;
+}
+
 .events-card .event-group-divider::after {
   content: "" !important;
   flex: 1 1 auto !important;
   height: 1px !important;
   background: linear-gradient(90deg, rgba(165, 100, 5, 0.48), rgba(165, 100, 5, 0.16)) !important;
+}
+
+.events-card .event-item-body {
+  padding-right: 4px !important;
+}
+
+.events-card .event-item h3 {
+  text-wrap: pretty !important;
+  overflow-wrap: normal !important;
 }
 
 .events-card .event-item.is-past {
@@ -15031,6 +15049,24 @@ body:has(.about-community-copy) .page-hero h1 {
 @media (min-width: 769px) {
   .events-card .event-group-divider {
     height: 28px !important;
+    margin-top: 5px !important;
+    margin-bottom: 8px !important;
     font-size: 11.5px !important;
+  }
+
+  .events-card .event-item-body {
+    padding-right: 8px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .events-card .event-group-divider {
+    height: 28px !important;
+    margin-top: 8px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .events-card .event-item-body {
+    padding-right: 6px !important;
   }
 }
