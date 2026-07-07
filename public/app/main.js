@@ -1910,6 +1910,7 @@ function renderEvents(content) {
   const pastEvents = sourceEvents.filter(({ event }) => eventEndValue(event) <= now).sort((first, second) => eventEndValue(second.event) - eventEndValue(first.event));
   const events = [...upcomingEvents, ...pastEvents];
   const firstPastDisplayIndex = events.findIndex(({ event }) => eventEndValue(event) <= now);
+  list.classList.toggle("has-past-divider-in-preview", firstPastDisplayIndex >= 0 && firstPastDisplayIndex < 3);
   list.innerHTML = events.map(({ event, originalIndex }, displayIndex) => {
     const eventDate = formatLongDate(event.date);
     const isPast = eventEndValue(event) <= now;

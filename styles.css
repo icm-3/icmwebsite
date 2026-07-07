@@ -14990,9 +14990,9 @@ body:has(.about-community-copy) .page-hero h1 {
 .events-card .event-group-divider {
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
+  gap: 10px !important;
   height: 24px !important;
-  margin: 4px 0 6px !important;
+  margin: 3px 0 6px !important;
   padding: 0 2px !important;
   color: #8a5a0a !important;
   font-size: 11px !important;
@@ -15003,12 +15003,7 @@ body:has(.about-community-copy) .page-hero h1 {
 }
 
 .events-card .event-group-divider::before {
-  content: "" !important;
-  flex: 0 0 auto !important;
-  width: 8px !important;
-  height: 8px !important;
-  border-radius: 999px !important;
-  background: #b7791f !important;
+  content: none !important;
 }
 
 .events-card .event-group-divider::after {
@@ -15046,10 +15041,20 @@ body:has(.about-community-copy) .page-hero h1 {
   height: 0 !important;
 }
 
+.events-card .event-list.has-past-divider-in-preview .event-item,
+.events-card .event-list.has-past-divider-in-preview .event-item:has(.event-status) {
+  min-height: 119px !important;
+  height: 119px !important;
+}
+
+.events-card .event-list.has-past-divider-in-preview .event-thumb {
+  height: 102px !important;
+}
+
 @media (min-width: 769px) {
   .events-card .event-group-divider {
     height: 28px !important;
-    margin-top: 5px !important;
+    margin-top: 4px !important;
     margin-bottom: 8px !important;
     font-size: 11.5px !important;
   }
@@ -15057,16 +15062,36 @@ body:has(.about-community-copy) .page-hero h1 {
   .events-card .event-item-body {
     padding-right: 8px !important;
   }
+
+  .events-card .event-list.has-past-divider-in-preview .event-item,
+  .events-card .event-list.has-past-divider-in-preview .event-item:has(.event-status) {
+    min-height: 150px !important;
+    height: 150px !important;
+  }
+
+  .events-card .event-list.has-past-divider-in-preview .event-thumb {
+    height: 118px !important;
+  }
 }
 
 @media (max-width: 520px) {
   .events-card .event-group-divider {
     height: 28px !important;
-    margin-top: 8px !important;
-    margin-bottom: 10px !important;
+    margin-top: 7px !important;
+    margin-bottom: 11px !important;
   }
 
   .events-card .event-item-body {
     padding-right: 6px !important;
+  }
+
+  .events-card .event-list.has-past-divider-in-preview .event-item,
+  .events-card .event-list.has-past-divider-in-preview .event-item:has(.event-status) {
+    min-height: 119px !important;
+    height: 119px !important;
+  }
+
+  .events-card .event-list.has-past-divider-in-preview .event-thumb {
+    height: 102px !important;
   }
 }
