@@ -14694,7 +14694,7 @@ body:has(.about-community-copy) .page-hero h1 {
     bottom: 0 !important;
     left: -22px !important;
     z-index: 5 !important;
-    border-top: 3px solid rgba(0, 84, 61, 0.62) !important;
+    border-top: 2px solid rgba(0, 84, 61, 0.68) !important;
     pointer-events: none !important;
   }
 
@@ -14760,7 +14760,7 @@ body:has(.about-community-copy) .page-hero h1 {
     bottom: 0 !important;
     left: -14px !important;
     z-index: 5 !important;
-    border-top: 3px solid rgba(0, 84, 61, 0.66) !important;
+    border-top: 2px solid rgba(0, 84, 61, 0.72) !important;
     pointer-events: none !important;
   }
 
@@ -14773,5 +14773,11 @@ body:has(.about-community-copy) .page-hero h1 {
   .news-card .news-item {
     min-height: 136px !important;
     height: 136px !important;
+  }
+
+  .jummah-card td.time {
+    width: calc(100% - 12px) !important;
+    justify-self: center !important;
+    margin-inline: auto !important;
   }
 }
