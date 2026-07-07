@@ -14673,7 +14673,7 @@ body:has(.about-community-copy) .page-hero h1 {
     z-index: 5 !important;
     display: block !important;
     height: 0 !important;
-    margin-inline: 12px 18px !important;
+    margin-inline: 4px 8px !important;
     border-top: 2px solid rgba(0, 84, 61, 0.42) !important;
     box-shadow: none !important;
     pointer-events: none !important;
@@ -14687,7 +14687,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .news-card .card-header {
     margin-bottom: 0 !important;
     padding-bottom: 14px !important;
-    border-bottom: 1px solid var(--border) !important;
+    border-bottom: 0 !important;
   }
 
   .events-card .event-list {
@@ -14731,7 +14731,7 @@ body:has(.about-community-copy) .page-hero h1 {
     z-index: 5 !important;
     display: block !important;
     height: 0 !important;
-    margin-inline: 10px 14px !important;
+    margin-inline: 4px 8px !important;
     border-top: 2px solid rgba(0, 84, 61, 0.44) !important;
     box-shadow: none !important;
     pointer-events: none !important;
@@ -14745,7 +14745,7 @@ body:has(.about-community-copy) .page-hero h1 {
   .news-card .card-header {
     margin-bottom: 0 !important;
     padding-bottom: 9px !important;
-    border-bottom: 1px solid rgba(0, 84, 61, 0.12) !important;
+    border-bottom: 0 !important;
   }
 
   .events-card .event-item,
