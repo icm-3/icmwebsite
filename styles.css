@@ -14673,7 +14673,7 @@ body:has(.about-community-copy) .page-hero h1 {
     z-index: 5 !important;
     display: block !important;
     height: 0 !important;
-    margin-inline: 4px 8px !important;
+    margin-inline: -22px !important;
     border-top: 2px solid rgba(0, 84, 61, 0.42) !important;
     box-shadow: none !important;
     pointer-events: none !important;
@@ -14731,7 +14731,7 @@ body:has(.about-community-copy) .page-hero h1 {
     z-index: 5 !important;
     display: block !important;
     height: 0 !important;
-    margin-inline: 4px 8px !important;
+    margin-inline: -14px !important;
     border-top: 2px solid rgba(0, 84, 61, 0.44) !important;
     box-shadow: none !important;
     pointer-events: none !important;
