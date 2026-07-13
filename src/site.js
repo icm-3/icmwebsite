@@ -553,7 +553,11 @@ function initPrayerTimesPage() {
       status.hidden = false;
       status.textContent = "Loading prayer times...";
     }
-    target.innerHTML = "";
+    target.innerHTML = `
+      <div class="skeleton-block prayer-table-skeleton" aria-hidden="true">
+        ${Array.from({ length: 7 }, () => `<span></span>`).join("")}
+      </div>
+    `;
 
     try {
       const response = await fetch(`/api/prayer-times?month=${month}`, { cache: "no-store" });
@@ -777,6 +781,7 @@ function initStaticFormValidation() {
         citySelect.innerHTML = `<option value="">Please select</option>${options
           .map((city) => `<option${city === selectedValue ? " selected" : ""}>${city}</option>`)
           .join("")}`;
+        citySelect.dispatchEvent(new CustomEvent("select-options-updated", { bubbles: true }));
       };
       const syncCityOptions = () => {
         const currentValue = citySelect.value;
@@ -789,6 +794,153 @@ function initStaticFormValidation() {
       };
       stateSelect.addEventListener("change", syncCityOptions);
       syncCityOptions();
+    });
+  };
+
+  const initSearchableSelects = () => {
+    document.querySelectorAll(".local-registration-form select, .aid-form select").forEach((select) => {
+      if (select.dataset.searchableReady === "true") return;
+      select.dataset.searchableReady = "true";
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "searchable-select";
+      const input = document.createElement("input");
+      input.type = "text";
+      input.autocomplete = "off";
+      input.spellcheck = false;
+      input.className = "searchable-select-input";
+      input.setAttribute("role", "combobox");
+      input.setAttribute("aria-autocomplete", "list");
+      input.setAttribute("aria-expanded", "false");
+      input.setAttribute("aria-label", select.closest("label")?.querySelector("span")?.textContent?.trim() || select.name || "Select option");
+      if (select.required) {
+        input.required = true;
+        select.required = false;
+      }
+
+      const list = document.createElement("div");
+      list.className = "searchable-select-list";
+      list.setAttribute("role", "listbox");
+      list.hidden = true;
+
+      select.classList.add("native-select-hidden");
+      select.tabIndex = -1;
+      select.after(wrapper);
+      wrapper.append(select, input, list);
+
+      const getOptions = () =>
+        [...select.options].map((option, index) => ({
+          index,
+          value: option.value,
+          label: option.textContent.trim(),
+          option,
+        }));
+      const escapeOptionLabel = (value) =>
+        String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      const selectedLabel = () => select.selectedOptions[0]?.textContent?.trim() || "";
+      const closeList = () => {
+        list.hidden = true;
+        input.setAttribute("aria-expanded", "false");
+      };
+      const openList = () => {
+        list.hidden = false;
+        input.setAttribute("aria-expanded", "true");
+      };
+      const chooseOption = (item) => {
+        select.value = item.value;
+        input.value = item.label;
+        input.setCustomValidity("");
+        closeList();
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+      };
+      const updateInputValidity = () => {
+        input.setCustomValidity(input.required && !select.value ? "Choose an option from the list." : "");
+      };
+      const renderList = (query = "") => {
+        const normalizedQuery = query.trim().toLowerCase();
+        const matches = getOptions().filter(({ label, value }) => value && label.toLowerCase().includes(normalizedQuery));
+        list.innerHTML = matches.length
+          ? matches
+              .map(
+                ({ index, label, option }) => `
+                  <button type="button" role="option" data-option-index="${index}" aria-selected="${option.selected ? "true" : "false"}">
+                    ${escapeOptionLabel(label)}
+                  </button>
+                `,
+              )
+              .join("")
+          : `<p>No matches found</p>`;
+        openList();
+      };
+      const syncInput = () => {
+        input.value = selectedLabel();
+        input.placeholder = select.options[0]?.textContent?.trim() || "Please select";
+        renderList("");
+        closeList();
+      };
+
+      input.addEventListener("focus", () => renderList(input.value === selectedLabel() ? "" : input.value));
+      input.addEventListener("click", () => renderList(input.value === selectedLabel() ? "" : input.value));
+      input.addEventListener("input", () => {
+        select.value = "";
+        updateInputValidity();
+        renderList(input.value);
+      });
+      input.addEventListener("blur", () => {
+        const exactMatch = getOptions().find(({ value, label }) => value && label.toLowerCase() === input.value.trim().toLowerCase());
+        if (exactMatch) {
+          chooseOption(exactMatch);
+        } else {
+          updateInputValidity();
+        }
+      });
+      input.addEventListener("keydown", (event) => {
+        const buttons = [...list.querySelectorAll("button")];
+        if (event.key === "ArrowDown") {
+          event.preventDefault();
+          if (list.hidden) renderList(input.value);
+          (buttons[0] || input).focus();
+        }
+        if (event.key === "Escape") {
+          closeList();
+          input.value = selectedLabel();
+        }
+      });
+      list.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-option-index]");
+        if (!button) return;
+        const item = getOptions()[Number(button.dataset.optionIndex)];
+        if (item) chooseOption(item);
+      });
+      list.addEventListener("keydown", (event) => {
+        const buttons = [...list.querySelectorAll("button")];
+        const currentIndex = buttons.indexOf(document.activeElement);
+        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+          event.preventDefault();
+          const offset = event.key === "ArrowDown" ? 1 : -1;
+          (buttons[currentIndex + offset] || buttons[event.key === "ArrowDown" ? 0 : buttons.length - 1])?.focus();
+        }
+        if (event.key === "Enter") {
+          event.preventDefault();
+          document.activeElement?.click();
+        }
+        if (event.key === "Escape") {
+          closeList();
+          input.focus();
+        }
+      });
+      document.addEventListener("click", (event) => {
+        if (!wrapper.contains(event.target)) closeList();
+      });
+      select.addEventListener("change", syncInput);
+      select.addEventListener("select-options-updated", syncInput);
+      syncInput();
+      updateInputValidity();
     });
   };
 
@@ -813,6 +965,7 @@ function initStaticFormValidation() {
   addFieldNotes();
   enableToggleableAgeRange();
   initStateCityFields();
+  initSearchableSelects();
 
   document.querySelectorAll("[data-format='phone']").forEach((input) => {
     input.addEventListener("input", () => {

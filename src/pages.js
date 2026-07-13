@@ -649,8 +649,49 @@ function renderNews(content) {
   window.addEventListener("hashchange", renderCurrent);
 }
 
+function renderPageSkeletons() {
+  const calendarGrid = document.querySelector("[data-calendar-grid]");
+  if (calendarGrid) {
+    calendarGrid.innerHTML = Array.from(
+      { length: 35 },
+      (_, index) => `<div class="calendar-day skeleton-card" aria-hidden="true"><span class="skeleton-day">${index + 1}</span><span class="skeleton-line"></span></div>`,
+    ).join("");
+  }
+
+  const calendarDetail = document.querySelector("[data-calendar-detail]");
+  if (calendarDetail) {
+    calendarDetail.innerHTML = `
+      <div class="calendar-detail-card skeleton-card" aria-hidden="true">
+        <div class="calendar-detail-body skeleton-copy">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    `;
+  }
+
+  const newsTarget = document.querySelector("[data-page-news]");
+  if (newsTarget) {
+    newsTarget.innerHTML = Array.from(
+      { length: 4 },
+      () => `
+        <article class="news-feature skeleton-card" aria-hidden="true">
+          <span class="skeleton-media"></span>
+          <div class="skeleton-copy">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </article>
+      `,
+    ).join("");
+  }
+}
+
 async function boot() {
   initMobileNav();
+  renderPageSkeletons();
   const content = await loadCmsContent();
   initDateNavigator();
   renderPrayerTable();
