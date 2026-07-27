@@ -405,6 +405,38 @@ function setCalendarDetail(event, index = 0) {
   `;
 }
 
+function syncCalendarSharedHighlightEdges(grid) {
+  const cells = [...grid.querySelectorAll(".calendar-day")];
+  const priority = (cell) => {
+    if (cell.classList.contains("is-selected") || cell.classList.contains("is-expanded")) return 2;
+    return cell.classList.contains("is-today") ? 1 : 0;
+  };
+  const hideSide = (cell, side) => {
+    cell
+      .querySelector(".calendar-day-outline")
+      ?.classList.add(`is-shared-${side}-hidden`);
+  };
+  const resolveSharedEdge = (first, firstSide, second, secondSide) => {
+    if (!first || !second) return;
+    const firstPriority = priority(first);
+    const secondPriority = priority(second);
+    if (!firstPriority || !secondPriority) return;
+
+    if (firstPriority >= secondPriority) {
+      hideSide(second, secondSide);
+    } else {
+      hideSide(first, firstSide);
+    }
+  };
+
+  cells.forEach((cell, index) => {
+    if (index % 7 < 6) {
+      resolveSharedEdge(cell, "right", cells[index + 1], "left");
+    }
+    resolveSharedEdge(cell, "bottom", cells[index + 7], "top");
+  });
+}
+
 function renderCalendar(content) {
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
@@ -487,6 +519,7 @@ function renderCalendar(content) {
   }).join("");
 
   grid.innerHTML = weekdays.map((day) => `<div class="calendar-weekday">${day}</div>`).join("") + cells;
+  syncCalendarSharedHighlightEdges(grid);
 
   const selectedIndex = content.events.findIndex((event, index) => eventSlug(event, index) === selectedCalendarEventSlug);
   const selectedEvent = selectedIndex >= 0 ? content.events[selectedIndex] : null;
