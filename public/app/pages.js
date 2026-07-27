@@ -1226,6 +1226,90 @@ var defaultContent = {
   ]
 };
 
+// src/calendar-test-fixtures.js
+var calendarDesktopEdgeFixture = {
+  today: "2026-08-01",
+  events: [
+    {
+      title: "Top Left Corner Fixture",
+      date: "2026-07-26",
+      time: "9:00 AM",
+      location: "ICM",
+      description: "Desktop-only calendar geometry fixture for the top-left grid corner."
+    },
+    {
+      title: "Left Neighbor Fixture One",
+      date: "2026-07-31",
+      time: "5:00 PM",
+      location: "ICM",
+      description: "First event immediately left of the current-day corner fixture."
+    },
+    {
+      title: "Left Neighbor Fixture Two",
+      date: "2026-07-31",
+      time: "5:30 PM",
+      location: "ICM",
+      description: "Second event immediately left of the current-day corner fixture."
+    },
+    {
+      title: "Left Neighbor Fixture Three",
+      date: "2026-07-31",
+      time: "6:00 PM",
+      location: "ICM",
+      description: "Expansion event immediately left of the current-day corner fixture."
+    },
+    {
+      title: "Current Right Corner Fixture One",
+      date: "2026-08-01",
+      time: "6:30 PM",
+      location: "ICM",
+      description: "Current-day event placed in the top-right calendar corner."
+    },
+    {
+      title: "Current Right Corner Fixture Two",
+      date: "2026-08-01",
+      time: "7:00 PM",
+      location: "ICM",
+      description: "Second current-day event placed in the top-right calendar corner."
+    },
+    {
+      title: "Below Current Fixture One",
+      date: "2026-08-08",
+      time: "5:00 PM",
+      location: "ICM",
+      description: "First event directly below the current-day corner fixture."
+    },
+    {
+      title: "Below Current Fixture Two",
+      date: "2026-08-08",
+      time: "5:30 PM",
+      location: "ICM",
+      description: "Second event directly below the current-day corner fixture."
+    },
+    {
+      title: "Below Current Fixture Three",
+      date: "2026-08-08",
+      time: "6:00 PM",
+      location: "ICM",
+      description: "Expansion event directly below the current-day corner fixture."
+    },
+    {
+      title: "Bottom Left Corner Fixture",
+      date: "2026-08-30",
+      time: "9:00 AM",
+      location: "ICM",
+      description: "Desktop-only calendar geometry fixture for the bottom-left grid corner."
+    },
+    {
+      title: "Bottom Right Corner Fixture",
+      date: "2026-09-05",
+      time: "9:00 AM",
+      location: "ICM",
+      description: "Desktop-only calendar geometry fixture for the bottom-right grid corner."
+    }
+  ]
+};
+
 // src/nav.js
 function initMobileNav() {
   const nav = document.querySelector(".top-nav");
@@ -1371,7 +1455,10 @@ function initMobileNav() {
 var ICM_COORDS = new Coordinates(35.8111, -78.8231);
 var TIME_ZONE = "America/New_York";
 var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
-var calendarTodayOverride = "";
+var calendarSearchParams = new URLSearchParams(window.location.search);
+var calendarFixtureName = calendarSearchParams.get("calendarFixture") || "";
+var requestedCalendarToday = calendarSearchParams.get("calendarToday") || "";
+var calendarTodayOverride = /^\d{4}-\d{2}-\d{2}$/.test(requestedCalendarToday) ? requestedCalendarToday : calendarFixtureName === "desktop-edges" ? calendarDesktopEdgeFixture.today : "";
 var prayerLabels = {
   fajr: "Fajr",
   sunrise: "Sunrise",
@@ -1411,13 +1498,14 @@ function escapeHtml(value) {
   return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
 }
 function mergeContent(content) {
-  return {
+  const merged = {
     ...defaultContent,
     ...content,
     jummah: { ...defaultContent.jummah, ...content?.jummah || {} },
     events: Array.isArray(content?.events) ? content.events : defaultContent.events,
     news: Array.isArray(content?.news) ? content.news : defaultContent.news
   };
+  return calendarFixtureName === "desktop-edges" ? { ...merged, events: calendarDesktopEdgeFixture.events } : merged;
 }
 async function loadCmsContent() {
   try {
@@ -1674,19 +1762,6 @@ function setCalendarDetail(event, index = 0) {
     </article>
   `;
 }
-function syncCalendarTodayEdge(grid) {
-  grid.classList.remove("has-today-left-edge", "has-today-right-edge");
-  grid.style.removeProperty("--calendar-today-top");
-  grid.style.removeProperty("--calendar-today-height");
-  const todayCell = grid.querySelector(".calendar-day.is-today:not(.is-selected):not(.is-expanded)");
-  if (!todayCell) return;
-  const cellIndex = [...grid.children].indexOf(todayCell);
-  const columnIndex = cellIndex % 7;
-  if (columnIndex !== 0 && columnIndex !== 6) return;
-  grid.style.setProperty("--calendar-today-top", `${todayCell.offsetTop}px`);
-  grid.style.setProperty("--calendar-today-height", `${todayCell.offsetHeight}px`);
-  grid.classList.add(columnIndex === 0 ? "has-today-left-edge" : "has-today-right-edge");
-}
 function renderCalendar(content) {
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
@@ -1719,8 +1794,18 @@ function renderCalendar(content) {
     const isOutside = date.getMonth() !== monthStart.getMonth();
     const isToday = todayDate.getFullYear() === date.getFullYear() && todayDate.getMonth() === date.getMonth() && todayDate.getDate() === date.getDate();
     const badge = getDateBadgeParts(dateKey);
+    const columnIndex = index % 7;
+    const rowIndex = Math.floor(index / 7);
+    const lastRowIndex = visibleDayCount / 7 - 1;
+    const gridEdgeClasses = [
+      rowIndex === 0 ? "is-grid-top" : "",
+      rowIndex === lastRowIndex ? "is-grid-bottom" : "",
+      columnIndex === 0 ? "is-grid-left" : "",
+      columnIndex === 6 ? "is-grid-right" : ""
+    ].filter(Boolean).join(" ");
     return `
-      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
+      <div class="calendar-day ${gridEdgeClasses}${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}" data-date-key="${escapeHtml(dateKey)}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
+        <span class="calendar-day-outline" aria-hidden="true"></span>
         <span class="calendar-day-number"><span>${escapeHtml(badge.month)}</span><strong>${date.getDate()}</strong></span>
         <div class="calendar-event-stack">
           ${visibleEvents.map(
@@ -1741,7 +1826,6 @@ function renderCalendar(content) {
     `;
   }).join("");
   grid.innerHTML = weekdays.map((day) => `<div class="calendar-weekday">${day}</div>`).join("") + cells;
-  syncCalendarTodayEdge(grid);
   const selectedIndex = content.events.findIndex((event, index) => eventSlug(event, index) === selectedCalendarEventSlug);
   const selectedEvent = selectedIndex >= 0 ? content.events[selectedIndex] : null;
   setCalendarDetail(selectedEvent, selectedIndex);

@@ -6,12 +6,20 @@ import {
   Rounding,
 } from "adhan";
 import { defaultContent } from "./default-content.js";
+import { calendarDesktopEdgeFixture } from "./calendar-test-fixtures.js";
 import { initMobileNav } from "./nav.js";
 
 const ICM_COORDS = new Coordinates(35.8111, -78.8231);
 const TIME_ZONE = "America/New_York";
 const prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
-const calendarTodayOverride = "";
+const calendarSearchParams = new URLSearchParams(window.location.search);
+const calendarFixtureName = calendarSearchParams.get("calendarFixture") || "";
+const requestedCalendarToday = calendarSearchParams.get("calendarToday") || "";
+const calendarTodayOverride = /^\d{4}-\d{2}-\d{2}$/.test(requestedCalendarToday)
+  ? requestedCalendarToday
+  : calendarFixtureName === "desktop-edges"
+    ? calendarDesktopEdgeFixture.today
+    : "";
 const prayerLabels = {
   fajr: "Fajr",
   sunrise: "Sunrise",
@@ -59,13 +67,17 @@ function escapeHtml(value) {
 }
 
 function mergeContent(content) {
-  return {
+  const merged = {
     ...defaultContent,
     ...content,
     jummah: { ...defaultContent.jummah, ...(content?.jummah || {}) },
     events: Array.isArray(content?.events) ? content.events : defaultContent.events,
     news: Array.isArray(content?.news) ? content.news : defaultContent.news,
   };
+
+  return calendarFixtureName === "desktop-edges"
+    ? { ...merged, events: calendarDesktopEdgeFixture.events }
+    : merged;
 }
 
 async function loadCmsContent() {
@@ -393,23 +405,6 @@ function setCalendarDetail(event, index = 0) {
   `;
 }
 
-function syncCalendarTodayEdge(grid) {
-  grid.classList.remove("has-today-left-edge", "has-today-right-edge");
-  grid.style.removeProperty("--calendar-today-top");
-  grid.style.removeProperty("--calendar-today-height");
-
-  const todayCell = grid.querySelector(".calendar-day.is-today:not(.is-selected):not(.is-expanded)");
-  if (!todayCell) return;
-
-  const cellIndex = [...grid.children].indexOf(todayCell);
-  const columnIndex = cellIndex % 7;
-  if (columnIndex !== 0 && columnIndex !== 6) return;
-
-  grid.style.setProperty("--calendar-today-top", `${todayCell.offsetTop}px`);
-  grid.style.setProperty("--calendar-today-height", `${todayCell.offsetHeight}px`);
-  grid.classList.add(columnIndex === 0 ? "has-today-left-edge" : "has-today-right-edge");
-}
-
 function renderCalendar(content) {
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
@@ -448,9 +443,21 @@ function renderCalendar(content) {
       todayDate.getMonth() === date.getMonth() &&
       todayDate.getDate() === date.getDate();
     const badge = getDateBadgeParts(dateKey);
+    const columnIndex = index % 7;
+    const rowIndex = Math.floor(index / 7);
+    const lastRowIndex = visibleDayCount / 7 - 1;
+    const gridEdgeClasses = [
+      rowIndex === 0 ? "is-grid-top" : "",
+      rowIndex === lastRowIndex ? "is-grid-bottom" : "",
+      columnIndex === 0 ? "is-grid-left" : "",
+      columnIndex === 6 ? "is-grid-right" : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
 
     return `
-      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
+      <div class="calendar-day ${gridEdgeClasses}${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}" data-date-key="${escapeHtml(dateKey)}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
+        <span class="calendar-day-outline" aria-hidden="true"></span>
         <span class="calendar-day-number"><span>${escapeHtml(badge.month)}</span><strong>${date.getDate()}</strong></span>
         <div class="calendar-event-stack">
           ${visibleEvents
@@ -480,7 +487,6 @@ function renderCalendar(content) {
   }).join("");
 
   grid.innerHTML = weekdays.map((day) => `<div class="calendar-weekday">${day}</div>`).join("") + cells;
-  syncCalendarTodayEdge(grid);
 
   const selectedIndex = content.events.findIndex((event, index) => eventSlug(event, index) === selectedCalendarEventSlug);
   const selectedEvent = selectedIndex >= 0 ? content.events[selectedIndex] : null;
