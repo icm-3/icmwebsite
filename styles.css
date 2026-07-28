@@ -3275,41 +3275,41 @@ input[type="checkbox"] {
   height: 17px;
 }
 
+/*
+ * One source of truth for desktop calendar geometry:
+ * the parent supplies the 2px outer border and every 2px inner gap.
+ * Cells draw no borders, so left/right, top/bottom, corners, and highlighted
+ * states cannot create competing or doubled edges.
+ */
 .calendar-grid {
+  --calendar-grid-line: #dec79d;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+  box-sizing: border-box;
   overflow: hidden;
-  background: var(--green);
-  border: 1px solid rgba(165, 100, 5, 0.3);
+  background: var(--calendar-grid-line);
+  border: 2px solid var(--calendar-grid-line);
   border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(18, 24, 39, 0.035);
+  box-shadow: none;
 }
 
 .calendar-weekday {
   padding: 12px 10px;
   color: white;
   background: var(--green);
-  border-right: 1px solid rgba(165, 100, 5, 0.28);
+  border: 0;
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
 }
 
-.calendar-weekday:nth-child(7) {
-  border-right: 0;
-}
-
 .calendar-day {
   position: relative;
-  min-height: 116px;
+  min-height: 156px;
   padding: 11px 10px 10px;
   background: white;
-  border-top: 1px solid rgba(165, 100, 5, 0.2);
-  border-right: 1px solid rgba(165, 100, 5, 0.18);
-}
-
-.calendar-day:nth-child(7n + 7) {
-  border-right: 0;
+  border: 0;
 }
 
 .calendar-day.is-muted {
@@ -3317,20 +3317,16 @@ input[type="checkbox"] {
 }
 
 .calendar-day.is-today {
-  background: linear-gradient(180deg, #f4faf6, #ffffff);
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.12);
+  box-shadow: inset 0 0 20px rgba(0, 84, 61, 0.18);
 }
 
-.calendar-day.is-selected {
-  background: white;
-  box-shadow: inset 0 0 0 2px rgba(165, 100, 5, 0.35);
+.calendar-day.is-selected,
+.calendar-day.is-expanded {
+  box-shadow: inset 0 0 20px rgba(165, 100, 5, 0.2);
 }
 
 .calendar-day.is-expanded {
-  z-index: 2;
-  min-height: 190px;
-  background: #fbfdfc;
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.16), 0 10px 24px rgba(18, 24, 39, 0.08);
+  min-height: 222px;
 }
 
 .calendar-day.is-expanded .calendar-event-stack {
@@ -11534,7 +11530,7 @@ body:has(.about-community-copy) .page-hero h1 {
 }
 
 .calendar-band {
-  width: min(1280px, calc(100% - 40px)) !important;
+  width: min(1279px, calc(100% - 40px)) !important;
 }
 
 .calendar-day {
@@ -13038,75 +13034,13 @@ body:has(.about-community-copy) .page-hero h1 {
   min-width: 292px;
 }
 
-.calendar-day.is-today {
-  z-index: 1;
-  outline: 2px solid rgba(0, 84, 61, 0.2);
-  outline-offset: -1px;
-  box-shadow: none !important;
-}
-
-@media (min-width: 769px) {
-  .calendar-day.is-today:nth-child(7n + 7) {
-    border-right: 1px solid rgba(165, 100, 5, 0.18);
-  }
-}
-
 @media (max-width: 520px) {
   .birthdate-picker-popover {
     min-width: min(292px, calc(100vw - 48px));
   }
 }
 
-/* Current correction pass: calendar border balance, event wrapping, mobile form density */
-.calendar-grid {
-  position: relative;
-  isolation: isolate;
-  background: linear-gradient(180deg, var(--green) 0 40px, #ffffff 40px 100%) !important;
-  border-color: rgba(165, 100, 5, 0.34) !important;
-}
-
-.calendar-grid::before {
-  content: none !important;
-  display: none !important;
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 0;
-  height: 40px;
-  background: var(--green);
-  pointer-events: none;
-}
-
-.calendar-weekday,
-.calendar-day {
-  position: relative;
-  z-index: 1;
-}
-
-.calendar-weekday:first-child {
-  border-top-left-radius: 9px;
-}
-
-.calendar-weekday:nth-child(7) {
-  border-top-right-radius: 9px;
-}
-
-.calendar-day.is-today {
-  background: linear-gradient(180deg, #f2faf6, #ffffff) !important;
-  outline: 0 !important;
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.16) !important;
-}
-
-.calendar-day.is-selected,
-.calendar-day.is-expanded {
-  background: linear-gradient(180deg, #edf8f1, #ffffff) !important;
-  border-color: rgba(0, 84, 61, 0.24) !important;
-  outline: 0 !important;
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.2), 0 8px 18px rgba(18, 24, 39, 0.06) !important;
-}
-
-.calendar-day.is-today:nth-child(7n + 7) {
-  border-right: 0 !important;
-}
+/* Event wrapping and mobile form density */
 
 .events-card .event-item:not(.is-past) h3 {
   padding-right: 0 !important;
@@ -13119,22 +13053,6 @@ body:has(.about-community-copy) .page-hero h1 {
 }
 
 @media (max-width: 768px) {
-  .calendar-grid::before,
-  .calendar-grid.has-today-left-edge::before,
-  .calendar-grid.has-today-right-edge::before {
-    content: "" !important;
-    display: none !important;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 0;
-    height: 40px;
-    background: var(--green);
-    border-radius: 9px 9px 0 0;
-    pointer-events: none;
-  }
-
   .service-form-page .local-registration-form,
   .registration-panel .local-registration-form {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -13243,61 +13161,7 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 }
 
-/* Current targeted fixes: calendar selected state, mobile pill wrapping, mobile field pairing */
-@media (min-width: 769px) {
-  .calendar-day:not(.is-expanded) {
-    height: auto !important;
-    min-height: 156px !important;
-    border-color: rgba(165, 100, 5, 0.2) !important;
-  }
-
-  .calendar-day.is-expanded {
-    height: auto !important;
-    min-height: 222px !important;
-  }
-
-  .calendar-day:nth-child(7n + 7) {
-    border-right: 0 !important;
-  }
-}
-
-.calendar-day.is-today {
-  background: linear-gradient(180deg, #f2faf6, #ffffff) !important;
-  border-color: rgba(0, 84, 61, 0.2) !important;
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.16), inset -2px 0 0 rgba(0, 84, 61, 0.26) !important;
-}
-
-.calendar-day.is-today::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  z-index: 3;
-  border: 2px solid rgba(0, 84, 61, 0.32);
-  border-radius: 0;
-  pointer-events: none;
-}
-
-.calendar-day.is-today:nth-child(7n + 7) {
-  border-right: 1px solid rgba(0, 84, 61, 0.24) !important;
-}
-
-.calendar-day.is-selected,
-.calendar-day.is-expanded {
-  background: linear-gradient(180deg, #fff8e9, #ffffff) !important;
-  border-color: rgba(165, 100, 5, 0.36) !important;
-  box-shadow: inset 0 0 0 2px rgba(165, 100, 5, 0.38) !important;
-}
-
-.calendar-day.is-selected::after,
-.calendar-day.is-expanded::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  z-index: 3;
-  border: 2px solid rgba(165, 100, 5, 0.42);
-  border-radius: 0;
-  pointer-events: none;
-}
+/* Mobile pill wrapping and field pairing */
 
 @media (max-width: 520px) {
   .events-card .event-item.is-past h3,
@@ -13355,114 +13219,8 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 }
 
-/* Final requested corrections: desktop calendar edge state and mobile-only form pairing */
+/* Desktop registration field pairing */
 @media (min-width: 769px) {
-  .calendar-grid {
-    border-color: rgba(165, 100, 5, 0.26) !important;
-  }
-
-  .calendar-day:not(.is-selected):not(.is-expanded) {
-    border-color: rgba(165, 100, 5, 0.2) !important;
-    border-bottom-color: rgba(165, 100, 5, 0.26) !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    background: linear-gradient(180deg, #f2faf6, #ffffff) !important;
-    border-top-color: rgba(0, 84, 61, 0.2) !important;
-    border-right-color: rgba(0, 84, 61, 0.2) !important;
-    border-left-color: rgba(0, 84, 61, 0.2) !important;
-    border-bottom-color: rgba(165, 100, 5, 0.28) !important;
-    box-shadow: none !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after {
-    content: "";
-    position: absolute;
-    inset: -1px -3px 2px -1px;
-    z-index: 4;
-    border: 2px solid rgba(0, 84, 61, 0.34);
-    border-bottom: 0;
-    border-radius: 0;
-    pointer-events: none;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 1)::after {
-    left: -3px;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded):nth-child(7n + 7)::after {
-    right: -3px;
-  }
-
-  .calendar-grid.has-today-left-edge::after,
-  .calendar-grid.has-today-right-edge::after {
-    content: "";
-    position: absolute;
-    top: calc(var(--calendar-today-top) - 1px);
-    z-index: 8;
-    width: 4px;
-    height: calc(var(--calendar-today-height) - 5px);
-    background: rgba(0, 84, 61, 0.38);
-    pointer-events: none;
-  }
-
-  .calendar-grid.has-today-left-edge::before,
-  .calendar-grid.has-today-right-edge::before {
-    content: "" !important;
-    display: block !important;
-    position: absolute;
-    top: -1px;
-    z-index: 8;
-    width: 4px;
-    height: calc(var(--calendar-today-top) + 1px);
-    background: var(--green);
-    pointer-events: none;
-  }
-
-  .calendar-grid.has-today-left-edge::before {
-    left: -2px;
-  }
-
-  .calendar-grid.has-today-right-edge::before {
-    right: -2px;
-  }
-
-  .calendar-grid.has-today-left-edge::after {
-    left: -2px;
-  }
-
-  .calendar-grid.has-today-right-edge::after {
-    right: -2px;
-  }
-
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    border-right-color: rgba(165, 100, 5, 0.22) !important;
-  }
-
-  .calendar-grid.has-today-left-edge::before,
-  .calendar-grid.has-today-right-edge::before,
-  .calendar-grid.has-today-left-edge::after,
-  .calendar-grid.has-today-right-edge::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded),
-  .calendar-grid.has-today-left-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded),
-  .calendar-grid.has-today-right-edge .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
-    background: linear-gradient(180deg, #f4faf6, #ffffff) !important;
-    border-top-color: rgba(165, 100, 5, 0.2) !important;
-    border-right-color: rgba(165, 100, 5, 0.2) !important;
-    border-bottom-color: rgba(165, 100, 5, 0.28) !important;
-    border-left-color: rgba(165, 100, 5, 0.2) !important;
-    box-shadow: none !important;
-  }
-
-  .calendar-day.is-today:not(.is-selected):not(.is-expanded)::after {
-    content: none !important;
-    display: none !important;
-  }
-
   .registration-panel form.local-registration-form[aria-label="Al-Falah Quran School registration"] > label:has(input[type="email"]),
   .registration-panel form.local-registration-form[aria-label="Al Mizaan Leadership Academy registration"] > label:has(input[type="email"]) {
     grid-column: 1 / -1 !important;
@@ -13646,205 +13404,8 @@ body:has(.about-community-copy) .page-hero h1 {
   box-shadow: none !important;
 }
 
-/*
- * Desktop event calendar geometry
- *
- * The grid owns one continuous rounded frame and the weekday row stays one
- * uninterrupted green surface beneath it. Weekday/day inset lines draw only
- * internal dividers, all from the same opaque 1px gold token. Active outlines
- * overlap the owned divider pixel on their left/bottom sides, so every side
- * reads as the same 2px weight instead of leaving a stray gold pixel beside
- * the highlight. When two active cells meet, JavaScript hides the
- * lower-priority side so selected/expanded gold owns one clean shared edge.
- */
+/* Calendar detail surfaces stay flat beside the single-line calendar grid. */
 @media (min-width: 769px) {
-  .calendar-grid,
-  .calendar-grid.has-today-left-edge,
-  .calendar-grid.has-today-right-edge,
-  .page-main .calendar-band .calendar-grid {
-    --calendar-grid-line: #dec79d;
-    --calendar-highlight-today: #00543d;
-    --calendar-highlight-active: #a56405;
-    position: relative !important;
-    isolation: isolate !important;
-    display: grid !important;
-    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
-    overflow: hidden !important;
-    background: var(--green) !important;
-    border: 0 !important;
-    border-radius: 10px !important;
-    clip-path: none !important;
-    box-shadow: none !important;
-  }
-
-  .calendar-grid::before,
-  .calendar-grid.has-today-left-edge::before,
-  .calendar-grid.has-today-right-edge::before,
-  .page-main .calendar-band .calendar-grid::before,
-  .page-main .calendar-band .calendar-grid .calendar-weekday::before,
-  .page-main .calendar-band .calendar-grid .calendar-weekday::after,
-  .page-main .calendar-band .calendar-grid .calendar-day::before,
-  .page-main .calendar-band .calendar-grid .calendar-day::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .calendar-grid::after,
-  .calendar-grid.has-today-left-edge::after,
-  .calendar-grid.has-today-right-edge::after,
-  .page-main .calendar-band .calendar-grid::after {
-    content: "" !important;
-    display: block !important;
-    position: absolute !important;
-    inset: 0 !important;
-    z-index: 2 !important;
-    box-sizing: border-box !important;
-    background: transparent !important;
-    border: 1px solid var(--calendar-grid-line) !important;
-    border-radius: 10px !important;
-    pointer-events: none !important;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-weekday {
-    position: relative !important;
-    z-index: 1 !important;
-    box-sizing: border-box !important;
-    background: var(--green) !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: inset -1px 0 0 var(--calendar-grid-line) !important;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-weekday:nth-child(7) {
-    box-shadow: none !important;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day,
-  .page-main .calendar-band .calendar-grid .calendar-day.is-today,
-  .page-main .calendar-band .calendar-grid .calendar-day.is-selected,
-  .page-main .calendar-band .calendar-grid .calendar-day.is-expanded {
-    --calendar-day-right-line: inset -1px 0 0 var(--calendar-grid-line);
-    position: relative !important;
-    z-index: 1 !important;
-    box-sizing: border-box !important;
-    width: auto !important;
-    height: auto !important;
-    min-height: 156px !important;
-    margin: 0 !important;
-    outline: 0 !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: #ffffff !important;
-    background-clip: border-box !important;
-    box-shadow:
-      inset 0 1px 0 var(--calendar-grid-line),
-      var(--calendar-day-right-line) !important;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-muted {
-    background: #fbfdfc !important;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-grid-right {
-    --calendar-day-right-line: inset 0 0 0 transparent;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-grid-bottom.is-grid-left {
-    border-bottom-left-radius: 10px !important;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-grid-bottom.is-grid-right {
-    border-bottom-right-radius: 10px !important;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-today {
-    z-index: 3 !important;
-    background: linear-gradient(180deg, #eef9f3, #ffffff) !important;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-selected,
-  .page-main .calendar-band .calendar-grid .calendar-day.is-expanded {
-    z-index: 4 !important;
-    background: linear-gradient(180deg, #fff8e9, #ffffff) !important;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-expanded {
-    min-height: 222px !important;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day-outline {
-    --calendar-shared-top-left: transparent;
-    --calendar-shared-top-right: transparent;
-    --calendar-shared-bottom-right: transparent;
-    --calendar-shared-bottom-left: transparent;
-    position: absolute;
-    inset: 0 0 -1px -1px;
-    z-index: 20;
-    display: none;
-    box-sizing: border-box;
-    border: 2px solid currentColor;
-    border-radius: inherit;
-    pointer-events: none;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day-outline::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    z-index: 1;
-    display: block;
-    border-radius: inherit;
-    background:
-      linear-gradient(var(--calendar-shared-top-left), var(--calendar-shared-top-left)) left top / 2px 2px no-repeat,
-      linear-gradient(var(--calendar-shared-top-right), var(--calendar-shared-top-right)) right top / 2px 2px no-repeat,
-      linear-gradient(var(--calendar-shared-bottom-right), var(--calendar-shared-bottom-right)) right bottom / 2px 2px no-repeat,
-      linear-gradient(var(--calendar-shared-bottom-left), var(--calendar-shared-bottom-left)) left bottom / 2px 2px no-repeat;
-    pointer-events: none;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-grid-left > .calendar-day-outline {
-    left: 0;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-grid-bottom > .calendar-day-outline {
-    bottom: 0;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day-outline.is-shared-top-hidden {
-    --calendar-shared-top-left: var(--calendar-highlight-active);
-    --calendar-shared-top-right: var(--calendar-highlight-active);
-    border-top-color: transparent;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day-outline.is-shared-right-hidden {
-    --calendar-shared-top-right: var(--calendar-highlight-active);
-    --calendar-shared-bottom-right: var(--calendar-highlight-active);
-    border-right-color: transparent;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day-outline.is-shared-bottom-hidden {
-    --calendar-shared-bottom-right: var(--calendar-highlight-active);
-    --calendar-shared-bottom-left: var(--calendar-highlight-active);
-    border-bottom-color: transparent;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day-outline.is-shared-left-hidden {
-    --calendar-shared-top-left: var(--calendar-highlight-active);
-    --calendar-shared-bottom-left: var(--calendar-highlight-active);
-    border-left-color: transparent;
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-today > .calendar-day-outline {
-    display: block;
-    color: var(--calendar-highlight-today);
-  }
-
-  .page-main .calendar-band .calendar-grid .calendar-day.is-selected > .calendar-day-outline,
-  .page-main .calendar-band .calendar-grid .calendar-day.is-expanded > .calendar-day-outline {
-    display: block;
-    color: var(--calendar-highlight-active);
-  }
-
   .calendar-detail-empty,
   .calendar-detail-card,
   .calendar-detail-body,
@@ -13853,15 +13414,9 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 }
 
-/* Mobile calendar cards should not inherit desktop highlight corner overlays. */
+/* Mobile keeps its existing stacked event-card layout. */
 @media (max-width: 768px) {
-  .calendar-day-outline {
-    display: none !important;
-  }
-
   .calendar-grid,
-  .calendar-grid.has-today-left-edge,
-  .calendar-grid.has-today-right-edge,
   .page-main .calendar-band .calendar-grid {
     display: block !important;
     overflow: visible !important;
@@ -13870,16 +13425,6 @@ body:has(.about-community-copy) .page-hero h1 {
     border-radius: 0 !important;
     box-shadow: none !important;
     clip-path: none !important;
-  }
-
-  .calendar-grid::before,
-  .calendar-grid::after,
-  .calendar-grid.has-today-left-edge::before,
-  .calendar-grid.has-today-left-edge::after,
-  .calendar-grid.has-today-right-edge::before,
-  .calendar-grid.has-today-right-edge::after {
-    content: none !important;
-    display: none !important;
   }
 
   .calendar-day.has-events,
@@ -13928,16 +13473,6 @@ body:has(.about-community-copy) .page-hero h1 {
     background: linear-gradient(180deg, #fff5df, #ffffff) !important;
     border-color: rgba(165, 100, 5, 0.58) !important;
     box-shadow: inset 0 0 0 1px rgba(165, 100, 5, 0.14), 0 3px 10px rgba(165, 100, 5, 0.1) !important;
-  }
-
-  .calendar-day.has-events.is-today::after,
-  .calendar-day.has-events.is-selected::after,
-  .calendar-day.has-events.is-expanded::after,
-  .page-main .calendar-band .calendar-grid .calendar-day.has-events.is-today::after,
-  .page-main .calendar-band .calendar-grid .calendar-day.has-events.is-selected::after,
-  .page-main .calendar-band .calendar-grid .calendar-day.has-events.is-expanded::after {
-    content: none !important;
-    display: none !important;
   }
 
   .calendar-day.has-events.is-muted {

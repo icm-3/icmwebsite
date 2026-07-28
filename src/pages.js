@@ -405,38 +405,6 @@ function setCalendarDetail(event, index = 0) {
   `;
 }
 
-function syncCalendarSharedHighlightEdges(grid) {
-  const cells = [...grid.querySelectorAll(".calendar-day")];
-  const priority = (cell) => {
-    if (cell.classList.contains("is-selected") || cell.classList.contains("is-expanded")) return 2;
-    return cell.classList.contains("is-today") ? 1 : 0;
-  };
-  const hideSide = (cell, side) => {
-    cell
-      .querySelector(".calendar-day-outline")
-      ?.classList.add(`is-shared-${side}-hidden`);
-  };
-  const resolveSharedEdge = (first, firstSide, second, secondSide) => {
-    if (!first || !second) return;
-    const firstPriority = priority(first);
-    const secondPriority = priority(second);
-    if (!firstPriority || !secondPriority) return;
-
-    if (firstPriority >= secondPriority) {
-      hideSide(second, secondSide);
-    } else {
-      hideSide(first, firstSide);
-    }
-  };
-
-  cells.forEach((cell, index) => {
-    if (index % 7 < 6) {
-      resolveSharedEdge(cell, "right", cells[index + 1], "left");
-    }
-    resolveSharedEdge(cell, "bottom", cells[index + 7], "top");
-  });
-}
-
 function renderCalendar(content) {
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
@@ -475,21 +443,8 @@ function renderCalendar(content) {
       todayDate.getMonth() === date.getMonth() &&
       todayDate.getDate() === date.getDate();
     const badge = getDateBadgeParts(dateKey);
-    const columnIndex = index % 7;
-    const rowIndex = Math.floor(index / 7);
-    const lastRowIndex = visibleDayCount / 7 - 1;
-    const gridEdgeClasses = [
-      rowIndex === 0 ? "is-grid-top" : "",
-      rowIndex === lastRowIndex ? "is-grid-bottom" : "",
-      columnIndex === 0 ? "is-grid-left" : "",
-      columnIndex === 6 ? "is-grid-right" : "",
-    ]
-      .filter(Boolean)
-      .join(" ");
-
     return `
-      <div class="calendar-day ${gridEdgeClasses}${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}" data-date-key="${escapeHtml(dateKey)}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
-        <span class="calendar-day-outline" aria-hidden="true"></span>
+      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}" data-date-key="${escapeHtml(dateKey)}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
         <span class="calendar-day-number"><span>${escapeHtml(badge.month)}</span><strong>${date.getDate()}</strong></span>
         <div class="calendar-event-stack">
           ${visibleEvents
@@ -519,7 +474,6 @@ function renderCalendar(content) {
   }).join("");
 
   grid.innerHTML = weekdays.map((day) => `<div class="calendar-weekday">${day}</div>`).join("") + cells;
-  syncCalendarSharedHighlightEdges(grid);
 
   const selectedIndex = content.events.findIndex((event, index) => eventSlug(event, index) === selectedCalendarEventSlug);
   const selectedEvent = selectedIndex >= 0 ? content.events[selectedIndex] : null;
