@@ -3282,7 +3282,7 @@ input[type="checkbox"] {
  * states cannot create competing or doubled edges.
  */
 .calendar-grid {
-  --calendar-grid-line: #dec79d;
+  --calendar-grid-line: rgba(165, 100, 5, 0.42);
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 2px;
