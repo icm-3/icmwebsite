@@ -13,12 +13,9 @@ const ICM_COORDS = new Coordinates(35.8111, -78.8231);
 const TIME_ZONE = "America/New_York";
 const prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 const calendarSearchParams = new URLSearchParams(window.location.search);
-const isCalendarPage = Boolean(document.querySelector("[data-calendar-grid]"));
-// Temporary live calendar preview: keep the current day in the upper-right
-// corner with neighboring events while the desktop grid is being reviewed.
-const calendarFixtureName = calendarSearchParams.get("calendarFixture") || (isCalendarPage ? "desktop-edges" : "");
+const calendarFixtureName = calendarSearchParams.get("calendarFixture") || "";
 const requestedCalendarToday = calendarSearchParams.get("calendarToday") || "";
-const calendarTodayOverride = /^\d{4}-\d{2}-\d{2}$/.test(requestedCalendarToday)
+let calendarTodayOverride = /^\d{4}-\d{2}-\d{2}$/.test(requestedCalendarToday)
   ? requestedCalendarToday
   : calendarFixtureName === "desktop-edges"
     ? calendarDesktopEdgeFixture.today
@@ -73,6 +70,7 @@ function mergeContent(content) {
   const merged = {
     ...defaultContent,
     ...content,
+    calendar: { ...defaultContent.calendar, ...(content?.calendar || {}) },
     jummah: { ...defaultContent.jummah, ...(content?.jummah || {}) },
     events: Array.isArray(content?.events) ? content.events : defaultContent.events,
     news: Array.isArray(content?.news) ? content.news : defaultContent.news,
@@ -515,6 +513,11 @@ function renderCalendar(content) {
 function initCalendar(content) {
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
+
+  if (!calendarTodayOverride && /^\d{4}-\d{2}-\d{2}$/.test(content.calendar?.today || "")) {
+    calendarTodayOverride = content.calendar.today;
+    selectedCalendarMonth = getCalendarOverrideDate();
+  }
 
   const hashSlug = eventSlugFromHash();
   if (hashSlug) {

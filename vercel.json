@@ -3,7 +3,10 @@
   "builds": [
     {
       "src": "api/**/*.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["data/cms.json"]
+      }
     },
     {
       "src": "package.json",
@@ -17,6 +20,10 @@
     {
       "src": "/api/prayer-times",
       "dest": "/api/prayer-times.js"
+    },
+    {
+      "src": "/api/cms",
+      "dest": "/api/cms.js"
     },
     {
       "src": "/",

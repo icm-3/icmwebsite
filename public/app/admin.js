@@ -33,6 +33,9 @@ var defaultContent = {
       }
     ]
   },
+  "calendar": {
+    "today": "2026-07-04"
+  },
   "events": [
     {
       "title": "June 6 Calendar Edge Test",
@@ -250,6 +253,51 @@ var defaultContent = {
       "description": "Short evening reminder and community check-in after Maghrib.",
       "poster": "./public/news/icm-live/friday-bukhari-circle.jpeg",
       "posterAlt": "ICM Friday Night Bukhari Circle flyer"
+    },
+    {
+      "title": "Lower Left Neighbor Fixture One",
+      "date": "2026-07-10",
+      "time": "5:00 PM",
+      "location": "ICM",
+      "description": "Temporary CMS event diagonally below and left of the July 4 current-day corner.",
+      "poster": "./public/news/icm-live/friday-announcements-june-19-2026.png",
+      "posterAlt": "ICM Friday Announcements flyer"
+    },
+    {
+      "title": "Lower Left Neighbor Fixture Two",
+      "date": "2026-07-10",
+      "time": "5:30 PM",
+      "location": "ICM",
+      "description": "Second temporary CMS event diagonally below and left of the July 4 current-day corner.",
+      "poster": "./public/news/icm-live/friday-bukhari-circle.jpeg",
+      "posterAlt": "ICM Friday Night Bukhari Circle flyer"
+    },
+    {
+      "title": "Below Current Fixture One",
+      "date": "2026-07-11",
+      "time": "6:00 PM",
+      "location": "ICM",
+      "description": "Temporary CMS event directly below the July 4 current-day corner.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
+    },
+    {
+      "title": "Below Current Fixture Two",
+      "date": "2026-07-11",
+      "time": "6:30 PM",
+      "location": "ICM",
+      "description": "Second temporary CMS event directly below the July 4 current-day corner.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
+    },
+    {
+      "title": "Below Current Fixture Three",
+      "date": "2026-07-11",
+      "time": "7:00 PM",
+      "location": "ICM",
+      "description": "Expansion event directly below the July 4 current-day corner.",
+      "poster": "./public/news/icm-live/volunteer-icm-youth.jpeg",
+      "posterAlt": "Volunteer for ICM Youth Program flyer"
     },
     {
       "title": "Friday Night Bukhari Circle With Community Reflections And Weekly Family Reminders",
