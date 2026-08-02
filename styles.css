@@ -3325,6 +3325,10 @@ input[type="checkbox"] {
   }
 
   .calendar-day.is-today {
+    --calendar-current-top: var(--calendar-highlight-green);
+    --calendar-current-right: var(--calendar-highlight-green);
+    --calendar-current-bottom: var(--calendar-highlight-green);
+    --calendar-current-left: var(--calendar-highlight-green);
     z-index: 2;
     background: linear-gradient(180deg, #eef9f3, #ffffff);
     box-shadow: none;
@@ -3351,10 +3355,10 @@ input[type="checkbox"] {
 
   .calendar-day.is-today::after {
     background:
-      linear-gradient(var(--calendar-highlight-green), var(--calendar-highlight-green)) 0 0 / 100% 2px no-repeat,
-      linear-gradient(var(--calendar-highlight-green), var(--calendar-highlight-green)) 100% 2px / 2px calc(100% - 4px) no-repeat,
-      linear-gradient(var(--calendar-highlight-green), var(--calendar-highlight-green)) 0 100% / 100% 2px no-repeat,
-      linear-gradient(var(--calendar-highlight-green), var(--calendar-highlight-green)) 0 2px / 2px calc(100% - 4px) no-repeat;
+      linear-gradient(var(--calendar-current-top), var(--calendar-current-top)) 0 0 / 100% 2px no-repeat,
+      linear-gradient(var(--calendar-current-right), var(--calendar-current-right)) 100% 2px / 2px calc(100% - 4px) no-repeat,
+      linear-gradient(var(--calendar-current-bottom), var(--calendar-current-bottom)) 0 100% / 100% 2px no-repeat,
+      linear-gradient(var(--calendar-current-left), var(--calendar-current-left)) 0 2px / 2px calc(100% - 4px) no-repeat;
   }
 
   .calendar-day.is-selected::after,
@@ -3364,6 +3368,26 @@ input[type="checkbox"] {
       linear-gradient(var(--calendar-highlight-gold), var(--calendar-highlight-gold)) 100% 2px / 2px calc(100% - 4px) no-repeat,
       linear-gradient(var(--calendar-highlight-gold), var(--calendar-highlight-gold)) 0 100% / 100% 2px no-repeat,
       linear-gradient(var(--calendar-highlight-gold), var(--calendar-highlight-gold)) 0 2px / 2px calc(100% - 4px) no-repeat;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected),
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) {
+    --calendar-current-right: transparent;
+  }
+
+  .calendar-day.is-selected + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)),
+  .calendar-day.is-expanded + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)) {
+    --calendar-current-left: transparent;
+  }
+
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected),
+  .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-expanded) {
+    --calendar-current-bottom: transparent;
+  }
+
+  .calendar-day.is-selected + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded),
+  .calendar-day.is-expanded + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-today:not(.is-selected):not(.is-expanded) {
+    --calendar-current-top: transparent;
   }
 }
 
