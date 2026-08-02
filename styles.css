@@ -3317,12 +3317,12 @@ input[type="checkbox"] {
 }
 
 .calendar-day.is-today {
-  box-shadow: inset 0 0 20px rgba(0, 84, 61, 0.18);
+  box-shadow: inset 0 0 20px rgba(0, 84, 61, 0.38);
 }
 
 .calendar-day.is-selected,
 .calendar-day.is-expanded {
-  box-shadow: inset 0 0 20px rgba(165, 100, 5, 0.2);
+  box-shadow: inset 0 0 20px rgba(165, 100, 5, 0.38);
 }
 
 .calendar-day.is-expanded {
