@@ -3320,6 +3320,8 @@ input[type="checkbox"] {
   .calendar-grid {
     --calendar-highlight-green: #00543d;
     --calendar-highlight-gold: #a56405;
+    overflow: visible;
+    clip-path: inset(0 round 10px);
   }
 
   .calendar-day.is-today {
