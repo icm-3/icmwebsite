@@ -3282,7 +3282,7 @@ input[type="checkbox"] {
  * states cannot create competing or doubled edges.
  */
 .calendar-grid {
-  --calendar-grid-line: var(--gold);
+  --calendar-grid-line: #dec79d;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 2px;
@@ -3317,12 +3317,14 @@ input[type="checkbox"] {
 }
 
 .calendar-day.is-today {
-  box-shadow: inset 0 0 20px rgba(0, 84, 61, 0.18);
+  background: linear-gradient(180deg, #f2faf6, #ffffff);
+  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.16);
 }
 
 .calendar-day.is-selected,
 .calendar-day.is-expanded {
-  box-shadow: inset 0 0 20px rgba(165, 100, 5, 0.2);
+  background: linear-gradient(180deg, #fff8e9, #ffffff);
+  box-shadow: inset 0 0 0 2px rgba(165, 100, 5, 0.38);
 }
 
 .calendar-day.is-expanded {
