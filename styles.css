@@ -3321,7 +3321,7 @@ input[type="checkbox"] {
     --calendar-highlight-green: #00543d;
     --calendar-highlight-gold: #a56405;
     overflow: visible;
-    clip-path: inset(0 round 10px);
+    clip-path: inset(0 round 12px);
   }
 
   .calendar-day.is-today {
@@ -3329,8 +3329,8 @@ input[type="checkbox"] {
     --calendar-current-right: var(--calendar-highlight-green);
     --calendar-current-bottom: var(--calendar-highlight-green);
     --calendar-current-left: var(--calendar-highlight-green);
-    --calendar-current-horizontal-x: 0;
-    --calendar-current-horizontal-width: 100%;
+    --calendar-current-horizontal-left-inset: 0px;
+    --calendar-current-horizontal-right-inset: 0px;
     z-index: 2;
     background: linear-gradient(180deg, #eef9f3, #ffffff);
     box-shadow: none;
@@ -3357,9 +3357,9 @@ input[type="checkbox"] {
 
   .calendar-day.is-today::after {
     background:
-      linear-gradient(var(--calendar-current-top), var(--calendar-current-top)) var(--calendar-current-horizontal-x) 0 / var(--calendar-current-horizontal-width) 2px no-repeat,
+      linear-gradient(var(--calendar-current-top), var(--calendar-current-top)) var(--calendar-current-horizontal-left-inset) 0 / calc(100% - var(--calendar-current-horizontal-left-inset) - var(--calendar-current-horizontal-right-inset)) 2px no-repeat,
       linear-gradient(var(--calendar-current-right), var(--calendar-current-right)) 100% 2px / 2px calc(100% - 4px) no-repeat,
-      linear-gradient(var(--calendar-current-bottom), var(--calendar-current-bottom)) var(--calendar-current-horizontal-x) 100% / var(--calendar-current-horizontal-width) 2px no-repeat,
+      linear-gradient(var(--calendar-current-bottom), var(--calendar-current-bottom)) var(--calendar-current-horizontal-left-inset) 100% / calc(100% - var(--calendar-current-horizontal-left-inset) - var(--calendar-current-horizontal-right-inset)) 2px no-repeat,
       linear-gradient(var(--calendar-current-left), var(--calendar-current-left)) 0 2px / 2px calc(100% - 4px) no-repeat;
   }
 
@@ -3376,14 +3376,13 @@ input[type="checkbox"] {
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected),
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) {
     --calendar-current-right: transparent;
-    --calendar-current-horizontal-width: calc(100% - 2px);
+    --calendar-current-horizontal-right-inset: 2px;
   }
 
   .calendar-day.is-selected + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)),
   .calendar-day.is-expanded + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)) {
     --calendar-current-left: transparent;
-    --calendar-current-horizontal-x: 2px;
-    --calendar-current-horizontal-width: calc(100% - 2px);
+    --calendar-current-horizontal-left-inset: 2px;
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected),

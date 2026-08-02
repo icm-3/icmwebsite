@@ -893,7 +893,28 @@ var defaultContent = {
     ]
   },
   "calendar": {
-    "today": "2026-07-04"
+    "today": "2026-07-04",
+    "testTodayDates": [
+      "2026-06-28",
+      "2026-07-04",
+      "2026-07-16",
+      "2026-07-26",
+      "2026-08-01"
+    ],
+    "testSelectedDates": [
+      "2026-06-29",
+      "2026-07-03",
+      "2026-07-05",
+      "2026-07-09",
+      "2026-07-11",
+      "2026-07-15",
+      "2026-07-17",
+      "2026-07-19",
+      "2026-07-23",
+      "2026-07-25",
+      "2026-07-27",
+      "2026-07-31"
+    ]
   },
   "events": [
     {
@@ -1240,7 +1261,31 @@ var defaultContent = {
       "link": "https://tinyurl.com/ICM-Zumba-2026",
       "poster": "./public/news/icm-live/sisters-zumba-fitness.png",
       "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
-    }
+    },
+    { "title": "Calendar Coverage Test \u2014 July 1", "date": "2026-07-01", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 2", "date": "2026-07-02", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 8", "date": "2026-07-08", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 9", "date": "2026-07-09", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 12", "date": "2026-07-12", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 14", "date": "2026-07-14", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 15", "date": "2026-07-15", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 16", "date": "2026-07-16", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 17", "date": "2026-07-17", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 18", "date": "2026-07-18", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 19", "date": "2026-07-19", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 20", "date": "2026-07-20", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 21", "date": "2026-07-21", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 22", "date": "2026-07-22", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 23", "date": "2026-07-23", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 24", "date": "2026-07-24", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 25", "date": "2026-07-25", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 26", "date": "2026-07-26", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 27", "date": "2026-07-27", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 28", "date": "2026-07-28", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 29", "date": "2026-07-29", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 30", "date": "2026-07-30", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test \u2014 July 31", "date": "2026-07-31", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Visible Corner Test \u2014 August 1", "date": "2026-08-01", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for the visible bottom-right calendar corner." }
   ],
   "news": [
     {
@@ -1507,6 +1552,8 @@ var calendarSearchParams = new URLSearchParams(window.location.search);
 var calendarFixtureName = calendarSearchParams.get("calendarFixture") || "";
 var requestedCalendarToday = calendarSearchParams.get("calendarToday") || "";
 var calendarTodayOverride = /^\d{4}-\d{2}-\d{2}$/.test(requestedCalendarToday) ? requestedCalendarToday : calendarFixtureName === "desktop-edges" ? calendarDesktopEdgeFixture.today : "";
+var calendarTodayDateKeys = calendarTodayOverride ? [calendarTodayOverride] : [];
+var calendarSelectedDateKeys = [];
 var prayerLabels = {
   fajr: "Fajr",
   sunrise: "Sunrise",
@@ -1828,7 +1875,6 @@ function renderCalendar(content) {
   if (title) title.textContent = formatMonthTitle(monthStart);
   if (hijri) hijri.textContent = formatHijriMonth(selectedCalendarMonth);
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const todayDate = getCalendarTodayDate();
   const cells = Array.from({ length: visibleDayCount }, (_, index) => {
     const date = new Date(firstGridDate);
     date.setDate(firstGridDate.getDate() + index);
@@ -1840,11 +1886,12 @@ function renderCalendar(content) {
     const hasSelectedEvent = dateEvents.some(
       (event) => eventSlug(event, content.events.indexOf(event)) === selectedCalendarEventSlug
     );
+    const isConfiguredSelected = calendarSelectedDateKeys.includes(dateKey);
     const isOutside = date.getMonth() !== monthStart.getMonth();
-    const isToday = todayDate.getFullYear() === date.getFullYear() && todayDate.getMonth() === date.getMonth() && todayDate.getDate() === date.getDate();
+    const isToday = calendarTodayDateKeys.includes(dateKey);
     const badge = getDateBadgeParts(dateKey);
     return `
-      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}" data-date-key="${escapeHtml(dateKey)}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
+      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent || isConfiguredSelected ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}" data-date-key="${escapeHtml(dateKey)}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
         <span class="calendar-day-number"><span>${escapeHtml(badge.month)}</span><strong>${date.getDate()}</strong></span>
         <div class="calendar-event-stack">
           ${visibleEvents.map(
@@ -1898,10 +1945,15 @@ function renderCalendar(content) {
 function initCalendar(content) {
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
-  if (!calendarTodayOverride && /^\d{4}-\d{2}-\d{2}$/.test(content.calendar?.today || "")) {
-    calendarTodayOverride = content.calendar.today;
-    selectedCalendarMonth = getCalendarOverrideDate();
+  const configuredTodayDates = Array.isArray(content.calendar?.testTodayDates) ? content.calendar.testTodayDates.filter((date) => /^\d{4}-\d{2}-\d{2}$/.test(date)) : [];
+  calendarSelectedDateKeys = Array.isArray(content.calendar?.testSelectedDates) ? content.calendar.testSelectedDates.filter((date) => /^\d{4}-\d{2}-\d{2}$/.test(date)) : [];
+  if (!calendarTodayOverride) {
+    const configuredPrimaryToday = /^\d{4}-\d{2}-\d{2}$/.test(content.calendar?.today || "") ? content.calendar.today : "";
+    calendarTodayDateKeys = configuredTodayDates.length ? configuredTodayDates : configuredPrimaryToday ? [configuredPrimaryToday] : [];
+    calendarTodayOverride = configuredPrimaryToday || calendarTodayDateKeys[0] || "";
+    if (calendarTodayOverride) selectedCalendarMonth = getCalendarOverrideDate();
   }
+  if (!calendarTodayDateKeys.length) calendarTodayDateKeys = [calendarDateKey(prayerDateFor(/* @__PURE__ */ new Date()))];
   const hashSlug = eventSlugFromHash();
   if (hashSlug) {
     const eventIndex = content.events.findIndex((event2, index) => eventSlug(event2, index) === hashSlug);

@@ -33,7 +33,28 @@ export const defaultContent = {
     ]
   },
   "calendar": {
-    "today": "2026-07-04"
+    "today": "2026-07-04",
+    "testTodayDates": [
+      "2026-06-28",
+      "2026-07-04",
+      "2026-07-16",
+      "2026-07-26",
+      "2026-08-01"
+    ],
+    "testSelectedDates": [
+      "2026-06-29",
+      "2026-07-03",
+      "2026-07-05",
+      "2026-07-09",
+      "2026-07-11",
+      "2026-07-15",
+      "2026-07-17",
+      "2026-07-19",
+      "2026-07-23",
+      "2026-07-25",
+      "2026-07-27",
+      "2026-07-31"
+    ]
   },
   "events": [
     {
@@ -380,7 +401,31 @@ export const defaultContent = {
       "link": "https://tinyurl.com/ICM-Zumba-2026",
       "poster": "./public/news/icm-live/sisters-zumba-fitness.png",
       "posterAlt": "ICM Sisters Zumba Fitness Class flyer"
-    }
+    },
+    { "title": "Calendar Coverage Test — July 1", "date": "2026-07-01", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 2", "date": "2026-07-02", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 8", "date": "2026-07-08", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 9", "date": "2026-07-09", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 12", "date": "2026-07-12", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 14", "date": "2026-07-14", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 15", "date": "2026-07-15", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 16", "date": "2026-07-16", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 17", "date": "2026-07-17", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 18", "date": "2026-07-18", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 19", "date": "2026-07-19", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 20", "date": "2026-07-20", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 21", "date": "2026-07-21", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 22", "date": "2026-07-22", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 23", "date": "2026-07-23", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 24", "date": "2026-07-24", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 25", "date": "2026-07-25", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 26", "date": "2026-07-26", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 27", "date": "2026-07-27", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 28", "date": "2026-07-28", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 29", "date": "2026-07-29", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 30", "date": "2026-07-30", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Calendar Coverage Test — July 31", "date": "2026-07-31", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for full July calendar interaction testing." },
+    { "title": "Visible Corner Test — August 1", "date": "2026-08-01", "time": "6:00 PM", "location": "ICM", "description": "Temporary CMS-backed event for the visible bottom-right calendar corner." }
   ],
   "news": [
     {

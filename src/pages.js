@@ -20,6 +20,8 @@ let calendarTodayOverride = /^\d{4}-\d{2}-\d{2}$/.test(requestedCalendarToday)
   : calendarFixtureName === "desktop-edges"
     ? calendarDesktopEdgeFixture.today
     : "";
+let calendarTodayDateKeys = calendarTodayOverride ? [calendarTodayOverride] : [];
+let calendarSelectedDateKeys = [];
 const prayerLabels = {
   fajr: "Fajr",
   sunrise: "Sunrise",
@@ -426,7 +428,6 @@ function renderCalendar(content) {
   if (hijri) hijri.textContent = formatHijriMonth(selectedCalendarMonth);
 
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const todayDate = getCalendarTodayDate();
   const cells = Array.from({ length: visibleDayCount }, (_, index) => {
     const date = new Date(firstGridDate);
     date.setDate(firstGridDate.getDate() + index);
@@ -438,14 +439,12 @@ function renderCalendar(content) {
     const hasSelectedEvent = dateEvents.some(
       (event) => eventSlug(event, content.events.indexOf(event)) === selectedCalendarEventSlug,
     );
+    const isConfiguredSelected = calendarSelectedDateKeys.includes(dateKey);
     const isOutside = date.getMonth() !== monthStart.getMonth();
-    const isToday =
-      todayDate.getFullYear() === date.getFullYear() &&
-      todayDate.getMonth() === date.getMonth() &&
-      todayDate.getDate() === date.getDate();
+    const isToday = calendarTodayDateKeys.includes(dateKey);
     const badge = getDateBadgeParts(dateKey);
     return `
-      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}" data-date-key="${escapeHtml(dateKey)}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
+      <div class="calendar-day${isOutside ? " is-muted" : ""}${isToday ? " is-today" : ""}${dateEvents.length ? " has-events" : ""}${hasSelectedEvent || isConfiguredSelected ? " is-selected" : ""}${isExpandedDate ? " is-expanded" : ""}" data-date-key="${escapeHtml(dateKey)}" data-date-label="${escapeHtml(formatShortDate(dateKey))}">
         <span class="calendar-day-number"><span>${escapeHtml(badge.month)}</span><strong>${date.getDate()}</strong></span>
         <div class="calendar-event-stack">
           ${visibleEvents
@@ -514,10 +513,27 @@ function initCalendar(content) {
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
 
-  if (!calendarTodayOverride && /^\d{4}-\d{2}-\d{2}$/.test(content.calendar?.today || "")) {
-    calendarTodayOverride = content.calendar.today;
-    selectedCalendarMonth = getCalendarOverrideDate();
+  // Optional CMS-backed QA states let one live calendar exercise edge ownership in every position.
+  const configuredTodayDates = Array.isArray(content.calendar?.testTodayDates)
+    ? content.calendar.testTodayDates.filter((date) => /^\d{4}-\d{2}-\d{2}$/.test(date))
+    : [];
+  calendarSelectedDateKeys = Array.isArray(content.calendar?.testSelectedDates)
+    ? content.calendar.testSelectedDates.filter((date) => /^\d{4}-\d{2}-\d{2}$/.test(date))
+    : [];
+
+  if (!calendarTodayOverride) {
+    const configuredPrimaryToday = /^\d{4}-\d{2}-\d{2}$/.test(content.calendar?.today || "")
+      ? content.calendar.today
+      : "";
+    calendarTodayDateKeys = configuredTodayDates.length
+      ? configuredTodayDates
+      : configuredPrimaryToday
+        ? [configuredPrimaryToday]
+        : [];
+    calendarTodayOverride = configuredPrimaryToday || calendarTodayDateKeys[0] || "";
+    if (calendarTodayOverride) selectedCalendarMonth = getCalendarOverrideDate();
   }
+  if (!calendarTodayDateKeys.length) calendarTodayDateKeys = [calendarDateKey(prayerDateFor(new Date()))];
 
   const hashSlug = eventSlugFromHash();
   if (hashSlug) {
