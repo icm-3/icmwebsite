@@ -3282,7 +3282,7 @@ input[type="checkbox"] {
  * states cannot create competing or doubled edges.
  */
 .calendar-grid {
-  --calendar-grid-line: #dec79d;
+  --calendar-grid-line: var(--gold);
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 2px;
@@ -3317,12 +3317,14 @@ input[type="checkbox"] {
 }
 
 .calendar-day.is-today {
-  box-shadow: inset 0 0 20px rgba(0, 84, 61, 0.18);
+  background: linear-gradient(180deg, #e5f3eb, #ffffff);
+  box-shadow: inset 0 0 28px rgba(0, 84, 61, 0.3);
 }
 
 .calendar-day.is-selected,
 .calendar-day.is-expanded {
-  box-shadow: inset 0 0 20px rgba(165, 100, 5, 0.2);
+  background: linear-gradient(180deg, #ffefcf, #ffffff);
+  box-shadow: inset 0 0 28px rgba(165, 100, 5, 0.34);
 }
 
 .calendar-day.is-expanded {
@@ -13438,7 +13440,7 @@ body:has(.about-community-copy) .page-hero h1 {
     min-height: 0 !important;
     margin: 0 0 10px !important;
     padding: 14px !important;
-    border: 1px solid rgba(166, 96, 3, 0.26) !important;
+    border: 1px solid var(--gold) !important;
     border-radius: 8px !important;
     box-shadow: none !important;
     clip-path: none !important;
@@ -13463,16 +13465,16 @@ body:has(.about-community-copy) .page-hero h1 {
   }
 
   .calendar-day.has-events.is-today:not(.is-selected):not(.is-expanded) {
-    background: linear-gradient(180deg, #eef9f3, #ffffff) !important;
-    border-color: rgba(0, 84, 61, 0.48) !important;
-    box-shadow: inset 0 0 0 1px rgba(0, 84, 61, 0.12), 0 3px 10px rgba(0, 84, 61, 0.08) !important;
+    background: linear-gradient(180deg, #e2f3e9, #f9fcfa) !important;
+    border-color: var(--green) !important;
+    box-shadow: inset 0 0 20px rgba(0, 84, 61, 0.22), 0 5px 14px rgba(0, 84, 61, 0.14) !important;
   }
 
   .calendar-day.has-events.is-selected,
   .calendar-day.has-events.is-expanded {
-    background: linear-gradient(180deg, #fff5df, #ffffff) !important;
-    border-color: rgba(165, 100, 5, 0.58) !important;
-    box-shadow: inset 0 0 0 1px rgba(165, 100, 5, 0.14), 0 3px 10px rgba(165, 100, 5, 0.1) !important;
+    background: linear-gradient(180deg, #ffefcf, #fffaf0) !important;
+    border-color: var(--gold) !important;
+    box-shadow: inset 0 0 20px rgba(165, 100, 5, 0.24), 0 5px 14px rgba(165, 100, 5, 0.16) !important;
   }
 
   .calendar-day.has-events.is-muted {
