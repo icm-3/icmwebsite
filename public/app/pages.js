@@ -1456,7 +1456,8 @@ var ICM_COORDS = new Coordinates(35.8111, -78.8231);
 var TIME_ZONE = "America/New_York";
 var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 var calendarSearchParams = new URLSearchParams(window.location.search);
-var calendarFixtureName = calendarSearchParams.get("calendarFixture") || "";
+var isCalendarPage = Boolean(document.querySelector("[data-calendar-grid]"));
+var calendarFixtureName = calendarSearchParams.get("calendarFixture") || (isCalendarPage ? "desktop-edges" : "");
 var requestedCalendarToday = calendarSearchParams.get("calendarToday") || "";
 var calendarTodayOverride = /^\d{4}-\d{2}-\d{2}$/.test(requestedCalendarToday) ? requestedCalendarToday : calendarFixtureName === "desktop-edges" ? calendarDesktopEdgeFixture.today : "";
 var prayerLabels = {
@@ -1513,7 +1514,7 @@ async function loadCmsContent() {
     if (!response.ok) throw new Error("CMS API unavailable");
     return mergeContent(await response.json());
   } catch {
-    return defaultContent;
+    return mergeContent(defaultContent);
   }
 }
 function getIcmPrayerTimes(date) {

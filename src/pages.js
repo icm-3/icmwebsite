@@ -13,7 +13,10 @@ const ICM_COORDS = new Coordinates(35.8111, -78.8231);
 const TIME_ZONE = "America/New_York";
 const prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 const calendarSearchParams = new URLSearchParams(window.location.search);
-const calendarFixtureName = calendarSearchParams.get("calendarFixture") || "";
+const isCalendarPage = Boolean(document.querySelector("[data-calendar-grid]"));
+// Temporary live calendar preview: keep the current day in the upper-right
+// corner with neighboring events while the desktop grid is being reviewed.
+const calendarFixtureName = calendarSearchParams.get("calendarFixture") || (isCalendarPage ? "desktop-edges" : "");
 const requestedCalendarToday = calendarSearchParams.get("calendarToday") || "";
 const calendarTodayOverride = /^\d{4}-\d{2}-\d{2}$/.test(requestedCalendarToday)
   ? requestedCalendarToday
@@ -86,7 +89,7 @@ async function loadCmsContent() {
     if (!response.ok) throw new Error("CMS API unavailable");
     return mergeContent(await response.json());
   } catch {
-    return defaultContent;
+    return mergeContent(defaultContent);
   }
 }
 
