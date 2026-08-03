@@ -3277,7 +3277,7 @@ input[type="checkbox"] {
 
 /*
  * One source of truth for desktop calendar geometry:
- * the parent supplies one continuous 2px outer frame and every 2px inner gap.
+ * the parent supplies one native 2px outer border and every 2px inner gap.
  * Cells draw no borders, so left/right, top/bottom, corners, and highlighted
  * states cannot create competing or doubled edges.
  */
@@ -3288,9 +3288,8 @@ input[type="checkbox"] {
   gap: 2px;
   box-sizing: border-box;
   overflow: hidden;
-  padding: 2px;
   background: var(--calendar-grid-line);
-  border: 0;
+  border: 2px solid var(--calendar-grid-line);
   border-radius: 10px;
   box-shadow: none;
 }
@@ -3322,7 +3321,7 @@ input[type="checkbox"] {
     --calendar-highlight-green: #00543d;
     --calendar-highlight-gold: #a56405;
     overflow: visible;
-    clip-path: inset(0 round 12px);
+    clip-path: none;
   }
 
   .calendar-day.is-today {
