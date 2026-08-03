@@ -3277,19 +3277,20 @@ input[type="checkbox"] {
 
 /*
  * One source of truth for desktop calendar geometry:
- * the parent supplies the 2px outer border and every 2px inner gap.
+ * the parent supplies one continuous 2px outer frame and every 2px inner gap.
  * Cells draw no borders, so left/right, top/bottom, corners, and highlighted
  * states cannot create competing or doubled edges.
  */
 .calendar-grid {
-  --calendar-grid-line: rgba(165, 100, 5, 0.42);
+  --calendar-grid-line: #d9be96;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 2px;
   box-sizing: border-box;
   overflow: hidden;
+  padding: 2px;
   background: var(--calendar-grid-line);
-  border: 2px solid var(--calendar-grid-line);
+  border: 0;
   border-radius: 10px;
   box-shadow: none;
 }
@@ -3329,8 +3330,8 @@ input[type="checkbox"] {
     --calendar-current-right: var(--calendar-highlight-green);
     --calendar-current-bottom: var(--calendar-highlight-green);
     --calendar-current-left: var(--calendar-highlight-green);
-    --calendar-current-horizontal-left-inset: 0px;
-    --calendar-current-horizontal-right-inset: 0px;
+    --calendar-current-horizontal-x: 0;
+    --calendar-current-horizontal-width: 100%;
     z-index: 2;
     background: linear-gradient(180deg, #eef9f3, #ffffff);
     box-shadow: none;
@@ -3357,9 +3358,9 @@ input[type="checkbox"] {
 
   .calendar-day.is-today::after {
     background:
-      linear-gradient(var(--calendar-current-top), var(--calendar-current-top)) var(--calendar-current-horizontal-left-inset) 0 / calc(100% - var(--calendar-current-horizontal-left-inset) - var(--calendar-current-horizontal-right-inset)) 2px no-repeat,
+      linear-gradient(var(--calendar-current-top), var(--calendar-current-top)) var(--calendar-current-horizontal-x) 0 / var(--calendar-current-horizontal-width) 2px no-repeat,
       linear-gradient(var(--calendar-current-right), var(--calendar-current-right)) 100% 2px / 2px calc(100% - 4px) no-repeat,
-      linear-gradient(var(--calendar-current-bottom), var(--calendar-current-bottom)) var(--calendar-current-horizontal-left-inset) 100% / calc(100% - var(--calendar-current-horizontal-left-inset) - var(--calendar-current-horizontal-right-inset)) 2px no-repeat,
+      linear-gradient(var(--calendar-current-bottom), var(--calendar-current-bottom)) var(--calendar-current-horizontal-x) 100% / var(--calendar-current-horizontal-width) 2px no-repeat,
       linear-gradient(var(--calendar-current-left), var(--calendar-current-left)) 0 2px / 2px calc(100% - 4px) no-repeat;
   }
 
@@ -3376,13 +3377,14 @@ input[type="checkbox"] {
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-selected),
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n)):has(+ .calendar-day.is-expanded) {
     --calendar-current-right: transparent;
-    --calendar-current-horizontal-right-inset: 2px;
+    --calendar-current-horizontal-width: calc(100% - 2px);
   }
 
   .calendar-day.is-selected + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)),
   .calendar-day.is-expanded + .calendar-day.is-today:not(.is-selected):not(.is-expanded):not(:nth-child(7n + 1)) {
     --calendar-current-left: transparent;
-    --calendar-current-horizontal-left-inset: 2px;
+    --calendar-current-horizontal-x: 2px;
+    --calendar-current-horizontal-width: calc(100% - 2px);
   }
 
   .calendar-day.is-today:not(.is-selected):not(.is-expanded):has(+ .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day + .calendar-day.is-selected),
