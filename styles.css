@@ -3290,7 +3290,7 @@ input[type="checkbox"] {
   overflow: hidden;
   background: var(--calendar-grid-line);
   border: 2px solid var(--calendar-grid-line);
-  border-radius: 10px;
+  border-radius: 0;
   box-shadow: none;
 }
 
