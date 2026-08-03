@@ -1357,6 +1357,58 @@ var calendarDesktopEdgeFixture = {
     }
   ]
 };
+var july2026GridStart = new Date(Date.UTC(2026, 5, 28));
+var calendarPositionIndexes = {
+  "top-left": 0,
+  "top-middle": 3,
+  "top-right": 6,
+  "middle-left": 14,
+  middle: 17,
+  "middle-right": 20,
+  "bottom-left": 28,
+  "bottom-middle": 31,
+  "bottom-right": 34
+};
+function fixtureDateKey(gridIndex) {
+  const date = new Date(july2026GridStart);
+  date.setUTCDate(date.getUTCDate() + gridIndex);
+  return date.toISOString().slice(0, 10);
+}
+function makePositionFixture(position, currentIndex) {
+  const currentRow = Math.floor(currentIndex / 7);
+  const currentColumn = currentIndex % 7;
+  const events = [];
+  for (let rowOffset = -1; rowOffset <= 1; rowOffset += 1) {
+    for (let columnOffset = -1; columnOffset <= 1; columnOffset += 1) {
+      const row = currentRow + rowOffset;
+      const column = currentColumn + columnOffset;
+      if (row < 0 || row > 4 || column < 0 || column > 6) continue;
+      const date = fixtureDateKey(row * 7 + column);
+      const isCurrent = rowOffset === 0 && columnOffset === 0;
+      const label = isCurrent ? "Current Day" : "Surrounding Day";
+      for (let eventNumber = 1; eventNumber <= 2; eventNumber += 1) {
+        events.push({
+          title: `${label} Test Event ${eventNumber}`,
+          date,
+          time: eventNumber === 1 ? "5:30 PM" : "7:00 PM",
+          location: "ICM",
+          description: `Temporary ${position.replaceAll("-", " ")} calendar position fixture.`
+        });
+      }
+    }
+  }
+  return {
+    month: "2026-07-01",
+    today: fixtureDateKey(currentIndex),
+    events
+  };
+}
+var calendarPositionFixtures = Object.fromEntries(
+  Object.entries(calendarPositionIndexes).map(([position, currentIndex]) => [
+    position,
+    makePositionFixture(position, currentIndex)
+  ])
+);
 
 // src/nav.js
 function initMobileNav() {
@@ -1504,9 +1556,10 @@ var ICM_COORDS = new Coordinates(35.8111, -78.8231);
 var TIME_ZONE = "America/New_York";
 var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 var calendarSearchParams = new URLSearchParams(window.location.search);
-var calendarFixtureName = calendarSearchParams.get("calendarFixture") || "";
+var calendarFixtureName = calendarSearchParams.get("calendarTest") || calendarSearchParams.get("calendarFixture") || "";
+var calendarFixture = calendarPositionFixtures[calendarFixtureName] || (calendarFixtureName === "desktop-edges" ? calendarDesktopEdgeFixture : null);
 var requestedCalendarToday = calendarSearchParams.get("calendarToday") || "";
-var calendarTodayOverride = /^\d{4}-\d{2}-\d{2}$/.test(requestedCalendarToday) ? requestedCalendarToday : calendarFixtureName === "desktop-edges" ? calendarDesktopEdgeFixture.today : "";
+var calendarTodayOverride = /^\d{4}-\d{2}-\d{2}$/.test(requestedCalendarToday) ? requestedCalendarToday : calendarFixture?.today || "";
 var prayerLabels = {
   fajr: "Fajr",
   sunrise: "Sunrise",
@@ -1516,7 +1569,7 @@ var prayerLabels = {
   isha: "Isha"
 };
 var selectedPrayerDate = /* @__PURE__ */ new Date();
-var selectedCalendarMonth = getCalendarOverrideDate() || /* @__PURE__ */ new Date();
+var selectedCalendarMonth = calendarDateFromKey(calendarFixture?.month) || getCalendarOverrideDate() || /* @__PURE__ */ new Date();
 var selectedCalendarEventSlug = "";
 var expandedCalendarDateKey = "";
 var fallbackNews = [
@@ -1554,7 +1607,7 @@ function mergeContent(content) {
     events: Array.isArray(content?.events) ? content.events : defaultContent.events,
     news: Array.isArray(content?.news) ? content.news : defaultContent.news
   };
-  return calendarFixtureName === "desktop-edges" ? { ...merged, events: calendarDesktopEdgeFixture.events } : merged;
+  return calendarFixture ? { ...merged, events: calendarFixture.events } : merged;
 }
 async function loadCmsContent() {
   try {
@@ -1763,10 +1816,13 @@ function eventMatchesDate(event, date) {
 function calendarDateKey(date) {
   return date.toISOString().slice(0, 10);
 }
-function getCalendarOverrideDate() {
-  if (!calendarTodayOverride) return null;
-  const [year, month, day] = calendarTodayOverride.split("-").map(Number);
+function calendarDateFromKey(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return null;
+  const [year, month, day] = value.split("-").map(Number);
   return new Date(year, month - 1, day);
+}
+function getCalendarOverrideDate() {
+  return calendarDateFromKey(calendarTodayOverride);
 }
 function getCalendarTodayDate() {
   return getCalendarOverrideDate() || prayerDateFor(/* @__PURE__ */ new Date());

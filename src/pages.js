@@ -6,20 +6,21 @@ import {
   Rounding,
 } from "adhan";
 import { defaultContent } from "./default-content.js";
-import { calendarDesktopEdgeFixture } from "./calendar-test-fixtures.js";
+import { calendarDesktopEdgeFixture, calendarPositionFixtures } from "./calendar-test-fixtures.js";
 import { initMobileNav } from "./nav.js";
 
 const ICM_COORDS = new Coordinates(35.8111, -78.8231);
 const TIME_ZONE = "America/New_York";
 const prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 const calendarSearchParams = new URLSearchParams(window.location.search);
-const calendarFixtureName = calendarSearchParams.get("calendarFixture") || "";
+const calendarFixtureName = calendarSearchParams.get("calendarTest") || calendarSearchParams.get("calendarFixture") || "";
+const calendarFixture =
+  calendarPositionFixtures[calendarFixtureName] ||
+  (calendarFixtureName === "desktop-edges" ? calendarDesktopEdgeFixture : null);
 const requestedCalendarToday = calendarSearchParams.get("calendarToday") || "";
 let calendarTodayOverride = /^\d{4}-\d{2}-\d{2}$/.test(requestedCalendarToday)
   ? requestedCalendarToday
-  : calendarFixtureName === "desktop-edges"
-    ? calendarDesktopEdgeFixture.today
-    : "";
+  : calendarFixture?.today || "";
 const prayerLabels = {
   fajr: "Fajr",
   sunrise: "Sunrise",
@@ -29,7 +30,7 @@ const prayerLabels = {
   isha: "Isha",
 };
 let selectedPrayerDate = new Date();
-let selectedCalendarMonth = getCalendarOverrideDate() || new Date();
+let selectedCalendarMonth = calendarDateFromKey(calendarFixture?.month) || getCalendarOverrideDate() || new Date();
 let selectedCalendarEventSlug = "";
 let expandedCalendarDateKey = "";
 
@@ -76,8 +77,8 @@ function mergeContent(content) {
     news: Array.isArray(content?.news) ? content.news : defaultContent.news,
   };
 
-  return calendarFixtureName === "desktop-edges"
-    ? { ...merged, events: calendarDesktopEdgeFixture.events }
+  return calendarFixture
+    ? { ...merged, events: calendarFixture.events }
     : merged;
 }
 
@@ -344,10 +345,14 @@ function calendarDateKey(date) {
   return date.toISOString().slice(0, 10);
 }
 
-function getCalendarOverrideDate() {
-  if (!calendarTodayOverride) return null;
-  const [year, month, day] = calendarTodayOverride.split("-").map(Number);
+function calendarDateFromKey(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return null;
+  const [year, month, day] = value.split("-").map(Number);
   return new Date(year, month - 1, day);
+}
+
+function getCalendarOverrideDate() {
+  return calendarDateFromKey(calendarTodayOverride);
 }
 
 function getCalendarTodayDate() {

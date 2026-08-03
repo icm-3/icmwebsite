@@ -80,3 +80,64 @@ export const calendarDesktopEdgeFixture = {
     },
   ],
 };
+
+const july2026GridStart = new Date(Date.UTC(2026, 5, 28));
+
+const calendarPositionIndexes = {
+  "top-left": 0,
+  "top-middle": 3,
+  "top-right": 6,
+  "middle-left": 14,
+  middle: 17,
+  "middle-right": 20,
+  "bottom-left": 28,
+  "bottom-middle": 31,
+  "bottom-right": 34,
+};
+
+function fixtureDateKey(gridIndex) {
+  const date = new Date(july2026GridStart);
+  date.setUTCDate(date.getUTCDate() + gridIndex);
+  return date.toISOString().slice(0, 10);
+}
+
+function makePositionFixture(position, currentIndex) {
+  const currentRow = Math.floor(currentIndex / 7);
+  const currentColumn = currentIndex % 7;
+  const events = [];
+
+  for (let rowOffset = -1; rowOffset <= 1; rowOffset += 1) {
+    for (let columnOffset = -1; columnOffset <= 1; columnOffset += 1) {
+      const row = currentRow + rowOffset;
+      const column = currentColumn + columnOffset;
+      if (row < 0 || row > 4 || column < 0 || column > 6) continue;
+
+      const date = fixtureDateKey(row * 7 + column);
+      const isCurrent = rowOffset === 0 && columnOffset === 0;
+      const label = isCurrent ? "Current Day" : "Surrounding Day";
+
+      for (let eventNumber = 1; eventNumber <= 2; eventNumber += 1) {
+        events.push({
+          title: `${label} Test Event ${eventNumber}`,
+          date,
+          time: eventNumber === 1 ? "5:30 PM" : "7:00 PM",
+          location: "ICM",
+          description: `Temporary ${position.replaceAll("-", " ")} calendar position fixture.`,
+        });
+      }
+    }
+  }
+
+  return {
+    month: "2026-07-01",
+    today: fixtureDateKey(currentIndex),
+    events,
+  };
+}
+
+export const calendarPositionFixtures = Object.fromEntries(
+  Object.entries(calendarPositionIndexes).map(([position, currentIndex]) => [
+    position,
+    makePositionFixture(position, currentIndex),
+  ]),
+);
