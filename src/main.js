@@ -748,9 +748,44 @@ function markCardImageShapes(root, cardSelector, imageSelector) {
   });
 }
 
+function renderHomeSkeletons() {
+  const eventsList = document.querySelector("[data-events-list]");
+  if (eventsList) {
+    eventsList.innerHTML = Array.from(
+      { length: 3 },
+      () => `
+        <div class="event-item skeleton-card" aria-hidden="true">
+          <span class="skeleton-date"></span>
+          <div class="skeleton-copy">
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      `,
+    ).join("");
+  }
+
+  const newsList = document.querySelector("[data-news-list]");
+  if (newsList) {
+    newsList.innerHTML = Array.from(
+      { length: 3 },
+      () => `
+        <article class="news-item skeleton-card" aria-hidden="true">
+          <span class="skeleton-media"></span>
+          <div class="skeleton-copy">
+            <span></span>
+            <span></span>
+          </div>
+        </article>
+      `,
+    ).join("");
+  }
+}
+
 async function boot() {
   initMobileNav();
   initDateNavigator();
+  renderHomeSkeletons();
   const content = await loadCmsContent();
   renderHero(content);
   renderPrayerTimes();
