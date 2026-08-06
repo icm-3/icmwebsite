@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="./public/images/icm-logo-provided-transparent.png"><link rel="stylesheet" href="./styles.css?v=20260806-motion-v95">
+    <link rel="icon" href="./public/images/icm-logo-provided-transparent.png"><link rel="stylesheet" href="./styles.css?v=20260806-loading-v96">
   </head>
   <body>
     <header class="site-header">
@@ -144,7 +144,7 @@
       </section>
 
       <section class="info-grid" aria-label="Masjid information">
-        <article class="info-card jummah-card">
+        <article class="info-card jummah-card is-loading">
           <header class="card-header">
             <div class="card-title">
               <img src="./public/icons/generated/jummah.png" alt="" aria-hidden="true">
@@ -161,37 +161,37 @@
                   <th>Topic</th>
                 </tr>
               </thead>
-              <tbody data-jummah-body>
-                <tr>
-                  <td><span class="shift">1</span></td>
-                  <td class="time">1:00 PM</td>
-                  <td>Imam Sami Ko&ccedil;ak</td>
-                  <td>Muhasabah: Self Reflection</td>
+              <tbody class="skeleton-region" data-jummah-body aria-busy="true" aria-label="Friday prayer schedule">
+                <tr class="jummah-skeleton-row" aria-hidden="true">
+                  <td><span class="skeleton-block skeleton-shift"></span></td>
+                  <td><span class="skeleton-block skeleton-time"></span></td>
+                  <td><span class="skeleton-block skeleton-line skeleton-line-medium"></span></td>
+                  <td><span class="skeleton-block skeleton-line"></span></td>
                 </tr>
-                <tr>
-                  <td><span class="shift">2</span></td>
-                  <td class="time">2:00 PM</td>
-                  <td>Mikael Raza</td>
-                  <td>Gaining Taqwa by Avoiding Ostentation</td>
+                <tr class="jummah-skeleton-row" aria-hidden="true">
+                  <td><span class="skeleton-block skeleton-shift"></span></td>
+                  <td><span class="skeleton-block skeleton-time"></span></td>
+                  <td><span class="skeleton-block skeleton-line"></span></td>
+                  <td><span class="skeleton-block skeleton-line skeleton-line-medium"></span></td>
                 </tr>
-                <tr>
-                  <td><span class="shift">3</span></td>
-                  <td class="time">3:00 PM</td>
-                  <td>Mansoor Kazi</td>
-                  <td>The Green Deen</td>
+                <tr class="jummah-skeleton-row" aria-hidden="true">
+                  <td><span class="skeleton-block skeleton-shift"></span></td>
+                  <td><span class="skeleton-block skeleton-time"></span></td>
+                  <td><span class="skeleton-block skeleton-line skeleton-line-short"></span></td>
+                  <td><span class="skeleton-block skeleton-line skeleton-line-medium"></span></td>
                 </tr>
-                <tr>
-                  <td><span class="shift">4</span></td>
-                  <td class="time">4:00 PM</td>
-                  <td>Mansoor Syed</td>
-                  <td>Ghallah: Spiritual Negligence</td>
+                <tr class="jummah-skeleton-row" aria-hidden="true">
+                  <td><span class="skeleton-block skeleton-shift"></span></td>
+                  <td><span class="skeleton-block skeleton-time"></span></td>
+                  <td><span class="skeleton-block skeleton-line skeleton-line-medium"></span></td>
+                  <td><span class="skeleton-block skeleton-line"></span></td>
                 </tr>
               </tbody>
             </table>
           </div>
         </article>
 
-        <article class="info-card events-card">
+        <article class="info-card events-card is-loading">
           <header class="card-header">
             <div class="card-title">
               <img src="./public/icons/generated/calendar.png" alt="" aria-hidden="true">
@@ -199,32 +199,23 @@
             </div>
             <a href="./calendar.html">Full Calendar <span aria-hidden="true">&rarr;</span></a>
           </header>
-          <div class="event-list" data-events-list>
-            <div class="event-item">
-              <div class="date-badge"><span>Jun</span><strong>21</strong></div>
-              <div>
-                <h3>Youth Hike &amp; BBQ</h3>
-                <p>Saturday, June 21, 2026 &bull; 10:00 AM<br>William B. Umstead State Park</p>
-              </div>
+          <div class="event-list skeleton-region" data-events-list aria-busy="true" aria-label="Upcoming events">
+            <div class="event-item event-item--skeleton" aria-hidden="true">
+              <span class="skeleton-block event-skeleton-media"></span>
+              <div class="event-item-body"><span class="skeleton-block skeleton-line skeleton-line-title"></span><span class="skeleton-block skeleton-line"></span><span class="skeleton-block skeleton-line skeleton-line-medium"></span></div>
             </div>
-            <div class="event-item">
-              <div class="date-badge"><span>Jun</span><strong>27</strong></div>
-              <div>
-                <h3>Sisters&rsquo; Tea &amp; Talk</h3>
-                <p>Friday, June 27, 2026 &bull; 6:30 PM<br>ICM Community Hall</p>
-              </div>
+            <div class="event-item event-item--skeleton" aria-hidden="true">
+              <span class="skeleton-block event-skeleton-media"></span>
+              <div class="event-item-body"><span class="skeleton-block skeleton-line skeleton-line-medium"></span><span class="skeleton-block skeleton-line"></span><span class="skeleton-block skeleton-line skeleton-line-short"></span></div>
             </div>
-            <div class="event-item">
-              <div class="date-badge"><span>Jul</span><strong>04</strong></div>
-              <div>
-                <h3>Independence Day Potluck</h3>
-                <p>Friday, July 4, 2026 &bull; 1:00 PM<br>ICM Community Hall</p>
-              </div>
+            <div class="event-item event-item--skeleton" aria-hidden="true">
+              <span class="skeleton-block event-skeleton-media"></span>
+              <div class="event-item-body"><span class="skeleton-block skeleton-line skeleton-line-title"></span><span class="skeleton-block skeleton-line"></span><span class="skeleton-block skeleton-line skeleton-line-medium"></span></div>
             </div>
           </div>
         </article>
 
-        <article class="info-card news-card">
+        <article class="info-card news-card is-loading">
           <header class="card-header">
             <div class="card-title">
               <img src="./public/icons/generated/megaphone.png" alt="" aria-hidden="true">
@@ -232,31 +223,19 @@
             </div>
             <a href="./news.html">All News <span aria-hidden="true">&rarr;</span></a>
           </header>
-          <div class="news-list" data-news-list>
-            <article class="news-item">
-              <img src="./public/news/ramadan.png" width="70" height="52" loading="lazy" decoding="async" alt="Mosque at sunset during Ramadan">
-              <div>
-                <h3>Ramadan Programs &amp; Taraweeh Schedule</h3>
-                <p>Join us for special programs throughout Ramadan.</p>
-              </div>
-              <time datetime="2026-04-28">Apr 28, 2026</time>
-            </article>
-            <article class="news-item">
-              <img src="./public/news/eid.png" width="70" height="52" loading="lazy" decoding="async" alt="Mosque scene for Eid announcement">
-              <div>
-                <h3>Eid Al-Adha Announcements</h3>
-                <p>Important information for Eid prayers and events.</p>
-              </div>
-              <time datetime="2026-04-24">Apr 24, 2026</time>
-            </article>
-            <article class="news-item">
-              <img src="./public/news/camp.png" width="70" height="52" loading="lazy" decoding="async" alt="Youth summer camp activity">
-              <div>
-                <h3>Youth Summer Camp Registration Open</h3>
-                <p>Fun, faith, and friends this summer!</p>
-              </div>
-              <time datetime="2026-04-18">Apr 18, 2026</time>
-            </article>
+          <div class="news-list skeleton-region" data-news-list aria-busy="true" aria-label="News and announcements">
+            <div class="news-item news-item--skeleton" aria-hidden="true">
+              <span class="skeleton-block news-skeleton-media"></span><span class="skeleton-block skeleton-chip"></span>
+              <div class="news-item-body"><span class="skeleton-block skeleton-date"></span><span class="skeleton-block skeleton-line skeleton-line-title"></span><span class="skeleton-block skeleton-line skeleton-line-medium"></span></div>
+            </div>
+            <div class="news-item news-item--skeleton" aria-hidden="true">
+              <span class="skeleton-block news-skeleton-media"></span><span class="skeleton-block skeleton-chip"></span>
+              <div class="news-item-body"><span class="skeleton-block skeleton-date"></span><span class="skeleton-block skeleton-line skeleton-line-medium"></span><span class="skeleton-block skeleton-line"></span></div>
+            </div>
+            <div class="news-item news-item--skeleton" aria-hidden="true">
+              <span class="skeleton-block news-skeleton-media"></span><span class="skeleton-block skeleton-chip"></span>
+              <div class="news-item-body"><span class="skeleton-block skeleton-date"></span><span class="skeleton-block skeleton-line skeleton-line-title"></span><span class="skeleton-block skeleton-line skeleton-line-short"></span></div>
+            </div>
           </div>
         </article>
       </section>
@@ -271,6 +250,6 @@
       <p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p>
       <a href="./about.html#contact">Contact Us</a>
     </footer>
-    <script type="module" src="./public/app/main.js?v=20260806-motion-v95"></script>
+    <script type="module" src="./public/app/main.js?v=20260806-loading-v96"></script>
   </body>
 </html>

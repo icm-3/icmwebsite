@@ -6,6 +6,11 @@ import {
   Rounding,
 } from "adhan";
 import { defaultContent } from "./default-content.js";
+import {
+  newsCategory,
+  normalizeNewsItems,
+  sortNewsEntries,
+} from "./content-utils.js";
 import { getResponsiveMedia } from "./media.js";
 import { initMobileNav } from "./nav.js";
 
@@ -77,7 +82,7 @@ function mergeContent(content) {
     hero: { ...defaultContent.hero, ...(content?.hero || {}) },
     jummah: { ...defaultContent.jummah, ...(content?.jummah || {}) },
     events: Array.isArray(content?.events) ? content.events : defaultContent.events,
-    news: Array.isArray(content?.news) ? content.news : defaultContent.news,
+    news: normalizeNewsItems(content?.news, defaultContent.news),
   };
 }
 
@@ -293,18 +298,12 @@ function eventDateTimeLabel(event) {
   return [formatLongDate(event.date), event.time].filter(Boolean).join(" • ");
 }
 
-function getNewsCategory(title) {
-  const normalized = title.toLowerCase();
-  if (normalized.includes("ramadan") || normalized.includes("taraweeh")) return "Program";
-  if (normalized.includes("camp") || normalized.includes("youth")) return "Youth";
-  return "Announcement";
-}
-
 function newsTitle(item, index = 0) {
   return String(item.title || item.imageAlt || `Announcement ${index + 1}`);
 }
 
 function newsSlug(item, index = 0) {
+  if (item.id) return slugify(item.id);
   return slugify([newsTitle(item, index), item.date, index].filter(Boolean).join("-")) || `announcement-${index}`;
 }
 
@@ -343,6 +342,19 @@ function prefersReducedMotion() {
   return reducedMotionPreference.matches;
 }
 
+function finishLoadingRegion(target) {
+  if (!target) return;
+  target.removeAttribute("aria-busy");
+  target.classList.remove("skeleton-region");
+  target.closest(".info-card")?.classList.remove("is-loading");
+
+  if (prefersReducedMotion() || document.hidden || typeof target.animate !== "function") return;
+  target.animate(
+    [{ opacity: 0.74 }, { opacity: 1 }],
+    { duration: 160, easing: "cubic-bezier(0.23, 1, 0.32, 1)" },
+  );
+}
+
 function setAnimatedCountdownText(selector, value) {
   const element = document.querySelector(selector);
   if (!element || element.textContent === value) return;
@@ -351,18 +363,15 @@ function setAnimatedCountdownText(selector, value) {
   const previousAnimation = countdownAnimations.get(element);
   previousAnimation?.cancel();
 
-  if (document.hidden || typeof element.animate !== "function") return;
-
-  const reducedMotion = prefersReducedMotion();
+  if (prefersReducedMotion() || document.hidden || typeof element.animate !== "function") return;
   const animation = element.animate(
-    reducedMotion
-      ? [{ opacity: 0.62 }, { opacity: 1 }]
-      : [
-          { opacity: 0.58, transform: "translateY(18%) rotateX(-10deg) scale(0.99)" },
-          { opacity: 1, transform: "translateY(0) rotateX(0deg) scale(1)" },
-        ],
+    [
+      { opacity: 0.72, transform: "translateY(1.5px) rotateX(-10deg) scale(0.994)", offset: 0 },
+      { opacity: 0.98, transform: "translateY(-0.25px) rotateX(3deg) scale(1.003)", offset: 0.55 },
+      { opacity: 1, transform: "translateY(0) rotateX(0deg) scale(1)", offset: 1 },
+    ],
     {
-      duration: reducedMotion ? 160 : 200,
+      duration: 260,
       easing: "cubic-bezier(0.23, 1, 0.32, 1)",
     },
   );
@@ -880,6 +889,7 @@ function renderJummah(content) {
       },
     )
     .join("");
+  finishLoadingRegion(tbody);
 }
 
 function renderEvents(content) {
@@ -916,22 +926,24 @@ function renderEvents(content) {
       `;
     })
     .join("");
+  finishLoadingRegion(list);
   markCardImageShapes(list, ".event-item", ".event-thumb");
 }
 
 function renderNews(content) {
   const list = document.querySelector("[data-news-list]");
   if (!list) return;
-  const news = (content.news?.length ? content.news : defaultContent.news)
-    .map((item, originalIndex) => ({ item, originalIndex }))
-    .sort((first, second) => dateValue(second.item.date) - dateValue(first.item.date))
-    .slice(0, HOME_NEWS_LIMIT);
+  const news = sortNewsEntries(
+    normalizeNewsItems(content.news, defaultContent.news)
+      .map((item, originalIndex) => ({ item, originalIndex })),
+    dateValue,
+  ).slice(0, HOME_NEWS_LIMIT);
   list.innerHTML = news
     .map(
       ({ item, originalIndex }) => `
         <a class="news-item${newsTitle(item, originalIndex).length <= 42 ? " news-item--short-title" : ""}" href="./news.html#news-${escapeHtml(newsSlug(item, originalIndex))}">
           ${responsiveImageMarkup(item.image, item.imageAlt || newsTitle(item, originalIndex), { sizes: "120px" })}
-          <span class="news-category">${escapeHtml(getNewsCategory(newsTitle(item, originalIndex)))}</span>
+          <span class="news-category">${escapeHtml(newsCategory(item))}</span>
           <div class="news-item-body">
             ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
             ${item.title ? `<h3>${escapeHtml(item.title)}</h3>` : ""}
@@ -941,6 +953,7 @@ function renderNews(content) {
       `,
     )
     .join("");
+  finishLoadingRegion(list);
   markCardImageShapes(list, ".news-item", "img");
 }
 

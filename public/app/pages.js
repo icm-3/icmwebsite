@@ -1244,7 +1244,10 @@ var defaultContent = {
   ],
   "news": [
     {
-      "title": "Friday Announcements, Parking Notes, Youth Volunteers And Weekly Programs - June 19, 2026",
+      "id": "friday-announcements",
+      "pinned": true,
+      "category": "Announcement",
+      "title": "Friday Announcements, Parking Notes, Youth Volunteers And Weekly Programs",
       "date": "2026-06-19",
       "summary": "Community reminders covering monthly support, parking and traffic flow, youth volunteer signups, Nibras hiking, Friday Night Bukhari Circle, and the regular weekly program schedule.",
       "image": "./public/news/icm-live/friday-announcements-june-19-2026.png",
@@ -1409,6 +1412,42 @@ var calendarPositionFixtures = Object.fromEntries(
     makePositionFixture(position, currentIndex)
   ])
 );
+
+// src/content-utils.js
+var EVERGREEN_ANNOUNCEMENT_ID = "friday-announcements";
+var fridayAnnouncementPattern = /\bfriday announcements?\b/i;
+function normalizeNewsItems(items, fallbackItems = []) {
+  const source = Array.isArray(items) && items.length ? items : fallbackItems;
+  let evergreenAssigned = false;
+  return source.map((item) => {
+    const normalized = { ...item };
+    const isEvergreen = !evergreenAssigned && (normalized.id === EVERGREEN_ANNOUNCEMENT_ID || normalized.pinned === true || fridayAnnouncementPattern.test(String(normalized.title || "")));
+    if (isEvergreen) {
+      evergreenAssigned = true;
+      normalized.id = EVERGREEN_ANNOUNCEMENT_ID;
+      normalized.pinned = true;
+      normalized.category = "Announcement";
+    }
+    return normalized;
+  });
+}
+function sortNewsEntries(entries, dateValue2) {
+  return [...entries].sort((first, second) => {
+    const pinnedDifference = Number(Boolean(second.item.pinned)) - Number(Boolean(first.item.pinned));
+    if (pinnedDifference) return pinnedDifference;
+    return dateValue2(second.item.date) - dateValue2(first.item.date);
+  });
+}
+function newsCategory(item) {
+  if (item.category) return item.category;
+  const text = `${item.title || ""} ${item.summary || ""}`.toLowerCase();
+  if (text.includes("ramadan") || text.includes("taraweeh")) return "Program";
+  if (text.includes("youth") || text.includes("camp")) return "Youth";
+  if (text.includes("eid")) return "Announcement";
+  if (text.includes("program") || text.includes("workshop") || text.includes("class")) return "Program";
+  if (text.includes("parking") || text.includes("arrival")) return "Notice";
+  return "Announcement";
+}
 
 // src/media.js
 var responsiveMedia = /* @__PURE__ */ new Map([
@@ -1724,6 +1763,13 @@ function animateStateEntry(element, { opacity = 0.7, translateX = 0, translateY 
   animation.addEventListener("finish", forgetAnimation, { once: true });
   animation.addEventListener("cancel", forgetAnimation, { once: true });
 }
+function revealLoadedRegion(element) {
+  if (!element) return;
+  element.removeAttribute("aria-busy");
+  element.classList.remove("is-skeleton", "skeleton-region");
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || document.hidden || typeof element.animate !== "function") return;
+  animateStateEntry(element, { opacity: 0.74 });
+}
 var fallbackNews = [
   {
     title: "Community Programs Continue Through Summer",
@@ -1776,7 +1822,7 @@ function mergeContent(content) {
     calendar: { ...defaultContent.calendar, ...content?.calendar || {} },
     jummah: { ...defaultContent.jummah, ...content?.jummah || {} },
     events: Array.isArray(content?.events) ? content.events : defaultContent.events,
-    news: Array.isArray(content?.news) ? content.news : defaultContent.news
+    news: normalizeNewsItems(content?.news, defaultContent.news)
   };
   return calendarFixture ? { ...merged, events: calendarFixture.events } : merged;
 }
@@ -1910,20 +1956,69 @@ function newsTitle(item, index = 0) {
   return String(item.title || item.imageAlt || `Announcement ${index + 1}`);
 }
 function newsSlug(item, index = 0) {
+  if (item.id) return slugify(item.id);
   return slugify([newsTitle(item, index), item.date, index].filter(Boolean).join("-")) || `announcement-${index}`;
-}
-function newsCategory(item) {
-  if (item.category) return item.category;
-  const text = `${item.title || ""} ${item.summary || ""}`.toLowerCase();
-  if (text.includes("ramadan") || text.includes("taraweeh")) return "Program";
-  if (text.includes("youth") || text.includes("camp")) return "Youth";
-  if (text.includes("eid")) return "Announcement";
-  if (text.includes("program") || text.includes("workshop") || text.includes("class")) return "Program";
-  if (text.includes("parking") || text.includes("arrival")) return "Notice";
-  return "Announcement";
 }
 function slugify(value) {
   return String(value ?? "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+function renderDeferredSkeletons() {
+  const newsTarget = document.querySelector("[data-page-news]");
+  if (newsTarget) {
+    newsTarget.classList.add("is-skeleton", "skeleton-region");
+    newsTarget.setAttribute("aria-busy", "true");
+    newsTarget.setAttribute("aria-label", "News and announcements");
+    if (window.location.hash.startsWith("#news-")) {
+      newsTarget.innerHTML = `
+        <article class="news-detail news-detail-skeleton" aria-hidden="true">
+          <span class="skeleton-block skeleton-back"></span>
+          <div class="news-detail-body">
+            <span class="skeleton-block skeleton-chip"></span>
+            <span class="skeleton-block skeleton-date"></span>
+            <span class="skeleton-block skeleton-line skeleton-line-title"></span>
+            <span class="skeleton-block skeleton-line skeleton-line-title-short"></span>
+            <span class="skeleton-block skeleton-line"></span>
+            <span class="skeleton-block skeleton-line skeleton-line-medium"></span>
+          </div>
+          <div class="skeleton-block news-detail-skeleton-poster"></div>
+        </article>
+      `;
+    } else {
+      newsTarget.innerHTML = Array.from({ length: 4 }, () => `
+        <article class="news-feature news-feature-skeleton" aria-hidden="true">
+          <div class="skeleton-block news-feature-skeleton-media"></div>
+          <span class="skeleton-block skeleton-chip"></span>
+          <div>
+            <span class="skeleton-block skeleton-date"></span>
+            <span class="skeleton-block skeleton-line skeleton-line-title"></span>
+            <span class="skeleton-block skeleton-line skeleton-line-medium"></span>
+            <span class="skeleton-block skeleton-line"></span>
+          </div>
+        </article>
+      `).join("");
+    }
+  }
+  const calendarGrid = document.querySelector("[data-calendar-grid]");
+  if (!calendarGrid) return;
+  const monthStart = new Date(selectedCalendarMonth.getFullYear(), selectedCalendarMonth.getMonth(), 1);
+  const daysInMonth = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0).getDate();
+  const visibleDayCount = Math.ceil((monthStart.getDay() + daysInMonth) / 7) * 7;
+  const title = document.querySelector("[data-calendar-title]");
+  const hijri = document.querySelector("[data-calendar-hijri]");
+  if (title) title.textContent = formatMonthTitle(monthStart);
+  if (hijri) hijri.textContent = formatHijriMonth(monthStart);
+  calendarGrid.classList.add("is-skeleton", "skeleton-region");
+  calendarGrid.setAttribute("aria-busy", "true");
+  calendarGrid.setAttribute("aria-label", "Event calendar");
+  calendarGrid.innerHTML = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => `<div class="calendar-weekday" aria-hidden="true">${day}</div>`).join("") + Array.from({ length: visibleDayCount }, (_, index) => `
+      <div class="calendar-day calendar-day-skeleton" aria-hidden="true">
+        <span class="skeleton-block calendar-skeleton-date"></span>
+        <div class="calendar-skeleton-copy">
+          <span class="skeleton-block skeleton-line skeleton-line-medium"></span>
+          <span class="skeleton-block skeleton-line"></span>
+        </div>
+      </div>
+    `).join("");
 }
 function renderPrayerTable() {
   const target = document.querySelector("[data-page-prayers]");
@@ -2042,6 +2137,7 @@ function setCalendarDetail(event, index = 0) {
 function renderCalendar(content, { monthDirection = 0 } = {}) {
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
+  const wasSkeleton = grid.classList.contains("is-skeleton");
   const title = document.querySelector("[data-calendar-title]");
   const hijri = document.querySelector("[data-calendar-hijri]");
   const monthStart = new Date(selectedCalendarMonth.getFullYear(), selectedCalendarMonth.getMonth(), 1);
@@ -2093,6 +2189,7 @@ function renderCalendar(content, { monthDirection = 0 } = {}) {
     `;
   }).join("");
   grid.innerHTML = weekdays.map((day) => `<div class="calendar-weekday">${day}</div>`).join("") + cells;
+  if (wasSkeleton) revealLoadedRegion(grid);
   const selectedIndex = content.events.findIndex((event, index) => eventSlug(event, index) === selectedCalendarEventSlug);
   const selectedEvent = selectedIndex >= 0 ? content.events[selectedIndex] : null;
   setCalendarDetail(selectedEvent, selectedIndex);
@@ -2179,10 +2276,12 @@ function renderJummah(content) {
 function renderNews(content) {
   const target = document.querySelector("[data-page-news]");
   if (!target) return;
+  const wasSkeleton = target.classList.contains("is-skeleton");
   let animateNextHashChange = false;
-  const newsSource = content.news?.length ? content.news : fallbackNews;
-  const items = newsSource.map((item, originalIndex) => ({ item, originalIndex })).sort(
-    (first, second) => dateValue(second.item.date) - dateValue(first.item.date)
+  const newsSource = normalizeNewsItems(content.news, fallbackNews);
+  const items = sortNewsEntries(
+    newsSource.map((item, originalIndex) => ({ item, originalIndex })),
+    dateValue
   );
   const markNewsImageShape = () => {
     target.querySelectorAll(".news-feature img").forEach((image) => {
@@ -2267,6 +2366,7 @@ function renderNews(content) {
     if (event.target.closest(".news-feature")) animateNextHashChange = event.detail > 0;
   });
   renderCurrent();
+  if (wasSkeleton) revealLoadedRegion(target);
   window.addEventListener("hashchange", () => {
     renderCurrent({ animate: animateNextHashChange });
     animateNextHashChange = false;
@@ -2276,6 +2376,7 @@ async function boot() {
   initMobileNav();
   initDateNavigator();
   renderPrayerTable();
+  renderDeferredSkeletons();
   const content = await loadCmsContent();
   renderEvents(content);
   renderJummah(content);

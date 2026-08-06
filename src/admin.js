@@ -1,6 +1,26 @@
 import { defaultContent } from "./default-content.js";
+import {
+  editableAnnouncementSnapshot,
+  EVERGREEN_ANNOUNCEMENT_ID,
+  findEvergreenAnnouncement,
+  normalizeNewsItems,
+  todayDateKey,
+} from "./content-utils.js";
 
-let state = structuredClone(defaultContent);
+function normalizeAdminContent(content = defaultContent) {
+  const normalized = {
+    ...structuredClone(defaultContent),
+    ...structuredClone(content),
+    hero: { ...structuredClone(defaultContent.hero), ...structuredClone(content?.hero || {}) },
+    jummah: { ...structuredClone(defaultContent.jummah), ...structuredClone(content?.jummah || {}) },
+    events: Array.isArray(content?.events) ? structuredClone(content.events) : structuredClone(defaultContent.events),
+    news: normalizeNewsItems(content?.news, defaultContent.news),
+  };
+  return normalized;
+}
+
+let state = normalizeAdminContent();
+let savedState = structuredClone(state);
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -31,7 +51,7 @@ function field(path, value, label, type = "text", options = {}) {
   return `
     <label class="cms-field">
       <span>${escapeHtml(label)}</span>
-      <input type="${type}" value="${escapeHtml(value)}" data-path="${escapeHtml(path)}"${options.required ? " required" : ""}${options.maxlength ? ` maxlength="${Number(options.maxlength)}"` : ""}>
+      <input type="${type}" value="${escapeHtml(value)}" data-path="${escapeHtml(path)}"${options.required ? " required" : ""}${options.maxlength ? ` maxlength="${Number(options.maxlength)}"` : ""}${options.readonly ? " readonly" : ""}>
     </label>
   `;
 }
@@ -148,24 +168,28 @@ function renderEvents() {
 
 function renderNews() {
   const rows = state.news
-    .map(
-      (item, index) => `
+    .map((item, index) => {
+      const isEvergreen = item.id === EVERGREEN_ANNOUNCEMENT_ID;
+      return `
         <article class="cms-item">
           <div class="cms-item-title">
-            <strong>${escapeHtml(item.title || `News ${index + 1}`)}</strong>
-            <button type="button" data-action="remove-news" data-index="${index}">Remove</button>
+            <div>
+              <strong>${escapeHtml(item.title || `News ${index + 1}`)}</strong>
+              ${isEvergreen ? `<small class="cms-item-note">Always first under Announcement. The date updates automatically when you save an edit.</small>` : ""}
+            </div>
+            ${isEvergreen ? "" : `<button type="button" data-action="remove-news" data-index="${index}">Remove</button>`}
           </div>
           <div class="cms-grid">
             ${imageField(`news.${index}.image`, item.image, "Image URL or data image (required)", { required: true })}
             ${field(`news.${index}.title`, item.title, "Title (optional)")}
-            ${field(`news.${index}.date`, item.date, "Date (optional)", "date")}
+            ${field(`news.${index}.date`, item.date, isEvergreen ? "Last updated (automatic)" : "Date (optional)", "date", { readonly: isEvergreen })}
             ${textarea(`news.${index}.summary`, item.summary, "Description (optional)")}
             ${field(`news.${index}.imageAlt`, item.imageAlt, "Image alt text")}
           </div>
           <div class="cms-preview"><img src="${escapeHtml(item.image)}" alt=""></div>
         </article>
-      `,
-    )
+      `;
+    })
     .join("");
 
   return `
@@ -188,14 +212,19 @@ async function load() {
   try {
     const response = await fetch("/api/cms", { cache: "no-store" });
     if (!response.ok) throw new Error("CMS API unavailable");
-    state = await response.json();
+    state = normalizeAdminContent(await response.json());
     localStorage.setItem("icm-cms-content", JSON.stringify(state));
     setStatus("Loaded saved CMS content.", "success");
   } catch {
     const local = localStorage.getItem("icm-cms-content");
-    state = local ? JSON.parse(local) : structuredClone(defaultContent);
+    try {
+      state = normalizeAdminContent(local ? JSON.parse(local) : defaultContent);
+    } catch {
+      state = normalizeAdminContent();
+    }
     setStatus("Using local/default content until the CMS server is available.", "warn");
   }
+  savedState = structuredClone(state);
   render();
 }
 
@@ -204,6 +233,12 @@ async function save() {
   if (missingNewsImage) {
     setStatus("Every news post needs an image before saving.", "warn");
     return;
+  }
+
+  const currentAnnouncement = findEvergreenAnnouncement(state.news);
+  const savedAnnouncement = findEvergreenAnnouncement(savedState.news);
+  if (editableAnnouncementSnapshot(currentAnnouncement) !== editableAnnouncementSnapshot(savedAnnouncement)) {
+    currentAnnouncement.date = todayDateKey();
   }
 
   localStorage.setItem("icm-cms-content", JSON.stringify(state));
@@ -218,6 +253,8 @@ async function save() {
   } catch {
     setStatus("Saved in this browser only. Start the local server to persist to disk.", "warn");
   }
+  savedState = structuredClone(state);
+  render();
 }
 
 function readImage(file) {
@@ -251,7 +288,7 @@ document.addEventListener("click", async (event) => {
   const index = Number(event.target.dataset.index);
   if (action === "save") await save();
   if (action === "reset") {
-    state = structuredClone(defaultContent);
+    state = normalizeAdminContent();
     setStatus("Reset to default content. Save to keep this reset.", "warn");
     render();
   }
@@ -276,6 +313,7 @@ document.addEventListener("click", async (event) => {
     render();
   }
   if (action === "remove-news") {
+    if (state.news[index]?.id === EVERGREEN_ANNOUNCEMENT_ID) return;
     state.news.splice(index, 1);
     render();
   }

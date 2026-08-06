@@ -385,7 +385,10 @@ var defaultContent = {
   ],
   "news": [
     {
-      "title": "Friday Announcements, Parking Notes, Youth Volunteers And Weekly Programs - June 19, 2026",
+      "id": "friday-announcements",
+      "pinned": true,
+      "category": "Announcement",
+      "title": "Friday Announcements, Parking Notes, Youth Volunteers And Weekly Programs",
       "date": "2026-06-19",
       "summary": "Community reminders covering monthly support, parking and traffic flow, youth volunteer signups, Nibras hiking, Friday Night Bukhari Circle, and the regular weekly program schedule.",
       "image": "./public/news/icm-live/friday-announcements-june-19-2026.png",
@@ -415,8 +418,63 @@ var defaultContent = {
   ]
 };
 
+// src/content-utils.js
+var EVERGREEN_ANNOUNCEMENT_ID = "friday-announcements";
+var fridayAnnouncementPattern = /\bfriday announcements?\b/i;
+function normalizeNewsItems(items, fallbackItems = []) {
+  const source = Array.isArray(items) && items.length ? items : fallbackItems;
+  let evergreenAssigned = false;
+  return source.map((item) => {
+    const normalized = { ...item };
+    const isEvergreen = !evergreenAssigned && (normalized.id === EVERGREEN_ANNOUNCEMENT_ID || normalized.pinned === true || fridayAnnouncementPattern.test(String(normalized.title || "")));
+    if (isEvergreen) {
+      evergreenAssigned = true;
+      normalized.id = EVERGREEN_ANNOUNCEMENT_ID;
+      normalized.pinned = true;
+      normalized.category = "Announcement";
+    }
+    return normalized;
+  });
+}
+function findEvergreenAnnouncement(items) {
+  if (!Array.isArray(items)) return null;
+  return items.find((item) => item.id === EVERGREEN_ANNOUNCEMENT_ID || item.pinned === true || fridayAnnouncementPattern.test(String(item.title || ""))) || null;
+}
+function editableAnnouncementSnapshot(item) {
+  if (!item) return "";
+  return JSON.stringify({
+    title: item.title || "",
+    summary: item.summary || "",
+    image: item.image || "",
+    imageAlt: item.imageAlt || "",
+    category: item.category || "Announcement"
+  });
+}
+function todayDateKey(date = /* @__PURE__ */ new Date(), timeZone = "America/New_York") {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
 // src/admin.js
-var state = structuredClone(defaultContent);
+function normalizeAdminContent(content = defaultContent) {
+  const normalized = {
+    ...structuredClone(defaultContent),
+    ...structuredClone(content),
+    hero: { ...structuredClone(defaultContent.hero), ...structuredClone(content?.hero || {}) },
+    jummah: { ...structuredClone(defaultContent.jummah), ...structuredClone(content?.jummah || {}) },
+    events: Array.isArray(content?.events) ? structuredClone(content.events) : structuredClone(defaultContent.events),
+    news: normalizeNewsItems(content?.news, defaultContent.news)
+  };
+  return normalized;
+}
+var state = normalizeAdminContent();
+var savedState = structuredClone(state);
 function escapeHtml(value) {
   return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 }
@@ -439,7 +497,7 @@ function field(path, value, label, type = "text", options = {}) {
   return `
     <label class="cms-field">
       <span>${escapeHtml(label)}</span>
-      <input type="${type}" value="${escapeHtml(value)}" data-path="${escapeHtml(path)}"${options.required ? " required" : ""}${options.maxlength ? ` maxlength="${Number(options.maxlength)}"` : ""}>
+      <input type="${type}" value="${escapeHtml(value)}" data-path="${escapeHtml(path)}"${options.required ? " required" : ""}${options.maxlength ? ` maxlength="${Number(options.maxlength)}"` : ""}${options.readonly ? " readonly" : ""}>
     </label>
   `;
 }
@@ -543,24 +601,28 @@ function renderEvents() {
   `;
 }
 function renderNews() {
-  const rows = state.news.map(
-    (item, index) => `
+  const rows = state.news.map((item, index) => {
+    const isEvergreen = item.id === EVERGREEN_ANNOUNCEMENT_ID;
+    return `
         <article class="cms-item">
           <div class="cms-item-title">
-            <strong>${escapeHtml(item.title || `News ${index + 1}`)}</strong>
-            <button type="button" data-action="remove-news" data-index="${index}">Remove</button>
+            <div>
+              <strong>${escapeHtml(item.title || `News ${index + 1}`)}</strong>
+              ${isEvergreen ? `<small class="cms-item-note">Always first under Announcement. The date updates automatically when you save an edit.</small>` : ""}
+            </div>
+            ${isEvergreen ? "" : `<button type="button" data-action="remove-news" data-index="${index}">Remove</button>`}
           </div>
           <div class="cms-grid">
             ${imageField(`news.${index}.image`, item.image, "Image URL or data image (required)", { required: true })}
             ${field(`news.${index}.title`, item.title, "Title (optional)")}
-            ${field(`news.${index}.date`, item.date, "Date (optional)", "date")}
+            ${field(`news.${index}.date`, item.date, isEvergreen ? "Last updated (automatic)" : "Date (optional)", "date", { readonly: isEvergreen })}
             ${textarea(`news.${index}.summary`, item.summary, "Description (optional)")}
             ${field(`news.${index}.imageAlt`, item.imageAlt, "Image alt text")}
           </div>
           <div class="cms-preview"><img src="${escapeHtml(item.image)}" alt=""></div>
         </article>
-      `
-  ).join("");
+      `;
+  }).join("");
   return `
     <section class="cms-panel">
       <header>
@@ -579,14 +641,19 @@ async function load() {
   try {
     const response = await fetch("/api/cms", { cache: "no-store" });
     if (!response.ok) throw new Error("CMS API unavailable");
-    state = await response.json();
+    state = normalizeAdminContent(await response.json());
     localStorage.setItem("icm-cms-content", JSON.stringify(state));
     setStatus("Loaded saved CMS content.", "success");
   } catch {
     const local = localStorage.getItem("icm-cms-content");
-    state = local ? JSON.parse(local) : structuredClone(defaultContent);
+    try {
+      state = normalizeAdminContent(local ? JSON.parse(local) : defaultContent);
+    } catch {
+      state = normalizeAdminContent();
+    }
     setStatus("Using local/default content until the CMS server is available.", "warn");
   }
+  savedState = structuredClone(state);
   render();
 }
 async function save() {
@@ -594,6 +661,11 @@ async function save() {
   if (missingNewsImage) {
     setStatus("Every news post needs an image before saving.", "warn");
     return;
+  }
+  const currentAnnouncement = findEvergreenAnnouncement(state.news);
+  const savedAnnouncement = findEvergreenAnnouncement(savedState.news);
+  if (editableAnnouncementSnapshot(currentAnnouncement) !== editableAnnouncementSnapshot(savedAnnouncement)) {
+    currentAnnouncement.date = todayDateKey();
   }
   localStorage.setItem("icm-cms-content", JSON.stringify(state));
   try {
@@ -607,6 +679,8 @@ async function save() {
   } catch {
     setStatus("Saved in this browser only. Start the local server to persist to disk.", "warn");
   }
+  savedState = structuredClone(state);
+  render();
 }
 function readImage(file) {
   return new Promise((resolve, reject) => {
@@ -635,7 +709,7 @@ document.addEventListener("click", async (event) => {
   const index = Number(event.target.dataset.index);
   if (action === "save") await save();
   if (action === "reset") {
-    state = structuredClone(defaultContent);
+    state = normalizeAdminContent();
     setStatus("Reset to default content. Save to keep this reset.", "warn");
     render();
   }
@@ -660,6 +734,7 @@ document.addEventListener("click", async (event) => {
     render();
   }
   if (action === "remove-news") {
+    if (state.news[index]?.id === EVERGREEN_ANNOUNCEMENT_ID) return;
     state.news.splice(index, 1);
     render();
   }

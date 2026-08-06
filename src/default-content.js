@@ -384,7 +384,10 @@ export const defaultContent = {
   ],
   "news": [
     {
-      "title": "Friday Announcements, Parking Notes, Youth Volunteers And Weekly Programs - June 19, 2026",
+      "id": "friday-announcements",
+      "pinned": true,
+      "category": "Announcement",
+      "title": "Friday Announcements, Parking Notes, Youth Volunteers And Weekly Programs",
       "date": "2026-06-19",
       "summary": "Community reminders covering monthly support, parking and traffic flow, youth volunteer signups, Nibras hiking, Friday Night Bukhari Circle, and the regular weekly program schedule.",
       "image": "./public/news/icm-live/friday-announcements-june-19-2026.png",
