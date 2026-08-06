@@ -36,7 +36,10 @@ const prayerLabels = {
   isha: "Isha",
 };
 let selectedPrayerDate = new Date();
-let selectedCalendarMonth = calendarDateFromKey(calendarFixture?.month) || getCalendarOverrideDate() || new Date();
+let selectedCalendarMonth = calendarDateFromKey(calendarFixture?.month)
+  || getCalendarOverrideDate()
+  || calendarDateFromKey(defaultContent.calendar?.today)
+  || new Date();
 let selectedCalendarEventSlug = "";
 let expandedCalendarDateKey = "";
 const stateEntryAnimations = new WeakMap();
@@ -371,6 +374,9 @@ function renderDeferredSkeletons() {
   const monthStart = new Date(selectedCalendarMonth.getFullYear(), selectedCalendarMonth.getMonth(), 1);
   const daysInMonth = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0).getDate();
   const visibleDayCount = Math.ceil((monthStart.getDay() + daysInMonth) / 7) * 7;
+  const firstGridDate = new Date(monthStart);
+  firstGridDate.setDate(firstGridDate.getDate() - firstGridDate.getDay());
+  const skeletonEvents = calendarFixture?.events || defaultContent.events;
   const title = document.querySelector("[data-calendar-title]");
   const hijri = document.querySelector("[data-calendar-hijri]");
   if (title) title.textContent = formatMonthTitle(monthStart);
@@ -382,15 +388,41 @@ function renderDeferredSkeletons() {
   calendarGrid.innerHTML = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     .map((day) => `<div class="calendar-weekday" aria-hidden="true">${day}</div>`)
     .join("")
-    + Array.from({ length: visibleDayCount }, (_, index) => `
-      <div class="calendar-day calendar-day-skeleton" aria-hidden="true">
-        <span class="skeleton-block calendar-skeleton-date"></span>
-        <div class="calendar-skeleton-copy">
-          <span class="skeleton-block skeleton-line skeleton-line-medium"></span>
-          <span class="skeleton-block skeleton-line"></span>
+    + Array.from({ length: visibleDayCount }, (_, index) => {
+      const date = new Date(firstGridDate);
+      date.setDate(firstGridDate.getDate() + index);
+      const dateKey = calendarDateKey(date);
+      const dateEvents = skeletonEvents.filter((event) => eventMatchesDate(event, date));
+      const badge = getDateBadgeParts(dateKey);
+      const isOutside = date.getMonth() !== monthStart.getMonth();
+      const visibleSkeletonEvents = dateEvents.slice(0, 2);
+      const hiddenSkeletonEvents = dateEvents.slice(2);
+
+      return `
+        <div class="calendar-day calendar-day-skeleton${isOutside ? " is-muted" : ""}${dateEvents.length ? " has-events" : ""}" aria-hidden="true">
+          <span class="calendar-day-number"><span>${escapeHtml(badge.month)}</span><strong>${date.getDate()}</strong></span>
+          <div class="calendar-event-stack">
+            ${visibleSkeletonEvents.map((event) => {
+              const titleLength = eventTitle(event).length;
+              const lineCount = titleLength > 85 ? 4 : titleLength > 55 ? 3 : titleLength > 28 ? 2 : 1;
+              return `
+                <span class="calendar-event-chip calendar-event-chip-skeleton skeleton-lines-${lineCount}">
+                  <img src="./public/icons/generated/calendar.png" alt="" aria-hidden="true">
+                  <span class="calendar-event-text-skeleton">
+                    ${Array.from({ length: lineCount }, (_, lineIndex) => `<span class="skeleton-block${lineIndex === lineCount - 1 ? " is-last" : ""}"></span>`).join("")}
+                  </span>
+                </span>
+              `;
+            }).join("")}
+            ${hiddenSkeletonEvents.length ? `
+              <span class="calendar-event-more calendar-event-more-skeleton">
+                <span class="skeleton-block"></span>
+              </span>
+            ` : ""}
+          </div>
         </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
 }
 
 function renderPrayerTable() {

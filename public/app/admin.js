@@ -431,7 +431,7 @@ function normalizeNewsItems(items, fallbackItems = []) {
       evergreenAssigned = true;
       normalized.id = EVERGREEN_ANNOUNCEMENT_ID;
       normalized.pinned = true;
-      normalized.category = "Announcement";
+      if (!normalized.category) normalized.category = "Announcement";
     }
     return normalized;
   });
@@ -608,7 +608,7 @@ function renderNews() {
           <div class="cms-item-title">
             <div>
               <strong>${escapeHtml(item.title || `News ${index + 1}`)}</strong>
-              ${isEvergreen ? `<small class="cms-item-note">Always first under Announcement. The date updates automatically when you save an edit.</small>` : ""}
+              ${isEvergreen ? `<small class="cms-item-note">Always first in News &amp; Announcements, regardless of label. The date updates automatically when you save an edit.</small>` : ""}
             </div>
             ${isEvergreen ? "" : `<button type="button" data-action="remove-news" data-index="${index}">Remove</button>`}
           </div>

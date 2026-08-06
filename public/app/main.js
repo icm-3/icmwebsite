@@ -1290,7 +1290,7 @@ function normalizeNewsItems(items, fallbackItems = []) {
       evergreenAssigned = true;
       normalized.id = EVERGREEN_ANNOUNCEMENT_ID;
       normalized.pinned = true;
-      normalized.category = "Announcement";
+      if (!normalized.category) normalized.category = "Announcement";
     }
     return normalized;
   });
