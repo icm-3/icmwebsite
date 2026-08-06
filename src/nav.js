@@ -8,38 +8,116 @@ export function initMobileNav() {
   panel.id = "site-menu-panel";
   panel.hidden = true;
   panel.innerHTML = `
-    <details class="menu-panel-section menu-panel-primary" open>
-      <summary>Main Pages</summary>
-      <a class="desktop-menu-only" href="./donate.html">Donate</a>
-      <a href="./prayer-times.html">Monthly Prayer Schedule</a>
-      <a href="./calendar.html">Event Calendar</a>
-      <a href="./programs.html">Programs</a>
-      <a href="./news.html">News</a>
-      <a href="./about.html">About</a>
-    </details>
-    <details class="menu-panel-section">
-      <summary>Programs & Services</summary>
-      <a href="./programs.html#services">Services Overview</a>
-      <a href="./volunteer.html">Volunteer</a>
-      <a href="./food-pantry.html">Food Pantry</a>
-      <a href="./financial-aid.html">Financial Aid</a>
-    </details>
-    <details class="menu-panel-section">
-      <summary>Education</summary>
-      <a href="./al-mizaan-academy.html">Al Mizaan Academy</a>
-      <a href="./nibraas-institute.html">Nibraas Institute</a>
-      <a href="./al-falah-quran-school.html">Al-Falah Quran School</a>
-    </details>
-    <details class="menu-panel-section">
-      <summary>Community</summary>
-      <a href="./about.html#imam">Our Imam</a>
-      <a href="./about.html#contact">Contact Us</a>
-    </details>
+    <section class="menu-panel-section menu-panel-primary is-expanded" data-menu-section>
+      <button class="menu-panel-section-toggle" type="button" aria-expanded="true" aria-controls="menu-main-pages">Main Pages</button>
+      <div class="menu-panel-section-content" id="menu-main-pages">
+        <div class="menu-panel-section-content-inner">
+          <a class="desktop-menu-only" href="./donate.html">Donate</a>
+          <a href="./prayer-times.html">Monthly Prayer Schedule</a>
+          <a href="./calendar.html">Event Calendar</a>
+          <a href="./programs.html">Programs</a>
+          <a href="./news.html">News</a>
+          <a href="./about.html">About</a>
+        </div>
+      </div>
+    </section>
+    <section class="menu-panel-section" data-menu-section>
+      <button class="menu-panel-section-toggle" type="button" aria-expanded="false" aria-controls="menu-programs-services">Programs & Services</button>
+      <div class="menu-panel-section-content" id="menu-programs-services" hidden>
+        <div class="menu-panel-section-content-inner">
+          <a href="./programs.html#services">Services Overview</a>
+          <a href="./volunteer.html">Volunteer</a>
+          <a href="./food-pantry.html">Food Pantry</a>
+          <a href="./financial-aid.html">Financial Aid</a>
+        </div>
+      </div>
+    </section>
+    <section class="menu-panel-section" data-menu-section>
+      <button class="menu-panel-section-toggle" type="button" aria-expanded="false" aria-controls="menu-education">Education</button>
+      <div class="menu-panel-section-content" id="menu-education" hidden>
+        <div class="menu-panel-section-content-inner">
+          <a href="./al-mizaan-academy.html">Al Mizaan Academy</a>
+          <a href="./nibraas-institute.html">Nibraas Institute</a>
+          <a href="./al-falah-quran-school.html">Al-Falah Quran School</a>
+        </div>
+      </div>
+    </section>
+    <section class="menu-panel-section" data-menu-section>
+      <button class="menu-panel-section-toggle" type="button" aria-expanded="false" aria-controls="menu-community">Community</button>
+      <div class="menu-panel-section-content" id="menu-community" hidden>
+        <div class="menu-panel-section-content-inner">
+          <a href="./about.html#imam">Our Imam</a>
+          <a href="./about.html#contact">Contact Us</a>
+        </div>
+      </div>
+    </section>
   `;
   button.after(panel);
 
   let closeTimer = null;
   let menuOpen = false;
+  const disclosureTimers = new WeakMap();
+  const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const finishDisclosure = (section, expanded) => {
+    if ((section.dataset.expanded === "true") !== expanded) return;
+    const content = section.querySelector(".menu-panel-section-content");
+    if (!content) return;
+    content.style.height = expanded ? "auto" : "0px";
+    if (!expanded) content.hidden = true;
+    disclosureTimers.delete(section);
+  };
+
+  const setDisclosureExpanded = (section, expanded, { animate = true } = {}) => {
+    const toggle = section.querySelector(".menu-panel-section-toggle");
+    const content = section.querySelector(".menu-panel-section-content");
+    if (!toggle || !content) return;
+
+    window.clearTimeout(disclosureTimers.get(section));
+    section.dataset.expanded = String(expanded);
+    toggle.setAttribute("aria-expanded", String(expanded));
+
+    if (!animate || prefersReducedMotion()) {
+      section.setAttribute("data-instant-motion", "");
+      section.classList.toggle("is-expanded", expanded);
+      content.hidden = !expanded;
+      content.style.height = expanded ? "auto" : "0px";
+      requestAnimationFrame(() => section.removeAttribute("data-instant-motion"));
+      return;
+    }
+
+    content.hidden = false;
+    const currentHeight = content.getBoundingClientRect().height;
+    content.style.height = `${currentHeight}px`;
+    void content.offsetHeight;
+    section.classList.toggle("is-expanded", expanded);
+    content.style.height = expanded ? `${content.scrollHeight}px` : "0px";
+
+    disclosureTimers.set(
+      section,
+      window.setTimeout(() => finishDisclosure(section, expanded), 220),
+    );
+  };
+
+  panel.querySelectorAll("[data-menu-section]").forEach((section) => {
+    const expanded = section.classList.contains("is-expanded");
+    const content = section.querySelector(".menu-panel-section-content");
+    section.dataset.expanded = String(expanded);
+    if (content) {
+      content.hidden = !expanded;
+      content.style.height = expanded ? "auto" : "0px";
+      content.addEventListener("transitionend", (event) => {
+        if (event.target !== content || event.propertyName !== "height") return;
+        finishDisclosure(section, section.dataset.expanded === "true");
+      });
+    }
+    section
+      .querySelector(".menu-panel-section-toggle")
+      ?.addEventListener("click", (event) => {
+        const nextExpanded = section.dataset.expanded !== "true";
+        setDisclosureExpanded(section, nextExpanded, { animate: event.detail > 0 });
+      });
+  });
 
   const finishClose = () => {
     if (menuOpen) return;
@@ -52,31 +130,43 @@ export function initMobileNav() {
     if (event.target === panel && event.propertyName === "opacity") finishClose();
   });
 
-  const closeMenu = () => {
+  const closeMenu = ({ animate = true } = {}) => {
     if (!menuOpen && panel.hidden) return;
     menuOpen = false;
     window.clearTimeout(closeTimer);
+    if (!animate || prefersReducedMotion()) nav.setAttribute("data-instant-motion", "");
     panel.classList.remove("is-open");
     panel.classList.add("is-closing");
     button.setAttribute("aria-expanded", "false");
     button.setAttribute("aria-label", "Open menu");
-    closeTimer = window.setTimeout(finishClose, 210);
+    if (!animate || prefersReducedMotion()) {
+      finishClose();
+      requestAnimationFrame(() => nav.removeAttribute("data-instant-motion"));
+      return;
+    }
+    closeTimer = window.setTimeout(finishClose, 200);
   };
 
-  const setMenuOpen = (isOpen) => {
+  const setMenuOpen = (isOpen, { animate = true } = {}) => {
     window.clearTimeout(closeTimer);
     if (!isOpen) {
-      closeMenu();
+      closeMenu({ animate });
       return;
     }
 
     menuOpen = true;
+    if (!animate || prefersReducedMotion()) nav.setAttribute("data-instant-motion", "");
     panel.hidden = false;
     panel.classList.remove("is-closing");
     nav.classList.add("menu-open");
-    requestAnimationFrame(() => {
-      if (menuOpen) panel.classList.add("is-open");
-    });
+    if (!animate || prefersReducedMotion()) {
+      panel.classList.add("is-open");
+      requestAnimationFrame(() => nav.removeAttribute("data-instant-motion"));
+    } else {
+      requestAnimationFrame(() => {
+        if (menuOpen) panel.classList.add("is-open");
+      });
+    }
     button.setAttribute("aria-expanded", "true");
     button.setAttribute("aria-label", "Close menu");
   };
@@ -86,11 +176,11 @@ export function initMobileNav() {
 
   button.addEventListener("click", (event) => {
     event.stopPropagation();
-    setMenuOpen(!menuOpen);
+    setMenuOpen(!menuOpen, { animate: event.detail > 0 });
   });
 
   nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", closeMenu);
+    link.addEventListener("click", (event) => closeMenu({ animate: event.detail > 0 }));
   });
 
   document.addEventListener("click", (event) => {
@@ -100,7 +190,7 @@ export function initMobileNav() {
 
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape" || !menuOpen) return;
-    closeMenu();
+    closeMenu({ animate: false });
     button.focus({ preventScroll: true });
   });
 }
