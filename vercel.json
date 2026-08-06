@@ -18,6 +18,13 @@
   ],
   "routes": [
     {
+      "src": "/public/(images|news|programs)/responsive/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      },
+      "continue": true
+    },
+    {
       "src": "/api/prayer-times",
       "dest": "/api/prayer-times.js"
     },

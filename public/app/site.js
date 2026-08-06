@@ -38,67 +38,25 @@ function initMobileNav() {
   `;
   button.after(panel);
   let closeTimer = null;
-  const menuSections = panel.querySelectorAll(".menu-panel-section");
-  const clearSectionAnimation = (section) => {
-    section.style.height = "";
-    section.style.overflow = "";
-    section.classList.remove("is-animating");
+  let menuOpen = false;
+  const finishClose = () => {
+    if (menuOpen) return;
+    nav.classList.remove("menu-open");
+    panel.classList.remove("is-closing");
+    panel.hidden = true;
   };
-  const setSectionOpen = (section, shouldOpen) => {
-    if (section.open === shouldOpen || section.classList.contains("is-animating")) return;
-    const startHeight = section.offsetHeight;
-    let endHeight;
-    if (shouldOpen) {
-      section.open = true;
-      endHeight = section.offsetHeight;
-    } else {
-      section.open = false;
-      endHeight = section.offsetHeight;
-      section.open = true;
-    }
-    section.classList.add("is-animating");
-    section.style.overflow = "hidden";
-    section.style.height = `${startHeight}px`;
-    requestAnimationFrame(() => {
-      section.style.height = `${endHeight}px`;
-    });
-    const finish = () => {
-      if (!shouldOpen) section.open = false;
-      clearSectionAnimation(section);
-      section.removeEventListener("transitionend", finish);
-    };
-    section.addEventListener("transitionend", finish);
-    window.setTimeout(finish, 260);
-  };
-  menuSections.forEach((section) => {
-    section.addEventListener("click", (event) => {
-      const summary = event.target.closest("summary");
-      if (!summary || !section.contains(summary)) return;
-      event.preventDefault();
-      setSectionOpen(section, !section.open);
-    });
+  panel.addEventListener("transitionend", (event) => {
+    if (event.target === panel && event.propertyName === "opacity") finishClose();
   });
   const closeMenu = () => {
-    if (!nav.classList.contains("menu-open")) return;
+    if (!menuOpen && panel.hidden) return;
+    menuOpen = false;
     window.clearTimeout(closeTimer);
     panel.classList.remove("is-open");
     panel.classList.add("is-closing");
-    nav.classList.add("menu-closing");
-    nav.classList.remove("menu-exit");
-    nav.classList.remove("menu-visible");
-    void nav.offsetHeight;
-    requestAnimationFrame(() => {
-      nav.classList.add("menu-exit");
-    });
     button.setAttribute("aria-expanded", "false");
     button.setAttribute("aria-label", "Open menu");
-    closeTimer = window.setTimeout(() => {
-      nav.classList.remove("menu-open");
-      nav.classList.remove("menu-closing");
-      nav.classList.remove("menu-exit");
-      panel.classList.remove("is-closing");
-      panel.hidden = true;
-    }, 220);
+    closeTimer = window.setTimeout(finishClose, 210);
   };
   const setMenuOpen = (isOpen) => {
     window.clearTimeout(closeTimer);
@@ -106,17 +64,12 @@ function initMobileNav() {
       closeMenu();
       return;
     }
+    menuOpen = true;
     panel.hidden = false;
     panel.classList.remove("is-closing");
     nav.classList.add("menu-open");
-    nav.classList.remove("menu-closing");
-    nav.classList.remove("menu-exit");
-    nav.classList.remove("menu-visible");
-    void nav.offsetHeight;
-    void panel.offsetHeight;
     requestAnimationFrame(() => {
-      nav.classList.add("menu-visible");
-      panel.classList.add("is-open");
+      if (menuOpen) panel.classList.add("is-open");
     });
     button.setAttribute("aria-expanded", "true");
     button.setAttribute("aria-label", "Close menu");
@@ -125,17 +78,19 @@ function initMobileNav() {
   button.setAttribute("aria-expanded", "false");
   button.addEventListener("click", (event) => {
     event.stopPropagation();
-    setMenuOpen(!panel.classList.contains("is-open"));
+    setMenuOpen(!menuOpen);
   });
   nav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", closeMenu);
   });
   document.addEventListener("click", (event) => {
-    if (!nav.classList.contains("menu-open") || nav.contains(event.target)) return;
+    if (!menuOpen || nav.contains(event.target)) return;
     closeMenu();
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeMenu();
+    if (event.key !== "Escape" || !menuOpen) return;
+    closeMenu();
+    button.focus({ preventScroll: true });
   });
 }
 
@@ -143,21 +98,61 @@ function initMobileNav() {
 var datePickerWeekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 var datePickerMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var datePickerCloseTimers = /* @__PURE__ */ new WeakMap();
+var stateEntryAnimations = /* @__PURE__ */ new WeakMap();
+var motionEaseOut = "cubic-bezier(0.23, 1, 0.32, 1)";
+var datePickerId = 0;
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+function motionSafeBehavior(behavior = "smooth") {
+  return prefersReducedMotion() ? "auto" : behavior;
+}
+function animateStateEntry(element, { opacity = 0.65, translateX = 0, translateY = 0 } = {}) {
+  if (!element) return;
+  stateEntryAnimations.get(element)?.cancel();
+  if (document.hidden || typeof element.animate !== "function") return;
+  const reducedMotion = prefersReducedMotion();
+  const animation = element.animate(
+    reducedMotion ? [{ opacity: Math.max(opacity, 0.72) }, { opacity: 1 }] : [
+      { opacity, transform: `translate(${translateX}px, ${translateY}px)` },
+      { opacity: 1, transform: "translate(0, 0)" }
+    ],
+    {
+      duration: reducedMotion ? 160 : 180,
+      easing: motionEaseOut
+    }
+  );
+  stateEntryAnimations.set(element, animation);
+  const forgetAnimation = () => {
+    if (stateEntryAnimations.get(element) === animation) stateEntryAnimations.delete(element);
+  };
+  animation.addEventListener("finish", forgetAnimation, { once: true });
+  animation.addEventListener("cancel", forgetAnimation, { once: true });
+}
+function setDatePickerExpanded(picker, isExpanded) {
+  const shell = picker.closest(".date-input-shell");
+  shell?.querySelector(".date-input-button")?.setAttribute("aria-expanded", String(isExpanded));
+  shell?.querySelector("input")?.setAttribute("aria-expanded", String(isExpanded));
+}
 function showDatePicker(picker) {
   window.clearTimeout(datePickerCloseTimers.get(picker));
+  picker.dataset.openIntent = "true";
   picker.hidden = false;
   picker.classList.remove("is-closing");
+  setDatePickerExpanded(picker, true);
   requestAnimationFrame(() => {
-    picker.classList.add("is-open");
+    if (picker.dataset.openIntent === "true") picker.classList.add("is-open");
   });
 }
 function hideDatePicker(picker) {
   if (picker.hidden) return;
   window.clearTimeout(datePickerCloseTimers.get(picker));
+  picker.dataset.openIntent = "false";
   picker.classList.remove("is-open");
   picker.classList.add("is-closing");
+  setDatePickerExpanded(picker, false);
   const timer = window.setTimeout(() => {
-    if (!picker.classList.contains("is-open")) {
+    if (picker.dataset.openIntent !== "true") {
       picker.hidden = true;
       picker.classList.remove("is-closing");
     }
@@ -165,7 +160,7 @@ function hideDatePicker(picker) {
   datePickerCloseTimers.set(picker, timer);
 }
 function toggleDatePicker(picker, openPicker) {
-  if (picker.hidden || !picker.classList.contains("is-open")) {
+  if (picker.dataset.openIntent !== "true") {
     openPicker();
   } else {
     hideDatePicker(picker);
@@ -239,6 +234,8 @@ function renderDatePickerPopover(picker, monthDate, selectedValue = "", options 
             class="${date.getMonth() !== monthStart.getMonth() ? "is-muted" : ""}${key === todayKey ? " is-today" : ""}${key === selectedValue ? " is-selected" : ""}"
             data-date-picker-day="${key}"
             aria-label="${formatPickerDayLabel(date)}"
+            aria-pressed="${key === selectedValue}"
+            ${key === todayKey ? 'aria-current="date"' : ""}
           >${date.getDate()}</button>
         `;
   }).join("")}
@@ -271,8 +268,17 @@ function initCustomDateInputs() {
     shell.append(button);
     const picker = document.createElement("div");
     picker.className = `date-picker-popover form-date-picker-popover${isBirthdate ? " birthdate-picker-popover" : ""}`;
+    picker.id = `form-date-picker-${++datePickerId}`;
+    picker.setAttribute("role", "dialog");
+    picker.setAttribute("aria-label", isBirthdate ? "Choose birth date" : "Choose date");
     picker.hidden = true;
     shell.append(picker);
+    button.setAttribute("aria-haspopup", "dialog");
+    button.setAttribute("aria-controls", picker.id);
+    button.setAttribute("aria-expanded", "false");
+    input.setAttribute("aria-haspopup", "dialog");
+    input.setAttribute("aria-controls", picker.id);
+    input.setAttribute("aria-expanded", "false");
     let pickerMonth = parseDateInputValue(input.value) || /* @__PURE__ */ new Date();
     pickerMonth = new Date(pickerMonth.getFullYear(), pickerMonth.getMonth(), 1);
     const openPicker = () => {
@@ -311,6 +317,7 @@ function initCustomDateInputs() {
         input.dispatchEvent(new Event("input", { bubbles: true }));
         input.dispatchEvent(new Event("change", { bubbles: true }));
         hideDatePicker(picker);
+        button.focus({ preventScroll: true });
         return;
       }
       if (event.target.closest("[data-date-picker-today]")) {
@@ -320,6 +327,7 @@ function initCustomDateInputs() {
         input.dispatchEvent(new Event("input", { bubbles: true }));
         input.dispatchEvent(new Event("change", { bubbles: true }));
         hideDatePicker(picker);
+        button.focus({ preventScroll: true });
         return;
       }
     };
@@ -348,6 +356,14 @@ function initCustomDateInputs() {
       hideDatePicker(picker);
     });
   });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const picker = [...document.querySelectorAll(".form-date-picker-popover")].find((candidate) => !candidate.hidden);
+    if (!picker) return;
+    event.preventDefault();
+    hideDatePicker(picker);
+    picker.closest(".date-input-shell")?.querySelector(".date-input-button")?.focus({ preventScroll: true });
+  });
 }
 function initDonationForm() {
   const form = document.querySelector(".donation-form");
@@ -359,6 +375,8 @@ function initDonationForm() {
   const customAmountOption = form.querySelector("input[name='amount'][value='custom']");
   const paymentOptions = form.querySelectorAll("input[name='payment-method']");
   const paymentPanels = form.querySelectorAll("[data-payment-panel]");
+  let activePaymentMethod = null;
+  let paymentPointerIntent = false;
   if (amountInput) {
     amountInput.type = "text";
     amountInput.inputMode = "decimal";
@@ -409,16 +427,19 @@ function initDonationForm() {
       frequencySummary.textContent = frequencyLabels[selectedFrequency.value] || selectedFrequency.value;
     }
   };
-  const updatePaymentPanels = () => {
+  const updatePaymentPanels = ({ animate = false } = {}) => {
     const selectedPayment = form.querySelector("input[name='payment-method']:checked");
     if (!selectedPayment) return;
+    const paymentMethodChanged = activePaymentMethod !== null && activePaymentMethod !== selectedPayment.value;
     paymentPanels.forEach((panel) => {
       const isActive = panel.dataset.paymentPanel === selectedPayment.value;
       panel.hidden = !isActive;
       panel.querySelectorAll("input, select, textarea").forEach((input) => {
         input.disabled = !isActive;
       });
+      if (isActive && animate && paymentMethodChanged) animateStateEntry(panel, { translateY: 6 });
     });
+    activePaymentMethod = selectedPayment.value;
   };
   amountOptions.forEach((option) => {
     const setPresetAmount = () => {
@@ -442,12 +463,22 @@ function initDonationForm() {
     updateSummary();
   });
   paymentOptions.forEach((option) => {
-    const setPaymentMethod = () => {
+    const label = option.closest("label");
+    const setPaymentMethod = (event) => {
       option.checked = true;
-      updatePaymentPanels();
+      updatePaymentPanels({ animate: event.detail > 0 });
     };
-    option.addEventListener("change", updatePaymentPanels);
-    option.closest("label")?.addEventListener("click", setPaymentMethod);
+    label?.addEventListener("pointerdown", () => {
+      paymentPointerIntent = true;
+    });
+    label?.addEventListener("pointercancel", () => {
+      paymentPointerIntent = false;
+    });
+    option.addEventListener("change", () => {
+      updatePaymentPanels({ animate: paymentPointerIntent });
+      paymentPointerIntent = false;
+    });
+    label?.addEventListener("click", setPaymentMethod);
   });
   form.addEventListener("input", updateSummary);
   form.addEventListener("change", updateSummary);
@@ -489,6 +520,10 @@ function initPrayerTimesPage() {
   const cleanCellText = (cell) => cell.textContent.replace(/\s+/g, " ").trim();
   let selectedScheduleDate = /* @__PURE__ */ new Date();
   let loadedMonth = null;
+  let prayerLoadSequence = 0;
+  let prayerRequestController = null;
+  let prayerStatusTimer = null;
+  let schedulePointerIntent = false;
   const longDateFormatter = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     month: "long",
@@ -561,9 +596,22 @@ function initPrayerTimesPage() {
     document.querySelectorAll(".prayer-times-table tr.is-selected-day").forEach((row) => row.classList.remove("is-selected-day"));
     findDateRow(selectedParts())?.classList.add("is-selected-day");
   };
-  const scrollToSelectedDay = () => {
+  const scrollToSelectedDay = ({ smooth = true } = {}) => {
     markSelectedDay();
-    findDateRow(selectedParts())?.scrollIntoView({ behavior: "smooth", block: "center" });
+    findDateRow(selectedParts())?.scrollIntoView({ behavior: smooth ? motionSafeBehavior() : "auto", block: "center" });
+  };
+  const renderPrayerSkeleton = () => {
+    target.innerHTML = `
+      <div class="prayer-table-skeleton" aria-hidden="true">
+        <div class="prayer-skeleton-header">
+          ${Array.from({ length: 7 }, () => "<span></span>").join("")}
+        </div>
+        ${Array.from(
+      { length: 6 },
+      () => `<div class="prayer-skeleton-row">${Array.from({ length: 7 }, () => "<span></span>").join("")}</div>`
+    ).join("")}
+      </div>
+    `;
   };
   const renderTable = (html, month) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
@@ -616,42 +664,89 @@ function initPrayerTimesPage() {
     loadedMonth = month;
     populateDaySelect(rowModels, month);
   };
-  const loadMonth = async (month) => {
+  const loadMonth = async (month, { animate = true } = {}) => {
+    const requestSequence = ++prayerLoadSequence;
+    const hadSchedule = Boolean(target.querySelector(".prayer-times-table"));
+    prayerRequestController?.abort();
+    prayerRequestController = new AbortController();
+    window.clearTimeout(prayerStatusTimer);
+    target.toggleAttribute("data-instant-motion", !animate);
+    target.setAttribute("aria-busy", "true");
+    target.classList.toggle("is-loading", hadSchedule);
     if (status) {
-      status.hidden = false;
+      status.hidden = true;
       status.textContent = "Loading prayer times...";
     }
-    target.innerHTML = "";
+    prayerStatusTimer = window.setTimeout(() => {
+      if (requestSequence !== prayerLoadSequence) return;
+      if (status) status.hidden = false;
+      if (!hadSchedule && !target.querySelector(".prayer-times-table")) renderPrayerSkeleton();
+    }, 150);
     try {
-      const response = await fetch(`/api/prayer-times?month=${month}`, { cache: "no-store" });
+      const response = await fetch(`/api/prayer-times?month=${month}`, {
+        cache: "no-store",
+        signal: prayerRequestController.signal
+      });
       if (!response.ok) throw new Error("Could not load the selected month.");
-      renderTable(await response.text(), month);
+      const tableHtml = await response.text();
+      if (requestSequence !== prayerLoadSequence) return false;
+      renderTable(tableHtml, month);
+      target.classList.remove("is-loading");
+      if (animate) animateStateEntry(target, { opacity: hadSchedule ? 0.55 : 0.7 });
       if (status) status.hidden = true;
+      return true;
     } catch (error) {
-      if (status) status.textContent = error.message || "Could not load prayer times.";
+      if (requestSequence !== prayerLoadSequence || error.name === "AbortError") return false;
+      if (!hadSchedule) target.innerHTML = "";
+      if (status) {
+        status.hidden = false;
+        status.textContent = error.message || "Could not load prayer times.";
+      }
+      return false;
+    } finally {
+      if (requestSequence === prayerLoadSequence) {
+        window.clearTimeout(prayerStatusTimer);
+        target.removeAttribute("aria-busy");
+        target.classList.remove("is-loading");
+        target.removeAttribute("data-instant-motion");
+        prayerRequestController = null;
+      }
     }
   };
-  const setScheduleMonth = async (month) => {
+  const setScheduleMonth = async (month, { animate = true } = {}) => {
     if (!month || month < 1 || month > 13) return;
-    await loadMonth(month);
+    if (!await loadMonth(month, { animate })) return;
     if (monthSelect) monthSelect.value = String(month);
     clearSelectedDay();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: animate ? motionSafeBehavior() : "auto" });
   };
-  const setScheduleDate = async (date, { scroll = true, scheduleMonth = date.getMonth() + 1 } = {}) => {
-    selectedScheduleDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const setScheduleDate = async (date, { scroll = true, scheduleMonth = date.getMonth() + 1, animate = true } = {}) => {
+    const nextSelectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    if (loadedMonth !== scheduleMonth && !await loadMonth(scheduleMonth, { animate })) return;
+    selectedScheduleDate = nextSelectedDate;
     updateDateControl(scheduleMonth);
-    if (loadedMonth !== scheduleMonth) {
-      await loadMonth(scheduleMonth);
-    } else {
-      markSelectedDay();
-    }
-    if (scroll) scrollToSelectedDay();
+    markSelectedDay();
+    if (scroll) scrollToSelectedDay({ smooth: animate });
   };
+  [monthSelect, daySelect, todayButton].forEach((control) => {
+    control?.addEventListener("pointerdown", () => {
+      schedulePointerIntent = true;
+    });
+    control?.addEventListener("pointercancel", () => {
+      schedulePointerIntent = false;
+    });
+    control?.addEventListener("keydown", () => {
+      schedulePointerIntent = false;
+    });
+  });
   monthSelect?.addEventListener("change", () => {
-    setScheduleMonth(Number(monthSelect.value));
+    const animate = schedulePointerIntent;
+    schedulePointerIntent = false;
+    setScheduleMonth(Number(monthSelect.value), { animate });
   });
   daySelect?.addEventListener("change", () => {
+    const animate = schedulePointerIntent;
+    schedulePointerIntent = false;
     if (!daySelect.value) {
       clearSelectedDay();
       return;
@@ -660,22 +755,38 @@ function initPrayerTimesPage() {
     const [year, month, day] = dateValue.split("-").map(Number);
     const scheduleMonth = Number(scheduleMonthValue);
     if (!year || !month || !day || !scheduleMonth) return;
-    setScheduleDate(new Date(year, month - 1, day), { scheduleMonth });
+    setScheduleDate(new Date(year, month - 1, day), { scheduleMonth, animate });
   });
-  todayButton?.addEventListener("click", async () => {
-    selectedScheduleDate = /* @__PURE__ */ new Date();
-    const currentMonth = selectedScheduleDate.getMonth() + 1;
+  todayButton?.addEventListener("click", async (event) => {
+    const today = /* @__PURE__ */ new Date();
+    const currentMonth = today.getMonth() + 1;
+    schedulePointerIntent = false;
+    if (!await loadMonth(currentMonth, { animate: event.detail > 0 })) return;
+    selectedScheduleDate = today;
     updateDateControl(currentMonth);
-    await loadMonth(currentMonth);
     if (monthSelect) monthSelect.value = String(currentMonth);
     const todayRow = document.querySelector("[data-today-row]") || [...document.querySelectorAll(".date-cell span")].find((cell) => cell.textContent.includes(todayParts()))?.closest("tr");
     markSelectedDay();
-    todayRow?.scrollIntoView({ behavior: "smooth", block: "center" });
+    todayRow?.scrollIntoView({ behavior: event.detail > 0 ? motionSafeBehavior() : "auto", block: "center" });
   });
   updateDateControl();
-  loadMonth(selectedScheduleDate.getMonth() + 1).then(() => {
+  loadMonth(selectedScheduleDate.getMonth() + 1).then((loaded) => {
+    if (!loaded) return;
     if (monthSelect) monthSelect.value = "";
     clearSelectedDay();
+  });
+}
+function initDeferredImages(root = document) {
+  root.querySelectorAll("img[data-load-reveal]").forEach((image) => {
+    const settle = (state) => {
+      image.dataset.loadState = state;
+    };
+    if (image.complete) {
+      queueMicrotask(() => settle(image.naturalWidth ? "loaded" : "error"));
+      return;
+    }
+    image.addEventListener("load", () => settle("loaded"), { once: true });
+    image.addEventListener("error", () => settle("error"), { once: true });
   });
 }
 function initStaticFormValidation() {
@@ -954,6 +1065,7 @@ function initStaticFormValidation() {
   });
 }
 initMobileNav();
+initDeferredImages();
 initCustomDateInputs();
 initDonationForm();
 initPrayerTimesPage();

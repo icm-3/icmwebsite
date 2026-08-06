@@ -6,6 +6,7 @@ import {
   Rounding,
 } from "adhan";
 import { defaultContent } from "./default-content.js";
+import { getResponsiveMedia } from "./media.js";
 import { initMobileNav } from "./nav.js";
 
 const ICM_COORDS = new Coordinates(35.8111, -78.8231);
@@ -20,6 +21,8 @@ const prayerLabels = {
 };
 const prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 const nextPrayerOrder = prayerOrder;
+const HOME_EVENT_LIMIT = 6;
+const HOME_NEWS_LIMIT = 4;
 const topicIconRules = [
   { icon: "leaf", words: ["gratitude", "shukr", "blessing", "thanks", "worship", "ibadah", "prayer", "salah", "daily", "green", "environment", "deen", "stewardship", "earth", "creation", "sustainability", "nature", "cleanliness", "purity"] },
   { icon: "heart", words: ["love", "mercy", "rahma", "compassion", "kindness", "service", "sincerity", "ikhlas", "charity", "giving", "donation", "zakat", "sadaqah", "muhasaba", "self reflection", "forgiveness", "healing", "care"] },
@@ -34,6 +37,10 @@ let selectedPrayerDate = new Date();
 let selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
 let prayerDateTracksToday = true;
 const datePickerCloseTimers = new WeakMap();
+const countdownAnimations = new WeakMap();
+const prayerActivationAnimations = new WeakMap();
+const prayerActivationTimers = new WeakMap();
+const reducedMotionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 let prayerClockOffset = null;
 
 export function getIcmPrayerTimes(date) {
@@ -53,6 +60,14 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function responsiveImageMarkup(source, alt, { className = "", sizes = "100vw" } = {}) {
+  const media = getResponsiveMedia(source);
+  const classAttribute = className ? ` class="${escapeHtml(className)}"` : "";
+  const srcsetAttribute = media.srcset ? ` srcset="${escapeHtml(media.srcset)}" sizes="${escapeHtml(sizes)}"` : "";
+  const dimensionAttributes = media.width && media.height ? ` width="${media.width}" height="${media.height}"` : "";
+  return `<img${classAttribute} src="${escapeHtml(media.src)}"${srcsetAttribute}${dimensionAttributes} alt="${escapeHtml(alt)}" loading="lazy" decoding="async" data-load-reveal data-load-state="pending">`;
 }
 
 function mergeContent(content) {
@@ -324,13 +339,134 @@ function setText(selector, value) {
   if (element) element.textContent = value;
 }
 
-function setAnimatedText(selector, value) {
+function prefersReducedMotion() {
+  return reducedMotionPreference.matches;
+}
+
+function setAnimatedCountdownText(selector, value) {
   const element = document.querySelector(selector);
   if (!element || element.textContent === value) return;
+
   element.textContent = value;
-  element.classList.remove("is-changing");
-  void element.offsetWidth;
-  element.classList.add("is-changing");
+  const previousAnimation = countdownAnimations.get(element);
+  previousAnimation?.cancel();
+
+  if (document.hidden || typeof element.animate !== "function") return;
+
+  const reducedMotion = prefersReducedMotion();
+  const animation = element.animate(
+    reducedMotion
+      ? [{ opacity: 0.62 }, { opacity: 1 }]
+      : [
+          { opacity: 0.58, transform: "translateY(18%) rotateX(-10deg) scale(0.99)" },
+          { opacity: 1, transform: "translateY(0) rotateX(0deg) scale(1)" },
+        ],
+    {
+      duration: reducedMotion ? 160 : 200,
+      easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+    },
+  );
+
+  countdownAnimations.set(element, animation);
+  const forgetAnimation = () => {
+    if (countdownAnimations.get(element) === animation) countdownAnimations.delete(element);
+  };
+  animation.addEventListener("finish", forgetAnimation, { once: true });
+  animation.addEventListener("cancel", forgetAnimation, { once: true });
+}
+
+function prayerTransitionDirection(previousKey, nextKey) {
+  if (previousKey === "isha" && nextKey === "fajr") return 1;
+  if (previousKey === "fajr" && nextKey === "isha") return -1;
+  return prayerOrder.indexOf(nextKey) >= prayerOrder.indexOf(previousKey) ? 1 : -1;
+}
+
+function animatePrayerActivation(tile, direction) {
+  prayerActivationAnimations.get(tile)?.forEach((animation) => animation.cancel());
+  window.clearTimeout(prayerActivationTimers.get(tile));
+  tile.classList.remove("is-activating");
+
+  if (document.hidden || typeof tile.animate !== "function") return;
+
+  const reducedMotion = prefersReducedMotion();
+  const animations = [
+    tile.animate(
+      reducedMotion
+        ? [{ opacity: 0.7 }, { opacity: 1 }]
+        : [
+            {
+              opacity: 0.72,
+              transform: `translateX(${direction * 12}px) translateY(1px) scale(0.97)`,
+            },
+            { opacity: 1, transform: "translateX(0) translateY(-1px) scale(1)" },
+          ],
+      {
+        duration: reducedMotion ? 160 : 250,
+        easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+      },
+    ),
+  ];
+
+  const icon = tile.querySelector("img");
+  if (!reducedMotion && icon) {
+    animations.push(
+      icon.animate(
+        [
+          { opacity: 0.72, transform: `translateX(${direction * 10}px) scale(0.94)` },
+          { opacity: 1, transform: "translateX(0) scale(1)" },
+        ],
+        {
+          delay: 30,
+          duration: 200,
+          easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+        },
+      ),
+    );
+  }
+
+  prayerActivationAnimations.set(tile, animations);
+  let unfinishedAnimations = animations.length;
+  const forgetAnimations = () => {
+    unfinishedAnimations -= 1;
+    if (unfinishedAnimations === 0 && prayerActivationAnimations.get(tile) === animations) {
+      prayerActivationAnimations.delete(tile);
+    }
+  };
+  animations.forEach((animation) => {
+    animation.addEventListener("finish", forgetAnimations, { once: true });
+    animation.addEventListener("cancel", forgetAnimations, { once: true });
+  });
+
+  if (!reducedMotion) {
+    requestAnimationFrame(() => {
+      if (!tile.classList.contains("active")) return;
+      tile.classList.add("is-activating");
+      const timer = window.setTimeout(() => {
+        tile.classList.remove("is-activating");
+        prayerActivationTimers.delete(tile);
+      }, 250);
+      prayerActivationTimers.set(tile, timer);
+    });
+  }
+}
+
+function revealActivePrayerTile(carousel, tile, { smooth = false } = {}) {
+  requestAnimationFrame(() => {
+    if (!carousel.isConnected || !tile.isConnected || carousel.scrollWidth <= carousel.clientWidth) return;
+
+    const carouselRect = carousel.getBoundingClientRect();
+    const tileRect = tile.getBoundingClientRect();
+    const centeredLeft = carousel.scrollLeft
+      + tileRect.left
+      - carouselRect.left
+      - (carouselRect.width - tileRect.width) / 2;
+    const maximumLeft = carousel.scrollWidth - carousel.clientWidth;
+
+    carousel.scrollTo({
+      left: Math.min(Math.max(centeredLeft, 0), maximumLeft),
+      behavior: smooth && !prefersReducedMotion() ? "smooth" : "auto",
+    });
+  });
 }
 
 function formatNavigatorDate(date) {
@@ -361,28 +497,46 @@ function ensureDatePicker(navigator) {
 
   picker = document.createElement("div");
   picker.className = "date-picker-popover";
+  picker.id = "prayer-date-picker";
   picker.dataset.prayerDatePicker = "";
+  picker.setAttribute("role", "dialog");
+  picker.setAttribute("aria-label", "Choose prayer date");
   picker.hidden = true;
   navigator.append(picker);
+
+  const trigger = navigator.querySelector(".date-nav-main");
+  trigger?.setAttribute("aria-haspopup", "dialog");
+  trigger?.setAttribute("aria-controls", picker.id);
+  trigger?.setAttribute("aria-expanded", "false");
   return picker;
+}
+
+function setDatePickerExpanded(picker, isExpanded) {
+  picker.closest(".date-navigator")
+    ?.querySelector(".date-nav-main")
+    ?.setAttribute("aria-expanded", String(isExpanded));
 }
 
 function showDatePicker(picker) {
   window.clearTimeout(datePickerCloseTimers.get(picker));
+  picker.dataset.openIntent = "true";
   picker.hidden = false;
   picker.classList.remove("is-closing");
+  setDatePickerExpanded(picker, true);
   requestAnimationFrame(() => {
-    picker.classList.add("is-open");
+    if (picker.dataset.openIntent === "true") picker.classList.add("is-open");
   });
 }
 
 function hideDatePicker(picker) {
   if (picker.hidden) return;
   window.clearTimeout(datePickerCloseTimers.get(picker));
+  picker.dataset.openIntent = "false";
   picker.classList.remove("is-open");
   picker.classList.add("is-closing");
+  setDatePickerExpanded(picker, false);
   const timer = window.setTimeout(() => {
-    if (!picker.classList.contains("is-open")) {
+    if (picker.dataset.openIntent !== "true") {
       picker.hidden = true;
       picker.classList.remove("is-closing");
     }
@@ -391,7 +545,7 @@ function hideDatePicker(picker) {
 }
 
 function toggleDatePicker(picker) {
-  if (picker.hidden || !picker.classList.contains("is-open")) {
+  if (picker.dataset.openIntent !== "true") {
     showDatePicker(picker);
   } else {
     hideDatePicker(picker);
@@ -431,6 +585,8 @@ function renderDatePicker(navigator) {
             class="${date.getMonth() !== monthStart.getMonth() ? "is-muted" : ""}${key === todayKey ? " is-today" : ""}${key === selectedKey ? " is-selected" : ""}"
             data-date-picker-day="${escapeHtml(key)}"
             aria-label="${escapeHtml(formatNavigatorDate(date))}"
+            aria-pressed="${key === selectedKey}"
+            ${key === todayKey ? 'aria-current="date"' : ""}
           >${date.getDate()}</button>
         `;
       }).join("")}
@@ -537,6 +693,7 @@ function initDateNavigator() {
       selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
       prayerDateTracksToday = isSameDate(selectedPrayerDate, prayerDateFor(new Date()));
       hideDatePicker(ensureDatePicker(navigator));
+      mainButton?.focus({ preventScroll: true });
       renderDateNavigator();
       renderPrayerTimes();
       return;
@@ -548,6 +705,7 @@ function initDateNavigator() {
       selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
       prayerDateTracksToday = true;
       hideDatePicker(ensureDatePicker(navigator));
+      mainButton?.focus({ preventScroll: true });
       renderDateNavigator();
       renderPrayerTimes();
       return;
@@ -593,13 +751,36 @@ function initDateNavigator() {
     hideDatePicker(ensureDatePicker(navigator));
   });
 
+  navigator.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const picker = ensureDatePicker(navigator);
+    if (picker.hidden) return;
+    event.preventDefault();
+    hideDatePicker(picker);
+    mainButton?.focus({ preventScroll: true });
+  });
+
   renderDateNavigator();
 }
 
 function renderHero(content) {
   const image = document.querySelector("[data-hero-image]");
   if (!image) return;
-  image.src = content.hero.image || defaultContent.hero.image;
+  const source = document.querySelector("[data-hero-source]");
+  const heroImage = content.hero.image || defaultContent.hero.image;
+  const usesDefaultHero = /\/masjid-interior-hero-clean\.png(?:[?#].*)?$/.test(heroImage);
+
+  if (source) {
+    if (usesDefaultHero) {
+      source.srcset = "./public/images/responsive/masjid-interior-hero-20260806-640.webp 640w, ./public/images/responsive/masjid-interior-hero-20260806-960.webp 960w, ./public/images/responsive/masjid-interior-hero-20260806-1536.webp 1536w";
+      source.sizes = "(max-width: 820px) 100vw, 62vw";
+    } else {
+      source.removeAttribute("srcset");
+      source.removeAttribute("sizes");
+    }
+  }
+
+  image.src = heroImage;
   image.alt = content.hero.imageAlt || "";
 }
 
@@ -628,16 +809,44 @@ function renderPrayerTimes() {
   const countdown = document.querySelector("[data-countdown]");
   if (countdown) countdown.setAttribute("aria-label", `Time remaining until ${nextLabel}`);
 
+  const prayerCarousel = document.querySelector(".prayer-carousel");
+  const previousPrayerKey = prayerCarousel
+    ?.querySelector("[data-prayer-tile].active")
+    ?.getAttribute("data-prayer-tile");
+  let activePrayerTile = null;
   document.querySelectorAll("[data-prayer-tile]").forEach((tile) => {
-    tile.classList.toggle("active", tile.dataset.prayerTile === current.key);
+    const isCurrent = tile.dataset.prayerTile === current.key;
+    tile.classList.toggle("active", isCurrent);
+    if (isCurrent) {
+      activePrayerTile = tile;
+      tile.setAttribute("aria-current", "time");
+    } else tile.removeAttribute("aria-current");
   });
+  if (
+    prayerCarousel?.hasAttribute("data-prayer-ready")
+    && previousPrayerKey
+    && previousPrayerKey !== current.key
+    && activePrayerTile
+  ) {
+    animatePrayerActivation(
+      activePrayerTile,
+      prayerTransitionDirection(previousPrayerKey, current.key),
+    );
+    revealActivePrayerTile(prayerCarousel, activePrayerTile, { smooth: true });
+  }
+  if (prayerCarousel && !prayerCarousel.hasAttribute("data-prayer-ready")) {
+    requestAnimationFrame(() => {
+      prayerCarousel.setAttribute("data-prayer-ready", "");
+      if (activePrayerTile) revealActivePrayerTile(prayerCarousel, activePrayerTile);
+    });
+  }
 
   if (countdownTimer) window.clearInterval(countdownTimer);
   const tick = () => {
     const remaining = Math.max(0, Math.ceil((next.time.getTime() - getPrayerNow().getTime()) / 1000));
-    setAnimatedText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
-    setAnimatedText("[data-countdown-minutes]", String(Math.floor((remaining % 3600) / 60)).padStart(2, "0"));
-    setAnimatedText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));
+    setAnimatedCountdownText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
+    setAnimatedCountdownText("[data-countdown-minutes]", String(Math.floor((remaining % 3600) / 60)).padStart(2, "0"));
+    setAnimatedCountdownText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));
     if (remaining <= 0) renderPrayerTimes();
   };
 
@@ -684,7 +893,7 @@ function renderEvents(content) {
   const pastEvents = sourceEvents
     .filter(({ event }) => eventEndValue(event) <= now)
     .sort((first, second) => eventEndValue(second.event) - eventEndValue(first.event));
-  const events = [...upcomingEvents, ...pastEvents];
+  const events = [...upcomingEvents, ...pastEvents].slice(0, HOME_EVENT_LIMIT);
   const firstPastDisplayIndex = events.findIndex(({ event }) => eventEndValue(event) <= now);
   list.classList.toggle("has-past-divider-in-preview", firstPastDisplayIndex >= 0 && firstPastDisplayIndex < 3);
   list.innerHTML = events
@@ -698,7 +907,7 @@ function renderEvents(content) {
       return `
         ${pastDivider}
         <a class="event-item${isPast ? " is-past" : ""}${displayIndex > 2 ? " is-scroll-extra" : ""}" href="./calendar.html#event-${escapeHtml(eventSlug(event, originalIndex))}">
-          ${poster ? `<img class="event-thumb" src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}">` : ""}
+          ${poster ? responsiveImageMarkup(poster, eventPosterAlt(event), { className: "event-thumb", sizes: "110px" }) : ""}
           <div class="event-item-body">
             <h3>${escapeHtml(eventTitle(event))}</h3>
             ${eventDate || event.time || event.location ? `<p>${eventDate ? `<span class="event-date-line">${escapeHtml(eventDate)}</span>` : ""}${event.time ? `<span class="event-time-line">${escapeHtml(event.time)}</span>` : ""}${event.location ? `<span class="event-location">${escapeHtml(event.location)}</span>` : ""}</p>` : ""}
@@ -715,12 +924,13 @@ function renderNews(content) {
   if (!list) return;
   const news = (content.news?.length ? content.news : defaultContent.news)
     .map((item, originalIndex) => ({ item, originalIndex }))
-    .sort((first, second) => dateValue(second.item.date) - dateValue(first.item.date));
+    .sort((first, second) => dateValue(second.item.date) - dateValue(first.item.date))
+    .slice(0, HOME_NEWS_LIMIT);
   list.innerHTML = news
     .map(
       ({ item, originalIndex }) => `
         <a class="news-item${newsTitle(item, originalIndex).length <= 42 ? " news-item--short-title" : ""}" href="./news.html#news-${escapeHtml(newsSlug(item, originalIndex))}">
-          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
+          ${responsiveImageMarkup(item.image, item.imageAlt || newsTitle(item, originalIndex), { sizes: "120px" })}
           <span class="news-category">${escapeHtml(getNewsCategory(newsTitle(item, originalIndex)))}</span>
           <div class="news-item-body">
             ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
@@ -736,6 +946,9 @@ function renderNews(content) {
 
 function markCardImageShapes(root, cardSelector, imageSelector) {
   root.querySelectorAll(imageSelector).forEach((image) => {
+    const revealImage = (state = "loaded") => {
+      image.dataset.loadState = state;
+    };
     const applyShape = () => {
       const card = image.closest(cardSelector);
       if (!card || !image.naturalWidth || !image.naturalHeight) return;
@@ -743,17 +956,29 @@ function markCardImageShapes(root, cardSelector, imageSelector) {
       card.classList.toggle("is-portrait-media", isPortrait);
       card.classList.toggle("is-wide-media", !isPortrait);
     };
-    if (image.complete) applyShape();
-    else image.addEventListener("load", applyShape, { once: true });
+    const onSettled = () => {
+      revealImage();
+      applyShape();
+    };
+    if (image.complete) {
+      queueMicrotask(() => {
+        if (image.naturalWidth) onSettled();
+        else revealImage("error");
+      });
+    }
+    else {
+      image.addEventListener("load", onSettled, { once: true });
+      image.addEventListener("error", () => revealImage("error"), { once: true });
+    }
   });
 }
 
 async function boot() {
   initMobileNav();
   initDateNavigator();
+  renderPrayerTimes();
   const content = await loadCmsContent();
   renderHero(content);
-  renderPrayerTimes();
   renderJummah(content);
   renderEvents(content);
   renderNews(content);

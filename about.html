@@ -7,13 +7,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="./public/images/icm-logo-provided-transparent.png"><link rel="stylesheet" href="./styles.css?v=20260707-event-title-boundary-v91">
+    <link rel="icon" href="./public/images/icm-logo-provided-transparent.png"><link rel="stylesheet" href="./styles.css?v=20260806-motion-v94">
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="./index.html" aria-label="Islamic Center of Morrisville home"><img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville"></a>
       <nav class="top-nav" aria-label="Primary navigation">
-        <a class="nav-donate" href="./donate.html"><img src="./public/icons/generated/donate.png" alt="" aria-hidden="true"><span>Donate</span></a>
+        <a class="nav-donate" href="./donate.html" aria-label="Donate"><img src="./public/icons/generated/donate.png" alt="" aria-hidden="true"><span>Donate</span></a>
         <a href="./calendar.html">Calendar</a>
         <a href="./programs.html">Programs</a>
         <a href="./news.html">News</a>
@@ -49,7 +49,17 @@
             <p class="contact-line">Contact: imam@icmnc.org</p>
           </div>
           <figure class="imam-photo">
-            <img src="./public/images/imam-manzar.png" alt="Imam Manzar ul Islam al Azhari">
+            <img
+              src="./public/images/responsive/imam-manzar-20260806-582.webp"
+              srcset="./public/images/responsive/imam-manzar-20260806-320.webp 320w, ./public/images/responsive/imam-manzar-20260806-582.webp 582w"
+              sizes="(max-width: 760px) min(100vw - 48px, 360px), 340px"
+              width="582"
+              height="582"
+              loading="lazy"
+              decoding="async"
+              data-load-reveal
+              data-load-state="pending"
+              alt="Imam Manzar ul Islam al Azhari">
           </figure>
         </div>
       </section>
@@ -95,6 +105,6 @@
       <p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p>
       <a href="#contact">Contact Us</a>
     </footer>
-    <script type="module" src="./public/app/site.js?v=20260707-event-title-boundary-v91"></script>
+    <script type="module" src="./public/app/site.js?v=20260806-motion-v94"></script>
   </body>
 </html>

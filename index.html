@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="./public/images/icm-logo-provided-transparent.png"><link rel="stylesheet" href="./styles.css?v=20260707-event-title-boundary-v91">
+    <link rel="icon" href="./public/images/icm-logo-provided-transparent.png"><link rel="stylesheet" href="./styles.css?v=20260806-motion-v94">
   </head>
   <body>
     <header class="site-header">
@@ -15,7 +15,7 @@
         <img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville">
       </a>
       <nav class="top-nav" aria-label="Primary navigation">
-        <a class="nav-donate" href="./donate.html">
+        <a class="nav-donate" href="./donate.html" aria-label="Donate">
           <img src="./public/icons/generated/donate.png" alt="" aria-hidden="true">
           <span>Donate</span>
         </a>
@@ -46,8 +46,22 @@
             </a>
           </div>
         </div>
-        <div class="hero-image" aria-hidden="true">
-          <img src="./public/images/masjid-interior-hero-clean.png" alt="" data-hero-image>
+        <div class="hero-image">
+          <picture>
+            <source
+              type="image/webp"
+              srcset="./public/images/responsive/masjid-interior-hero-20260806-640.webp 640w, ./public/images/responsive/masjid-interior-hero-20260806-960.webp 960w, ./public/images/responsive/masjid-interior-hero-20260806-1536.webp 1536w"
+              sizes="(max-width: 820px) 100vw, 62vw"
+              data-hero-source>
+            <img
+              src="./public/images/masjid-interior-hero-clean.png"
+              width="1535"
+              height="1024"
+              fetchpriority="high"
+              decoding="async"
+              alt="Islamic Center of Morrisville main prayer hall interior with carpet rows, qibla wall, and open worship space"
+              data-hero-image>
+          </picture>
         </div>
       </section>
 
@@ -220,7 +234,7 @@
           </header>
           <div class="news-list" data-news-list>
             <article class="news-item">
-              <img src="./public/news/ramadan.png" alt="Mosque at sunset during Ramadan">
+              <img src="./public/news/ramadan.png" width="70" height="52" loading="lazy" decoding="async" alt="Mosque at sunset during Ramadan">
               <div>
                 <h3>Ramadan Programs &amp; Taraweeh Schedule</h3>
                 <p>Join us for special programs throughout Ramadan.</p>
@@ -228,7 +242,7 @@
               <time datetime="2026-04-28">Apr 28, 2026</time>
             </article>
             <article class="news-item">
-              <img src="./public/news/eid.png" alt="Mosque scene for Eid announcement">
+              <img src="./public/news/eid.png" width="70" height="52" loading="lazy" decoding="async" alt="Mosque scene for Eid announcement">
               <div>
                 <h3>Eid Al-Adha Announcements</h3>
                 <p>Important information for Eid prayers and events.</p>
@@ -236,7 +250,7 @@
               <time datetime="2026-04-24">Apr 24, 2026</time>
             </article>
             <article class="news-item">
-              <img src="./public/news/camp.png" alt="Youth summer camp activity">
+              <img src="./public/news/camp.png" width="70" height="52" loading="lazy" decoding="async" alt="Youth summer camp activity">
               <div>
                 <h3>Youth Summer Camp Registration Open</h3>
                 <p>Fun, faith, and friends this summer!</p>
@@ -257,6 +271,6 @@
       <p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p>
       <a href="./about.html#contact">Contact Us</a>
     </footer>
-    <script type="module" src="./public/app/main.js?v=20260707-event-title-boundary-v91"></script>
+    <script type="module" src="./public/app/main.js?v=20260806-motion-v94"></script>
   </body>
 </html>

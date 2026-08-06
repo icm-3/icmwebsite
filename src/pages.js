@@ -7,6 +7,7 @@ import {
 } from "adhan";
 import { defaultContent } from "./default-content.js";
 import { calendarDesktopEdgeFixture, calendarPositionFixtures } from "./calendar-test-fixtures.js";
+import { getResponsiveMedia } from "./media.js";
 import { initMobileNav } from "./nav.js";
 
 const ICM_COORDS = new Coordinates(35.8111, -78.8231);
@@ -33,6 +34,39 @@ let selectedPrayerDate = new Date();
 let selectedCalendarMonth = calendarDateFromKey(calendarFixture?.month) || getCalendarOverrideDate() || new Date();
 let selectedCalendarEventSlug = "";
 let expandedCalendarDateKey = "";
+const stateEntryAnimations = new WeakMap();
+const motionEaseOut = "cubic-bezier(0.23, 1, 0.32, 1)";
+
+function motionSafeBehavior(behavior = "smooth") {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : behavior;
+}
+
+function animateStateEntry(element, { opacity = 0.7, translateX = 0, translateY = 0 } = {}) {
+  if (!element) return;
+  stateEntryAnimations.get(element)?.cancel();
+  if (document.hidden || typeof element.animate !== "function") return;
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const animation = element.animate(
+    reducedMotion
+      ? [{ opacity: Math.max(opacity, 0.72) }, { opacity: 1 }]
+      : [
+          { opacity, transform: `translate(${translateX}px, ${translateY}px)` },
+          { opacity: 1, transform: "translate(0, 0)" },
+        ],
+    {
+      duration: reducedMotion ? 160 : 180,
+      easing: motionEaseOut,
+    },
+  );
+
+  stateEntryAnimations.set(element, animation);
+  const forgetAnimation = () => {
+    if (stateEntryAnimations.get(element) === animation) stateEntryAnimations.delete(element);
+  };
+  animation.addEventListener("finish", forgetAnimation, { once: true });
+  animation.addEventListener("cancel", forgetAnimation, { once: true });
+}
 
 const fallbackNews = [
   {
@@ -65,6 +99,27 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function responsiveImageMarkup(source, alt, { className = "", sizes = "100vw" } = {}) {
+  const media = getResponsiveMedia(source);
+  const classAttribute = className ? ` class="${escapeHtml(className)}"` : "";
+  const srcsetAttribute = media.srcset ? ` srcset="${escapeHtml(media.srcset)}" sizes="${escapeHtml(sizes)}"` : "";
+  const dimensionAttributes = media.width && media.height ? ` width="${media.width}" height="${media.height}"` : "";
+  return `<img${classAttribute} src="${escapeHtml(media.src)}"${srcsetAttribute}${dimensionAttributes} alt="${escapeHtml(alt)}" loading="lazy" decoding="async" data-load-reveal data-load-state="pending">`;
+}
+
+function prepareDeferredImages(root) {
+  root.querySelectorAll("img[data-load-reveal]").forEach((image) => {
+    const revealImage = (state = "loaded") => {
+      image.dataset.loadState = state;
+    };
+    if (image.complete) queueMicrotask(() => revealImage(image.naturalWidth ? "loaded" : "error"));
+    else {
+      image.addEventListener("load", revealImage, { once: true });
+      image.addEventListener("error", () => revealImage("error"), { once: true });
+    }
+  });
 }
 
 function mergeContent(content) {
@@ -365,7 +420,7 @@ function scrollToCalendarDetail(behavior = "smooth") {
     if (!detail) return;
     const headerOffset = document.querySelector(".site-header")?.offsetHeight || 0;
     const top = Math.max(0, detail.getBoundingClientRect().top + window.scrollY - headerOffset - 18);
-    window.scrollTo({ top, behavior });
+    window.scrollTo({ top, behavior: motionSafeBehavior(behavior) });
   });
 }
 
@@ -404,14 +459,15 @@ function setCalendarDetail(event, index = 0) {
       </div>
       ${
         poster
-          ? `<figure class="calendar-detail-poster"><img src="${escapeHtml(poster)}" alt="${escapeHtml(eventPosterAlt(event))}"></figure>`
+          ? `<figure class="calendar-detail-poster">${responsiveImageMarkup(poster, eventPosterAlt(event), { sizes: "(max-width: 768px) calc(100vw - 48px), 960px" })}</figure>`
           : ""
       }
     </article>
   `;
+  prepareDeferredImages(target);
 }
 
-function renderCalendar(content) {
+function renderCalendar(content, { monthDirection = 0 } = {}) {
   const grid = document.querySelector("[data-calendar-grid]");
   if (!grid) return;
 
@@ -486,7 +542,7 @@ function renderCalendar(content) {
   setCalendarDetail(selectedEvent, selectedIndex);
 
   grid.querySelectorAll("[data-event-slug]").forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (event) => {
       selectedCalendarEventSlug = button.dataset.eventSlug;
       const selectedEvent = content.events.find((event, index) => eventSlug(event, index) === selectedCalendarEventSlug);
       const selectedEventDate = selectedEvent ? getEventDate(selectedEvent) : null;
@@ -494,7 +550,7 @@ function renderCalendar(content) {
       if (expandedCalendarDateKey !== selectedEventDateKey) expandedCalendarDateKey = "";
       window.history.replaceState(null, "", `#event-${selectedCalendarEventSlug}`);
       renderCalendar(content);
-      scrollToCalendarDetail("smooth");
+      scrollToCalendarDetail(event.detail > 0 ? "smooth" : "auto");
     });
   });
 
@@ -513,6 +569,11 @@ function renderCalendar(content) {
       renderCalendar(content);
     });
   });
+
+  if (monthDirection) {
+    animateStateEntry(title?.parentElement, { opacity: 0.78, translateX: monthDirection * 6 });
+    animateStateEntry(grid, { opacity: 0.72, translateX: monthDirection * 8 });
+  }
 }
 
 function initCalendar(content) {
@@ -537,6 +598,8 @@ function initCalendar(content) {
     const button = event.target.closest("[data-calendar-nav]");
     if (!button) return;
 
+    const previousMonthIndex = selectedCalendarMonth.getFullYear() * 12 + selectedCalendarMonth.getMonth();
+
     if (button.dataset.calendarNav === "today") {
       selectedCalendarMonth = getCalendarTodayDate();
     } else {
@@ -545,7 +608,10 @@ function initCalendar(content) {
     }
     selectedCalendarEventSlug = "";
     expandedCalendarDateKey = "";
-    renderCalendar(content);
+    const nextMonthIndex = selectedCalendarMonth.getFullYear() * 12 + selectedCalendarMonth.getMonth();
+    renderCalendar(content, {
+      monthDirection: event.detail > 0 ? Math.sign(nextMonthIndex - previousMonthIndex) : 0,
+    });
   });
 
   renderCalendar(content);
@@ -573,6 +639,7 @@ function renderJummah(content) {
 function renderNews(content) {
   const target = document.querySelector("[data-page-news]");
   if (!target) return;
+  let animateNextHashChange = false;
   const newsSource = content.news?.length ? content.news : fallbackNews;
   const items = newsSource.map((item, originalIndex) => ({ item, originalIndex })).sort(
     (first, second) => dateValue(second.item.date) - dateValue(first.item.date),
@@ -589,7 +656,7 @@ function renderNews(content) {
       else image.addEventListener("load", applyShape, { once: true });
     });
   };
-  const renderList = () => {
+  const renderList = ({ animate = false } = {}) => {
     document.body.classList.remove("is-news-detail-page");
     target.innerHTML = items
       .map(({ item, originalIndex }) => {
@@ -597,7 +664,7 @@ function renderNews(content) {
         const shortTitleClass = newsTitle(item, originalIndex).length <= 42 ? " news-feature--compact" : "";
         return `
           <a class="news-feature${shortTitleClass}" id="${escapeHtml(newsId)}" href="./news.html#${escapeHtml(newsId)}">
-            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
+            ${responsiveImageMarkup(item.image, item.imageAlt || newsTitle(item, originalIndex), { sizes: "(max-width: 768px) calc(100vw - 48px), 210px" })}
             <span class="news-feature-category">${escapeHtml(newsCategory(item))}</span>
             <div>
               ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
@@ -608,13 +675,15 @@ function renderNews(content) {
         `;
       })
       .join("");
+    prepareDeferredImages(target);
     markNewsImageShape();
-    if (!window.location.hash) {
-      requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "auto" }));
-    }
+    if (!window.location.hash) requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: "auto" });
+      if (animate) animateStateEntry(target, { opacity: 0.7, translateY: 6 });
+    });
   };
 
-  const renderDetail = (item, originalIndex) => {
+  const renderDetail = (item, originalIndex, { animate = false } = {}) => {
     const newsId = `news-${newsSlug(item, originalIndex)}`;
     document.body.classList.add("is-news-detail-page");
     target.innerHTML = `
@@ -627,37 +696,55 @@ function renderNews(content) {
           ${item.summary ? `<div class="news-detail-summary"><p>${escapeHtml(item.summary)}</p></div>` : ""}
         </div>
         <figure class="news-detail-poster">
-          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || newsTitle(item, originalIndex))}">
+          ${responsiveImageMarkup(item.image, item.imageAlt || newsTitle(item, originalIndex), { sizes: "(max-width: 768px) calc(100vw - 48px), 960px" })}
         </figure>
       </article>
     `;
+    prepareDeferredImages(target);
     requestAnimationFrame(() => {
       const detail = document.querySelector("[data-news-detail]");
       const headerOffset = document.querySelector(".site-header")?.offsetHeight || 0;
       const top = Math.max(0, detail.getBoundingClientRect().top + window.scrollY - headerOffset - 24);
       window.scrollTo({ top, behavior: "auto" });
+      if (animate) animateStateEntry(target, { opacity: 0.7, translateY: 6 });
     });
   };
 
-  const renderCurrent = () => {
+  const renderCurrent = ({ animate = false } = {}) => {
     const hash = decodeURIComponent(window.location.hash.replace(/^#/, ""));
     const selectedIndex = hash ? items.findIndex(({ item, originalIndex }) => `news-${newsSlug(item, originalIndex)}` === hash || `news-${slugify(item.title)}` === hash) : -1;
     if (selectedIndex >= 0) {
-      renderDetail(items[selectedIndex].item, items[selectedIndex].originalIndex);
+      renderDetail(items[selectedIndex].item, items[selectedIndex].originalIndex, { animate });
       return;
     }
-    renderList();
+    renderList({ animate });
   };
 
+  target.addEventListener("click", (event) => {
+    const backLink = event.target.closest(".news-detail-back");
+    if (backLink) {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+      renderCurrent({ animate: event.detail > 0 });
+      return;
+    }
+
+    if (event.target.closest(".news-feature")) animateNextHashChange = event.detail > 0;
+  });
+
   renderCurrent();
-  window.addEventListener("hashchange", renderCurrent);
+  window.addEventListener("hashchange", () => {
+    renderCurrent({ animate: animateNextHashChange });
+    animateNextHashChange = false;
+  });
 }
 
 async function boot() {
   initMobileNav();
-  const content = await loadCmsContent();
   initDateNavigator();
   renderPrayerTable();
+  const content = await loadCmsContent();
   renderEvents(content);
   renderJummah(content);
   initCalendar(content);

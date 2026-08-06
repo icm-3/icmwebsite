@@ -10,6 +10,11 @@
   --surface: #ffffff;
   --danger: #ff4b1f;
   --shadow: 0 12px 30px rgba(18, 24, 39, 0.055);
+  --motion-press: 140ms;
+  --motion-fast: 160ms;
+  --motion-popover: 180ms;
+  --motion-ui: 190ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 * {
@@ -17,7 +22,6 @@
 }
 
 html {
-  min-width: 320px;
   background: var(--surface);
   color: var(--text);
   font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
@@ -36,6 +40,43 @@ a {
 img {
   display: block;
   max-width: 100%;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+[data-load-reveal] {
+  opacity: 0.38;
+  background-color: #edf3ef;
+  animation: imageSkeleton 1.25s ease-in-out 2;
+  transition: opacity var(--motion-popover) ease, background-color var(--motion-popover) ease;
+}
+
+[data-load-reveal][data-load-state="loaded"],
+[data-load-reveal][data-load-state="error"] {
+  opacity: 1;
+  background-image: none;
+  animation: none;
+}
+
+@keyframes imageSkeleton {
+  0%,
+  100% {
+    opacity: 0.38;
+  }
+
+  50% {
+    opacity: 0.58;
+  }
 }
 
 .site-header {
@@ -75,7 +116,7 @@ img {
   position: relative;
   font-weight: 700;
   white-space: nowrap;
-  transition: color 260ms ease;
+  transition: color var(--motion-fast) ease;
 }
 
 .top-nav > a:not(.nav-donate)::after {
@@ -89,7 +130,7 @@ img {
   border-radius: 999px;
   transform: scaleX(0);
   transform-origin: center;
-  transition: transform 280ms ease;
+  transition: transform var(--motion-popover) ease;
 }
 
 .top-nav > a:not(.nav-donate):hover,
@@ -118,23 +159,21 @@ img {
   line-height: 1;
   overflow: hidden;
   transition:
-    transform 260ms cubic-bezier(0.2, 0, 0.2, 1),
-    box-shadow 300ms ease,
-    border-color 260ms ease,
-    background-color 260ms ease,
-    color 260ms ease;
+    transform var(--motion-press) var(--ease-out),
+    box-shadow var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    background-color var(--motion-fast) ease,
+    color var(--motion-fast) ease;
 }
 
 .nav-donate:hover,
-.button:hover,
-.nav-donate:focus-visible,
-.button:focus-visible {
+.button:hover {
   transform: translateY(-1px);
 }
 
 .nav-donate:active,
 .button:active {
-  transform: translateY(0) scale(0.992);
+  transform: translateY(0) scale(0.98);
 }
 
 .nav-donate {
@@ -155,13 +194,11 @@ img {
   width: 28px;
   height: 28px;
   flex: 0 0 auto;
-  transition: transform 260ms ease, filter 260ms ease;
+  transition: transform var(--motion-fast) ease, filter var(--motion-fast) ease;
 }
 
 .nav-donate:hover img,
-.button:hover img,
-.nav-donate:focus-visible img,
-.button:focus-visible img {
+.button:hover img {
   transform: scale(1.025);
 }
 
@@ -176,13 +213,13 @@ img {
   border-radius: 6px;
   background: transparent;
   cursor: pointer;
-  transition: transform 260ms ease, opacity 260ms ease;
+  transition: transform var(--motion-press) var(--ease-out), opacity var(--motion-fast) ease;
 }
 
 .menu-button img {
   width: 34px;
   height: 34px;
-  transition: opacity 180ms ease, transform 260ms ease;
+  transition: opacity var(--motion-fast) ease, transform var(--motion-fast) var(--ease-out);
 }
 
 .menu-button::before,
@@ -195,25 +232,22 @@ img {
   opacity: 0;
   content: "";
   transform: scaleX(0.7);
-  transition: opacity 180ms ease, transform 220ms cubic-bezier(0.2, 0.85, 0.25, 1);
+  transition: opacity var(--motion-fast) ease, transform var(--motion-fast) var(--ease-out);
 }
 
 .top-nav.menu-open .menu-button img {
-  opacity: 1;
-  transform: none;
-  transition-duration: 80ms;
+  opacity: 0;
+  transform: scale(0.84);
 }
 
 .top-nav.menu-open .menu-button::before {
-  opacity: 0;
-  transform: scaleX(0.7);
-  transition-duration: 120ms;
+  opacity: 1;
+  transform: rotate(45deg) scaleX(1);
 }
 
 .top-nav.menu-open .menu-button::after {
-  opacity: 0;
-  transform: scaleX(0.7);
-  transition-duration: 120ms;
+  opacity: 1;
+  transform: rotate(-45deg) scaleX(1);
 }
 
 .menu-button:hover,
@@ -227,7 +261,7 @@ img {
 }
 
 .menu-button:active {
-  transform: scale(0.985);
+  transform: scale(0.97);
 }
 
 .menu-panel[hidden] {
@@ -248,12 +282,30 @@ img {
   border: 1px solid var(--border);
   border-radius: 10px;
   box-shadow: 0 18px 40px rgba(18, 24, 39, 0.16);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px) scale(0.985);
+  transform-origin: 100% 0;
+  transition:
+    opacity var(--motion-fast) ease,
+    transform var(--motion-ui) var(--ease-out);
+}
+
+.menu-panel.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.menu-panel.is-closing {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px) scale(0.985);
 }
 
 .menu-panel-section {
   display: grid;
   gap: 4px;
-  transition: height 230ms cubic-bezier(0.2, 0.85, 0.25, 1);
 }
 
 .menu-panel-section summary {
@@ -282,7 +334,7 @@ img {
   height: 12px;
   background: currentColor;
   clip-path: polygon(50% 72%, 8% 30%, 20% 18%, 50% 48%, 80% 18%, 92% 30%);
-  transition: transform 180ms ease;
+  transition: transform var(--motion-fast) var(--ease-out);
 }
 
 .menu-panel-section[open] summary::after {
@@ -314,9 +366,9 @@ img {
   font-size: 14px;
   font-weight: 700;
   transition:
-    transform 190ms cubic-bezier(0.2, 0, 0.2, 1),
-    background-color 180ms ease,
-    color 180ms ease;
+    transform var(--motion-fast) var(--ease-out),
+    background-color var(--motion-fast) ease,
+    color var(--motion-fast) ease;
 }
 
 .menu-panel-section a:hover,
@@ -413,7 +465,7 @@ img {
   border-radius: 8px;
   opacity: 0;
   transform: scale(0.96);
-  transition: opacity 260ms ease, transform 260ms ease;
+  transition: opacity var(--motion-ui) ease, transform var(--motion-ui) var(--ease-out);
 }
 
 .hero-actions .button-primary::before {
@@ -584,8 +636,8 @@ img {
   transform: translateY(8px);
   transform-origin: 100% 100%;
   transition:
-    opacity 180ms ease,
-    transform 180ms cubic-bezier(0.2, 0.85, 0.25, 1);
+    opacity var(--motion-fast) ease,
+    transform var(--motion-popover) var(--ease-out);
 }
 
 .date-picker-popover.is-open {
@@ -694,7 +746,11 @@ img {
   border-radius: 5px;
   font-size: 13px;
   font-weight: 700;
-  transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  transition:
+    background-color var(--motion-fast) ease,
+    color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease,
+    transform var(--motion-fast) var(--ease-out);
 }
 
 .date-picker-grid button.is-muted {
@@ -786,13 +842,37 @@ img {
 
 .date-nav-button,
 .date-nav-main,
+.date-nav-today,
 .date-picker-toolbar button,
 .date-picker-grid button,
+.date-picker-actions button,
 .date-input-button,
 .calendar-controls button,
+.calendar-event-chip,
 .calendar-event-more,
-.prayer-month-controls button {
+.prayer-month-controls button,
+.option-grid label,
+.amount-grid label,
+.segmented-options label,
+.payment-option {
   touch-action: manipulation;
+}
+
+.date-nav-button,
+.date-nav-main,
+.date-nav-today,
+.date-picker-toolbar button,
+.date-picker-actions button,
+.calendar-controls button,
+.prayer-month-controls button {
+  transition:
+    transform var(--motion-press) var(--ease-out),
+    background-color var(--motion-fast) ease,
+    color var(--motion-fast) ease;
+}
+
+.date-input-button {
+  transition: transform var(--motion-press) var(--ease-out), opacity var(--motion-fast) ease;
 }
 
 .prayer-strip {
@@ -911,12 +991,8 @@ img {
   font-weight: 800;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  backface-visibility: hidden;
   transform-origin: 50% 70%;
-  will-change: transform, opacity;
-}
-
-.countdown-unit strong.is-changing {
-  animation: countdownGlide 460ms cubic-bezier(0.2, 0.9, 0.22, 1);
 }
 
 .countdown-unit em {
@@ -937,21 +1013,6 @@ img {
   line-height: 1;
 }
 
-@keyframes countdownGlide {
-  0% {
-    opacity: 0.72;
-    transform: translateY(1.5px) rotateX(-10deg) scale(0.994);
-  }
-  55% {
-    opacity: 0.98;
-    transform: translateY(-0.25px) rotateX(3deg) scale(1.003);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) rotateX(0deg) scale(1);
-  }
-}
-
 .next-prayer a,
 .card-header > a {
   display: inline-flex;
@@ -966,7 +1027,7 @@ img {
   font-size: 15px;
   font-weight: 600;
   line-height: 1;
-  transition: color 260ms ease, transform 260ms ease;
+  transition: color var(--motion-fast) ease, transform var(--motion-fast) var(--ease-out);
 }
 
 .next-prayer a:hover,
@@ -1003,32 +1064,41 @@ img {
   margin: 26px 0;
   gap: 20px;
   overflow: hidden;
+  isolation: isolate;
+  background-color: transparent;
   border-left: 1px solid rgba(0, 84, 61, 0.2);
   color: var(--text);
   font-size: 17px;
-  transition: margin 460ms cubic-bezier(0.2, 0.85, 0.25, 1), background-color 460ms ease, border-color 460ms ease, box-shadow 460ms ease, transform 460ms cubic-bezier(0.2, 0.85, 0.25, 1);
+  transition:
+    background-color var(--motion-ui) ease,
+    border-color var(--motion-ui) ease,
+    transform var(--motion-ui) var(--ease-out);
 }
 
 .prayer-tile::before {
   position: absolute;
   inset: 0;
+  z-index: 0;
   content: "";
   opacity: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.16) 42%, rgba(0, 84, 61, 0.08));
-  transform: translateX(-28%);
-  transition: opacity 420ms ease, transform 520ms cubic-bezier(0.2, 0.85, 0.25, 1);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(239, 249, 244, 0.42) 46%, rgba(0, 84, 61, 0.1)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(0, 84, 61, 0.04));
+  transform: translateX(-12%);
+  transition: opacity var(--motion-ui) ease, transform var(--motion-ui) var(--ease-out);
   pointer-events: none;
 }
 
 .prayer-tile::after {
   position: absolute;
-  top: -22%;
-  bottom: -22%;
-  left: -70%;
-  width: 42%;
+  z-index: 2;
+  top: -24%;
+  bottom: -24%;
+  left: -58%;
+  width: 34%;
   content: "";
   opacity: 0;
-  background: linear-gradient(105deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.54), rgba(255, 255, 255, 0));
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.52), transparent);
   transform: translateX(0) skewX(-14deg);
   pointer-events: none;
 }
@@ -1058,13 +1128,18 @@ img {
 }
 
 .prayer-tile.active {
-  margin: 18px 8px;
   color: var(--green);
-  background: #eaf6ef;
-  border: 1px solid var(--green-dark);
+  background-color: rgba(226, 244, 235, 0.68);
+  border: 1px solid rgba(0, 84, 61, 0.48);
   border-radius: 8px;
-  box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.1), 0 16px 34px rgba(0, 84, 61, 0.12);
-  animation: prayerTileActivate 680ms cubic-bezier(0.2, 0.85, 0.25, 1), prayerTileGlow 760ms ease-out;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    inset 0 0 0 1px rgba(0, 84, 61, 0.07),
+    0 13px 28px rgba(0, 63, 47, 0.13),
+    0 0 0 3px rgba(0, 84, 61, 0.045);
+  transform: translateY(-1px);
+  -webkit-backdrop-filter: blur(12px) saturate(135%);
+  backdrop-filter: blur(12px) saturate(135%);
 }
 
 .prayer-tile.active::before {
@@ -1072,12 +1147,8 @@ img {
   transform: translateX(0);
 }
 
-.prayer-tile.active::after {
-  animation: prayerTileSweep 720ms cubic-bezier(0.2, 0.85, 0.25, 1);
-}
-
 .prayer-tile.active span {
-  color: var(--text);
+  color: var(--green-dark);
   font-weight: 800;
 }
 
@@ -1086,68 +1157,33 @@ img {
   font-weight: 800;
 }
 
-.prayer-tile.active img {
-  animation: prayerIconSettle 700ms cubic-bezier(0.2, 0.85, 0.25, 1);
+.prayer-tile.is-activating::after {
+  animation: prayerGlassSweep 250ms var(--ease-out);
+}
+
+@keyframes prayerGlassSweep {
+  0% {
+    opacity: 0;
+    transform: translateX(0) skewX(-14deg);
+  }
+
+  34% {
+    opacity: 0.34;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(460%) skewX(-14deg);
+  }
 }
 
 .prayer-tile.active + .prayer-tile {
   border-left: 0;
 }
 
-@keyframes prayerTileActivate {
-  0% {
-    transform: translateY(0) scale(0.985);
-    box-shadow: inset 0 0 0 1px rgba(0, 84, 61, 0.08), 0 0 0 rgba(0, 84, 61, 0);
-  }
-  55% {
-    transform: translateY(-2px) scale(1.008);
-    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.13), 0 18px 36px rgba(0, 84, 61, 0.14), 0 0 0 5px rgba(0, 84, 61, 0.045);
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.1), 0 16px 34px rgba(0, 84, 61, 0.12), 0 0 0 rgba(0, 84, 61, 0);
-  }
-}
-
-@keyframes prayerTileGlow {
-  0% {
-    outline: 0 solid rgba(0, 84, 61, 0);
-  }
-  48% {
-    outline: 5px solid rgba(0, 84, 61, 0.045);
-  }
-  100% {
-    outline: 0 solid rgba(0, 84, 61, 0);
-  }
-}
-
-@keyframes prayerIconSettle {
-  0% {
-    filter: brightness(0) saturate(100%) invert(43%) sepia(93%) saturate(539%) hue-rotate(1deg) brightness(93%) contrast(95%);
-    transform: translateY(0) scale(0.98);
-  }
-  45% {
-    filter: brightness(0) saturate(100%) invert(54%) sepia(86%) saturate(602%) hue-rotate(2deg) brightness(103%) contrast(96%);
-    transform: translateY(-1px) scale(1.018);
-  }
-  100% {
-    filter: brightness(0) saturate(100%) invert(43%) sepia(93%) saturate(539%) hue-rotate(1deg) brightness(93%) contrast(95%);
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes prayerTileSweep {
-  0% {
-    opacity: 0;
-    transform: translateX(0) skewX(-14deg);
-  }
-  22% {
-    opacity: 0.58;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(420%) skewX(-14deg);
-  }
+.prayer-carousel:not([data-prayer-ready]) .prayer-tile,
+.prayer-carousel:not([data-prayer-ready]) .prayer-tile::before {
+  transition: none;
 }
 
 .info-grid {
@@ -1545,7 +1581,7 @@ tbody tr:last-child td {
   border-bottom: 1px solid var(--border);
   color: inherit;
   text-decoration: none;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition: transform var(--motion-popover) var(--ease-out), box-shadow var(--motion-popover) ease;
 }
 
 .event-item.is-past {
@@ -1676,7 +1712,7 @@ tbody tr:last-child td {
   box-shadow: 0 8px 20px rgba(18, 24, 39, 0.07);
   color: inherit;
   text-decoration: none;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition: transform var(--motion-popover) var(--ease-out), box-shadow var(--motion-popover) ease;
 }
 
 .news-item + .news-item {
@@ -1750,13 +1786,13 @@ tbody tr:last-child td {
   width: 26px;
   height: 26px;
   border-radius: 6px;
-  transition: transform 260ms ease, opacity 260ms ease;
+  transition: transform var(--motion-fast) var(--ease-out), opacity var(--motion-fast) ease;
 }
 
 .socials img {
   width: 26px;
   height: 26px;
-  transition: transform 260ms ease;
+  transition: transform var(--motion-fast) var(--ease-out);
 }
 
 .socials a:hover,
@@ -1771,7 +1807,7 @@ tbody tr:last-child td {
 }
 
 .site-footer > a {
-  transition: opacity 260ms ease;
+  transition: opacity var(--motion-fast) ease;
 }
 
 .site-footer > a:hover,
@@ -2033,7 +2069,7 @@ body.is-news-detail-page .page-band {
 
 .page-hero h1,
 .page-split h2,
-.section-heading h2 {
+.section-heading :is(h1, h2) {
   margin: 0;
   color: var(--green);
   font-family: "Cormorant Garamond", Georgia, serif;
@@ -2098,7 +2134,7 @@ body.is-news-detail-page .page-band {
 }
 
 .page-split h2,
-.section-heading h2 {
+.section-heading :is(h1, h2) {
   color: var(--text);
   font-size: clamp(36px, 4vw, 50px);
   font-weight: 800;
@@ -2106,7 +2142,7 @@ body.is-news-detail-page .page-band {
 }
 
 .page-split h2.section-heading-charcoal,
-.section-heading h2.section-heading-charcoal {
+.section-heading :is(h1, h2).section-heading-charcoal {
   color: #202737;
   font-family: Inter, system-ui, sans-serif;
   font-size: clamp(29px, 3vw, 40px);
@@ -2122,7 +2158,7 @@ body.is-news-detail-page .page-band {
   letter-spacing: 0 !important;
 }
 
-.program-overview .section-heading h2.section-heading-charcoal {
+.program-overview .section-heading :is(h1, h2).section-heading-charcoal {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: clamp(42px, 4.8vw, 58px);
   font-weight: 700;
@@ -2130,15 +2166,15 @@ body.is-news-detail-page .page-band {
 }
 
 .about-community-copy h2.section-heading-charcoal,
-#imam .section-heading h2.section-heading-charcoal,
-#contact .section-heading h2.section-heading-charcoal {
+#imam .section-heading :is(h1, h2).section-heading-charcoal,
+#contact .section-heading :is(h1, h2).section-heading-charcoal {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: clamp(42px, 4.8vw, 58px);
   font-weight: 800;
   line-height: 0.96;
 }
 
-.section-heading h2.heading-charcoal,
+.section-heading :is(h1, h2).heading-charcoal,
 .page-split h2.heading-charcoal {
   font-size: clamp(26px, 2.5vw, 34px);
   line-height: 1.12;
@@ -2195,7 +2231,7 @@ body.is-news-detail-page .page-band {
   display: block;
 }
 
-.donation-start .section-heading h2 {
+.donation-start .section-heading :is(h1, h2) {
   color: var(--green);
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: clamp(42px, 5vw, 62px);
@@ -2240,7 +2276,7 @@ body.is-news-detail-page .page-band {
 }
 
 .feature-card h3,
-.program-card h3,
+.program-card :is(h2, h3),
 .callout h3,
 .bio-panel h3,
 .listing-item h3,
@@ -2251,7 +2287,7 @@ body.is-news-detail-page .page-band {
   line-height: 1.2;
 }
 
-.program-card h3,
+.program-card :is(h2, h3),
 .imam-bio-panel h3 {
   color: var(--green);
 }
@@ -2298,7 +2334,7 @@ body.is-news-detail-page .page-band {
   margin-top: 18px;
   color: var(--green);
   font-weight: 800;
-  transition: color 260ms ease, transform 260ms ease;
+  transition: color var(--motion-fast) ease, transform var(--motion-fast) var(--ease-out);
 }
 
 .feature-card a:hover,
@@ -2322,9 +2358,9 @@ body.is-news-detail-page .page-band {
   border-color: rgba(165, 100, 5, 0.28);
   box-shadow: none;
   transition:
-    transform 190ms cubic-bezier(0.2, 0, 0.2, 1),
-    border-color 190ms ease,
-    box-shadow 190ms ease;
+    transform var(--motion-ui) var(--ease-out),
+    border-color var(--motion-ui) ease,
+    box-shadow var(--motion-ui) ease;
 }
 
 .program-card:hover,
@@ -2462,7 +2498,10 @@ body:has(.program-detail-card:target) .program-overview {
   font-size: 15px;
   font-weight: 850;
   text-decoration: none;
-  transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  transition:
+    background var(--motion-popover) ease,
+    box-shadow var(--motion-popover) ease,
+    transform var(--motion-popover) var(--ease-out);
 }
 
 .news-detail-back {
@@ -2483,7 +2522,10 @@ body:has(.program-detail-card:target) .program-overview {
   font-size: 15px;
   font-weight: 850;
   text-decoration: none;
-  transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  transition:
+    background var(--motion-popover) ease,
+    box-shadow var(--motion-popover) ease,
+    transform var(--motion-popover) var(--ease-out);
 }
 
 .news-detail-back::before,
@@ -2946,11 +2988,11 @@ input[type="checkbox"] {
   line-height: 1.2;
   text-align: center;
   transition:
-    transform 180ms ease,
-    background-color 180ms ease,
-    border-color 180ms ease,
-    color 180ms ease,
-    box-shadow 180ms ease;
+    transform var(--motion-popover) var(--ease-out),
+    background-color var(--motion-popover) ease,
+    border-color var(--motion-popover) ease,
+    color var(--motion-popover) ease,
+    box-shadow var(--motion-popover) ease;
 }
 
 .option-grid label:hover > span {
@@ -3441,7 +3483,7 @@ input[type="checkbox"] {
   line-height: 1.15;
   text-align: left;
   cursor: pointer;
-  transition: background 180ms ease, transform 180ms ease;
+  transition: background var(--motion-popover) ease, transform var(--motion-popover) var(--ease-out);
 }
 
 .calendar-event-chip:hover,
@@ -3469,7 +3511,10 @@ input[type="checkbox"] {
   font-weight: 900;
   line-height: 1;
   cursor: pointer;
-  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+  transition:
+    background-color var(--motion-popover) ease,
+    color var(--motion-popover) ease,
+    transform var(--motion-popover) var(--ease-out);
 }
 
 .calendar-event-more:hover,
@@ -3638,7 +3683,7 @@ input[type="checkbox"] {
   box-shadow: 0 12px 30px rgba(18, 24, 39, 0.055);
 }
 
-.prayer-times-band .section-heading h2 {
+.prayer-times-band .section-heading :is(h1, h2) {
   color: var(--green);
 }
 
@@ -3717,6 +3762,78 @@ input[type="checkbox"] {
 
 .prayer-table-scroll {
   overflow: visible;
+  opacity: 1;
+  transition: opacity var(--motion-fast) ease;
+}
+
+.prayer-table-scroll.is-loading {
+  opacity: 0.55;
+}
+
+.prayer-table-scroll[data-instant-motion] {
+  transition: none;
+}
+
+.prayer-table-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.prayer-table-skeleton::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.82) 46%, transparent 72%);
+  pointer-events: none;
+  transform: translateX(-100%);
+  animation: prayerSkeletonSweep 1.25s ease-in-out 2;
+}
+
+.prayer-skeleton-header,
+.prayer-skeleton-row {
+  display: grid;
+  grid-template-columns: 1.55fr repeat(6, minmax(0, 1fr));
+  gap: 14px;
+  align-items: center;
+  min-height: 58px;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.prayer-skeleton-header {
+  min-height: 48px;
+  background: var(--green);
+}
+
+.prayer-skeleton-row:last-child {
+  border-bottom: 0;
+}
+
+.prayer-skeleton-header span,
+.prayer-skeleton-row span {
+  display: block;
+  width: 72%;
+  height: 11px;
+  justify-self: center;
+  background: #e6eee9;
+  border-radius: 999px;
+}
+
+.prayer-skeleton-header span {
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.prayer-skeleton-header span:first-child,
+.prayer-skeleton-row span:first-child {
+  width: 88%;
+  justify-self: start;
+}
+
+@keyframes prayerSkeletonSweep {
+  to {
+    transform: translateX(100%);
+  }
 }
 
 .prayer-times-table {
@@ -3942,6 +4059,39 @@ input[type="checkbox"] {
     overflow: visible;
   }
 
+  .prayer-table-skeleton {
+    display: grid;
+    gap: 14px;
+    background: transparent;
+  }
+
+  .prayer-skeleton-header {
+    display: none;
+  }
+
+  .prayer-skeleton-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 18px;
+    min-height: 146px;
+    padding: 16px;
+    background: white;
+    border: 1px solid rgba(165, 100, 5, 0.28);
+    border-radius: 10px;
+    box-shadow: 0 8px 22px rgba(18, 24, 39, 0.045);
+  }
+
+  .prayer-skeleton-row span {
+    width: 68%;
+    height: 12px;
+    justify-self: stretch;
+  }
+
+  .prayer-skeleton-row span:first-child {
+    grid-column: 1 / -1;
+    width: 46%;
+    height: 18px;
+  }
+
   .prayer-times-table,
   .prayer-times-table thead,
   .prayer-times-table tbody,
@@ -4100,7 +4250,11 @@ input[type="checkbox"] {
   border-radius: 8px;
   box-shadow: 0 10px 22px rgba(0, 84, 61, 0.16);
   font-weight: 850;
-  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform var(--motion-popover) var(--ease-out),
+    border-color var(--motion-popover) ease,
+    background-color var(--motion-popover) ease,
+    box-shadow var(--motion-popover) ease;
 }
 
 .calendar-detail-link:hover,
@@ -4153,7 +4307,10 @@ input[type="checkbox"] {
   border: 1px solid rgba(0, 84, 61, 0.22);
   border-left: 4px solid var(--green);
   border-radius: 8px;
-  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform var(--motion-popover) var(--ease-out),
+    border-color var(--motion-popover) ease,
+    box-shadow var(--motion-popover) ease;
 }
 
 .news-feature > div {
@@ -4382,7 +4539,11 @@ input[type="checkbox"] {
   font-size: 13px;
   font-weight: 850;
   text-decoration: none;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+  transition:
+    transform var(--motion-popover) var(--ease-out),
+    box-shadow var(--motion-popover) ease,
+    border-color var(--motion-popover) ease,
+    background var(--motion-popover) ease;
 }
 
 .map-address-button:hover,
@@ -4411,7 +4572,10 @@ input[type="checkbox"] {
 .location-cards .feature-card {
   box-shadow: none;
   border-color: rgba(165, 100, 5, 0.24);
-  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform var(--motion-popover) var(--ease-out),
+    border-color var(--motion-popover) ease,
+    box-shadow var(--motion-popover) ease;
 }
 
 .location-cards .feature-card:hover,
@@ -4443,7 +4607,10 @@ input[type="checkbox"] {
 
 #giving .feature-card {
   border-color: rgba(0, 84, 61, 0.14);
-  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform var(--motion-popover) var(--ease-out),
+    border-color var(--motion-popover) ease,
+    box-shadow var(--motion-popover) ease;
 }
 
 .donation-form-main {
@@ -4568,7 +4735,7 @@ input[type="checkbox"] {
   border-radius: 6px;
   font-weight: 800;
   cursor: pointer;
-  transition: transform 180ms ease, border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+  transition: transform var(--motion-popover) var(--ease-out), border-color var(--motion-popover) ease, box-shadow var(--motion-popover) ease, background-color var(--motion-popover) ease;
 }
 
 .amount-grid label:hover > span,
@@ -4633,7 +4800,7 @@ input[type="checkbox"] {
   border: 1px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
-  transition: transform 180ms ease, border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+  transition: transform var(--motion-popover) var(--ease-out), border-color var(--motion-popover) ease, box-shadow var(--motion-popover) ease, background-color var(--motion-popover) ease;
 }
 
 .payment-option:hover {
@@ -4873,17 +5040,6 @@ input[type="checkbox"] {
   line-height: 1.45;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
-}
-
 @media (max-width: 1180px) {
   .site-header {
     padding-inline: 24px;
@@ -5025,8 +5181,8 @@ input[type="checkbox"] {
     opacity: 0;
     transform: translateY(-8px);
     transition:
-      opacity 190ms ease,
-      transform 190ms cubic-bezier(0.2, 0.85, 0.25, 1);
+      opacity var(--motion-fast) ease,
+      transform var(--motion-ui) var(--ease-out);
   }
 
   .top-nav.menu-open .menu-panel.is-open {
@@ -5244,8 +5400,10 @@ input[type="checkbox"] {
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: none;
     scrollbar-width: thin;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .prayer-tile {
@@ -5253,16 +5411,11 @@ input[type="checkbox"] {
     min-height: 132px;
     margin: 10px 0;
     gap: 13px;
-    scroll-snap-align: start;
     border-left-color: rgba(0, 84, 61, 0.16);
   }
 
   .prayer-carousel .prayer-tile:first-child {
     border-left: 0;
-  }
-
-  .prayer-tile.active {
-    margin: 8px 8px;
   }
 
   .prayer-tile img {
@@ -6153,10 +6306,6 @@ input[type="checkbox"] {
     flex-basis: 122px;
     min-height: 112px;
     gap: 10px;
-  }
-
-  .prayer-tile.active {
-    margin: 7px 7px;
   }
 
   .info-grid {
@@ -11215,53 +11364,6 @@ body:has(.about-community-copy) .page-hero h1 {
   text-align: left !important;
 }
 
-/* Final interaction and density tuning for homepage/mobile QA. */
-.menu-panel {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-10px) scale(0.985);
-  transform-origin: 100% 0;
-  transition:
-    opacity 240ms ease,
-    transform 260ms cubic-bezier(0.18, 0.88, 0.22, 1);
-}
-
-.menu-panel.is-open {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-}
-
-.menu-panel.is-closing {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-8px) scale(0.985);
-}
-
-.menu-panel-section {
-  transition: height 260ms cubic-bezier(0.18, 0.88, 0.22, 1);
-}
-
-@keyframes mobile-menu-surface-in {
-  0% {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.985);
-    box-shadow: 0 12px 24px rgba(0, 42, 32, 0.12);
-  }
-
-  70% {
-    opacity: 1;
-    transform: translateY(1px) scale(1.003);
-    box-shadow: 0 19px 38px rgba(0, 42, 32, 0.17);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    box-shadow: 0 18px 36px rgba(0, 42, 32, 0.16);
-  }
-}
-
 .prayer-times-table .prayer-time-cell b {
   transform: none !important;
 }
@@ -11311,52 +11413,6 @@ body:has(.about-community-copy) .page-hero h1 {
 
 .news-card .news-item p {
   -webkit-line-clamp: 2 !important;
-}
-
-@media (max-width: 820px) {
-  .top-nav.menu-open {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.985);
-    transform-origin: 100% 0;
-    box-shadow: 0 12px 24px rgba(0, 42, 32, 0.12);
-    transition:
-      opacity 240ms ease,
-      transform 290ms cubic-bezier(0.18, 0.88, 0.22, 1),
-      box-shadow 290ms ease;
-  }
-
-  .top-nav.menu-open.menu-visible {
-    opacity: 1;
-    transform: none;
-    box-shadow: 0 18px 36px rgba(0, 42, 32, 0.16);
-    animation: mobile-menu-surface-in 290ms cubic-bezier(0.18, 0.88, 0.22, 1) both;
-  }
-
-  .top-nav.menu-open.menu-closing {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    box-shadow: 0 18px 36px rgba(0, 42, 32, 0.16);
-    animation: none;
-  }
-
-  .top-nav.menu-open.menu-closing.menu-exit {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.985);
-    box-shadow: 0 12px 24px rgba(0, 42, 32, 0.12);
-  }
-
-  .top-nav.menu-open .menu-panel {
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    transform: none !important;
-    transition: none !important;
-  }
-
-  .top-nav.menu-open .menu-panel.is-open,
-  .top-nav.menu-open .menu-panel.is-closing {
-    opacity: 1 !important;
-    transform: none !important;
-  }
 }
 
 @media (max-width: 520px) {
@@ -12100,7 +12156,7 @@ body:has(.about-community-copy) .page-hero h1 {
 }
 
 @media (min-width: 769px) {
-  .program-card h3 {
+  .program-card :is(h2, h3) {
     font-size: clamp(21px, 1.7vw, 25px);
     line-height: 1.08;
     text-wrap: balance;
@@ -12153,7 +12209,7 @@ body:has(.about-community-copy) .page-hero h1 {
 }
 
 @media (max-width: 520px) {
-  .program-card h3 {
+  .program-card :is(h2, h3) {
     font-size: 22px;
     line-height: 1.12;
     text-wrap: balance;
@@ -12225,33 +12281,6 @@ body:has(.about-community-copy) .page-hero h1 {
 @media (min-width: 521px) {
   .news-card .news-category {
     top: 10px !important;
-  }
-}
-
-@media (max-width: 820px) {
-  .top-nav.menu-open,
-  .top-nav.menu-open.menu-visible,
-  .top-nav.menu-open.menu-closing,
-  .top-nav.menu-open.menu-closing.menu-exit {
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-  }
-
-  .top-nav.menu-open .menu-panel {
-    transition:
-      opacity 220ms ease,
-      transform 260ms cubic-bezier(0.2, 0.85, 0.25, 1) !important;
-  }
-
-  .top-nav.menu-open .menu-panel.is-open {
-    opacity: 1 !important;
-    transform: translateY(0) scale(1) !important;
-  }
-
-  .top-nav.menu-open .menu-panel.is-closing {
-    opacity: 0 !important;
-    transform: translateY(-8px) scale(0.985) !important;
   }
 }
 
@@ -12747,17 +12776,6 @@ body:has(.about-community-copy) .page-hero h1 {
     font-size: clamp(25px, 6.9vw, 31px) !important;
   }
 
-  .top-nav.menu-open .menu-panel {
-    transition:
-      opacity 190ms ease,
-      transform 190ms cubic-bezier(0.2, 0.85, 0.25, 1) !important;
-  }
-
-  .top-nav.menu-open .menu-panel.is-closing {
-    opacity: 0 !important;
-    transform: translateY(-8px) !important;
-  }
-
   .imam-photo {
     width: min(100%, 360px) !important;
     max-width: 360px !important;
@@ -13060,7 +13078,7 @@ body:has(.about-community-copy) .page-hero h1 {
     line-height: 1 !important;
   }
 
-  .program-overview .program-card h3,
+  .program-overview .program-card :is(h2, h3),
   .program-overview #al-mizan h3,
   .program-overview #al-falah h3 {
     font-size: 20px !important;
@@ -14307,5 +14325,302 @@ body:has(.about-community-copy) .page-hero h1 {
   .events-card .event-item.is-past .event-item-body,
   .events-card .event-item:not(.is-past) .event-item-body {
     padding-right: 6px !important;
+  }
+}
+
+.program-detail-back {
+  transition: color var(--motion-fast) ease, transform var(--motion-press) var(--ease-out);
+}
+
+.date-nav-button:active,
+.date-nav-main:active,
+.date-nav-today:active,
+.date-picker-toolbar button:active,
+.date-picker-grid button:active,
+.date-picker-actions button:active,
+.calendar-controls button:active,
+.prayer-month-controls button:active,
+.calendar-event-chip:active,
+.calendar-event-more:active,
+.menu-panel-section a:active,
+.next-prayer a:active,
+.card-header > a:active,
+.socials a:active,
+.program-detail-back:active,
+.news-detail-back:active,
+.detail-page-back:active,
+.calendar-detail-link:active,
+.map-address-button:active,
+.payment-option:active {
+  transform: scale(0.98);
+}
+
+.option-grid label:active > span,
+.amount-grid label:active > span,
+.segmented-options label:active > span {
+  transform: scale(0.98);
+}
+
+.date-input-button:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+/* Keyboard focus keeps its visual emphasis without shifting layout or position. */
+.menu-panel-section a:focus-visible,
+.hero-actions .button:focus-visible,
+.date-picker-grid button:focus-visible,
+.next-prayer a:focus-visible,
+.card-header > a:focus-visible,
+.socials a:focus-visible,
+.feature-card a:focus-visible,
+.program-card a:focus-visible,
+.bio-panel a:focus-visible,
+.inline-cta a:focus-visible,
+.program-card:focus-within,
+.program-detail-back:focus-visible,
+.news-detail-back:focus-visible,
+.detail-page-back:focus-visible,
+.calendar-event-chip:focus-visible,
+.calendar-event-more:focus-visible,
+.calendar-detail-link:focus-visible,
+.news-feature:focus-visible,
+.map-address-button:focus-visible,
+.location-cards .feature-card:focus-within,
+#contact .contact-grid .feature-card:focus-within,
+#giving .feature-card:focus-within {
+  transform: none !important;
+}
+
+.hero-actions .button:focus-visible::before,
+.menu-button:focus-visible img,
+.socials a:focus-visible img {
+  transform: none !important;
+}
+
+/* Hover lift is reserved for devices that actually have a precise hover target. */
+@media (hover: none), (pointer: coarse) {
+  .nav-donate:hover,
+  .button:hover,
+  .nav-donate:hover img,
+  .button:hover img,
+  .menu-button:hover img,
+  .menu-panel-section a:hover,
+  .hero-actions .button:hover,
+  .hero-actions .button:hover::before,
+  .date-picker-grid button:hover,
+  .next-prayer a:hover,
+  .card-header > a:hover,
+  .event-item:hover,
+  .news-item:hover,
+  .socials a:hover,
+  .socials a:hover img,
+  .feature-card a:hover,
+  .program-card a:hover,
+  .bio-panel a:hover,
+  .inline-cta a:hover,
+  .program-card:hover,
+  .program-detail-back:hover,
+  .news-detail-back:hover,
+  .detail-page-back:hover,
+  .option-grid label:hover > span,
+  .calendar-event-chip:hover,
+  .calendar-event-more:hover,
+  .calendar-detail-link:hover,
+  .news-feature:hover,
+  .map-address-button:hover,
+  .location-cards .feature-card:hover,
+  #contact .contact-grid .feature-card:hover,
+  #giving .feature-card:hover,
+  .amount-grid label:hover > span,
+  .segmented-options label:hover > span,
+  .payment-option:hover {
+    transform: none !important;
+  }
+
+  .date-nav-button:active,
+  .date-nav-main:active,
+  .date-nav-today:active,
+  .date-picker-toolbar button:active,
+  .date-picker-grid button:active,
+  .date-picker-actions button:active,
+  .calendar-controls button:active,
+  .prayer-month-controls button:active,
+  .calendar-event-chip:active,
+  .calendar-event-more:active,
+  .menu-panel-section a:active,
+  .next-prayer a:active,
+  .card-header > a:active,
+  .socials a:active,
+  .program-detail-back:active,
+  .news-detail-back:active,
+  .detail-page-back:active,
+  .calendar-detail-link:active,
+  .map-address-button:active,
+  .payment-option:active,
+  .option-grid label:active > span,
+  .amount-grid label:active > span,
+  .segmented-options label:active > span {
+    transform: scale(0.98) !important;
+  }
+
+  .date-input-button:active {
+    transform: translateY(-50%) scale(0.96) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  [data-load-reveal] {
+    animation: none !important;
+    transition: opacity var(--motion-fast) ease !important;
+  }
+
+  .menu-panel,
+  .date-picker-popover {
+    transform: none !important;
+    transition: opacity var(--motion-fast) ease !important;
+  }
+
+  .prayer-tile,
+  .prayer-tile::before,
+  .prayer-tile::after {
+    transform: none !important;
+    transition:
+      opacity var(--motion-fast) ease,
+      background-color var(--motion-fast) ease,
+      border-color var(--motion-fast) ease !important;
+  }
+
+  .prayer-tile.is-activating::after {
+    animation: none !important;
+  }
+
+  .prayer-table-skeleton::after {
+    animation: none !important;
+  }
+
+  .nav-donate,
+  .button,
+  .menu-button,
+  .menu-button img,
+  .menu-panel-section a,
+  .hero-actions .button::before,
+  .date-picker-grid button,
+  .next-prayer a,
+  .card-header > a,
+  .event-item,
+  .news-item,
+  .socials a,
+  .socials img,
+  .feature-card a,
+  .program-card,
+  .program-card a,
+  .bio-panel a,
+  .inline-cta a,
+  .program-detail-back,
+  .news-detail-back,
+  .detail-page-back,
+  .option-grid label > span,
+  .calendar-event-chip,
+  .calendar-event-more,
+  .calendar-detail-link,
+  .news-feature,
+  .map-address-button,
+  .location-cards .feature-card,
+  #contact .contact-grid .feature-card,
+  #giving .feature-card,
+  .amount-grid label > span,
+  .segmented-options label > span,
+  .payment-option {
+    transform: none !important;
+  }
+
+  .date-nav-button:active,
+  .date-nav-main:active,
+  .date-nav-today:active,
+  .date-picker-toolbar button:active,
+  .date-picker-grid button:active,
+  .date-picker-actions button:active,
+  .calendar-controls button:active,
+  .prayer-month-controls button:active,
+  .calendar-event-chip:active,
+  .calendar-event-more:active,
+  .menu-panel-section a:active,
+  .next-prayer a:active,
+  .card-header > a:active,
+  .socials a:active,
+  .program-detail-back:active,
+  .news-detail-back:active,
+  .detail-page-back:active,
+  .calendar-detail-link:active,
+  .map-address-button:active,
+  .payment-option:active,
+  .option-grid label:active > span,
+  .amount-grid label:active > span,
+  .segmented-options label:active > span {
+    transform: none !important;
+  }
+
+  .date-input-button:active {
+    transform: translateY(-50%) !important;
+  }
+
+  .top-nav > a:not(.nav-donate)::after,
+  .menu-button::before,
+  .menu-button::after,
+  .menu-panel-section summary::after {
+    transition: none !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .prayer-tile.active {
+    background-color: #eaf6ef;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .prayer-tile.active {
+    background-color: #ffffff;
+    border-color: var(--green-dark);
+    box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.18);
+  }
+}
+
+/* Small-phone safety: preserve readable type without allowing one-line labels to widen the page. */
+@media (max-width: 340px) {
+  body:has(.news-feature-list) .page-hero h1,
+  body:has(.program-overview) .page-hero h1,
+  body:has(.program-poster-layout) .page-hero h1,
+  body:has(.program-full) .page-hero h1,
+  .service-form-page .page-hero h1 {
+    white-space: normal !important;
+    font-size: clamp(29px, 10vw, 32px) !important;
+    line-height: 1 !important;
+    text-wrap: balance;
+  }
+
+  .program-overview .program-card :is(h2, h3),
+  .program-overview #al-mizan h3,
+  .program-overview #al-falah h3,
+  .nibraas-degree-heading,
+  .program-balanced-detail .program-full-copy h2,
+  .service-form-panel h2.heading-charcoal {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow-wrap: normal;
+    text-wrap: balance;
+  }
+
+  .program-full-copy,
+  .service-form-panel {
+    min-width: 0 !important;
+    max-width: 100% !important;
   }
 }
