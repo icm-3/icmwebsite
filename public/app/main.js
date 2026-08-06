@@ -1416,7 +1416,7 @@ function initMobileNav() {
       <button class="menu-panel-section-toggle" type="button" aria-expanded="true" aria-controls="menu-main-pages">Main Pages</button>
       <div class="menu-panel-section-content" id="menu-main-pages">
         <div class="menu-panel-section-content-inner">
-          <a class="desktop-menu-only" href="./donate.html">Donate</a>
+          <a href="./donate.html">Donate</a>
           <a href="./prayer-times.html">Monthly Prayer Schedule</a>
           <a href="./calendar.html">Event Calendar</a>
           <a href="./programs.html">Programs</a>
@@ -1507,14 +1507,15 @@ function initMobileNav() {
         finishDisclosure(section, section.dataset.expanded === "true");
       });
     }
-    section.querySelector(".menu-panel-section-toggle")?.addEventListener("click", (event) => {
+    section.querySelector(".menu-panel-section-toggle")?.addEventListener("click", () => {
       const nextExpanded = section.dataset.expanded !== "true";
-      setDisclosureExpanded(section, nextExpanded, { animate: event.detail > 0 });
+      setDisclosureExpanded(section, nextExpanded);
     });
   });
   const finishClose = () => {
     if (menuOpen) return;
     nav.classList.remove("menu-open");
+    nav.classList.remove("menu-closing");
     panel.classList.remove("is-closing");
     panel.hidden = true;
   };
@@ -1526,6 +1527,7 @@ function initMobileNav() {
     menuOpen = false;
     window.clearTimeout(closeTimer);
     if (!animate || prefersReducedMotion2()) nav.setAttribute("data-instant-motion", "");
+    nav.classList.add("menu-closing");
     panel.classList.remove("is-open");
     panel.classList.add("is-closing");
     button.setAttribute("aria-expanded", "false");
@@ -1535,7 +1537,7 @@ function initMobileNav() {
       requestAnimationFrame(() => nav.removeAttribute("data-instant-motion"));
       return;
     }
-    closeTimer = window.setTimeout(finishClose, 200);
+    closeTimer = window.setTimeout(finishClose, 260);
   };
   const setMenuOpen = (isOpen, { animate = true } = {}) => {
     window.clearTimeout(closeTimer);
@@ -1546,6 +1548,7 @@ function initMobileNav() {
     menuOpen = true;
     if (!animate || prefersReducedMotion2()) nav.setAttribute("data-instant-motion", "");
     panel.hidden = false;
+    nav.classList.remove("menu-closing");
     panel.classList.remove("is-closing");
     nav.classList.add("menu-open");
     if (!animate || prefersReducedMotion2()) {
@@ -1563,10 +1566,10 @@ function initMobileNav() {
   button.setAttribute("aria-expanded", "false");
   button.addEventListener("click", (event) => {
     event.stopPropagation();
-    setMenuOpen(!menuOpen, { animate: event.detail > 0 });
+    setMenuOpen(!menuOpen);
   });
   nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", (event) => closeMenu({ animate: event.detail > 0 }));
+    link.addEventListener("click", () => closeMenu());
   });
   document.addEventListener("click", (event) => {
     if (!menuOpen || nav.contains(event.target)) return;
@@ -1574,7 +1577,7 @@ function initMobileNav() {
   });
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape" || !menuOpen) return;
-    closeMenu({ animate: false });
+    closeMenu();
     button.focus({ preventScroll: true });
   });
 }
@@ -1852,8 +1855,8 @@ function setAnimatedCountdownText(selector, value) {
       { opacity: 1, transform: "translateY(0) rotateX(0deg) scale(1)", offset: 1 }
     ],
     {
-      duration: 260,
-      easing: "cubic-bezier(0.23, 1, 0.32, 1)"
+      duration: 460,
+      easing: "cubic-bezier(0.2, 0.9, 0.22, 1)"
     }
   );
   countdownAnimations.set(element, animation);

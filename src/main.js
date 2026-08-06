@@ -371,8 +371,8 @@ function setAnimatedCountdownText(selector, value) {
       { opacity: 1, transform: "translateY(0) rotateX(0deg) scale(1)", offset: 1 },
     ],
     {
-      duration: 260,
-      easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+      duration: 460,
+      easing: "cubic-bezier(0.2, 0.9, 0.22, 1)",
     },
   );
 
