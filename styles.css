@@ -13212,6 +13212,11 @@ body:has(.about-community-copy) .page-hero h1 {
 }
 
 @media (max-width: 768px) {
+  .registration-panel .local-registration-form > button[type="submit"] {
+    grid-column: 1 / -1;
+    white-space: nowrap;
+  }
+
   .service-form-page .local-registration-form,
   .registration-panel .local-registration-form {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
