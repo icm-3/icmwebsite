@@ -1141,25 +1141,16 @@ img {
 
 .prayer-tile::before {
   position: absolute;
-  inset: 7px 8px;
+  inset: 0;
   z-index: 0;
   content: "";
   opacity: 0;
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(239, 249, 244, 0.42) 46%, rgba(0, 84, 61, 0.1)),
     linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(0, 84, 61, 0.04));
-  border: 1px solid rgba(0, 84, 61, 0.48);
-  border-radius: 8px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.94),
-    inset 0 0 0 1px rgba(0, 84, 61, 0.07),
-    0 11px 24px rgba(0, 63, 47, 0.11),
-    0 0 0 3px rgba(0, 84, 61, 0.04);
   transform: translateX(-12%);
-  transition: opacity var(--motion-ui) var(--ease-out), transform var(--motion-ui) var(--ease-out);
+  transition: opacity var(--motion-ui) ease, transform var(--motion-ui) var(--ease-out);
   pointer-events: none;
-  -webkit-backdrop-filter: blur(12px) saturate(135%);
-  backdrop-filter: blur(12px) saturate(135%);
 }
 
 .prayer-tile::after {
@@ -1201,10 +1192,18 @@ img {
 }
 
 .prayer-tile.active {
-  margin: 18px 8px;
   color: var(--green);
-  background-color: transparent;
+  background-color: rgba(226, 244, 235, 0.68);
+  border: 1px solid rgba(0, 84, 61, 0.48);
+  border-radius: 8px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    inset 0 0 0 1px rgba(0, 84, 61, 0.07),
+    0 13px 28px rgba(0, 63, 47, 0.13),
+    0 0 0 3px rgba(0, 84, 61, 0.045);
   transform: translateY(-1px);
+  -webkit-backdrop-filter: blur(12px) saturate(135%);
+  backdrop-filter: blur(12px) saturate(135%);
 }
 
 .prayer-tile.active::before {
@@ -5484,10 +5483,6 @@ input[type="checkbox"] {
     border-left: 0;
   }
 
-  .prayer-tile.active {
-    margin: 8px;
-  }
-
   .prayer-tile img {
     width: 38px;
     height: 38px;
@@ -6376,10 +6371,6 @@ input[type="checkbox"] {
     flex-basis: 122px;
     min-height: 112px;
     gap: 10px;
-  }
-
-  .prayer-tile.active {
-    margin: 7px;
   }
 
   .info-grid {
@@ -14671,7 +14662,7 @@ body:has(.about-community-copy) .page-hero h1 {
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  .prayer-tile.active::before {
+  .prayer-tile.active {
     background-color: #eaf6ef;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
@@ -14679,7 +14670,7 @@ body:has(.about-community-copy) .page-hero h1 {
 }
 
 @media (prefers-contrast: more) {
-  .prayer-tile.active::before {
+  .prayer-tile.active {
     background-color: #ffffff;
     border-color: var(--green-dark);
     box-shadow: inset 0 0 0 2px rgba(0, 84, 61, 0.18);
