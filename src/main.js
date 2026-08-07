@@ -42,7 +42,6 @@ let selectedPrayerDate = new Date();
 let selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
 let prayerDateTracksToday = true;
 const datePickerCloseTimers = new WeakMap();
-const countdownAnimations = new WeakMap();
 const prayerActivationAnimations = new WeakMap();
 const prayerActivationTimers = new WeakMap();
 const reducedMotionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -355,33 +354,13 @@ function finishLoadingRegion(target) {
   );
 }
 
-function setAnimatedCountdownText(selector, value) {
+function setAnimatedText(selector, value) {
   const element = document.querySelector(selector);
   if (!element || element.textContent === value) return;
-
   element.textContent = value;
-  const previousAnimation = countdownAnimations.get(element);
-  previousAnimation?.cancel();
-
-  if (prefersReducedMotion() || document.hidden || typeof element.animate !== "function") return;
-  const animation = element.animate(
-    [
-      { opacity: 0.72, transform: "translateY(1.5px) rotateX(-10deg) scale(0.994)", offset: 0 },
-      { opacity: 0.98, transform: "translateY(-0.25px) rotateX(3deg) scale(1.003)", offset: 0.55 },
-      { opacity: 1, transform: "translateY(0) rotateX(0deg) scale(1)", offset: 1 },
-    ],
-    {
-      duration: 460,
-      easing: "cubic-bezier(0.2, 0.9, 0.22, 1)",
-    },
-  );
-
-  countdownAnimations.set(element, animation);
-  const forgetAnimation = () => {
-    if (countdownAnimations.get(element) === animation) countdownAnimations.delete(element);
-  };
-  animation.addEventListener("finish", forgetAnimation, { once: true });
-  animation.addEventListener("cancel", forgetAnimation, { once: true });
+  element.classList.remove("is-changing");
+  void element.offsetWidth;
+  element.classList.add("is-changing");
 }
 
 function prayerTransitionDirection(previousKey, nextKey) {
@@ -853,9 +832,9 @@ function renderPrayerTimes() {
   if (countdownTimer) window.clearInterval(countdownTimer);
   const tick = () => {
     const remaining = Math.max(0, Math.ceil((next.time.getTime() - getPrayerNow().getTime()) / 1000));
-    setAnimatedCountdownText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
-    setAnimatedCountdownText("[data-countdown-minutes]", String(Math.floor((remaining % 3600) / 60)).padStart(2, "0"));
-    setAnimatedCountdownText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));
+    setAnimatedText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
+    setAnimatedText("[data-countdown-minutes]", String(Math.floor((remaining % 3600) / 60)).padStart(2, "0"));
+    setAnimatedText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));
     if (remaining <= 0) renderPrayerTimes();
   };
 
