@@ -1,19 +1,24 @@
 {
-  "name": "icm-homepage",
+  "name": "icm-connected",
   "version": "1.0.0",
   "description": "Islamic Center of Morrisville homepage with prayer times and simple CMS",
   "type": "module",
   "main": "server.js",
   "scripts": {
     "build": "esbuild src/main.js src/admin.js src/pages.js src/site.js --bundle --format=esm --target=es2020 --outdir=public/app",
+    "test": "node --test tests/*.test.js",
+    "admin:create": "node scripts/create-admin.js",
     "serve": "node server.js",
-    "start": "npm run build && node server.js"
+    "start": "npm run build && node server.js",
+    "start:lan": "npm run build && node scripts/start-lan.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "adhan": "^4.4.4",
-    "esbuild": "^0.28.1"
+    "cheerio": "^1.2.0",
+    "esbuild": "^0.28.1",
+    "luxon": "^3.7.2",
+    "zod": "^4.5.4"
   }
 }

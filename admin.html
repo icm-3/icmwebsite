@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
+    <style>[hidden]{display:none!important}.cms-grid input,.cms-grid textarea,.cms-grid select{max-width:100%}.cms-grid textarea{min-height:110px}#prayer-table th{padding:8px}#prayer-table input{padding:8px}.cms-topbar nav{flex-wrap:wrap}</style>
   </head>
   <body class="cms-body">
     <header class="cms-topbar">
@@ -16,16 +17,18 @@
       </a>
       <nav>
         <a href="./index.html">Homepage</a>
-        <button type="button" data-action="reset">Reset Placeholder Data</button>
-        <button class="cms-save" type="button" data-action="save">Save Changes</button>
+        <button type="button" data-action="reload" data-editor-action hidden>Reload draft</button>
+        <button type="button" data-action="save" data-editor-action hidden>Save draft</button>
+        <button class="cms-save" type="button" data-action="publish" data-editor-action hidden>Publish to both</button>
+        <button type="button" data-action="logout" data-editor-action hidden>Sign out</button>
       </nav>
     </header>
 
     <main class="cms-shell">
       <section class="cms-intro">
         <div>
-          <h1>Site CMS</h1>
-          <p>Edit homepage content for news, upcoming events, Jumu'ah, and the hero image.</p>
+          <h1>ICM Connected CMS</h1>
+          <p>Publish newsletters, news, events, programs, and Jumu'ah to the website and app. Review the official WordPress prayer schedule here.</p>
         </div>
         <p class="cms-status" data-status>Loading content...</p>
       </section>

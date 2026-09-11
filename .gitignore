@@ -4,3 +4,15 @@ npm-debug.log*
 work/
 .DS_Store
 Thumbs.db
+runtime/
+.env
+*.sqlite*
+test-results/
+
+# Superseded local experiments; the verified original app is in /mobile-app.
+/expo-app/
+/mobile/
+/connected.html
+/src/mobile.js
+/public/app/mobile.js
+/icm-original-expo.tar

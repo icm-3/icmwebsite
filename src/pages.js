@@ -1,116 +1,6 @@
-import {
-  Coordinates,
-  CalculationMethod,
-  Madhab,
-  PrayerTimes,
-  Rounding,
-} from "adhan";
-import { defaultContent } from "./default-content.js";
 import { initMobileNav } from "./nav.js";
-
-const ICM_COORDS = new Coordinates(35.8111, -78.8231);
-const TIME_ZONE = "America/New_York";
-const prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
-const prayerLabels = {
-  fajr: "Fajr",
-  sunrise: "Sunrise",
-  dhuhr: "Dhuhr",
-  asr: "Asr",
-  maghrib: "Maghrib",
-  isha: "Isha",
-};
-
-const fallbackNews = [
-  {
-    title: "Community Programs Continue Through Summer",
-    date: "2026-06-10",
-    summary: "ICM continues to host learning, service, and family programs for the Morrisville community.",
-    image: "./public/news/ramadan.png",
-    imageAlt: "Mosque at sunset",
-  },
-  {
-    title: "Volunteer Opportunities Available",
-    date: "2026-06-05",
-    summary: "Community members can support events, education programs, and social services through volunteer work.",
-    image: "./public/news/camp.png",
-    imageAlt: "Youth program activity",
-  },
-  {
-    title: "Friday Prayer Updates",
-    date: "2026-05-29",
-    summary: "Please review Jumu'ah shift times and arrive early to help keep parking and entry smooth.",
-    image: "./public/news/eid.png",
-    imageAlt: "Masjid evening scene",
-  },
-];
-
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function mergeContent(content) {
-  return {
-    ...defaultContent,
-    ...content,
-    jummah: { ...defaultContent.jummah, ...(content?.jummah || {}) },
-    events: Array.isArray(content?.events) ? content.events : defaultContent.events,
-    news: Array.isArray(content?.news) ? content.news : defaultContent.news,
-  };
-}
-
-async function loadCmsContent() {
-  try {
-    const response = await fetch("/api/cms", { cache: "no-store" });
-    if (!response.ok) throw new Error("CMS API unavailable");
-    return mergeContent(await response.json());
-  } catch {
-    return defaultContent;
-  }
-}
-
-function getIcmPrayerTimes(date) {
-  const params = CalculationMethod.Karachi();
-  params.madhab = Madhab.Hanafi;
-  params.rounding = Rounding.Up;
-  params.adjustments.sunrise = -1;
-  params.adjustments.dhuhr = -2;
-  return new PrayerTimes(ICM_COORDS, date, params);
-}
-
-function zonedDateParts(date) {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: TIME_ZONE,
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-  }).formatToParts(date);
-  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
-  return {
-    year: Number(values.year),
-    month: Number(values.month),
-    day: Number(values.day),
-  };
-}
-
-function prayerDateFor(date) {
-  const parts = zonedDateParts(date);
-  return new Date(parts.year, parts.month - 1, parts.day);
-}
-
-function formatTime(date) {
-  return new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-    timeZone: TIME_ZONE,
-  }).format(date);
-}
-
+import { esc as escapeHtml, watchContent, renderWebsitePrayers, contentLinks } from "./shared.js";
+const TIME_ZONE="America/New_York";
 function formatLongDate(dateString) {
   const date = new Date(`${dateString}T12:00:00`);
   if (Number.isNaN(date.getTime())) return "";
@@ -141,22 +31,6 @@ function getDateBadgeParts(dateString) {
     month: new Intl.DateTimeFormat("en-US", { month: "short", timeZone: TIME_ZONE }).format(date),
     day: new Intl.DateTimeFormat("en-US", { day: "2-digit", timeZone: TIME_ZONE }).format(date),
   };
-}
-
-function renderPrayerTable() {
-  const target = document.querySelector("[data-page-prayers]");
-  if (!target) return;
-  const times = getIcmPrayerTimes(prayerDateFor(new Date()));
-  target.innerHTML = prayerOrder
-    .map(
-      (key) => `
-        <div class="schedule-row">
-          <span>${prayerLabels[key]}</span>
-          <strong>${formatTime(times[key])}</strong>
-        </div>
-      `,
-    )
-    .join("");
 }
 
 function renderEvents(content) {
@@ -198,16 +72,16 @@ function renderJummah(content) {
 function renderNews(content) {
   const target = document.querySelector("[data-page-news]");
   if (!target) return;
-  const items = [...content.news, ...fallbackNews].slice(0, Math.max(6, content.news.length));
+  const items = content.news;
   target.innerHTML = items
     .map(
       (item) => `
-        <article class="news-feature">
+        <article class="news-feature" id="${escapeHtml(item.id)}">
           <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">
           <div>
             <time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>
             <h2>${escapeHtml(item.title)}</h2>
-            <p>${escapeHtml(item.summary)}</p>
+            <p>${escapeHtml(item.summary)}</p><p style="white-space:pre-wrap">${escapeHtml(item.body)}</p>${item.url ? `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">Read original</a>` : ""}
           </div>
         </article>
       `,
@@ -215,13 +89,9 @@ function renderNews(content) {
     .join("");
 }
 
-async function boot() {
-  initMobileNav();
-  const content = await loadCmsContent();
-  renderPrayerTable();
-  renderEvents(content);
-  renderJummah(content);
-  renderNews(content);
+function boot() {
+ initMobileNav();watchContent(content=>{renderEvents(content);renderJummah(content);renderNews(content);contentLinks(content);});
+ renderWebsitePrayers();setInterval(renderWebsitePrayers,60000);
 }
 
 boot();
