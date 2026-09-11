@@ -1,6 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
 import * as Location from 'expo-location';
-import * as Notifications from 'expo-notifications';
 import { useCallback, useEffect, useRef } from 'react';
 import { Linking, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -51,7 +50,16 @@ type ContentFetchResult = {
   body: string;
 };
 
-if (process.env.EXPO_OS !== 'web') {
+type NotificationsModule = typeof import('expo-notifications');
+type NotificationPermissions = Awaited<ReturnType<NotificationsModule['getPermissionsAsync']>>;
+let notificationsPromise: Promise<NotificationsModule> | undefined;
+let notificationHandlerConfigured = false;
+
+async function nativeNotifications() {
+  notificationsPromise ??= import('expo-notifications');
+  const Notifications = await notificationsPromise;
+  if (!notificationHandlerConfigured) {
+    notificationHandlerConfigured = true;
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldPlaySound: true,
@@ -60,9 +68,11 @@ if (process.env.EXPO_OS !== 'web') {
       shouldShowList: true,
     }),
   });
+  }
+  return Notifications;
 }
 
-function notificationsAllowed(settings: Notifications.NotificationPermissionsStatus) {
+function notificationsAllowed(Notifications: NotificationsModule, settings: NotificationPermissions) {
   const iosStatus = settings.ios?.status;
   return settings.granted
     || iosStatus === Notifications.IosAuthorizationStatus.AUTHORIZED
@@ -93,12 +103,13 @@ export default function IndexScreen() {
     if (process.env.EXPO_OS === 'web') {
       return { granted: false, scheduledCount: 0, message: 'Notification scheduling is available in Expo Go and installed builds.' };
     }
+    const Notifications = await nativeNotifications();
     const [permissions, scheduled] = await Promise.all([
       Notifications.getPermissionsAsync(),
       Notifications.getAllScheduledNotificationsAsync(),
     ]);
     return {
-      granted: notificationsAllowed(permissions),
+      granted: notificationsAllowed(Notifications, permissions),
       scheduledCount: scheduled.length,
       message: scheduled.length ? `${scheduled.length} reminders scheduled.` : 'No reminders scheduled.',
     };
@@ -143,6 +154,7 @@ export default function IndexScreen() {
     if (process.env.EXPO_OS === 'web') {
       return { granted: false, scheduledCount: 0, message: 'Open this app in Expo Go to enable reminders.' };
     }
+    const Notifications = await nativeNotifications();
 
     if (process.env.EXPO_OS === 'android') {
       await Notifications.setNotificationChannelAsync('icm-reminders', {
@@ -160,13 +172,13 @@ export default function IndexScreen() {
     }
 
     let permissions = await Notifications.getPermissionsAsync();
-    if (!notificationsAllowed(permissions)) {
+    if (!notificationsAllowed(Notifications, permissions)) {
       permissions = await Notifications.requestPermissionsAsync({
         ios: { allowAlert: true, allowBadge: false, allowSound: true },
       });
     }
 
-    if (!notificationsAllowed(permissions)) {
+    if (!notificationsAllowed(Notifications, permissions)) {
       return { granted: false, scheduledCount: 0, message: 'Notifications are disabled in your device settings.' };
     }
 

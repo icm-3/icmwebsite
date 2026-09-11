@@ -36,6 +36,10 @@ function getDateBadgeParts(dateString) {
 function renderEvents(content) {
   const target = document.querySelector("[data-page-events]");
   if (!target) return;
+  if (!content.events.length) {
+    target.innerHTML = '<p class="content-empty">No upcoming events have been published yet.</p>';
+    return;
+  }
   target.innerHTML = content.events
     .map((event) => {
       const badge = getDateBadgeParts(event.date);
@@ -47,6 +51,7 @@ function renderEvents(content) {
             <p>${escapeHtml(formatLongDate(event.date))} &bull; ${escapeHtml(event.time)}</p>
             <p>${escapeHtml(event.location)}</p>
             <p>${escapeHtml(event.description)}</p>
+            ${event.url ? `<p><a href="${escapeHtml(event.url)}" target="_blank" rel="noopener">View event details</a></p>` : ""}
           </div>
         </article>
       `;
@@ -57,6 +62,10 @@ function renderEvents(content) {
 function renderJummah(content) {
   const target = document.querySelector("[data-page-jummah]");
   if (!target) return;
+  if (!content.jummah.shifts.length) {
+    target.innerHTML = '<p class="content-empty">The Jumu’ah schedule is awaiting publication.</p>';
+    return;
+  }
   target.innerHTML = content.jummah.shifts
     .map(
       (shift) => `
@@ -73,11 +82,15 @@ function renderNews(content) {
   const target = document.querySelector("[data-page-news]");
   if (!target) return;
   const items = content.news;
+  if (!items.length) {
+    target.innerHTML = '<p class="content-empty">No news or newsletters have been published yet.</p>';
+    return;
+  }
   target.innerHTML = items
     .map(
       (item) => `
-        <article class="news-feature" id="${escapeHtml(item.id)}">
-          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">
+        <article class="news-feature${item.image?'':' no-image'}" id="${escapeHtml(item.id)}">
+          ${item.image?`<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">`:''}
           <div>
             <time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>
             <h2>${escapeHtml(item.title)}</h2>

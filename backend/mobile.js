@@ -8,6 +8,7 @@ export function mobileContent(content) {
     title: item.title,
     date: item.date,
     summary: item.summary || item.body,
+    body: item.body,
     category: item.kind === 'newsletter' ? 'Newsletter' : 'Announcement',
     image: item.image,
     imageAlt: item.imageAlt,

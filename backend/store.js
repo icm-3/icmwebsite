@@ -15,6 +15,8 @@ export function openStore(file,seed) {
     CREATE TABLE IF NOT EXISTS schedules (month TEXT PRIMARY KEY, payload TEXT NOT NULL, synced TEXT NOT NULL, error TEXT);
     CREATE TABLE IF NOT EXISTS prayer_proposals (month TEXT PRIMARY KEY, payload TEXT NOT NULL, base TEXT NOT NULL, actor TEXT NOT NULL, updated TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS media (id TEXT PRIMARY KEY, mime TEXT NOT NULL, data BLOB NOT NULL, actor TEXT NOT NULL, created TEXT NOT NULL);
+    CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires);
+    PRAGMA optimize;
   `);
   for(const slot of ['draft','published']) db.prepare('INSERT OR IGNORE INTO content VALUES (?,1,?,?)').run(slot,JSON.stringify(seed),new Date().toISOString());
   const read=slot=>{const r=db.prepare('SELECT * FROM content WHERE slot=?').get(slot);return {revision:r.revision,content:JSON.parse(r.payload),updated:r.updated};};

@@ -94,7 +94,10 @@ watchContent((content) => {
   const grids = document.querySelectorAll(".program-grid");
   if (grids.length) {
     const categories = ["Education", "Community Programs"];
-    grids.forEach((grid, i) => grid.innerHTML = content.programs.filter((p) => i === 0 ? p.category === "Education" : p.category !== "Education").map((p) => `<article class="program-card"><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p><span>${esc(p.schedule)}</span><a href="${esc(p.url)}" target="_blank" rel="noopener">Learn more</a></article>`).join(""));
+    grids.forEach((grid, i) => {
+      const programs = content.programs.filter((p) => i === 0 ? p.category === "Education" : p.category !== "Education");
+      grid.innerHTML = programs.length ? programs.map((p) => `<article class="program-card"><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p><span>${esc(p.schedule)}</span>${p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">Learn more</a>` : ""}</article>`).join("") : '<p class="content-empty">No programs have been published in this section yet.</p>';
+    });
   }
   const contact = document.querySelectorAll("#contact .feature-card p");
   if (contact.length >= 2) {

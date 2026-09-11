@@ -6639,6 +6639,7 @@ async function renderWebsitePrayers() {
   const set = (s2, v) => document.querySelectorAll(s2).forEach((el) => el.textContent = v);
   set("[data-next-name]", next ? next.key[0].toUpperCase() + next.key.slice(1) : "Schedule unavailable");
   set("[data-next-time]", next?.label || "\u2014");
+  document.querySelectorAll("[data-countdown]").forEach((el) => el.setAttribute("aria-label", next ? `Time remaining until ${next.key[0].toUpperCase() + next.key.slice(1)}` : "Prayer countdown unavailable"));
   document.querySelectorAll("[data-prayer-tile]").forEach((el) => el.classList.toggle("active", el.dataset.prayerTile === next?.key));
   clearInterval(renderWebsitePrayers.timer);
   const tick = () => {
@@ -6716,6 +6717,10 @@ function renderEvents(content) {
   const list = document.querySelector("[data-events-list]");
   if (!list) return;
   const events = content.events.filter((e) => e.date >= (/* @__PURE__ */ new Date()).toLocaleDateString("en-CA", { timeZone: TIME_ZONE }));
+  if (!events.length) {
+    list.innerHTML = '<p class="content-empty">No upcoming events have been published yet.</p>';
+    return;
+  }
   list.innerHTML = events.map((event) => {
     const badge = getDateBadgeParts(event.date);
     const dateLabel = formatLongDate(event.date);
@@ -6734,10 +6739,14 @@ function renderNews(content) {
   const list = document.querySelector("[data-news-list]");
   if (!list) return;
   const news = content.news;
+  if (!news.length) {
+    list.innerHTML = '<p class="content-empty">No news or newsletters have been published yet.</p>';
+    return;
+  }
   list.innerHTML = news.map(
     (item) => `
-        <article class="news-item">
-          <img src="${esc(item.image)}" alt="${esc(item.imageAlt || item.title)}">
+        <article class="news-item${item.image ? "" : " no-image"}">
+          ${item.image ? `<img src="${esc(item.image)}" alt="${esc(item.imageAlt || item.title)}">` : ""}
           <div>
             <h3><a href="${articleLink(item)}" style="color:inherit;text-decoration:none">${esc(item.title)}</a></h3>
             <p>${esc(item.summary)}</p>

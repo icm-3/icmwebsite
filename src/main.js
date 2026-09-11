@@ -69,6 +69,10 @@ function renderEvents(content) {
   const list = document.querySelector("[data-events-list]");
   if (!list) return;
   const events = content.events.filter(e => e.date >= new Date().toLocaleDateString("en-CA", {timeZone:TIME_ZONE}));
+  if (!events.length) {
+    list.innerHTML = '<p class="content-empty">No upcoming events have been published yet.</p>';
+    return;
+  }
   list.innerHTML = events
     .map((event) => {
       const badge = getDateBadgeParts(event.date);
@@ -90,11 +94,15 @@ function renderNews(content) {
   const list = document.querySelector("[data-news-list]");
   if (!list) return;
   const news = content.news;
+  if (!news.length) {
+    list.innerHTML = '<p class="content-empty">No news or newsletters have been published yet.</p>';
+    return;
+  }
   list.innerHTML = news
     .map(
       (item) => `
-        <article class="news-item">
-          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">
+        <article class="news-item${item.image?'':' no-image'}">
+          ${item.image?`<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || item.title)}">`:''}
           <div>
             <h3><a href="${articleLink(item)}" style="color:inherit;text-decoration:none">${escapeHtml(item.title)}</a></h3>
             <p>${escapeHtml(item.summary)}</p>

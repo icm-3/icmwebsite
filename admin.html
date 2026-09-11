@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
-    <style>[hidden]{display:none!important}.cms-grid input,.cms-grid textarea,.cms-grid select{max-width:100%}.cms-grid textarea{min-height:110px}#prayer-table th{padding:8px}#prayer-table input{padding:8px}.cms-topbar nav{flex-wrap:wrap}</style>
   </head>
   <body class="cms-body">
     <header class="cms-topbar">
@@ -16,10 +15,10 @@
         <img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville">
       </a>
       <nav>
-        <a href="./index.html">Homepage</a>
+        <a href="./index.html" target="_blank" rel="noopener">View website</a>
         <button type="button" data-action="reload" data-editor-action hidden>Reload draft</button>
         <button type="button" data-action="save" data-editor-action hidden>Save draft</button>
-        <button class="cms-save" type="button" data-action="publish" data-editor-action hidden>Publish to both</button>
+        <button class="cms-save" type="button" data-action="publish" data-editor-action hidden>Publish to website + app</button>
         <button type="button" data-action="logout" data-editor-action hidden>Sign out</button>
       </nav>
     </header>
@@ -27,10 +26,10 @@
     <main class="cms-shell">
       <section class="cms-intro">
         <div>
-          <h1>ICM Connected CMS</h1>
-          <p>Publish newsletters, news, events, programs, and Jumu'ah to the website and app. Review the official WordPress prayer schedule here.</p>
+          <h1>ICM content manager</h1>
+          <p>Edit once, then publish the same information to the website and mobile app.</p>
         </div>
-        <p class="cms-status" data-status>Loading content...</p>
+        <p class="cms-status" data-status role="status" aria-live="polite">Loading content...</p>
       </section>
 
       <div data-cms-app></div>

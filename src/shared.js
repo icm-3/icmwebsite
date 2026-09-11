@@ -50,6 +50,7 @@ export async function renderWebsitePrayers() {
   if(!next&&row){try{const tomorrow=DateTime.fromISO(day,{zone}).plus({days:1}).toISODate();const m=await loadMonth(tomorrow.slice(0,7));const r=m.rows.find(r=>r.key===tomorrow);if(r)next={key:'fajr',label:r.fajr,time:prayerInstant(r.key,r.fajr)};}catch{}}
   const set=(s,v)=>document.querySelectorAll(s).forEach(el=>el.textContent=v);
   set('[data-next-name]',next?next.key[0].toUpperCase()+next.key.slice(1):'Schedule unavailable');set('[data-next-time]',next?.label||'—');
+  document.querySelectorAll('[data-countdown]').forEach(el=>el.setAttribute('aria-label',next?`Time remaining until ${next.key[0].toUpperCase()+next.key.slice(1)}`:'Prayer countdown unavailable'));
   document.querySelectorAll('[data-prayer-tile]').forEach(el=>el.classList.toggle('active',el.dataset.prayerTile===next?.key));
   clearInterval(renderWebsitePrayers.timer);
   const tick=()=>{const seconds=next?Math.max(0,Math.ceil((next.time-Date.now())/1000)):0;set('[data-countdown-hours]',String(Math.floor(seconds/3600)).padStart(2,'0'));set('[data-countdown-minutes]',String(Math.floor(seconds%3600/60)).padStart(2,'0'));set('[data-countdown-seconds]',String(seconds%60).padStart(2,'0'));if(next&&seconds===0){clearInterval(renderWebsitePrayers.timer);renderWebsitePrayers();}};

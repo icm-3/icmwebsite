@@ -13,8 +13,15 @@ import { mobileContent } from './backend/mobile.js';
 const root=path.dirname(fileURLToPath(import.meta.url));
 export function createApp({dbPath=process.env.DB_PATH||path.join(root,'runtime/icm.sqlite'),fetcher=fetch,initialContent=seed()}={}) {
   const store=openStore(dbPath,initialContent),prayers=prayerService(store,fetcher),attempts=new Map();
-  const origin=process.env.ICM_PUBLIC_ORIGIN||'http://127.0.0.1:4180';
+  const configuredOrigin=process.env.ICM_PUBLIC_ORIGIN;
+  const origin=configuredOrigin||'http://127.0.0.1:4180';
   const secure=origin.startsWith('https://');
+  const privateHost=hostname=>hostname==='localhost'||hostname==='127.0.0.1'||hostname.startsWith('10.')||hostname.startsWith('192.168.')||/^172\.(1[6-9]|2\d|3[01])\./.test(hostname);
+  const allowsWriteOrigin=req=>{
+    if(!req.headers.origin)return true;
+    if(configuredOrigin)return req.headers.origin===configuredOrigin;
+    try{const candidate=new URL(req.headers.origin);return candidate.protocol==='http:'&&candidate.host.toLowerCase()===String(req.headers.host||'').toLowerCase()&&privateHost(candidate.hostname);}catch{return false;}
+  };
   const json=(res,status,value)=>{res.writeHead(status,{'content-type':'application/json; charset=utf-8','cache-control':'no-store'});res.end(JSON.stringify(value));};
   const fail=(status,message)=>{throw Object.assign(new Error(message),{status});};
   async function body(req) {
@@ -34,7 +41,7 @@ export function createApp({dbPath=process.env.DB_PATH||path.join(root,'runtime/i
       const token=String(req.headers.cookie||'').match(/(?:^|;\s*)icm_session=([a-f0-9]{64})(?:;|$)/)?.[1];
       const user=store.session(token);
       if(['POST','PUT','DELETE','PATCH'].includes(method)) {
-        if(req.headers.origin&&req.headers.origin!==origin)fail(403,'Origin is not allowed');
+        if(!allowsWriteOrigin(req))fail(403,'Origin is not allowed');
         if(req.headers['sec-fetch-site']==='cross-site')fail(403,'Cross-site writes are not allowed');
         if(p!=='/api/login') {
           if(!user)fail(401,'Sign in to continue');

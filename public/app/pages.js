@@ -6636,6 +6636,7 @@ async function renderWebsitePrayers() {
   const set = (s2, v) => document.querySelectorAll(s2).forEach((el) => el.textContent = v);
   set("[data-next-name]", next ? next.key[0].toUpperCase() + next.key.slice(1) : "Schedule unavailable");
   set("[data-next-time]", next?.label || "\u2014");
+  document.querySelectorAll("[data-countdown]").forEach((el) => el.setAttribute("aria-label", next ? `Time remaining until ${next.key[0].toUpperCase() + next.key.slice(1)}` : "Prayer countdown unavailable"));
   document.querySelectorAll("[data-prayer-tile]").forEach((el) => el.classList.toggle("active", el.dataset.prayerTile === next?.key));
   clearInterval(renderWebsitePrayers.timer);
   const tick = () => {
@@ -6686,6 +6687,10 @@ function getDateBadgeParts(dateString) {
 function renderEvents(content) {
   const target = document.querySelector("[data-page-events]");
   if (!target) return;
+  if (!content.events.length) {
+    target.innerHTML = '<p class="content-empty">No upcoming events have been published yet.</p>';
+    return;
+  }
   target.innerHTML = content.events.map((event) => {
     const badge = getDateBadgeParts(event.date);
     return `
@@ -6696,6 +6701,7 @@ function renderEvents(content) {
             <p>${esc(formatLongDate(event.date))} &bull; ${esc(event.time)}</p>
             <p>${esc(event.location)}</p>
             <p>${esc(event.description)}</p>
+            ${event.url ? `<p><a href="${esc(event.url)}" target="_blank" rel="noopener">View event details</a></p>` : ""}
           </div>
         </article>
       `;
@@ -6704,6 +6710,10 @@ function renderEvents(content) {
 function renderJummah(content) {
   const target = document.querySelector("[data-page-jummah]");
   if (!target) return;
+  if (!content.jummah.shifts.length) {
+    target.innerHTML = '<p class="content-empty">The Jumu\u2019ah schedule is awaiting publication.</p>';
+    return;
+  }
   target.innerHTML = content.jummah.shifts.map(
     (shift) => `
         <div class="schedule-row">
@@ -6717,10 +6727,14 @@ function renderNews(content) {
   const target = document.querySelector("[data-page-news]");
   if (!target) return;
   const items = content.news;
+  if (!items.length) {
+    target.innerHTML = '<p class="content-empty">No news or newsletters have been published yet.</p>';
+    return;
+  }
   target.innerHTML = items.map(
     (item) => `
-        <article class="news-feature" id="${esc(item.id)}">
-          <img src="${esc(item.image)}" alt="${esc(item.imageAlt || item.title)}">
+        <article class="news-feature${item.image ? "" : " no-image"}" id="${esc(item.id)}">
+          ${item.image ? `<img src="${esc(item.image)}" alt="${esc(item.imageAlt || item.title)}">` : ""}
           <div>
             <time datetime="${esc(item.date)}">${esc(formatShortDate(item.date))}</time>
             <h2>${esc(item.title)}</h2>

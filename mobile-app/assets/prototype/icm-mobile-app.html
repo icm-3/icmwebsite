@@ -1889,7 +1889,7 @@
     }
     .news-detail-copy .date { font-size: 10px; }
     .news-detail-copy h2 { margin: 0; color: var(--text); font-size: 27px; line-height: 1.08; letter-spacing: -.02em; }
-    .news-detail-copy .news-lede { margin: 14px 0 0; padding-left: 13px; border-left: 3px solid var(--gold); color: var(--text-2); font-size: 15px; line-height: 1.55; }
+    .news-detail-copy .news-lede { margin: 14px 0 0; padding-left: 13px; border-left: 3px solid var(--gold); color: var(--text-2); font-size: 15px; line-height: 1.55; white-space: pre-wrap; }
     .news-detail-copy h2 { margin-top: 14px; }
     .news-detail-external { margin-top: 16px; box-shadow: none; }
     .news-detail-external[hidden] { display: none !important; }
@@ -5722,6 +5722,7 @@
             title: plainText(record?.title?.rendered || record?.title || record?.name || item.name, "ICM Announcement", 160),
             date: String(record?.date || record?.publishedAt || record?.published_at || record?.modified || item.published_at || "").slice(0, 10),
             summary: plainText(record?.summary || record?.excerpt?.rendered || record?.excerpt || record?.description || record?.body || record?.content?.rendered, "", 500),
+            body: plainText(record?.body || record?.content?.rendered || record?.content || "", "", 10000),
             category: plainText(record?.category?.title || record?.category?.name || record?.category || record?.type || record?.tag, "Announcement", 40),
             image: safeContentUrl(record?.image?.url || record?.image?.filename || record?.image?.fields?.file?.url || record?.image || record?.featuredImage?.url || record?.featuredImage || record?.featured_image_url || media?.source_url, endpoint, { image: true }),
             imageAlt: plainText(record?.imageAlt || record?.image_alt || record?.image?.description || media?.alt_text || record?.title?.rendered || record?.title, "ICM announcement", 180),
@@ -5909,8 +5910,9 @@
       $("#newsDetailDate").dateTime = item.date;
       $("#newsDetailDate").textContent = formatNewsDate(item.date);
       $("#newsDetailTitle").textContent = item.title;
-      $("#newsDetailSummary").textContent = item.summary;
-      $("#newsDetailSummary").hidden = !item.summary;
+      const detailText = item.body || item.summary;
+      $("#newsDetailSummary").textContent = detailText;
+      $("#newsDetailSummary").hidden = !detailText;
       const sourceLink = $("#newsDetailSourceLink");
       sourceLink.hidden = !item.url;
       if (item.url) sourceLink.href = item.url;
