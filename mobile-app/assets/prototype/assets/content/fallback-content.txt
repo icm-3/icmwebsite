@@ -4,16 +4,18 @@ window.ICM_FALLBACK_CONTENT = {
     name: "Islamic Center of Morrisville",
     shortName: "ICM",
     tagline: "Serving Morrisville, West Cary, and RTP since Ramadan 2009.",
-    address: "107-B Quail Fields Ct, Morrisville, NC 27560",
-    email: "contact@icmnc.org",
-    websiteUrl: "https://www.icmnc.org/",
-    newsletterUrl: "https://lp.constantcontactpages.com/su/4AalmfK/ICMweekly"
+    address: "",
+    email: "",
+    newsletterUrl: "",
+    facebook: "",
+    instagram: "",
+    youtube: ""
   },
   donation: {
     title: "Give securely on the ICM website",
     description: "For donations, receipts, and recurring giving, we’ll send you to the official Islamic Center of Morrisville website.",
     buttonLabel: "Open Donate Page",
-    url: "https://www.icmnc.org/donate/"
+    url: ""
   },
   prayerTimes: {
     ajaxUrl: "https://www.icmnc.org/wp-admin/admin-ajax.php"

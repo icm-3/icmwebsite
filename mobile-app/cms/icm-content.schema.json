@@ -14,8 +14,10 @@
         "tagline": { "type": "string", "maxLength": 240 },
         "address": { "type": "string", "maxLength": 240 },
         "email": { "type": "string", "format": "email" },
-        "websiteUrl": { "type": "string", "format": "uri" },
-        "newsletterUrl": { "type": "string", "format": "uri" }
+        "newsletterUrl": { "type": "string", "format": "uri" },
+        "facebook": { "type": "string", "format": "uri" },
+        "instagram": { "type": "string", "format": "uri" },
+        "youtube": { "type": "string", "format": "uri" }
       },
       "additionalProperties": true
     },

@@ -5500,7 +5500,7 @@
     function renderNews() {
       const feed = $("#newsList");
       const subscribe = $("#newsletterSubscribe");
-      const newsletterUrl = safeContentUrl(appContent.site.newsletterUrl, appContent.site.websiteUrl || DEFAULT_WEBSITE_ORIGIN);
+      const newsletterUrl = safeContentUrl(appContent.site.newsletterUrl, location.href);
       subscribe.hidden = !newsletterUrl;
       if (newsletterUrl) subscribe.href = newsletterUrl;
       else subscribe.removeAttribute("href");
@@ -5823,8 +5823,10 @@
         tagline: plainText(siteSource.tagline || siteSource.description, "", 240),
         address: plainText(siteSource.address, "", 240),
         email: plainText(siteSource.email, "", 180),
-        websiteUrl: safeContentUrl(siteSource.websiteUrl || siteSource.website_url || siteSource.url, endpoint),
-        newsletterUrl: safeContentUrl(siteSource.newsletterUrl || siteSource.newsletter_url, endpoint)
+        newsletterUrl: safeContentUrl(siteSource.newsletterUrl || siteSource.newsletter_url, endpoint),
+        facebook: safeContentUrl(siteSource.facebook, endpoint),
+        instagram: safeContentUrl(siteSource.instagram, endpoint),
+        youtube: safeContentUrl(siteSource.youtube, endpoint)
       };
       normalized.donation = {
         title: plainText(donationSource.title, "", 160),
@@ -6282,9 +6284,11 @@
       const previewIcon = selectedPreviewState === "loading" ? "loader-circle" : selectedPreviewState === "playing" ? "pause" : "play";
       const previewLabel = selectedPreviewState === "playing" ? "Pause selected Adhan" : selectedPreviewState === "paused" ? "Resume selected Adhan" : "Preview selected Adhan";
       const site = appContent.site;
-      let websiteHost = site.websiteUrl;
-      try { websiteHost = new URL(site.websiteUrl).hostname.replace(/^www\./, ""); } catch {}
       const addressMeta = escapeHtml(site.address).replace(/,\s+(?=[A-Za-z]{2}\s+\d{5})/, "<br>");
+      const mapsUrl = site.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address)}` : "";
+      const linkMeta = (url, fallback = "Open") => {
+        try { return escapeHtml(new URL(url).hostname.replace(/^www\./, "")); } catch { return fallback; }
+      };
       const infoRow = ({ label, icon, description, meta, url = "" }) => {
         const tag = url ? "a" : "div";
         const link = url ? ` href="${escapeHtml(url)}" target="_blank" rel="noopener"` : "";
@@ -6359,15 +6363,18 @@
         <section class="settings-section">
           <h3 class="settings-section-title">Prayer schedule</h3>
           <div class="settings-card">
-            ${infoRow({ label: `Official ${escapeHtml(site.shortName)} timetable`, icon: "clock-3", description: `Daily prayer and iqamah times update from ${escapeHtml(websiteHost)}.`, meta: scheduleSource })}
+            ${infoRow({ label: `Official ${escapeHtml(site.shortName)} timetable`, icon: "clock-3", description: "Daily prayer and iqamah times sync from the official schedule.", meta: scheduleSource })}
           </div>
         </section>
         <section class="settings-section">
           <h3 class="settings-section-title">App & mosque</h3>
           <div class="settings-card">
-            ${infoRow({ label: escapeHtml(site.name), icon: "map-pin", description: escapeHtml(site.tagline), meta: addressMeta, url: site.websiteUrl })}
-            ${infoRow({ label: `Contact ${escapeHtml(site.shortName)}`, icon: "mail", description: "Questions, programs, and community information.", meta: escapeHtml(site.email), url: `mailto:${site.email}` })}
+            ${site.address ? infoRow({ label: "Mosque address", icon: "map-pin", description: "Open this CMS-managed address in Maps.", meta: addressMeta, url: mapsUrl }) : ""}
+            ${site.email ? infoRow({ label: `Email ${escapeHtml(site.shortName)}`, icon: "mail", description: "Questions, programs, and community information.", meta: escapeHtml(site.email), url: `mailto:${site.email}` }) : ""}
             ${site.newsletterUrl ? infoRow({ label: "Weekly ICM newsletter", icon: "newspaper", description: "Sign up for official events and announcements by email.", meta: "Subscribe", url: site.newsletterUrl }) : ""}
+            ${site.facebook ? infoRow({ label: "Facebook", icon: "facebook", description: "Open the CMS-managed Facebook page.", meta: linkMeta(site.facebook), url: site.facebook }) : ""}
+            ${site.instagram ? infoRow({ label: "Instagram", icon: "instagram", description: "Open the CMS-managed Instagram page.", meta: linkMeta(site.instagram), url: site.instagram }) : ""}
+            ${site.youtube ? infoRow({ label: "YouTube", icon: "youtube", description: "Open the CMS-managed YouTube channel.", meta: linkMeta(site.youtube), url: site.youtube }) : ""}
           </div>
         </section>`;
       $("#settingsFooter").textContent = `${site.name} · ${site.address}`;
