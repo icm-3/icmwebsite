@@ -52,9 +52,9 @@ export function mobileContent(content) {
     },
     donation: {
       title: 'Support ICM',
-      description: 'Give securely through the official ICM donation page.',
-      buttonLabel: 'Donate securely',
-      url: content.settings.donationUrl,
+      description: 'Choose an amount and giving frequency on the ICM donation page. Payment processing is not connected yet.',
+      buttonLabel: 'Open ICM Donation Page',
+      url: '/donate.html',
     },
     news: [...news, ...events, ...programs],
     jummah: {

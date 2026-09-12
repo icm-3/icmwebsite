@@ -13,9 +13,9 @@
   },
   "donation": {
     "title": "Support ICM",
-    "description": "Give securely through the official ICM donation page.",
-    "buttonLabel": "Donate securely",
-    "url": "https://www.icmnc.org/donate/"
+    "description": "Choose an amount and giving frequency on the ICM donation page.",
+    "buttonLabel": "Open ICM Donation Page",
+    "url": "/donate.html"
   },
   "news": [
     {

@@ -109,10 +109,6 @@ export function createApp({dbPath=process.env.DB_PATH||path.join(root,'runtime/i
       if(p==='/api/admin/wordpress'&&method==='GET')return json(res,200,{source:WORDPRESS,editorUrl:WORDPRESS+'/wp-admin/admin.php?page=dpt',writeConnected:false,reason:'The existing plugin API is read-only. Use its WordPress editor to apply approved proposals.'});
       if(p.startsWith('/api/'))fail(404,'API route not found');
       if(method!=='GET'&&method!=='HEAD')fail(405,'Method not allowed');
-      if(p==='/donate.html') {
-        const donationUrl=store.read('published').content.settings?.donationUrl;
-        if(/^https:\/\//.test(donationUrl||'')){res.writeHead(302,{location:donationUrl,'cache-control':'no-store'});return res.end();}
-      }
       if(/^\/media\/[a-f0-9-]{36}$/.test(p)) {
         const r=store.db.prepare('SELECT mime,data FROM media WHERE id=?').get(p.slice(7));if(!r)fail(404,'Image not found');
         res.writeHead(200,{'content-type':r.mime,'cache-control':'public,max-age=31536000,immutable'});return res.end(method==='HEAD'?undefined:Buffer.from(r.data));

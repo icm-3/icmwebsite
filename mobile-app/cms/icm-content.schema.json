@@ -27,7 +27,7 @@
         "title": { "type": "string", "maxLength": 160 },
         "description": { "type": "string", "maxLength": 400 },
         "buttonLabel": { "type": "string", "maxLength": 80 },
-        "url": { "type": "string", "format": "uri" }
+        "url": { "type": "string", "format": "uri-reference" }
       },
       "additionalProperties": true
     },

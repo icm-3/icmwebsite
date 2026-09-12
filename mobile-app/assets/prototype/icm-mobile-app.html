@@ -876,6 +876,8 @@
 
     .schedule-table-wrap {
       overflow: auto;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
     }
@@ -931,33 +933,26 @@
     }
 
     .schedule-table .date-cell {
-      position: sticky;
-      left: 0;
-      z-index: 3;
+      position: static;
       width: 52px;
       min-width: 52px;
       color: var(--primary);
       background: var(--surface);
       font-weight: 800;
       text-align: left;
-      box-shadow: 1px 0 0 color-mix(in srgb, var(--border) 82%, transparent);
     }
 
     .schedule-table .day-cell {
-      position: sticky;
-      left: 52px;
-      z-index: 3;
+      position: static;
       min-width: 48px;
       color: var(--muted);
       background: var(--surface);
       font-weight: 700;
       text-align: left;
-      box-shadow: 1px 0 0 color-mix(in srgb, var(--border) 70%, transparent);
     }
 
     .schedule-table th.date-cell,
     .schedule-table th.day-cell {
-      z-index: 4;
       color: #fff;
       background: var(--green-dark);
     }

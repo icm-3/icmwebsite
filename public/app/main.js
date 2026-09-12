@@ -7746,7 +7746,6 @@ function contentLinks(content) {
   document.querySelectorAll("[data-newsletter-link]").forEach((link) => {
     if (s2.newsletterUrl) link.href = s2.newsletterUrl;
   });
-  document.querySelectorAll('a[href="https://www.icmnc.org/donate/"], a[href="./donate.html"], a[href="/donate.html"]').forEach((link) => link.setAttribute("data-donation-link", ""));
   document.querySelectorAll("[data-donation-link]").forEach((link) => {
     if (s2.donationUrl) link.href = s2.donationUrl;
   });

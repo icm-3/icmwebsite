@@ -29,7 +29,6 @@ export function prayerInstant(day,time) {return DateTime.fromFormat(day+' '+time
 export function contentLinks(content) {
   const s=content.settings||{};
   document.querySelectorAll('[data-newsletter-link]').forEach(link=>{if(s.newsletterUrl)link.href=s.newsletterUrl;});
-  document.querySelectorAll('a[href="https://www.icmnc.org/donate/"], a[href="./donate.html"], a[href="/donate.html"]').forEach(link=>link.setAttribute('data-donation-link',''));
   document.querySelectorAll('[data-donation-link]').forEach(link=>{if(s.donationUrl)link.href=s.donationUrl;});
   for(const link of document.querySelectorAll('.socials a')){const name=link.getAttribute('aria-label')?.toLowerCase();if(name in s){if(s[name])link.href=s[name];else link.removeAttribute('href');}}
 }
