@@ -864,10 +864,23 @@ var defaultContent = {
     image: "./public/images/masjid-interior-hero-clean.png",
     imageAlt: "Islamic Center of Morrisville main prayer hall interior with carpet rows, qibla wall, and open worship space"
   },
-  jummah: { dateLabel: "Schedule awaiting publication", shifts: [] },
+  jummah: {
+    dateLabel: "September 18, 2026",
+    shifts: [
+      { shift: "1", time: "12:30 PM", speaker: "To be announced (sample)", topic: "Khutbah topic to be announced" },
+      { shift: "2", time: "1:30 PM", speaker: "To be announced (sample)", topic: "Khutbah topic to be announced" },
+      { shift: "3", time: "2:30 PM", speaker: "To be announced (sample)", topic: "Khutbah topic to be announced" }
+    ]
+  },
   calendar: { today: "" },
-  events: [],
-  news: [],
+  events: [
+    { id: "33333333-3333-4333-8333-333333333333", title: "Sample Community Family Night", date: "2026-09-18", time: "7:30 PM", location: "ICM \u2014 confirm room in CMS", description: "Sample event content for preview. Replace the date, time, location, and description in the CMS before publishing official information.", url: "", image: "", imageAlt: "" },
+    { id: "44444444-4444-4444-8444-444444444444", title: "Sample Volunteer Orientation", date: "2026-09-20", time: "11:00 AM", location: "Islamic Center of Morrisville", description: "Sample listing demonstrating how volunteer opportunities appear on the website calendar and in the mobile app.", url: "/volunteer.html", image: "", imageAlt: "" }
+  ],
+  news: [
+    { id: "11111111-1111-4111-8111-111111111111", title: "Sample Weekly ICM Newsletter", date: "2026-09-12", summary: "Preview of a weekly newsletter shared automatically with the ICM website and mobile app.", body: "Assalamu alaikum. This is clearly labeled sample newsletter content for testing the connected publishing workflow.\n\nReplace this text with the confirmed weekly announcements in the CMS, add the public issue link if available, and select Publish to website + app.", image: "", imageAlt: "", kind: "newsletter", icon: "megaphone", url: "" },
+    { id: "22222222-2222-4222-8222-222222222222", title: "Sample Community Announcement", date: "2026-09-12", summary: "Example announcement showing how a short community update appears on both connected frontends.", body: "This sample can be edited or removed from the CMS. Add a registration link and image when an official announcement is ready.", image: "", imageAlt: "", kind: "news", icon: "megaphone", url: "" }
+  ],
   programs: [],
   settings: {
     donationUrl: "https://www.icmnc.org/donate/",
