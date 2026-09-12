@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="icon" href="./public/images/icm-logo-provided-transparent.png"><link rel="stylesheet" href="./styles.css?v=20260807-isha-gap-v102">
   </head>
   <body>
     <header class="site-header">
@@ -15,7 +15,7 @@
         <img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville">
       </a>
       <nav class="top-nav" aria-label="Primary navigation">
-        <a class="nav-donate" href="./donate.html"><img src="./public/icons/generated/donate.png" alt="" aria-hidden="true"><span>Donate</span></a>
+        <a class="nav-donate" href="./donate.html" aria-label="Donate"><img src="./public/icons/generated/donate.png" alt="" aria-hidden="true"><span>Donate</span></a>
         <a href="./calendar.html">Calendar</a>
         <a href="./programs.html">Programs</a>
         <a href="./news.html">News</a>
@@ -25,67 +25,177 @@
     </header>
 
     <main class="page-main">
-      <section class="page-hero">
-        <p class="eyebrow">Support the masjid</p>
-        <h1>Donate</h1>
-        <p>Your giving helps ICM sustain worship, education, social service, youth work, and community care for Morrisville, West Cary, and RTP.</p>
-        <div class="page-actions">
-          <a class="button button-primary" href="https://www.icmnc.org/donate/" target="_blank" rel="noopener">Donate through ICM</a>
-          <a class="button button-secondary" href="https://www.icmnc.org/donate/" target="_blank" rel="noopener">Donation Dashboard</a>
+      <section class="page-band donation-start" id="donate-now">
+        <div class="section-heading">
+          <p class="eyebrow">Support the masjid</p>
+          <h1 class="heading-green">Make a Donation</h1>
         </div>
+        <form class="donation-form" aria-label="Donation form">
+          <div class="donation-form-main">
+            <fieldset class="donation-fieldset">
+              <legend>Donation Amount</legend>
+              <label class="amount-entry">
+                <span aria-hidden="true">$</span>
+                <input type="number" name="donation-amount" min="1" step="0.01" value="25.00" aria-label="Donation amount">
+              </label>
+              <div class="amount-grid">
+                <label><input type="radio" name="amount" value="10"><span>$10</span></label>
+                <label><input type="radio" name="amount" value="25" checked><span>$25</span></label>
+                <label><input type="radio" name="amount" value="50"><span>$50</span></label>
+                <label><input type="radio" name="amount" value="75"><span>$75</span></label>
+                <label><input type="radio" name="amount" value="100"><span>$100</span></label>
+                <label><input type="radio" name="amount" value="250"><span>$250</span></label>
+                <label><input type="radio" name="amount" value="500"><span>$500</span></label>
+                <label><input type="radio" name="amount" value="custom"><span>Custom</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="donation-fieldset">
+              <legend>Frequency</legend>
+              <div class="segmented-options">
+                <label><input type="radio" name="frequency" value="one-time" checked><span>One-Time</span></label>
+                <label><input type="radio" name="frequency" value="daily"><span>Daily</span></label>
+                <label><input type="radio" name="frequency" value="weekly"><span>Weekly</span></label>
+                <label><input type="radio" name="frequency" value="monthly"><span>Monthly</span></label>
+                <label><input type="radio" name="frequency" value="yearly"><span>Yearly</span></label>
+              </div>
+            </fieldset>
+
+            <div class="donation-grid">
+              <label class="form-field">
+                <span>First Name</span>
+                <input type="text" name="first-name" autocomplete="given-name" required>
+              </label>
+              <label class="form-field">
+                <span>Last Name</span>
+                <input type="text" name="last-name" autocomplete="family-name" required>
+              </label>
+              <label class="form-field">
+                <span>Email</span>
+                <input type="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Enter a valid email address with an @ sign" name="email" autocomplete="email" placeholder="name@example.com">
+              </label>
+              <label class="form-field">
+                <span>Phone</span>
+                <input type="tel" required inputmode="numeric" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" data-format="phone" title="Use 10 digits, formatted as 919-555-0123" name="phone" autocomplete="tel" placeholder="919-555-0123">
+              </label>
+
+              <fieldset class="donation-fieldset payment-fieldset form-field-wide">
+                <legend>How would you like to pay today?</legend>
+                <p>This donation is processed through a secure encrypted payment form.</p>
+                <div class="payment-options">
+                  <label class="payment-option">
+                    <input type="radio" name="payment-method" value="stripe" checked>
+                    <span>
+                      <strong>Stripe Payment</strong>
+                      <small>Secure card payment for Visa, Mastercard, Discover, and American Express.</small>
+                    </span>
+                  </label>
+                  <label class="payment-option">
+                    <input type="radio" name="payment-method" value="paypal">
+                    <span>
+                      <strong>PayPal &amp; Venmo</strong>
+                      <small>Continue with a PayPal account, Venmo, or a linked wallet.</small>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="payment-panel stripe-panel" data-payment-panel="stripe">
+                  <div class="payment-panel-heading">
+                    <strong>Credit Card Info</strong>
+                    <span>Powered by Stripe</span>
+                  </div>
+                  <p class="payment-note">This is a secure SSL encrypted payment.</p>
+                  <label class="form-field form-field-wide">
+                    <span>Card Number</span>
+                    <input type="text" name="card-number" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234" data-format="card-number" required>
+                  </label>
+                  <label class="form-field">
+                    <span>Expiration</span>
+                    <input type="text" name="card-expiration" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY" data-format="card-expiration" required>
+                  </label>
+                  <label class="form-field">
+                    <span>Security Code</span>
+                    <input type="text" name="card-security-code" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC" data-format="card-cvc" required>
+                  </label>
+                </div>
+
+                <div class="payment-panel wallet-panel" data-payment-panel="paypal" hidden>
+                  <div class="payment-panel-heading">
+                    <strong>PayPal &amp; Venmo Checkout</strong>
+                    <span>Wallet payment</span>
+                  </div>
+                  <p class="payment-note">After continuing, donors can finish through PayPal, Venmo, or an eligible linked payment method.</p>
+                  <div class="wallet-preview" aria-hidden="true">
+                    <span class="paypal-mark">PayPal</span>
+                    <span class="venmo-mark">Venmo</span>
+                  </div>
+                </div>
+              </fieldset>
+
+              <label class="form-field form-field-wide">
+                <span>Note or Dedication <em>Optional</em></span>
+                <textarea name="note" rows="4"></textarea>
+              </label>
+            </div>
+
+            <label class="checkbox-field">
+              <input type="checkbox" name="anonymous">
+              <span>Keep this donation anonymous in public acknowledgements.</span>
+            </label>
+          </div>
+
+          <aside class="donation-summary">
+            <h3>Donation Summary</h3>
+            <div class="summary-row"><span>Selected amount</span><strong data-summary-amount>$25</strong></div>
+            <div class="summary-row"><span>Frequency</span><strong data-summary-frequency>One-Time</strong></div>
+            <button class="button button-primary" type="button">Continue to Secure Donation</button>
+            <p>Receipts are sent to the email address provided with the donation.</p>
+          </aside>
+        </form>
       </section>
 
-      <section class="page-band">
+      <section class="page-band" id="giving">
         <div class="section-heading">
-          <h2>Ways to Give</h2>
-          <p>Choose the area that best matches your intention. All giving actions open ICM's official donation page.</p>
+          <h2 class="heading-charcoal">What Donations Support</h2>
         </div>
         <div class="feature-grid">
           <article class="feature-card">
-            <h3>General Donation</h3>
-            <p>Support day-to-day masjid needs, operations, programming, and community hospitality.</p>
-            <a href="https://www.icmnc.org/donate/" target="_blank" rel="noopener">Give now</a>
+            <h3 class="heading-green">General Donation</h3>
+            <p>Unrestricted support for day-to-day masjid operations, hospitality, supplies, utilities, and urgent needs.</p>
           </article>
           <article class="feature-card">
-            <h3>Masjid Operations</h3>
-            <p>Help cover facility care, utilities, maintenance, supplies, and the steady work that keeps ICM open.</p>
-            <a href="https://www.icmnc.org/donate/" target="_blank" rel="noopener">Support operations</a>
+            <h3 class="heading-green">Masjid Operations</h3>
+            <p>Facility maintenance, cleaning, security, parking support, equipment, and the steady work that keeps the masjid open.</p>
           </article>
           <article class="feature-card">
-            <h3>Zakat & Sadaqah</h3>
-            <p>Contribute to charitable support for eligible neighbors and families through ICM's community channels.</p>
-            <a href="https://www.icmnc.org/donate/" target="_blank" rel="noopener">Give zakat or sadaqah</a>
+            <h3 class="heading-green">Zakat & Sadaqah</h3>
+            <p>Charitable support distributed through community service channels for eligible neighbors and families.</p>
           </article>
           <article class="feature-card">
-            <h3>Education & Youth</h3>
-            <p>Invest in Islamic learning, youth gatherings, Quran programs, and leadership opportunities.</p>
-            <a href="https://www.icmnc.org/donate/" target="_blank" rel="noopener">Support programs</a>
+            <h3 class="heading-green">Education & Youth</h3>
+            <p>Support Quran learning, Islamic studies, youth gatherings, leadership programs, and family education.</p>
           </article>
         </div>
       </section>
 
-      <section class="page-split">
+      <section class="page-split receipts-simple" id="receipts">
         <div>
-          <h2>Recurring Giving</h2>
-          <p>Monthly giving gives the masjid predictable support and makes it easier to plan classes, events, services, and facility needs.</p>
-        </div>
-        <div class="callout">
-          <h3>Receipts and recurring donations</h3>
-          <p>Use ICM's donation dashboard to update recurring donations, view donation history, and download annual receipts.</p>
-          <a class="button button-secondary" href="https://www.icmnc.org/donate/" target="_blank" rel="noopener">Open dashboard</a>
+          <h2 class="heading-charcoal">Recurring Payment</h2>
+          <p>Choose a daily, weekly, monthly, or yearly schedule and your support can continue automatically without re-entering the form each time.</p>
+          <p>Receipts are sent by email, and donation records can be used for annual giving summaries.</p>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="socials" aria-label="Social links">
-        <a href="#" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a>
-        <a href="#" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a>
-        <a href="#" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a>
+        <a href="https://www.facebook.com/ICMMASJID/" target="_blank" rel="noopener" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a>
+        <a href="https://www.instagram.com/icmmasjid/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a>
+        <a href="https://www.youtube.com/@islamiccenterofmorrisville1071" target="_blank" rel="noopener" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a>
       </div>
       <p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p>
       <a href="./about.html#contact">Contact Us</a>
     </footer>
-    <script type="module" src="./public/app/site.js"></script>
+    <script type="module" src="./public/app/site.js?v=20260806-exact-motion-v100"></script>
   </body>
 </html>

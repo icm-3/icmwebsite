@@ -6572,7 +6572,7 @@ function jummahEditor() {
   return panel("Jumu'ah schedule", "This is the Friday schedule shown on the website and app.", `${field("jummah.dateLabel", "Friday date or schedule label", state.jummah.dateLabel, { help: "Example: Friday, September 18", wide: true })}${shifts}`, button("add-jummah", "Add shift", "", "cms-primary"));
 }
 function eventsEditor() {
-  const body = state.events.length ? state.events.map((entry, index) => item(entry.title, [entry.date, entry.time].filter(Boolean).join(" \xB7 "), `${field(`events.${index}.title`, "Event name", entry.title, { required: true, wide: true })}${field(`events.${index}.date`, "Date", entry.date, { type: "date", required: true })}${field(`events.${index}.time`, "Time", entry.time, { placeholder: "6:30 PM" })}${field(`events.${index}.location`, "Location", entry.location, { wide: true })}${area(`events.${index}.description`, "Description", entry.description)}${field(`events.${index}.url`, "Registration or details link", entry.url, { type: "url", help: "Optional. Use a complete https:// link.", wide: true })}`, itemActions("events", index, state.events.length), index)).join("") : '<div class="cms-empty cms-field-wide"><strong>No events have been added.</strong><span>Add an event when its date is confirmed.</span></div>';
+  const body = state.events.length ? state.events.map((entry, index) => item(entry.title, [entry.date, entry.time].filter(Boolean).join(" \xB7 "), `${field(`events.${index}.title`, "Event name", entry.title, { required: true, wide: true })}${field(`events.${index}.date`, "Date", entry.date, { type: "date", required: true })}${field(`events.${index}.time`, "Time", entry.time, { placeholder: "6:30 PM" })}${field(`events.${index}.location`, "Location", entry.location, { wide: true })}${area(`events.${index}.description`, "Description", entry.description)}${field(`events.${index}.url`, "Registration or details link", entry.url, { type: "url", help: "Optional. Use a complete https:// link.", wide: true })}${field(`events.${index}.image`, "Event image URL", entry.image || "", { help: "Upload below or paste an HTTPS image URL.", wide: true })}${upload(`events.${index}.image`, entry.image || "")}${field(`events.${index}.imageAlt`, "Image description", entry.imageAlt || "", { help: "Describe the image for people using screen readers.", wide: true })}`, itemActions("events", index, state.events.length), index)).join("") : '<div class="cms-empty cms-field-wide"><strong>No events have been added.</strong><span>Add an event when its date is confirmed.</span></div>';
   return panel("Events", "Upcoming events are shared with the calendar and mobile news feed.", body, button("add-event", "Add event", "", "cms-primary"));
 }
 function programsEditor() {
@@ -6737,7 +6737,7 @@ document.addEventListener("click", async (event) => {
       focusNewItem();
     }
     if (action === "add-event") {
-      state.events.unshift({ id: crypto.randomUUID(), title: "", date: today(), time: "", location: "ICM", description: "", url: "" });
+      state.events.unshift({ id: crypto.randomUUID(), title: "", date: today(), time: "", location: "ICM", description: "", url: "", image: "", imageAlt: "" });
       dirty = true;
       render();
       say("New event added.", "warn");

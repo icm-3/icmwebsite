@@ -3,17 +3,17 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Programs | Islamic Center of Morrisville</title>
+    <title>Programs & Services | Islamic Center of Morrisville</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="icon" href="./public/images/icm-logo-provided-transparent.png"><link rel="stylesheet" href="./styles.css?v=20260807-isha-gap-v102">
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="./index.html" aria-label="Islamic Center of Morrisville home"><img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville"></a>
       <nav class="top-nav" aria-label="Primary navigation">
-        <a class="nav-donate" href="./donate.html"><img src="./public/icons/generated/donate.png" alt="" aria-hidden="true"><span>Donate</span></a>
+        <a class="nav-donate" href="./donate.html" aria-label="Donate"><img src="./public/icons/generated/donate.png" alt="" aria-hidden="true"><span>Donate</span></a>
         <a href="./calendar.html">Calendar</a>
         <a href="./programs.html">Programs</a>
         <a href="./news.html">News</a>
@@ -23,82 +23,102 @@
     </header>
 
     <main class="page-main">
-      <section class="page-hero">
-        <p class="eyebrow">Learning and service</p>
-        <h1>Programs</h1>
-        <p>ICM supports Islamic education, youth development, community service, and ongoing learning for families across Morrisville and the RTP area.</p>
+      <section class="page-hero programs-hero">
+        <p class="eyebrow">Learning and services</p>
+        <h1>Programs & Services</h1>
       </section>
 
-      <section class="page-band">
+      <section class="page-band program-overview" id="education">
         <div class="section-heading">
-          <h2>Education</h2>
-          <p>Programs inspired by the education offerings listed by ICM.</p>
+          <h2 class="section-heading-charcoal">Education Programs</h2>
         </div>
         <div class="program-grid">
-          <article class="program-card">
-            <h3>Al Mizan Academy</h3>
-            <p>A weekend learning environment focused on Islamic studies, Quranic Arabic, leadership, and meaningful action for youth.</p>
-            <span>Sundays, 10:05 AM - 1:20 PM</span>
-            <a href="https://www.icmnc.org/al-mizan-academy/" target="_blank" rel="noopener">Learn more</a>
-          </article>
-          <article class="program-card">
+          <article class="program-card" id="nibraas">
             <h3>Nibraas Institute</h3>
-            <p>A higher-learning program centered on Arabic, Quran, Hadith, fiqh, theology, and scholarship.</p>
-            <span>Multi-year Islamic studies track</span>
-            <a href="https://www.icmnc.org/nibraas-institute/" target="_blank" rel="noopener">Learn more</a>
+            <p>A four-year Alim Bachelor's Degree program in Islamic Studies committed to advancing Islamic higher education.</p>
+            <ul class="check-list">
+              <li>Four-year degree with eight total semesters</li>
+              <li>In-person learning opportunities</li>
+              <li>Classes three times a week for one hour each</li>
+            </ul>
+            <a class="program-detail-link" href="./nibraas-institute.html">Open Program</a>
           </article>
-          <article class="program-card">
+
+          <article class="program-card" id="al-mizan">
+            <h3>Al Mizaan Leadership Academy</h3>
+            <p>Inclusive Islamic education and leadership skills that empower youth to be future leaders in their homes and communities.</p>
+            <ul class="check-list">
+              <li>Weekend learning environment for local Muslim youth</li>
+              <li>Islamic teachings and Quranic Arabic</li>
+              <li>Leadership skills connected to daily life</li>
+            </ul>
+            <a class="program-detail-link" href="./al-mizaan-academy.html">Open Program</a>
+          </article>
+
+          <article class="program-card" id="al-falah">
             <h3>Al-Falah Quran School</h3>
-            <p>Quran learning and memorization support for students and families seeking a stronger connection to the Book of Allah.</p>
-            <span>Registration-based program</span>
-            <a href="https://www.icmnc.org/al-falah-quran-school/" target="_blank" rel="noopener">Learn more</a>
+            <p>Quran memorization and reading program with Tajweed, personalized learning plans, and qualified teachers.</p>
+            <ul class="check-list">
+              <li>For Grade 1 and up</li>
+              <li>Monday-Thursday, 5:00-6:30 PM</li>
+              <li>$100/month for one child with family discount</li>
+            </ul>
+            <a class="program-detail-link" href="./al-falah-quran-school.html">Open Program</a>
           </article>
         </div>
       </section>
 
-      <section class="page-band">
+      <section class="page-band program-overview" id="services">
         <div class="section-heading">
-          <h2>Community Programs</h2>
-          <p>Regular programs help community members learn, serve, and stay connected.</p>
+          <h2 class="section-heading-charcoal">Services</h2>
         </div>
         <div class="program-grid">
-          <article class="program-card">
-            <h3>Youth Programs</h3>
-            <p>Weekly halaqas, activities, outings, games, and service opportunities for elementary, middle, and high school students.</p>
-            <span>Youth gatherings and outings</span>
-            <a href="https://www.icmyouth.org/" target="_blank" rel="noopener">Youth site</a>
+          <article class="program-card" id="financial-aid">
+            <h3>Financial Aid</h3>
+            <p>Confidential support requests for rent, utility bills, basic needs, disaster support, and other reviewed hardships.</p>
+            <ul class="check-list">
+              <li>Separate financial aid application</li>
+              <li>Required document uploads</li>
+              <li>Reviewed by Social and Welfare Committee</li>
+            </ul>
+            <a class="program-detail-link" href="./financial-aid.html">Open Service</a>
           </article>
-          <article class="program-card">
-            <h3>Imam's Classes</h3>
-            <p>Quran classes, short reminders, and community learning led by Imam Manzar ul Islam al Azhari.</p>
-            <span>Classes and khatiras</span>
-            <a href="https://www.icmnc.org/imams-corner/" target="_blank" rel="noopener">Meet the Imam</a>
+
+          <article class="program-card" id="food-pantry">
+            <h3>Food Pantry</h3>
+            <p>In-person pantry support for community members. Applications are completed at ICM during pantry service hours.</p>
+            <ul class="check-list">
+              <li>First Saturday of each month</li>
+              <li>9:00-11:00 AM</li>
+              <li>No online food pantry form</li>
+            </ul>
+            <a class="program-detail-link" href="./food-pantry.html">Open Service</a>
           </article>
-          <article class="program-card">
-            <h3>Social & Welfare Services</h3>
-            <p>Service initiatives focused on charity, family support, food pantry work, counseling, and community care.</p>
-            <span>Service and welfare support</span>
-            <a href="https://www.icmnc.org/social-welfare/" target="_blank" rel="noopener">Services</a>
-          </article>
-          <article class="program-card">
+
+          <article class="program-card" id="volunteer">
             <h3>Volunteer Opportunities</h3>
-            <p>Help with events, education, service projects, and masjid operations through structured volunteer opportunities.</p>
-            <span>Community service</span>
-            <a href="https://www.icmnc.org/volunteer/" target="_blank" rel="noopener">Volunteer</a>
+            <p>Volunteers support events, education, social service, prayer logistics, and community operations.</p>
+            <ul class="check-list">
+              <li>Event and program support</li>
+              <li>Service-hour request support</li>
+              <li>Community operations</li>
+            </ul>
+            <a class="program-detail-link" href="./volunteer.html">Open Service</a>
           </article>
+
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="socials" aria-label="Social links">
-        <a href="#" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a>
-        <a href="#" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a>
-        <a href="#" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a>
+        <a href="https://www.facebook.com/ICMMASJID/" target="_blank" rel="noopener" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a>
+        <a href="https://www.instagram.com/icmmasjid/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a>
+        <a href="https://www.youtube.com/@islamiccenterofmorrisville1071" target="_blank" rel="noopener" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a>
       </div>
       <p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p>
       <a href="./about.html#contact">Contact Us</a>
     </footer>
-    <script type="module" src="./public/app/site.js"></script>
+    <script type="module" src="./public/app/site.js?v=20260806-exact-motion-v100"></script>
   </body>
 </html>

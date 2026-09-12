@@ -21,8 +21,8 @@ export function mobileContent(content) {
     date: item.date,
     summary: withSchedule(item.description, [item.time, item.location].filter(Boolean).join(' · ')),
     category: 'Event',
-    image: '',
-    imageAlt: '',
+    image: item.image || '',
+    imageAlt: item.imageAlt || '',
     imageFit: 'contain',
     url: item.url,
   }));

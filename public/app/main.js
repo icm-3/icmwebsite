@@ -1,18 +1,1188 @@
+var __defProp = Object.defineProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+
+// node_modules/adhan/lib/esm/Madhab.js
+var Madhab = {
+  Shafi: "shafi",
+  Hanafi: "hanafi"
+};
+function shadowLength(madhab) {
+  switch (madhab) {
+    case Madhab.Shafi:
+      return 1;
+    case Madhab.Hanafi:
+      return 2;
+    default:
+      throw "Invalid Madhab";
+  }
+}
+
+// node_modules/adhan/lib/esm/HighLatitudeRule.js
+var HighLatitudeRule = {
+  MiddleOfTheNight: "middleofthenight",
+  SeventhOfTheNight: "seventhofthenight",
+  TwilightAngle: "twilightangle",
+  recommended(coordinates) {
+    if (coordinates.latitude > 48) {
+      return HighLatitudeRule.SeventhOfTheNight;
+    } else {
+      return HighLatitudeRule.MiddleOfTheNight;
+    }
+  }
+};
+var HighLatitudeRule_default = HighLatitudeRule;
+
+// node_modules/adhan/lib/esm/Coordinates.js
+var Coordinates = class {
+  constructor(latitude, longitude) {
+    this.latitude = latitude;
+    this.longitude = longitude;
+  }
+};
+
+// node_modules/adhan/lib/esm/Rounding.js
+var Rounding = {
+  Nearest: "nearest",
+  Up: "up",
+  None: "none"
+};
+
+// node_modules/adhan/lib/esm/DateUtils.js
+function dateByAddingDays(date, days) {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = date.getDate() + days;
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  return new Date(year, month, day, hours, minutes, seconds);
+}
+function dateByAddingMinutes(date, minutes) {
+  return dateByAddingSeconds(date, minutes * 60);
+}
+function dateByAddingSeconds(date, seconds) {
+  return new Date(date.getTime() + seconds * 1e3);
+}
+function roundedMinute(date, rounding = Rounding.Nearest) {
+  const seconds = date.getUTCSeconds();
+  let offset2 = seconds >= 30 ? 60 - seconds : -1 * seconds;
+  if (rounding === Rounding.Up) {
+    offset2 = 60 - seconds;
+  } else if (rounding === Rounding.None) {
+    offset2 = 0;
+  }
+  return dateByAddingSeconds(date, offset2);
+}
+function isLeapYear(year) {
+  if (year % 4 !== 0) {
+    return false;
+  }
+  if (year % 100 === 0 && year % 400 !== 0) {
+    return false;
+  }
+  return true;
+}
+function dayOfYear(date) {
+  let returnedDayOfYear = 0;
+  const feb = isLeapYear(date.getFullYear()) ? 29 : 28;
+  const months2 = [31, feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  for (let i = 0; i < date.getMonth(); i++) {
+    returnedDayOfYear += months2[i];
+  }
+  returnedDayOfYear += date.getDate();
+  return returnedDayOfYear;
+}
+function isValidDate(date) {
+  return date instanceof Date && !isNaN(date.valueOf());
+}
+
+// node_modules/adhan/lib/esm/MathUtils.js
+function degreesToRadians(degrees) {
+  return degrees * Math.PI / 180;
+}
+function radiansToDegrees(radians) {
+  return radians * 180 / Math.PI;
+}
+function normalizeToScale(num, max) {
+  return num - max * Math.floor(num / max);
+}
+function unwindAngle(angle) {
+  return normalizeToScale(angle, 360);
+}
+function quadrantShiftAngle(angle) {
+  if (angle >= -180 && angle <= 180) {
+    return angle;
+  }
+  return angle - 360 * Math.round(angle / 360);
+}
+
+// node_modules/adhan/lib/esm/Shafaq.js
+var Shafaq = {
+  // General is a combination of Ahmer and Abyad.
+  General: "general",
+  // Ahmer means the twilight is the red glow in the sky. Used by the Shafi, Maliki, and Hanbali madhabs.
+  Ahmer: "ahmer",
+  // Abyad means the twilight is the white glow in the sky. Used by the Hanafi madhab.
+  Abyad: "abyad"
+};
+
+// node_modules/adhan/lib/esm/Astronomical.js
+var Astronomical = {
+  /* The geometric mean longitude of the sun in degrees. */
+  meanSolarLongitude(julianCentury) {
+    const T = julianCentury;
+    const term1 = 280.4664567;
+    const term2 = 36000.76983 * T;
+    const term3 = 3032e-7 * Math.pow(T, 2);
+    const L0 = term1 + term2 + term3;
+    return unwindAngle(L0);
+  },
+  /* The geometric mean longitude of the moon in degrees. */
+  meanLunarLongitude(julianCentury) {
+    const T = julianCentury;
+    const term1 = 218.3165;
+    const term2 = 481267.8813 * T;
+    const Lp = term1 + term2;
+    return unwindAngle(Lp);
+  },
+  ascendingLunarNodeLongitude(julianCentury) {
+    const T = julianCentury;
+    const term1 = 125.04452;
+    const term2 = 1934.136261 * T;
+    const term3 = 20708e-7 * Math.pow(T, 2);
+    const term4 = Math.pow(T, 3) / 45e4;
+    const Omega = term1 - term2 + term3 + term4;
+    return unwindAngle(Omega);
+  },
+  /* The mean anomaly of the sun. */
+  meanSolarAnomaly(julianCentury) {
+    const T = julianCentury;
+    const term1 = 357.52911;
+    const term2 = 35999.05029 * T;
+    const term3 = 1537e-7 * Math.pow(T, 2);
+    const M = term1 + term2 - term3;
+    return unwindAngle(M);
+  },
+  /* The Sun's equation of the center in degrees. */
+  solarEquationOfTheCenter(julianCentury, meanAnomaly) {
+    const T = julianCentury;
+    const Mrad = degreesToRadians(meanAnomaly);
+    const term1 = (1.914602 - 4817e-6 * T - 14e-6 * Math.pow(T, 2)) * Math.sin(Mrad);
+    const term2 = (0.019993 - 101e-6 * T) * Math.sin(2 * Mrad);
+    const term3 = 289e-6 * Math.sin(3 * Mrad);
+    return term1 + term2 + term3;
+  },
+  /* The apparent longitude of the Sun, referred to the
+        true equinox of the date. */
+  apparentSolarLongitude(julianCentury, meanLongitude) {
+    const T = julianCentury;
+    const L0 = meanLongitude;
+    const longitude = L0 + Astronomical.solarEquationOfTheCenter(T, Astronomical.meanSolarAnomaly(T));
+    const Omega = 125.04 - 1934.136 * T;
+    const Lambda = longitude - 569e-5 - 478e-5 * Math.sin(degreesToRadians(Omega));
+    return unwindAngle(Lambda);
+  },
+  /* The mean obliquity of the ecliptic, formula
+        adopted by the International Astronomical Union.
+        Represented in degrees. */
+  meanObliquityOfTheEcliptic(julianCentury) {
+    const T = julianCentury;
+    const term1 = 23.439291;
+    const term2 = 0.013004167 * T;
+    const term3 = 1639e-10 * Math.pow(T, 2);
+    const term4 = 5036e-10 * Math.pow(T, 3);
+    return term1 - term2 - term3 + term4;
+  },
+  /* The mean obliquity of the ecliptic, corrected for
+        calculating the apparent position of the sun, in degrees. */
+  apparentObliquityOfTheEcliptic(julianCentury, meanObliquityOfTheEcliptic) {
+    const T = julianCentury;
+    const Epsilon0 = meanObliquityOfTheEcliptic;
+    const O = 125.04 - 1934.136 * T;
+    return Epsilon0 + 256e-5 * Math.cos(degreesToRadians(O));
+  },
+  /* Mean sidereal time, the hour angle of the vernal equinox, in degrees. */
+  meanSiderealTime(julianCentury) {
+    const T = julianCentury;
+    const JD = T * 36525 + 2451545;
+    const term1 = 280.46061837;
+    const term2 = 360.98564736629 * (JD - 2451545);
+    const term3 = 387933e-9 * Math.pow(T, 2);
+    const term4 = Math.pow(T, 3) / 3871e4;
+    const Theta = term1 + term2 + term3 - term4;
+    return unwindAngle(Theta);
+  },
+  nutationInLongitude(julianCentury, solarLongitude, lunarLongitude, ascendingNode) {
+    const L0 = solarLongitude;
+    const Lp = lunarLongitude;
+    const Omega = ascendingNode;
+    const term1 = -17.2 / 3600 * Math.sin(degreesToRadians(Omega));
+    const term2 = 1.32 / 3600 * Math.sin(2 * degreesToRadians(L0));
+    const term3 = 0.23 / 3600 * Math.sin(2 * degreesToRadians(Lp));
+    const term4 = 0.21 / 3600 * Math.sin(2 * degreesToRadians(Omega));
+    return term1 - term2 - term3 + term4;
+  },
+  nutationInObliquity(julianCentury, solarLongitude, lunarLongitude, ascendingNode) {
+    const L0 = solarLongitude;
+    const Lp = lunarLongitude;
+    const Omega = ascendingNode;
+    const term1 = 9.2 / 3600 * Math.cos(degreesToRadians(Omega));
+    const term2 = 0.57 / 3600 * Math.cos(2 * degreesToRadians(L0));
+    const term3 = 0.1 / 3600 * Math.cos(2 * degreesToRadians(Lp));
+    const term4 = 0.09 / 3600 * Math.cos(2 * degreesToRadians(Omega));
+    return term1 + term2 + term3 - term4;
+  },
+  altitudeOfCelestialBody(observerLatitude, declination, localHourAngle) {
+    const Phi = observerLatitude;
+    const delta = declination;
+    const H = localHourAngle;
+    const term1 = Math.sin(degreesToRadians(Phi)) * Math.sin(degreesToRadians(delta));
+    const term2 = Math.cos(degreesToRadians(Phi)) * Math.cos(degreesToRadians(delta)) * Math.cos(degreesToRadians(H));
+    return radiansToDegrees(Math.asin(term1 + term2));
+  },
+  approximateTransit(longitude, siderealTime, rightAscension) {
+    const L = longitude;
+    const Theta0 = siderealTime;
+    const a2 = rightAscension;
+    const Lw = L * -1;
+    const m0 = normalizeToScale((a2 + Lw - Theta0) / 360, 1);
+    const expectedTransit = normalizeToScale((12 - L / 15) / 24, 1);
+    if (m0 - expectedTransit > 0.5) {
+      return m0 - 1;
+    } else if (expectedTransit - m0 > 0.5) {
+      return m0 + 1;
+    } else {
+      return m0;
+    }
+  },
+  /* The time at which the sun is at its highest point in the sky (in universal time) */
+  correctedTransit(approximateTransit, longitude, siderealTime, rightAscension, previousRightAscension, nextRightAscension) {
+    const m0 = approximateTransit;
+    const L = longitude;
+    const Theta0 = siderealTime;
+    const a2 = rightAscension;
+    const a1 = previousRightAscension;
+    const a3 = nextRightAscension;
+    const Lw = L * -1;
+    const Theta = unwindAngle(Theta0 + 360.985647 * m0);
+    const a = unwindAngle(Astronomical.interpolateAngles(a2, a1, a3, m0));
+    const H = quadrantShiftAngle(Theta - Lw - a);
+    const dm = H / -360;
+    return (m0 + dm) * 24;
+  },
+  correctedHourAngle(approximateTransit, angle, coordinates, afterTransit, siderealTime, rightAscension, previousRightAscension, nextRightAscension, declination, previousDeclination, nextDeclination) {
+    const m0 = approximateTransit;
+    const h0 = angle;
+    const Theta0 = siderealTime;
+    const a2 = rightAscension;
+    const a1 = previousRightAscension;
+    const a3 = nextRightAscension;
+    const d2 = declination;
+    const d1 = previousDeclination;
+    const d3 = nextDeclination;
+    const Lw = coordinates.longitude * -1;
+    const term1 = Math.sin(degreesToRadians(h0)) - Math.sin(degreesToRadians(coordinates.latitude)) * Math.sin(degreesToRadians(d2));
+    const term2 = Math.cos(degreesToRadians(coordinates.latitude)) * Math.cos(degreesToRadians(d2));
+    const H0 = radiansToDegrees(Math.acos(term1 / term2));
+    const m = afterTransit ? m0 + H0 / 360 : m0 - H0 / 360;
+    const Theta = unwindAngle(Theta0 + 360.985647 * m);
+    const a = unwindAngle(Astronomical.interpolateAngles(a2, a1, a3, m));
+    const delta = Astronomical.interpolate(d2, d1, d3, m);
+    const H = Theta - Lw - a;
+    const h = Astronomical.altitudeOfCelestialBody(coordinates.latitude, delta, H);
+    const term3 = h - h0;
+    const term4 = 360 * Math.cos(degreesToRadians(delta)) * Math.cos(degreesToRadians(coordinates.latitude)) * Math.sin(degreesToRadians(H));
+    const dm = term3 / term4;
+    return (m + dm) * 24;
+  },
+  /* Interpolation of a value given equidistant
+        previous and next values and a factor
+        equal to the fraction of the interpolated
+        point's time over the time between values. */
+  interpolate(y2, y1, y3, n2) {
+    const a = y2 - y1;
+    const b = y3 - y2;
+    const c = b - a;
+    return y2 + n2 / 2 * (a + b + n2 * c);
+  },
+  /* Interpolation of three angles, accounting for
+        angle unwinding. */
+  interpolateAngles(y2, y1, y3, n2) {
+    const a = unwindAngle(y2 - y1);
+    const b = unwindAngle(y3 - y2);
+    const c = b - a;
+    return y2 + n2 / 2 * (a + b + n2 * c);
+  },
+  /* The Julian Day for the given Gregorian date components. */
+  julianDay(year, month, day, hours = 0) {
+    const trunc = Math.trunc;
+    const Y = trunc(month > 2 ? year : year - 1);
+    const M = trunc(month > 2 ? month : month + 12);
+    const D = day + hours / 24;
+    const A = trunc(Y / 100);
+    const B = trunc(2 - A + trunc(A / 4));
+    const i0 = trunc(365.25 * (Y + 4716));
+    const i1 = trunc(30.6001 * (M + 1));
+    return i0 + i1 + D + B - 1524.5;
+  },
+  /* Julian century from the epoch. */
+  julianCentury(julianDay) {
+    return (julianDay - 2451545) / 36525;
+  },
+  seasonAdjustedMorningTwilight(latitude, dayOfYear2, year, sunrise) {
+    const a = 75 + 28.65 / 55 * Math.abs(latitude);
+    const b = 75 + 19.44 / 55 * Math.abs(latitude);
+    const c = 75 + 32.74 / 55 * Math.abs(latitude);
+    const d = 75 + 48.1 / 55 * Math.abs(latitude);
+    const adjustment = (function() {
+      const dyy = Astronomical.daysSinceSolstice(dayOfYear2, year, latitude);
+      if (dyy < 91) {
+        return a + (b - a) / 91 * dyy;
+      } else if (dyy < 137) {
+        return b + (c - b) / 46 * (dyy - 91);
+      } else if (dyy < 183) {
+        return c + (d - c) / 46 * (dyy - 137);
+      } else if (dyy < 229) {
+        return d + (c - d) / 46 * (dyy - 183);
+      } else if (dyy < 275) {
+        return c + (b - c) / 46 * (dyy - 229);
+      } else {
+        return b + (a - b) / 91 * (dyy - 275);
+      }
+    })();
+    return dateByAddingSeconds(sunrise, Math.round(adjustment * -60));
+  },
+  seasonAdjustedEveningTwilight(latitude, dayOfYear2, year, sunset, shafaq) {
+    let a, b, c, d;
+    if (shafaq === Shafaq.Ahmer) {
+      a = 62 + 17.4 / 55 * Math.abs(latitude);
+      b = 62 - 7.16 / 55 * Math.abs(latitude);
+      c = 62 + 5.12 / 55 * Math.abs(latitude);
+      d = 62 + 19.44 / 55 * Math.abs(latitude);
+    } else if (shafaq === Shafaq.Abyad) {
+      a = 75 + 25.6 / 55 * Math.abs(latitude);
+      b = 75 + 7.16 / 55 * Math.abs(latitude);
+      c = 75 + 36.84 / 55 * Math.abs(latitude);
+      d = 75 + 81.84 / 55 * Math.abs(latitude);
+    } else {
+      a = 75 + 25.6 / 55 * Math.abs(latitude);
+      b = 75 + 2.05 / 55 * Math.abs(latitude);
+      c = 75 - 9.21 / 55 * Math.abs(latitude);
+      d = 75 + 6.14 / 55 * Math.abs(latitude);
+    }
+    const adjustment = (function() {
+      const dyy = Astronomical.daysSinceSolstice(dayOfYear2, year, latitude);
+      if (dyy < 91) {
+        return a + (b - a) / 91 * dyy;
+      } else if (dyy < 137) {
+        return b + (c - b) / 46 * (dyy - 91);
+      } else if (dyy < 183) {
+        return c + (d - c) / 46 * (dyy - 137);
+      } else if (dyy < 229) {
+        return d + (c - d) / 46 * (dyy - 183);
+      } else if (dyy < 275) {
+        return c + (b - c) / 46 * (dyy - 229);
+      } else {
+        return b + (a - b) / 91 * (dyy - 275);
+      }
+    })();
+    return dateByAddingSeconds(sunset, Math.round(adjustment * 60));
+  },
+  daysSinceSolstice(dayOfYear2, year, latitude) {
+    let daysSinceSolstice;
+    const northernOffset = 10;
+    const southernOffset = isLeapYear(year) ? 173 : 172;
+    const daysInYear2 = isLeapYear(year) ? 366 : 365;
+    if (latitude >= 0) {
+      daysSinceSolstice = dayOfYear2 + northernOffset;
+      if (daysSinceSolstice >= daysInYear2) {
+        daysSinceSolstice = daysSinceSolstice - daysInYear2;
+      }
+    } else {
+      daysSinceSolstice = dayOfYear2 - southernOffset;
+      if (daysSinceSolstice < 0) {
+        daysSinceSolstice = daysSinceSolstice + daysInYear2;
+      }
+    }
+    return daysSinceSolstice;
+  }
+};
+var Astronomical_default = Astronomical;
+
+// node_modules/adhan/lib/esm/SolarCoordinates.js
+var SolarCoordinates = class {
+  constructor(julianDay) {
+    const T = Astronomical_default.julianCentury(julianDay);
+    const L0 = Astronomical_default.meanSolarLongitude(T);
+    const Lp = Astronomical_default.meanLunarLongitude(T);
+    const Omega = Astronomical_default.ascendingLunarNodeLongitude(T);
+    const Lambda = degreesToRadians(Astronomical_default.apparentSolarLongitude(T, L0));
+    const Theta0 = Astronomical_default.meanSiderealTime(T);
+    const dPsi = Astronomical_default.nutationInLongitude(T, L0, Lp, Omega);
+    const dEpsilon = Astronomical_default.nutationInObliquity(T, L0, Lp, Omega);
+    const Epsilon0 = Astronomical_default.meanObliquityOfTheEcliptic(T);
+    const EpsilonApparent = degreesToRadians(Astronomical_default.apparentObliquityOfTheEcliptic(T, Epsilon0));
+    this.declination = radiansToDegrees(Math.asin(Math.sin(EpsilonApparent) * Math.sin(Lambda)));
+    this.rightAscension = unwindAngle(radiansToDegrees(Math.atan2(Math.cos(EpsilonApparent) * Math.sin(Lambda), Math.cos(Lambda))));
+    this.apparentSiderealTime = Theta0 + dPsi * 3600 * Math.cos(degreesToRadians(Epsilon0 + dEpsilon)) / 3600;
+  }
+};
+
+// node_modules/adhan/lib/esm/SolarTime.js
+var SolarTime = class {
+  constructor(date, coordinates) {
+    const julianDay = Astronomical_default.julianDay(date.getFullYear(), date.getMonth() + 1, date.getDate(), 0);
+    this.observer = coordinates;
+    this.solar = new SolarCoordinates(julianDay);
+    this.prevSolar = new SolarCoordinates(julianDay - 1);
+    this.nextSolar = new SolarCoordinates(julianDay + 1);
+    const m0 = Astronomical_default.approximateTransit(coordinates.longitude, this.solar.apparentSiderealTime, this.solar.rightAscension);
+    const solarAltitude = -50 / 60;
+    this.approxTransit = m0;
+    this.transit = Astronomical_default.correctedTransit(m0, coordinates.longitude, this.solar.apparentSiderealTime, this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension);
+    this.sunrise = Astronomical_default.correctedHourAngle(m0, solarAltitude, coordinates, false, this.solar.apparentSiderealTime, this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension, this.solar.declination, this.prevSolar.declination, this.nextSolar.declination);
+    this.sunset = Astronomical_default.correctedHourAngle(m0, solarAltitude, coordinates, true, this.solar.apparentSiderealTime, this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension, this.solar.declination, this.prevSolar.declination, this.nextSolar.declination);
+  }
+  hourAngle(angle, afterTransit) {
+    return Astronomical_default.correctedHourAngle(this.approxTransit, angle, this.observer, afterTransit, this.solar.apparentSiderealTime, this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension, this.solar.declination, this.prevSolar.declination, this.nextSolar.declination);
+  }
+  afternoon(shadowLength2) {
+    const tangent = Math.abs(this.observer.latitude - this.solar.declination);
+    const inverse = shadowLength2 + Math.tan(degreesToRadians(tangent));
+    const angle = radiansToDegrees(Math.atan(1 / inverse));
+    return this.hourAngle(angle, true);
+  }
+};
+
+// node_modules/adhan/lib/esm/PolarCircleResolution.js
+var PolarCircleResolution = {
+  AqrabBalad: "AqrabBalad",
+  AqrabYaum: "AqrabYaum",
+  Unresolved: "Unresolved"
+};
+var LATITUDE_VARIATION_STEP = 0.5;
+var UNSAFE_LATITUDE = 65;
+var isValidSolarTime = (solarTime) => !isNaN(solarTime.sunrise) && !isNaN(solarTime.sunset);
+var aqrabYaumResolver = (coordinates, date, daysAdded = 1, direction = 1) => {
+  if (daysAdded > Math.ceil(365 / 2)) {
+    return null;
+  }
+  const testDate = new Date(date.getTime());
+  testDate.setDate(testDate.getDate() + direction * daysAdded);
+  const tomorrow = dateByAddingDays(testDate, 1);
+  const solarTime = new SolarTime(testDate, coordinates);
+  const tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
+  if (!isValidSolarTime(solarTime) || !isValidSolarTime(tomorrowSolarTime)) {
+    return aqrabYaumResolver(coordinates, date, daysAdded + (direction > 0 ? 0 : 1), -direction);
+  }
+  return {
+    date,
+    tomorrow,
+    coordinates,
+    solarTime,
+    tomorrowSolarTime
+  };
+};
+var aqrabBaladResolver = (coordinates, date, latitude) => {
+  const solarTime = new SolarTime(date, {
+    ...coordinates,
+    latitude
+  });
+  const tomorrow = dateByAddingDays(date, 1);
+  const tomorrowSolarTime = new SolarTime(tomorrow, {
+    ...coordinates,
+    latitude
+  });
+  if (!isValidSolarTime(solarTime) || !isValidSolarTime(tomorrowSolarTime)) {
+    return Math.abs(latitude) >= UNSAFE_LATITUDE ? aqrabBaladResolver(coordinates, date, latitude - Math.sign(latitude) * LATITUDE_VARIATION_STEP) : null;
+  }
+  return {
+    date,
+    tomorrow,
+    coordinates: new Coordinates(latitude, coordinates.longitude),
+    solarTime,
+    tomorrowSolarTime
+  };
+};
+var polarCircleResolvedValues = (resolver, date, coordinates) => {
+  const defaultReturn = {
+    date,
+    tomorrow: dateByAddingDays(date, 1),
+    coordinates,
+    solarTime: new SolarTime(date, coordinates),
+    tomorrowSolarTime: new SolarTime(dateByAddingDays(date, 1), coordinates)
+  };
+  switch (resolver) {
+    case PolarCircleResolution.AqrabYaum: {
+      return aqrabYaumResolver(coordinates, date) || defaultReturn;
+    }
+    case PolarCircleResolution.AqrabBalad: {
+      const {
+        latitude
+      } = coordinates;
+      return aqrabBaladResolver(coordinates, date, latitude - Math.sign(latitude) * LATITUDE_VARIATION_STEP) || defaultReturn;
+    }
+    default: {
+      return defaultReturn;
+    }
+  }
+};
+
+// node_modules/adhan/lib/esm/CalculationParameters.js
+var CalculationParameters = class {
+  constructor(method, fajrAngle = 0, ishaAngle = 0, ishaInterval = 0, maghribAngle = 0) {
+    // Madhab to determine how Asr is calculated.
+    __publicField(this, "madhab", Madhab.Shafi);
+    // Rule to determine the earliest time for Fajr and latest time for Isha
+    // needed for high latitude locations where Fajr and Isha may not truly exist
+    // or may present a hardship unless bound to a reasonable time.
+    __publicField(this, "highLatitudeRule", HighLatitudeRule_default.MiddleOfTheNight);
+    // Manual adjustments (in minutes) to be added to each prayer time.
+    __publicField(this, "adjustments", {
+      fajr: 0,
+      sunrise: 0,
+      dhuhr: 0,
+      asr: 0,
+      maghrib: 0,
+      isha: 0
+    });
+    // Adjustments set by a calculation method. This value should not be manually modified.
+    __publicField(this, "methodAdjustments", {
+      fajr: 0,
+      sunrise: 0,
+      dhuhr: 0,
+      asr: 0,
+      maghrib: 0,
+      isha: 0
+    });
+    // Rule to determine how to resolve prayer times inside the Polar Circle
+    // where daylight or night may persist for more than 24 hours depending
+    // on the season
+    __publicField(this, "polarCircleResolution", PolarCircleResolution.Unresolved);
+    // How seconds are rounded when calculating prayer times
+    __publicField(this, "rounding", Rounding.Nearest);
+    // Used by the MoonsightingCommittee method to determine how to calculate Isha
+    __publicField(this, "shafaq", Shafaq.General);
+    this.method = method;
+    this.fajrAngle = fajrAngle;
+    this.ishaAngle = ishaAngle;
+    this.ishaInterval = ishaInterval;
+    this.maghribAngle = maghribAngle;
+    if (this.method === null) {
+      this.method = "Other";
+    }
+  }
+  nightPortions() {
+    switch (this.highLatitudeRule) {
+      case HighLatitudeRule_default.MiddleOfTheNight:
+        return {
+          fajr: 1 / 2,
+          isha: 1 / 2
+        };
+      case HighLatitudeRule_default.SeventhOfTheNight:
+        return {
+          fajr: 1 / 7,
+          isha: 1 / 7
+        };
+      case HighLatitudeRule_default.TwilightAngle:
+        return {
+          fajr: this.fajrAngle / 60,
+          isha: this.ishaAngle / 60
+        };
+      default:
+        throw `Invalid high latitude rule found when attempting to compute night portions: ${this.highLatitudeRule}`;
+    }
+  }
+};
+
+// node_modules/adhan/lib/esm/CalculationMethod.js
+var CalculationMethod = {
+  // Muslim World League
+  MuslimWorldLeague() {
+    const params = new CalculationParameters("MuslimWorldLeague", 18, 17);
+    params.methodAdjustments.dhuhr = 1;
+    return params;
+  },
+  // Egyptian General Authority of Survey
+  Egyptian() {
+    const params = new CalculationParameters("Egyptian", 19.5, 17.5);
+    params.methodAdjustments.dhuhr = 1;
+    return params;
+  },
+  // University of Islamic Sciences, Karachi
+  Karachi() {
+    const params = new CalculationParameters("Karachi", 18, 18);
+    params.methodAdjustments.dhuhr = 1;
+    return params;
+  },
+  // Umm al-Qura University, Makkah
+  UmmAlQura() {
+    return new CalculationParameters("UmmAlQura", 18.5, 0, 90);
+  },
+  // Dubai
+  Dubai() {
+    const params = new CalculationParameters("Dubai", 18.2, 18.2);
+    params.methodAdjustments = {
+      ...params.methodAdjustments,
+      sunrise: -3,
+      dhuhr: 3,
+      asr: 3,
+      maghrib: 3
+    };
+    return params;
+  },
+  // Moonsighting Committee
+  MoonsightingCommittee() {
+    const params = new CalculationParameters("MoonsightingCommittee", 18, 18);
+    params.methodAdjustments = {
+      ...params.methodAdjustments,
+      dhuhr: 5,
+      maghrib: 3
+    };
+    return params;
+  },
+  // ISNA
+  NorthAmerica() {
+    const params = new CalculationParameters("NorthAmerica", 15, 15);
+    params.methodAdjustments.dhuhr = 1;
+    return params;
+  },
+  // Kuwait
+  Kuwait() {
+    return new CalculationParameters("Kuwait", 18, 17.5);
+  },
+  // Qatar
+  Qatar() {
+    return new CalculationParameters("Qatar", 18, 0, 90);
+  },
+  // Singapore
+  Singapore() {
+    const params = new CalculationParameters("Singapore", 20, 18);
+    params.methodAdjustments.dhuhr = 1;
+    params.rounding = Rounding.Up;
+    return params;
+  },
+  // Institute of Geophysics, University of Tehran
+  Tehran() {
+    const params = new CalculationParameters("Tehran", 17.7, 14, 0, 4.5);
+    return params;
+  },
+  // Dianet
+  Turkey() {
+    const params = new CalculationParameters("Turkey", 18, 17);
+    params.methodAdjustments = {
+      ...params.methodAdjustments,
+      sunrise: -7,
+      dhuhr: 5,
+      asr: 4,
+      maghrib: 7
+    };
+    return params;
+  },
+  // Other
+  Other() {
+    return new CalculationParameters("Other", 0, 0);
+  }
+};
+var CalculationMethod_default = CalculationMethod;
+
+// node_modules/adhan/lib/esm/Prayer.js
+var Prayer = {
+  Fajr: "fajr",
+  Sunrise: "sunrise",
+  Dhuhr: "dhuhr",
+  Asr: "asr",
+  Maghrib: "maghrib",
+  Isha: "isha",
+  None: "none"
+};
+var Prayer_default = Prayer;
+
+// node_modules/adhan/lib/esm/TimeComponents.js
+var TimeComponents = class {
+  constructor(num) {
+    this.hours = Math.floor(num);
+    this.minutes = Math.floor((num - this.hours) * 60);
+    this.seconds = Math.floor((num - (this.hours + this.minutes / 60)) * 60 * 60);
+    return this;
+  }
+  utcDate(year, month, date) {
+    return new Date(Date.UTC(year, month, date, this.hours, this.minutes, this.seconds));
+  }
+};
+
+// node_modules/adhan/lib/esm/PrayerTimes.js
+var HIGH_LATITUDE_THRESHOLD = 55;
+var PrayerTimes = class {
+  constructor(coordinates, date, calculationParameters) {
+    this.coordinates = coordinates;
+    this.date = date;
+    this.calculationParameters = calculationParameters;
+    let solarTime = new SolarTime(date, coordinates);
+    let fajrTime;
+    let sunriseTime;
+    let dhuhrTime;
+    let asrTime;
+    let sunsetTime;
+    let maghribTime;
+    let ishaTime;
+    let nightFraction;
+    dhuhrTime = new TimeComponents(solarTime.transit).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+    sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+    sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+    const tomorrow = dateByAddingDays(date, 1);
+    let tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
+    const polarCircleResolver = calculationParameters.polarCircleResolution;
+    if ((!isValidDate(sunriseTime) || !isValidDate(sunsetTime) || isNaN(tomorrowSolarTime.sunrise)) && polarCircleResolver !== PolarCircleResolution.Unresolved) {
+      const resolved = polarCircleResolvedValues(polarCircleResolver, date, coordinates);
+      solarTime = resolved.solarTime;
+      tomorrowSolarTime = resolved.tomorrowSolarTime;
+      const dateComponents = [date.getFullYear(), date.getMonth(), date.getDate()];
+      dhuhrTime = new TimeComponents(solarTime.transit).utcDate(...dateComponents);
+      sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(...dateComponents);
+      sunsetTime = new TimeComponents(solarTime.sunset).utcDate(...dateComponents);
+    }
+    asrTime = new TimeComponents(solarTime.afternoon(shadowLength(calculationParameters.madhab))).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+    const tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+    const night = (Number(tomorrowSunrise) - Number(sunsetTime)) / 1e3;
+    fajrTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+    if (calculationParameters.method === "MoonsightingCommittee" && coordinates.latitude >= HIGH_LATITUDE_THRESHOLD) {
+      nightFraction = night / 7;
+      fajrTime = dateByAddingSeconds(sunriseTime, -nightFraction);
+    }
+    const safeFajr = (function() {
+      if (calculationParameters.method === "MoonsightingCommittee") {
+        return Astronomical_default.seasonAdjustedMorningTwilight(coordinates.latitude, dayOfYear(date), date.getFullYear(), sunriseTime);
+      } else {
+        const portion = calculationParameters.nightPortions().fajr;
+        nightFraction = portion * night;
+        return dateByAddingSeconds(sunriseTime, -nightFraction);
+      }
+    })();
+    if (isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
+      fajrTime = safeFajr;
+    }
+    if (calculationParameters.ishaInterval > 0) {
+      ishaTime = dateByAddingMinutes(sunsetTime, calculationParameters.ishaInterval);
+    } else {
+      ishaTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+      if (calculationParameters.method === "MoonsightingCommittee" && coordinates.latitude >= HIGH_LATITUDE_THRESHOLD) {
+        nightFraction = night / 7;
+        ishaTime = dateByAddingSeconds(sunsetTime, nightFraction);
+      }
+      const safeIsha = (function() {
+        if (calculationParameters.method === "MoonsightingCommittee") {
+          return Astronomical_default.seasonAdjustedEveningTwilight(coordinates.latitude, dayOfYear(date), date.getFullYear(), sunsetTime, calculationParameters.shafaq);
+        } else {
+          const portion = calculationParameters.nightPortions().isha;
+          nightFraction = portion * night;
+          return dateByAddingSeconds(sunsetTime, nightFraction);
+        }
+      })();
+      if (isNaN(ishaTime.getTime()) || safeIsha < ishaTime) {
+        ishaTime = safeIsha;
+      }
+    }
+    maghribTime = sunsetTime;
+    if (calculationParameters.maghribAngle) {
+      const angleBasedMaghrib = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.maghribAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+      if (sunsetTime < angleBasedMaghrib && ishaTime > angleBasedMaghrib) {
+        maghribTime = angleBasedMaghrib;
+      }
+    }
+    const fajrAdjustment = (calculationParameters.adjustments.fajr || 0) + (calculationParameters.methodAdjustments.fajr || 0);
+    const sunriseAdjustment = (calculationParameters.adjustments.sunrise || 0) + (calculationParameters.methodAdjustments.sunrise || 0);
+    const dhuhrAdjustment = (calculationParameters.adjustments.dhuhr || 0) + (calculationParameters.methodAdjustments.dhuhr || 0);
+    const asrAdjustment = (calculationParameters.adjustments.asr || 0) + (calculationParameters.methodAdjustments.asr || 0);
+    const maghribAdjustment = (calculationParameters.adjustments.maghrib || 0) + (calculationParameters.methodAdjustments.maghrib || 0);
+    const ishaAdjustment = (calculationParameters.adjustments.isha || 0) + (calculationParameters.methodAdjustments.isha || 0);
+    this.fajr = roundedMinute(dateByAddingMinutes(fajrTime, fajrAdjustment), calculationParameters.rounding);
+    this.sunrise = roundedMinute(dateByAddingMinutes(sunriseTime, sunriseAdjustment), calculationParameters.rounding);
+    this.dhuhr = roundedMinute(dateByAddingMinutes(dhuhrTime, dhuhrAdjustment), calculationParameters.rounding);
+    this.asr = roundedMinute(dateByAddingMinutes(asrTime, asrAdjustment), calculationParameters.rounding);
+    this.sunset = roundedMinute(sunsetTime, calculationParameters.rounding);
+    this.maghrib = roundedMinute(dateByAddingMinutes(maghribTime, maghribAdjustment), calculationParameters.rounding);
+    this.isha = roundedMinute(dateByAddingMinutes(ishaTime, ishaAdjustment), calculationParameters.rounding);
+  }
+  timeForPrayer(prayer) {
+    if (prayer === Prayer_default.Fajr) {
+      return this.fajr;
+    } else if (prayer === Prayer_default.Sunrise) {
+      return this.sunrise;
+    } else if (prayer === Prayer_default.Dhuhr) {
+      return this.dhuhr;
+    } else if (prayer === Prayer_default.Asr) {
+      return this.asr;
+    } else if (prayer === Prayer_default.Maghrib) {
+      return this.maghrib;
+    } else if (prayer === Prayer_default.Isha) {
+      return this.isha;
+    } else {
+      return null;
+    }
+  }
+  currentPrayer(date = /* @__PURE__ */ new Date()) {
+    if (date >= this.isha) {
+      return Prayer_default.Isha;
+    } else if (date >= this.maghrib) {
+      return Prayer_default.Maghrib;
+    } else if (date >= this.asr) {
+      return Prayer_default.Asr;
+    } else if (date >= this.dhuhr) {
+      return Prayer_default.Dhuhr;
+    } else if (date >= this.sunrise) {
+      return Prayer_default.Sunrise;
+    } else if (date >= this.fajr) {
+      return Prayer_default.Fajr;
+    } else {
+      return Prayer_default.None;
+    }
+  }
+  nextPrayer(date = /* @__PURE__ */ new Date()) {
+    if (date >= this.isha) {
+      return Prayer_default.None;
+    } else if (date >= this.maghrib) {
+      return Prayer_default.Isha;
+    } else if (date >= this.asr) {
+      return Prayer_default.Maghrib;
+    } else if (date >= this.dhuhr) {
+      return Prayer_default.Asr;
+    } else if (date >= this.sunrise) {
+      return Prayer_default.Dhuhr;
+    } else if (date >= this.fajr) {
+      return Prayer_default.Sunrise;
+    } else {
+      return Prayer_default.Fajr;
+    }
+  }
+};
+
+// src/default-content.js
+var defaultContent = {
+  hero: {
+    image: "./public/images/masjid-interior-hero-clean.png",
+    imageAlt: "Islamic Center of Morrisville main prayer hall interior with carpet rows, qibla wall, and open worship space"
+  },
+  jummah: { dateLabel: "Schedule awaiting publication", shifts: [] },
+  calendar: { today: "" },
+  events: [],
+  news: [],
+  programs: [],
+  settings: {
+    donationUrl: "https://www.icmnc.org/donate/",
+    newsletterUrl: "https://lp.constantcontactpages.com/su/4AalmfK/ICMweekly",
+    contactEmail: "contact@icmnc.org",
+    address: "107 Quail Fields Ct, Morrisville, NC 27560",
+    facebook: "https://www.facebook.com/ICMMASJID/",
+    instagram: "https://www.instagram.com/icmmasjid/",
+    youtube: "https://www.youtube.com/@islamiccenterofmorrisville1071"
+  }
+};
+
+// src/content-utils.js
+var EVERGREEN_ANNOUNCEMENT_ID = "friday-announcements";
+var fridayAnnouncementPattern = /\bfriday announcements?\b/i;
+function normalizeNewsItems(items, fallbackItems = []) {
+  const source = Array.isArray(items) ? items : fallbackItems;
+  let evergreenAssigned = false;
+  return source.map((item) => {
+    const normalized = { ...item };
+    const isEvergreen = !evergreenAssigned && (normalized.id === EVERGREEN_ANNOUNCEMENT_ID || normalized.pinned === true || fridayAnnouncementPattern.test(String(normalized.title || "")));
+    if (isEvergreen) {
+      evergreenAssigned = true;
+      normalized.id = EVERGREEN_ANNOUNCEMENT_ID;
+      normalized.pinned = true;
+      if (!normalized.category) normalized.category = "Announcement";
+    }
+    return normalized;
+  });
+}
+function sortNewsEntries(entries, dateValue2) {
+  return [...entries].sort((first, second) => {
+    const pinnedDifference = Number(Boolean(second.item.pinned)) - Number(Boolean(first.item.pinned));
+    if (pinnedDifference) return pinnedDifference;
+    return dateValue2(second.item.date) - dateValue2(first.item.date);
+  });
+}
+function newsCategory(item) {
+  if (item.category) return item.category;
+  if (item.kind === "newsletter") return "Newsletter";
+  const text = `${item.title || ""} ${item.summary || ""}`.toLowerCase();
+  if (text.includes("ramadan") || text.includes("taraweeh")) return "Program";
+  if (text.includes("youth") || text.includes("camp")) return "Youth";
+  if (text.includes("eid")) return "Announcement";
+  if (text.includes("program") || text.includes("workshop") || text.includes("class")) return "Program";
+  if (text.includes("parking") || text.includes("arrival")) return "Notice";
+  return "Announcement";
+}
+
+// src/media.js
+var responsiveMedia = /* @__PURE__ */ new Map([
+  [
+    "/public/news/friday-announcements-june-12-2026.png",
+    {
+      width: 1920,
+      height: 1080,
+      src: "./public/news/responsive/friday-announcements-june-12-2026-20260806-960.webp",
+      srcset: "./public/news/responsive/friday-announcements-june-12-2026-20260806-320.webp 320w, ./public/news/responsive/friday-announcements-june-12-2026-20260806-960.webp 960w"
+    }
+  ],
+  [
+    "/public/news/womens-eid-2026.png",
+    {
+      width: 831,
+      height: 994,
+      src: "./public/news/responsive/womens-eid-2026-20260806-831.webp",
+      srcset: "./public/news/responsive/womens-eid-2026-20260806-320.webp 320w, ./public/news/responsive/womens-eid-2026-20260806-831.webp 831w"
+    }
+  ],
+  [
+    "/public/news/icm-live/henna-beginner-class.png",
+    {
+      width: 1545,
+      height: 1999,
+      src: "./public/news/responsive/henna-beginner-class-20260806-960.webp",
+      srcset: "./public/news/responsive/henna-beginner-class-20260806-320.webp 320w, ./public/news/responsive/henna-beginner-class-20260806-960.webp 960w"
+    }
+  ],
+  [
+    "/public/news/icm-live/friday-bukhari-circle.jpeg",
+    {
+      width: 1024,
+      height: 1536,
+      src: "./public/news/responsive/friday-bukhari-circle-20260806-960.webp",
+      srcset: "./public/news/responsive/friday-bukhari-circle-20260806-320.webp 320w, ./public/news/responsive/friday-bukhari-circle-20260806-960.webp 960w"
+    }
+  ],
+  [
+    "/public/news/icm-live/summer-quran-islamic-studies.png",
+    {
+      width: 1545,
+      height: 1999,
+      src: "./public/news/responsive/summer-quran-islamic-studies-20260806-960.webp",
+      srcset: "./public/news/responsive/summer-quran-islamic-studies-20260806-320.webp 320w, ./public/news/responsive/summer-quran-islamic-studies-20260806-960.webp 960w"
+    }
+  ],
+  [
+    "/public/news/icm-live/sisters-zumba-fitness.png",
+    {
+      width: 1545,
+      height: 1999,
+      src: "./public/news/responsive/sisters-zumba-fitness-20260806-960.webp",
+      srcset: "./public/news/responsive/sisters-zumba-fitness-20260806-320.webp 320w, ./public/news/responsive/sisters-zumba-fitness-20260806-960.webp 960w"
+    }
+  ],
+  [
+    "/public/news/icm-live/friday-announcements-june-19-2026.png",
+    {
+      width: 1920,
+      height: 1080,
+      src: "./public/news/responsive/friday-announcements-june-19-2026-20260806-960.webp",
+      srcset: "./public/news/responsive/friday-announcements-june-19-2026-20260806-320.webp 320w, ./public/news/responsive/friday-announcements-june-19-2026-20260806-960.webp 960w"
+    }
+  ],
+  [
+    "/public/news/icm-live/volunteer-icm-youth.jpeg",
+    {
+      width: 1080,
+      height: 1350,
+      src: "./public/news/responsive/volunteer-icm-youth-20260806-960.webp",
+      srcset: "./public/news/responsive/volunteer-icm-youth-20260806-320.webp 320w, ./public/news/responsive/volunteer-icm-youth-20260806-960.webp 960w"
+    }
+  ]
+]);
+function mediaPath(source) {
+  try {
+    return new URL(String(source || ""), "https://icm.local").pathname;
+  } catch {
+    return "";
+  }
+}
+function getResponsiveMedia(source) {
+  const original = String(source || "");
+  const optimized = responsiveMedia.get(mediaPath(original));
+  if (!optimized) return { src: original, srcset: "", width: 0, height: 0 };
+  return optimized;
+}
+
 // src/nav.js
 function initMobileNav() {
   const nav = document.querySelector(".top-nav");
   const button = document.querySelector(".menu-button");
   if (!nav || !button) return;
+  const panel = document.createElement("div");
+  panel.className = "menu-panel";
+  panel.id = "site-menu-panel";
+  panel.hidden = true;
+  panel.innerHTML = `
+    <section class="menu-panel-section menu-panel-primary is-expanded" data-menu-section>
+      <button class="menu-panel-section-toggle" type="button" aria-expanded="true" aria-controls="menu-main-pages">Main Pages</button>
+      <div class="menu-panel-section-content" id="menu-main-pages">
+        <div class="menu-panel-section-content-inner">
+          <a href="./donate.html">Donate</a>
+          <a href="./prayer-times.html">Monthly Prayer Schedule</a>
+          <a href="./calendar.html">Event Calendar</a>
+          <a href="./programs.html">Programs</a>
+          <a href="./news.html">News</a>
+          <a href="./about.html">About</a>
+        </div>
+      </div>
+    </section>
+    <section class="menu-panel-section" data-menu-section>
+      <button class="menu-panel-section-toggle" type="button" aria-expanded="false" aria-controls="menu-programs-services">Programs & Services</button>
+      <div class="menu-panel-section-content" id="menu-programs-services" hidden>
+        <div class="menu-panel-section-content-inner">
+          <a href="./programs.html#services">Services Overview</a>
+          <a href="./volunteer.html">Volunteer</a>
+          <a href="./food-pantry.html">Food Pantry</a>
+          <a href="./financial-aid.html">Financial Aid</a>
+        </div>
+      </div>
+    </section>
+    <section class="menu-panel-section" data-menu-section>
+      <button class="menu-panel-section-toggle" type="button" aria-expanded="false" aria-controls="menu-education">Education</button>
+      <div class="menu-panel-section-content" id="menu-education" hidden>
+        <div class="menu-panel-section-content-inner">
+          <a href="./al-mizaan-academy.html">Al Mizaan Academy</a>
+          <a href="./nibraas-institute.html">Nibraas Institute</a>
+          <a href="./al-falah-quran-school.html">Al-Falah Quran School</a>
+        </div>
+      </div>
+    </section>
+    <section class="menu-panel-section" data-menu-section>
+      <button class="menu-panel-section-toggle" type="button" aria-expanded="false" aria-controls="menu-community">Community</button>
+      <div class="menu-panel-section-content" id="menu-community" hidden>
+        <div class="menu-panel-section-content-inner">
+          <a href="./about.html#imam">Our Imam</a>
+          <a href="./about.html#contact">Contact Us</a>
+        </div>
+      </div>
+    </section>
+  `;
+  button.after(panel);
+  let closeTimer = null;
+  let menuOpen = false;
+  const disclosureTimers = /* @__PURE__ */ new WeakMap();
+  const prefersReducedMotion2 = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finishDisclosure = (section, expanded) => {
+    if (section.dataset.expanded === "true" !== expanded) return;
+    const content = section.querySelector(".menu-panel-section-content");
+    if (!content) return;
+    content.style.height = expanded ? "auto" : "0px";
+    if (!expanded) content.hidden = true;
+    disclosureTimers.delete(section);
+  };
+  const setDisclosureExpanded = (section, expanded, { animate = true } = {}) => {
+    const toggle = section.querySelector(".menu-panel-section-toggle");
+    const content = section.querySelector(".menu-panel-section-content");
+    if (!toggle || !content) return;
+    window.clearTimeout(disclosureTimers.get(section));
+    section.dataset.expanded = String(expanded);
+    toggle.setAttribute("aria-expanded", String(expanded));
+    if (!animate || prefersReducedMotion2()) {
+      section.setAttribute("data-instant-motion", "");
+      section.classList.toggle("is-expanded", expanded);
+      content.hidden = !expanded;
+      content.style.height = expanded ? "auto" : "0px";
+      requestAnimationFrame(() => section.removeAttribute("data-instant-motion"));
+      return;
+    }
+    content.hidden = false;
+    const currentHeight = content.getBoundingClientRect().height;
+    content.style.height = `${currentHeight}px`;
+    void content.offsetHeight;
+    section.classList.toggle("is-expanded", expanded);
+    content.style.height = expanded ? `${content.scrollHeight}px` : "0px";
+    disclosureTimers.set(
+      section,
+      window.setTimeout(() => finishDisclosure(section, expanded), 220)
+    );
+  };
+  panel.querySelectorAll("[data-menu-section]").forEach((section) => {
+    const expanded = section.classList.contains("is-expanded");
+    const content = section.querySelector(".menu-panel-section-content");
+    section.dataset.expanded = String(expanded);
+    if (content) {
+      content.hidden = !expanded;
+      content.style.height = expanded ? "auto" : "0px";
+      content.addEventListener("transitionend", (event) => {
+        if (event.target !== content || event.propertyName !== "height") return;
+        finishDisclosure(section, section.dataset.expanded === "true");
+      });
+    }
+    section.querySelector(".menu-panel-section-toggle")?.addEventListener("click", () => {
+      const nextExpanded = section.dataset.expanded !== "true";
+      setDisclosureExpanded(section, nextExpanded);
+    });
+  });
+  const finishClose = () => {
+    if (menuOpen) return;
+    nav.classList.remove("menu-open");
+    nav.classList.remove("menu-closing");
+    panel.classList.remove("is-closing");
+    panel.hidden = true;
+  };
+  panel.addEventListener("transitionend", (event) => {
+    if (event.target === panel && event.propertyName === "opacity") finishClose();
+  });
+  const closeMenu = ({ animate = true } = {}) => {
+    if (!menuOpen && panel.hidden) return;
+    menuOpen = false;
+    window.clearTimeout(closeTimer);
+    if (!animate || prefersReducedMotion2()) nav.setAttribute("data-instant-motion", "");
+    nav.classList.add("menu-closing");
+    panel.classList.remove("is-open");
+    panel.classList.add("is-closing");
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-label", "Open menu");
+    if (!animate || prefersReducedMotion2()) {
+      finishClose();
+      requestAnimationFrame(() => nav.removeAttribute("data-instant-motion"));
+      return;
+    }
+    closeTimer = window.setTimeout(finishClose, 260);
+  };
+  const setMenuOpen = (isOpen, { animate = true } = {}) => {
+    window.clearTimeout(closeTimer);
+    if (!isOpen) {
+      closeMenu({ animate });
+      return;
+    }
+    menuOpen = true;
+    if (!animate || prefersReducedMotion2()) nav.setAttribute("data-instant-motion", "");
+    panel.hidden = false;
+    nav.classList.remove("menu-closing");
+    panel.classList.remove("is-closing");
+    nav.classList.add("menu-open");
+    if (!animate || prefersReducedMotion2()) {
+      panel.classList.add("is-open");
+      requestAnimationFrame(() => nav.removeAttribute("data-instant-motion"));
+    } else {
+      requestAnimationFrame(() => {
+        if (menuOpen) panel.classList.add("is-open");
+      });
+    }
+    button.setAttribute("aria-expanded", "true");
+    button.setAttribute("aria-label", "Close menu");
+  };
+  button.setAttribute("aria-controls", panel.id);
   button.setAttribute("aria-expanded", "false");
-  button.addEventListener("click", () => {
-    const isOpen = nav.classList.toggle("menu-open");
-    button.setAttribute("aria-expanded", String(isOpen));
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
+    setMenuOpen(!menuOpen);
   });
   nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      nav.classList.remove("menu-open");
-      button.setAttribute("aria-expanded", "false");
-    });
+    link.addEventListener("click", () => closeMenu());
+  });
+  document.addEventListener("click", (event) => {
+    if (!menuOpen || nav.contains(event.target)) return;
+    closeMenu();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !menuOpen) return;
+    closeMenu();
+    button.focus({ preventScroll: true });
   });
 }
 
@@ -1397,10 +2567,10 @@ function dayOfWeek(year, month, day) {
   return js === 0 ? 7 : js;
 }
 function computeOrdinal(year, month, day) {
-  return day + (isLeapYear(year) ? leapLadder : nonLeapLadder)[month - 1];
+  return day + (isLeapYear2(year) ? leapLadder : nonLeapLadder)[month - 1];
 }
 function uncomputeOrdinal(year, ordinal) {
-  const table = isLeapYear(year) ? leapLadder : nonLeapLadder, month0 = table.findIndex((i) => i < ordinal), day = ordinal - table[month0];
+  const table = isLeapYear2(year) ? leapLadder : nonLeapLadder, month0 = table.findIndex((i) => i < ordinal), day = ordinal - table[month0];
   return { month: month0 + 1, day };
 }
 function isoWeekdayToLocal(isoWeekday, startOfWeek) {
@@ -1640,16 +2810,16 @@ function roundTo(number, digits, rounding = "round") {
       throw new RangeError(`Value rounding ${rounding} is out of range`);
   }
 }
-function isLeapYear(year) {
+function isLeapYear2(year) {
   return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 }
 function daysInYear(year) {
-  return isLeapYear(year) ? 366 : 365;
+  return isLeapYear2(year) ? 366 : 365;
 }
 function daysInMonth(year, month) {
   const modMonth = floorMod(month - 1, 12) + 1, modYear = year + (month - modMonth) / 12;
   if (modMonth === 2) {
-    return isLeapYear(modYear) ? 29 : 28;
+    return isLeapYear2(modYear) ? 29 : 28;
   } else {
     return [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][modMonth - 1];
   }
@@ -5536,7 +6706,7 @@ var DateTime = class _DateTime {
    * @type {boolean}
    */
   get isInLeapYear() {
-    return isLeapYear(this.year);
+    return isLeapYear2(this.year);
   }
   /**
    * Returns the number of days in this DateTime's month
@@ -6524,9 +7694,6 @@ function friendlyDateTime(dateTimeish) {
 
 // src/shared.js
 var zone = "America/New_York";
-var today = () => DateTime.now().setZone(zone).toISODate();
-var esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-var emptyContent = { hero: { image: "/public/images/masjid-hero.png", imageAlt: "" }, jummah: { dateLabel: "", shifts: [] }, news: [], events: [], programs: [], settings: {} };
 async function request(url, options = {}) {
   const res = await fetch(url, { cache: "no-store", ...options });
   const data = await res.json();
@@ -6546,15 +7713,6 @@ function saveCache(key, value) {
   } catch {
   }
 }
-async function loadContent() {
-  try {
-    const value = await request("/api/content");
-    saveCache("icm-connected-published", value);
-    return value.content;
-  } catch {
-    return readCache("icm-connected-published")?.content || structuredClone(emptyContent);
-  }
-}
 async function loadMonth(month) {
   const key = "icm-connected-prayers-" + month;
   try {
@@ -6567,40 +7725,18 @@ async function loadMonth(month) {
     throw e;
   }
 }
-function watchContent(render) {
-  let previous = "", busy = false;
-  async function update() {
-    if (busy) return;
-    busy = true;
-    try {
-      const content = await loadContent(), serialized = JSON.stringify(content);
-      if (serialized !== previous) {
-        previous = serialized;
-        render(content);
-      }
-    } finally {
-      busy = false;
-    }
-  }
-  update();
-  const timer = setInterval(() => {
-    if (!document.hidden) update();
-  }, 15e3);
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) update();
-  });
-  window.addEventListener("online", update);
-  return () => clearInterval(timer);
-}
 function prayerInstant(day, time) {
   return DateTime.fromFormat(day + " " + time, "yyyy-MM-dd h:mm a", { zone, locale: "en-US" }).toMillis();
 }
 function contentLinks(content) {
-  const s2 = content.settings;
-  document.querySelectorAll("[data-newsletter-link]").forEach((link) => link.href = s2.newsletterUrl);
-  document.querySelectorAll('a[href="https://www.icmnc.org/donate/"]').forEach((link) => link.setAttribute("data-donation-link", ""));
-  for (const link of document.querySelectorAll('a[href="https://www.icmnc.org/donate/"]')) link.href = s2.donationUrl || "https://www.icmnc.org/donate/";
-  document.querySelectorAll("[data-donation-link]").forEach((link) => link.href = s2.donationUrl);
+  const s2 = content.settings || {};
+  document.querySelectorAll("[data-newsletter-link]").forEach((link) => {
+    if (s2.newsletterUrl) link.href = s2.newsletterUrl;
+  });
+  document.querySelectorAll('a[href="https://www.icmnc.org/donate/"], a[href="./donate.html"], a[href="/donate.html"]').forEach((link) => link.setAttribute("data-donation-link", ""));
+  document.querySelectorAll("[data-donation-link]").forEach((link) => {
+    if (s2.donationUrl) link.href = s2.donationUrl;
+  });
   for (const link of document.querySelectorAll(".socials a")) {
     const name = link.getAttribute("aria-label")?.toLowerCase();
     if (name in s2) {
@@ -6609,55 +7745,136 @@ function contentLinks(content) {
     }
   }
 }
-function articleLink(item) {
-  return "/news.html#" + encodeURIComponent(item.id);
-}
-async function renderWebsitePrayers() {
-  const day = today();
-  let rows = [];
-  try {
-    const result = await loadMonth(day.slice(0, 7));
-    rows = result.rows;
-    const target = document.querySelector("[data-page-prayers]");
-    if (target) target.title = result.stale ? "Last saved official WordPress schedule" : "Official ICM WordPress schedule";
-  } catch {
-  }
-  const row = rows.find((r) => r.key === day), keys = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
-  keys.forEach((k) => document.querySelectorAll(`[data-prayer-time="${k}"]`).forEach((el) => el.textContent = row?.[k] || "\u2014"));
-  const table = document.querySelector("[data-page-prayers]");
-  if (table) table.innerHTML = row ? keys.map((k) => `<div class="schedule-row"><span>${k[0].toUpperCase() + k.slice(1)}</span><strong>${esc(row[k])}${k !== "sunrise" ? ` \xB7 Iqamah ${esc(row[k + "Iqamah"])}` : ""}</strong></div>`).join("") : "<p>The official prayer schedule is temporarily unavailable.</p>";
-  let next = rows.flatMap((r) => keys.filter((k) => k !== "sunrise").map((k) => ({ key: k, label: r[k], time: prayerInstant(r.key, r[k]) }))).find((r) => r.time > Date.now());
-  if (!next && row) {
-    try {
-      const tomorrow = DateTime.fromISO(day, { zone }).plus({ days: 1 }).toISODate();
-      const m = await loadMonth(tomorrow.slice(0, 7));
-      const r = m.rows.find((r2) => r2.key === tomorrow);
-      if (r) next = { key: "fajr", label: r.fajr, time: prayerInstant(r.key, r.fajr) };
-    } catch {
-    }
-  }
-  const set = (s2, v) => document.querySelectorAll(s2).forEach((el) => el.textContent = v);
-  set("[data-next-name]", next ? next.key[0].toUpperCase() + next.key.slice(1) : "Schedule unavailable");
-  set("[data-next-time]", next?.label || "\u2014");
-  document.querySelectorAll("[data-countdown]").forEach((el) => el.setAttribute("aria-label", next ? `Time remaining until ${next.key[0].toUpperCase() + next.key.slice(1)}` : "Prayer countdown unavailable"));
-  document.querySelectorAll("[data-prayer-tile]").forEach((el) => el.classList.toggle("active", el.dataset.prayerTile === next?.key));
-  clearInterval(renderWebsitePrayers.timer);
-  const tick = () => {
-    const seconds = next ? Math.max(0, Math.ceil((next.time - Date.now()) / 1e3)) : 0;
-    set("[data-countdown-hours]", String(Math.floor(seconds / 3600)).padStart(2, "0"));
-    set("[data-countdown-minutes]", String(Math.floor(seconds % 3600 / 60)).padStart(2, "0"));
-    set("[data-countdown-seconds]", String(seconds % 60).padStart(2, "0"));
-    if (next && seconds === 0) {
-      clearInterval(renderWebsitePrayers.timer);
-      renderWebsitePrayers();
-    }
-  };
-  tick();
-  renderWebsitePrayers.timer = setInterval(tick, 1e3);
-}
 
 // src/main.js
+var ICM_COORDS = new Coordinates(35.8111, -78.8231);
 var TIME_ZONE = "America/New_York";
+var prayerLabels = {
+  fajr: "Fajr",
+  sunrise: "Sunrise",
+  dhuhr: "Dhuhr",
+  asr: "Asr",
+  maghrib: "Maghrib",
+  isha: "Isha"
+};
+var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
+var HOME_EVENT_LIMIT = 6;
+var HOME_NEWS_LIMIT = 4;
+var topicIconRules = [
+  { icon: "leaf", words: ["gratitude", "shukr", "blessing", "thanks", "worship", "ibadah", "prayer", "salah", "daily", "green", "environment", "deen", "stewardship", "earth", "creation", "sustainability", "nature", "cleanliness", "purity"] },
+  { icon: "heart", words: ["love", "mercy", "rahma", "compassion", "kindness", "service", "sincerity", "ikhlas", "charity", "giving", "donation", "zakat", "sadaqah", "muhasaba", "self reflection", "forgiveness", "healing", "care"] },
+  { icon: "community", words: ["justice", "responsibility", "accountability", "community", "trust", "amanah", "unity", "neighbors", "ummah", "family", "parents", "children", "marriage", "brotherhood", "sisterhood", "society", "rights", "service"] },
+  { icon: "feather", words: ["patience", "sabr", "change", "hardship", "steadfast", "resilience", "forgiveness", "healing", "trials", "tests", "hope", "courage", "character", "akhlaq", "manners", "humility"] },
+  { icon: "moon", words: ["ramadan", "taraweeh", "quran", "taqwa", "faith", "iman", "spiritual", "eid", "dhul hijjah", "hajj", "umrah", "ghaflah", "heedlessness", "night", "dua", "dhikr", "akhirah", "jannah", "repentance", "tawbah"] },
+  { icon: "spark", words: ["reflection", "reminder", "youth", "knowledge", "learning", "ilm", "education", "wisdom", "seerah", "sunnah", "hadith", "ostentation", "riya", "intention", "niyyah", "growth", "leadership"] }
+];
+var countdownTimer = null;
+var selectedPrayerDate = /* @__PURE__ */ new Date();
+var selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
+var prayerDateTracksToday = true;
+var datePickerCloseTimers = /* @__PURE__ */ new WeakMap();
+var prayerActivationAnimations = /* @__PURE__ */ new WeakMap();
+var prayerActivationTimers = /* @__PURE__ */ new WeakMap();
+var reducedMotionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+var prayerClockOffset = null;
+var prayerRenderSequence = 0;
+function getIcmPrayerTimes(date) {
+  const params = CalculationMethod_default.Karachi();
+  params.madhab = Madhab.Hanafi;
+  params.rounding = Rounding.Up;
+  params.adjustments.sunrise = -1;
+  params.adjustments.dhuhr = -2;
+  return new PrayerTimes(ICM_COORDS, date, params);
+}
+function escapeHtml(value) {
+  return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+}
+function responsiveImageMarkup(source, alt, { className = "", sizes = "100vw" } = {}) {
+  const media = getResponsiveMedia(source);
+  const classAttribute = className ? ` class="${escapeHtml(className)}"` : "";
+  const srcsetAttribute = media.srcset ? ` srcset="${escapeHtml(media.srcset)}" sizes="${escapeHtml(sizes)}"` : "";
+  const dimensionAttributes = media.width && media.height ? ` width="${media.width}" height="${media.height}"` : "";
+  return `<img${classAttribute} src="${escapeHtml(media.src)}"${srcsetAttribute}${dimensionAttributes} alt="${escapeHtml(alt)}" loading="lazy" decoding="async" data-load-reveal data-load-state="pending">`;
+}
+function mergeContent(content) {
+  return {
+    ...defaultContent,
+    ...content,
+    hero: { ...defaultContent.hero, ...content?.hero || {} },
+    jummah: { ...defaultContent.jummah, ...content?.jummah || {} },
+    events: Array.isArray(content?.events) ? content.events : defaultContent.events,
+    news: normalizeNewsItems(content?.news, defaultContent.news),
+    programs: Array.isArray(content?.programs) ? content.programs : defaultContent.programs || [],
+    settings: { ...defaultContent.settings || {}, ...content?.settings || {} }
+  };
+}
+async function loadCmsContent() {
+  try {
+    const response = await fetch("/api/cms", { cache: "no-store" });
+    if (!response.ok) throw new Error("CMS API unavailable");
+    return mergeContent(await response.json());
+  } catch {
+    const local = localStorage.getItem("icm-cms-content");
+    if (local) {
+      try {
+        return mergeContent(JSON.parse(local));
+      } catch {
+        return defaultContent;
+      }
+    }
+    return defaultContent;
+  }
+}
+function zonedDateParts(date) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: TIME_ZONE,
+    year: "numeric",
+    month: "numeric",
+    day: "numeric"
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return {
+    year: Number(values.year),
+    month: Number(values.month),
+    day: Number(values.day)
+  };
+}
+function prayerDateFor(date, dayOffset = 0) {
+  const parts = zonedDateParts(date);
+  return new Date(parts.year, parts.month - 1, parts.day + dayOffset);
+}
+function getPrayerClockOffset() {
+  if (prayerClockOffset !== null) return prayerClockOffset;
+  prayerClockOffset = 0;
+  const params = new URLSearchParams(window.location.search);
+  const testTransition = params.get("testTransition")?.toLowerCase();
+  const testTime = params.get("testTime");
+  const testPrayer = params.get("testPrayer")?.toLowerCase();
+  const now2 = /* @__PURE__ */ new Date();
+  const transitionSeconds = Math.min(Math.max(Number(params.get("transitionSeconds")) || 10, 4), 60);
+  if (testTransition === "sunrise-dhuhr") {
+    const times = getIcmPrayerTimes(prayerDateFor(now2));
+    const simulated = new Date(times.dhuhr.getTime() - transitionSeconds * 1e3);
+    prayerClockOffset = simulated.getTime() - now2.getTime();
+    return prayerClockOffset;
+  }
+  if (/^\d{1,2}:\d{2}$/.test(testTime || "")) {
+    const [hours, minutes] = testTime.split(":").map(Number);
+    const simulated = new Date(now2);
+    simulated.setHours(hours, minutes, 0, 0);
+    prayerClockOffset = simulated.getTime() - now2.getTime();
+    return prayerClockOffset;
+  }
+  if (prayerOrder.includes(testPrayer)) {
+    const times = getIcmPrayerTimes(prayerDateFor(now2));
+    const simulated = new Date(times[testPrayer].getTime() + 60 * 1e3);
+    prayerClockOffset = simulated.getTime() - now2.getTime();
+  }
+  return prayerClockOffset;
+}
+function getPrayerNow() {
+  return new Date(Date.now() + getPrayerClockOffset());
+}
 function formatLongDate(dateString) {
   const date = /* @__PURE__ */ new Date(`${dateString}T12:00:00`);
   if (Number.isNaN(date.getTime())) return "";
@@ -6679,93 +7896,674 @@ function formatShortDate(dateString) {
     timeZone: TIME_ZONE
   }).format(date);
 }
-function getDateBadgeParts(dateString) {
+function dateValue(dateString, hour = 12, minute = 0) {
   const date = /* @__PURE__ */ new Date(`${dateString}T12:00:00`);
-  if (Number.isNaN(date.getTime())) return { month: "---", day: "--" };
-  const month = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: TIME_ZONE }).format(date);
-  const day = new Intl.DateTimeFormat("en-US", { day: "2-digit", timeZone: TIME_ZONE }).format(date);
-  return { month, day };
+  if (Number.isNaN(date.getTime())) return 0;
+  date.setHours(hour, minute, 0, 0);
+  return date.getTime();
+}
+function parseTimeParts(timeString) {
+  const match2 = String(timeString || "").trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?$/i);
+  if (!match2) return null;
+  let hour = Number(match2[1]);
+  const minute = Number(match2[2] || 0);
+  const meridiem = match2[3]?.toUpperCase();
+  if (meridiem === "PM" && hour < 12) hour += 12;
+  if (meridiem === "AM" && hour === 12) hour = 0;
+  return { hour, minute };
+}
+function eventStartValue(event) {
+  const time = parseTimeParts(event.time);
+  return dateValue(event.date, time?.hour ?? 0, time?.minute ?? 0) || Number.MAX_SAFE_INTEGER;
+}
+function eventEndValue(event) {
+  const endTime = parseTimeParts(event.endTime);
+  if (event.endDate || endTime) {
+    return dateValue(event.endDate || event.date, endTime?.hour ?? 23, endTime?.minute ?? 59) || Number.MAX_SAFE_INTEGER;
+  }
+  const time = parseTimeParts(event.time);
+  if (time) return dateValue(event.date, time.hour, time.minute) || Number.MAX_SAFE_INTEGER;
+  const endOfDay = /* @__PURE__ */ new Date(`${event.date}T12:00:00`);
+  if (Number.isNaN(endOfDay.getTime())) return Number.MAX_SAFE_INTEGER;
+  endOfDay.setDate(endOfDay.getDate() + 1);
+  endOfDay.setHours(0, 0, 0, 0);
+  return endOfDay.getTime();
+}
+function eventTitle(event) {
+  return String(event.title || "Community Event");
+}
+function eventSlug(event, index = 0) {
+  return slugify([eventTitle(event), event.date, event.time, index].filter(Boolean).join("-")) || `event-${index}`;
+}
+function eventPoster(event) {
+  return event.poster || event.image || "";
+}
+function eventPosterAlt(event) {
+  return event.posterAlt || event.imageAlt || `${eventTitle(event)} event poster`;
+}
+function newsTitle(item, index = 0) {
+  return String(item.title || item.imageAlt || `Announcement ${index + 1}`);
+}
+function newsSlug(item, index = 0) {
+  if (item.id) return slugify(item.id);
+  return slugify([newsTitle(item, index), item.date, index].filter(Boolean).join("-")) || `announcement-${index}`;
+}
+function getTopicIcon(topic) {
+  const normalized = topic.toLowerCase();
+  return topicIconRules.find((rule) => rule.words.some((word) => normalized.includes(word)))?.icon || "\u2726";
+}
+function topicIconSvg(topic) {
+  const icon = getTopicIcon(topic);
+  const icons = {
+    leaf: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c6.6 0 11-4.4 11-11V5h-3C6.4 5 3 8.4 3 15v4h2Z"/><path d="M5 19 16 8"/></svg>`,
+    heart: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 6.7a5 5 0 0 0-7.1 0L12 7.9l-1.2-1.2a5 5 0 1 0-7.1 7.1L12 22l8.3-8.2a5 5 0 0 0 0-7.1Z"/></svg>`,
+    community: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M16 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M3 20a5 5 0 0 1 10 0"/><path d="M11 20a5 5 0 0 1 10 0"/></svg>`,
+    feather: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4c-7 0-12 5-12 12v4h4c7 0 12-5 12-12V4h-4Z"/><path d="M8 20 20 8"/><path d="M11 17H7"/><path d="M14 14h-4"/></svg>`,
+    moon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5Z"/></svg>`,
+    spark: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 14.4 9.6 21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4L12 3Z"/></svg>`
+  };
+  return icons[icon] || icons.spark;
+}
+function slugify(value) {
+  return String(value ?? "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 function setText(selector, value) {
   const element = document.querySelector(selector);
   if (element) element.textContent = value;
 }
+function prefersReducedMotion() {
+  return reducedMotionPreference.matches;
+}
+function finishLoadingRegion(target) {
+  if (!target) return;
+  target.removeAttribute("aria-busy");
+  target.classList.remove("skeleton-region");
+  target.closest(".info-card")?.classList.remove("is-loading");
+  if (prefersReducedMotion() || document.hidden || typeof target.animate !== "function") return;
+  target.animate(
+    [{ opacity: 0.74 }, { opacity: 1 }],
+    { duration: 160, easing: "cubic-bezier(0.23, 1, 0.32, 1)" }
+  );
+}
+function setAnimatedText(selector, value) {
+  const element = document.querySelector(selector);
+  if (!element || element.textContent === value) return;
+  element.textContent = value;
+  element.classList.remove("is-changing");
+  void element.offsetWidth;
+  element.classList.add("is-changing");
+}
+function prayerTransitionDirection(previousKey, nextKey) {
+  if (previousKey === "isha" && nextKey === "fajr") return 1;
+  if (previousKey === "fajr" && nextKey === "isha") return -1;
+  return prayerOrder.indexOf(nextKey) >= prayerOrder.indexOf(previousKey) ? 1 : -1;
+}
+function animatePrayerActivation(tile, direction) {
+  prayerActivationAnimations.get(tile)?.forEach((animation) => animation.cancel());
+  window.clearTimeout(prayerActivationTimers.get(tile));
+  tile.classList.remove("is-activating");
+  if (document.hidden || typeof tile.animate !== "function") return;
+  const reducedMotion = prefersReducedMotion();
+  const animations = [
+    tile.animate(
+      reducedMotion ? [{ opacity: 0.7 }, { opacity: 1 }] : [
+        {
+          opacity: 0.72,
+          transform: `translateX(${direction * 12}px) translateY(1px) scale(0.97)`
+        },
+        { opacity: 1, transform: "translateX(0) translateY(-1px) scale(1)" }
+      ],
+      {
+        duration: reducedMotion ? 160 : 250,
+        easing: "cubic-bezier(0.23, 1, 0.32, 1)"
+      }
+    )
+  ];
+  const icon = tile.querySelector("img");
+  if (!reducedMotion && icon) {
+    animations.push(
+      icon.animate(
+        [
+          { opacity: 0.72, transform: `translateX(${direction * 10}px) scale(0.94)` },
+          { opacity: 1, transform: "translateX(0) scale(1)" }
+        ],
+        {
+          delay: 30,
+          duration: 200,
+          easing: "cubic-bezier(0.23, 1, 0.32, 1)"
+        }
+      )
+    );
+  }
+  prayerActivationAnimations.set(tile, animations);
+  let unfinishedAnimations = animations.length;
+  const forgetAnimations = () => {
+    unfinishedAnimations -= 1;
+    if (unfinishedAnimations === 0 && prayerActivationAnimations.get(tile) === animations) {
+      prayerActivationAnimations.delete(tile);
+    }
+  };
+  animations.forEach((animation) => {
+    animation.addEventListener("finish", forgetAnimations, { once: true });
+    animation.addEventListener("cancel", forgetAnimations, { once: true });
+  });
+  if (!reducedMotion) {
+    requestAnimationFrame(() => {
+      if (!tile.classList.contains("active")) return;
+      tile.classList.add("is-activating");
+      const timer = window.setTimeout(() => {
+        tile.classList.remove("is-activating");
+        prayerActivationTimers.delete(tile);
+      }, 250);
+      prayerActivationTimers.set(tile, timer);
+    });
+  }
+}
+function revealActivePrayerTile(carousel, tile, { smooth = false } = {}) {
+  requestAnimationFrame(() => {
+    if (!carousel.isConnected || !tile.isConnected || carousel.scrollWidth <= carousel.clientWidth) return;
+    const carouselRect = carousel.getBoundingClientRect();
+    const tileRect = tile.getBoundingClientRect();
+    const centeredLeft = carousel.scrollLeft + tileRect.left - carouselRect.left - (carouselRect.width - tileRect.width) / 2;
+    const maximumLeft = carousel.scrollWidth - carousel.clientWidth;
+    carousel.scrollTo({
+      left: Math.min(Math.max(centeredLeft, 0), maximumLeft),
+      behavior: smooth && !prefersReducedMotion() ? "smooth" : "auto"
+    });
+  });
+}
+function formatNavigatorDate(date) {
+  return date.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "long",
+    day: "numeric"
+  });
+}
+function dateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+function formatPickerMonth(date) {
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric"
+  });
+}
+function ensureDatePicker(navigator) {
+  let picker = navigator.querySelector("[data-prayer-date-picker]");
+  if (picker) return picker;
+  picker = document.createElement("div");
+  picker.className = "date-picker-popover";
+  picker.id = "prayer-date-picker";
+  picker.dataset.prayerDatePicker = "";
+  picker.setAttribute("role", "dialog");
+  picker.setAttribute("aria-label", "Choose prayer date");
+  picker.hidden = true;
+  navigator.append(picker);
+  const trigger = navigator.querySelector(".date-nav-main");
+  trigger?.setAttribute("aria-haspopup", "dialog");
+  trigger?.setAttribute("aria-controls", picker.id);
+  trigger?.setAttribute("aria-expanded", "false");
+  return picker;
+}
+function setDatePickerExpanded(picker, isExpanded) {
+  picker.closest(".date-navigator")?.querySelector(".date-nav-main")?.setAttribute("aria-expanded", String(isExpanded));
+}
+function showDatePicker(picker) {
+  window.clearTimeout(datePickerCloseTimers.get(picker));
+  picker.dataset.openIntent = "true";
+  picker.hidden = false;
+  picker.classList.remove("is-closing");
+  setDatePickerExpanded(picker, true);
+  requestAnimationFrame(() => {
+    if (picker.dataset.openIntent === "true") picker.classList.add("is-open");
+  });
+}
+function hideDatePicker(picker) {
+  if (picker.hidden) return;
+  window.clearTimeout(datePickerCloseTimers.get(picker));
+  picker.dataset.openIntent = "false";
+  picker.classList.remove("is-open");
+  picker.classList.add("is-closing");
+  setDatePickerExpanded(picker, false);
+  const timer = window.setTimeout(() => {
+    if (picker.dataset.openIntent !== "true") {
+      picker.hidden = true;
+      picker.classList.remove("is-closing");
+    }
+  }, 190);
+  datePickerCloseTimers.set(picker, timer);
+}
+function toggleDatePicker(picker) {
+  if (picker.dataset.openIntent !== "true") {
+    showDatePicker(picker);
+  } else {
+    hideDatePicker(picker);
+  }
+}
+function renderDatePicker(navigator) {
+  const picker = ensureDatePicker(navigator);
+  const monthStart = new Date(selectedDatePickerMonth.getFullYear(), selectedDatePickerMonth.getMonth(), 1);
+  const daysInMonth2 = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0).getDate();
+  const visibleDayCount = Math.ceil((monthStart.getDay() + daysInMonth2) / 7) * 7;
+  const firstGridDate = new Date(monthStart);
+  firstGridDate.setDate(firstGridDate.getDate() - firstGridDate.getDay());
+  const todayKey = dateKey(prayerDateFor(/* @__PURE__ */ new Date()));
+  const selectedKey = dateKey(prayerDateFor(selectedPrayerDate));
+  const weekdays2 = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  picker.innerHTML = `
+    <div class="date-picker-toolbar">
+      <button type="button" data-date-picker-month="prev" aria-label="Previous month">
+        <img src="/public/icons/chevron-left.svg" alt="" aria-hidden="true">
+      </button>
+      <strong>${escapeHtml(formatPickerMonth(monthStart))}</strong>
+      <button type="button" data-date-picker-month="next" aria-label="Next month">
+        <img src="/public/icons/chevron-right.svg" alt="" aria-hidden="true">
+      </button>
+    </div>
+    <div class="date-picker-weekdays">${weekdays2.map((day) => `<span>${day}</span>`).join("")}</div>
+    <div class="date-picker-grid">
+      ${Array.from({ length: visibleDayCount }, (_, index) => {
+    const date = new Date(firstGridDate);
+    date.setDate(firstGridDate.getDate() + index);
+    const key = dateKey(date);
+    return `
+          <button
+            type="button"
+            class="${date.getMonth() !== monthStart.getMonth() ? "is-muted" : ""}${key === todayKey ? " is-today" : ""}${key === selectedKey ? " is-selected" : ""}"
+            data-date-picker-day="${escapeHtml(key)}"
+            aria-label="${escapeHtml(formatNavigatorDate(date))}"
+            aria-pressed="${key === selectedKey}"
+            ${key === todayKey ? 'aria-current="date"' : ""}
+          >${date.getDate()}</button>
+        `;
+  }).join("")}
+    </div>
+    <div class="date-picker-actions">
+      <button type="button" data-date-picker-today>Today</button>
+    </div>
+  `;
+}
+function getNextJummahDate(fromDate = /* @__PURE__ */ new Date()) {
+  const current = prayerDateFor(fromDate);
+  const day = current.getDay();
+  const daysUntilFriday = (5 - day + 7) % 7;
+  current.setDate(current.getDate() + daysUntilFriday);
+  if (daysUntilFriday === 0) {
+    const maghrib = getIcmPrayerTimes(current).maghrib;
+    if (fromDate.getTime() >= maghrib.getTime()) {
+      current.setDate(current.getDate() + 7);
+    }
+  }
+  return current;
+}
+function formatJummahDate(date) {
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  }).toUpperCase();
+}
+function parseJummahDateLabel(label) {
+  if (!label) return null;
+  const parsed = /* @__PURE__ */ new Date(`${label} 12:00:00`);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return prayerDateFor(parsed);
+}
+function isSameDate(first, second) {
+  return first?.getFullYear() === second?.getFullYear() && first?.getMonth() === second?.getMonth() && first?.getDate() === second?.getDate();
+}
+function getJummahRowsForDate(content, targetDate) {
+  const shifts = Array.isArray(content.jummah.shifts) ? content.jummah.shifts : defaultContent.jummah.shifts;
+  const postedDate = parseJummahDateLabel(content.jummah.dateLabel || defaultContent.jummah.dateLabel);
+  if (isSameDate(postedDate, targetDate)) return shifts;
+  return shifts;
+}
+function textFitClass(value, thresholds) {
+  const length = String(value ?? "").trim().length;
+  if (length >= thresholds.tiny) return "fit-tiny";
+  if (length >= thresholds.smaller) return "fit-smaller";
+  if (length >= thresholds.small) return "fit-small";
+  return "fit-normal";
+}
+function renderDateNavigator() {
+  setText("[data-date-label]", formatNavigatorDate(selectedPrayerDate));
+  const navigator = document.querySelector(".date-navigator");
+  if (navigator) renderDatePicker(navigator);
+}
+function initDateNavigator() {
+  const navigator = document.querySelector(".date-navigator");
+  if (!navigator) return;
+  const mainButton = navigator.querySelector(".date-nav-main");
+  renderDatePicker(navigator);
+  let monthPointerHandled = false;
+  const handleNavigatorAction = (event) => {
+    const monthButton = event.target.closest("[data-date-picker-month]");
+    if (monthButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.type === "click" && monthPointerHandled) {
+        monthPointerHandled = false;
+        return;
+      }
+      if (event.type === "pointerdown") monthPointerHandled = true;
+      selectedDatePickerMonth = new Date(selectedDatePickerMonth);
+      selectedDatePickerMonth.setMonth(selectedDatePickerMonth.getMonth() + (monthButton.dataset.datePickerMonth === "next" ? 1 : -1));
+      renderDatePicker(navigator);
+      showDatePicker(ensureDatePicker(navigator));
+      return;
+    }
+    const dayButton = event.target.closest("[data-date-picker-day]");
+    if (dayButton) {
+      event.stopPropagation();
+      selectedPrayerDate = prayerDateFor(/* @__PURE__ */ new Date(`${dayButton.dataset.datePickerDay}T12:00:00`));
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
+      prayerDateTracksToday = isSameDate(selectedPrayerDate, prayerDateFor(/* @__PURE__ */ new Date()));
+      hideDatePicker(ensureDatePicker(navigator));
+      mainButton?.focus({ preventScroll: true });
+      renderDateNavigator();
+      renderPrayerTimes();
+      return;
+    }
+    if (event.target.closest("[data-date-picker-today]")) {
+      event.stopPropagation();
+      selectedPrayerDate = /* @__PURE__ */ new Date();
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
+      prayerDateTracksToday = true;
+      hideDatePicker(ensureDatePicker(navigator));
+      mainButton?.focus({ preventScroll: true });
+      renderDateNavigator();
+      renderPrayerTimes();
+      return;
+    }
+    if (event.target.closest(".date-nav-main")) {
+      const picker = ensureDatePicker(navigator);
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
+      renderDatePicker(navigator);
+      toggleDatePicker(picker);
+      return;
+    }
+    const button = event.target.closest("[data-date-nav]");
+    if (!button) return;
+    if (button.dataset.dateNav === "today") {
+      selectedPrayerDate = /* @__PURE__ */ new Date();
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
+      prayerDateTracksToday = true;
+    } else {
+      const offset2 = button.dataset.dateNav === "prev" ? -1 : 1;
+      selectedPrayerDate = new Date(selectedPrayerDate);
+      selectedPrayerDate.setDate(selectedPrayerDate.getDate() + offset2);
+      selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
+      prayerDateTracksToday = false;
+    }
+    hideDatePicker(ensureDatePicker(navigator));
+    renderDateNavigator();
+    renderPrayerTimes();
+  };
+  navigator.addEventListener("pointerdown", (event) => {
+    if (!event.target.closest("[data-date-picker-month]")) return;
+    handleNavigatorAction(event);
+  });
+  navigator.addEventListener("click", handleNavigatorAction);
+  document.addEventListener("click", (event) => {
+    if (navigator.contains(event.target) || mainButton?.contains(event.target)) return;
+    hideDatePicker(ensureDatePicker(navigator));
+  });
+  navigator.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const picker = ensureDatePicker(navigator);
+    if (picker.hidden) return;
+    event.preventDefault();
+    hideDatePicker(picker);
+    mainButton?.focus({ preventScroll: true });
+  });
+  renderDateNavigator();
+}
 function renderHero(content) {
   const image = document.querySelector("[data-hero-image]");
   if (!image) return;
-  image.src = content.hero.image || emptyContent.hero.image;
+  const source = document.querySelector("[data-hero-source]");
+  const heroImage = content.hero.image || defaultContent.hero.image;
+  const usesDefaultHero = /\/masjid-interior-hero-clean\.png(?:[?#].*)?$/.test(heroImage);
+  if (source) {
+    if (usesDefaultHero) {
+      source.srcset = "./public/images/responsive/masjid-interior-hero-20260806-640.webp 640w, ./public/images/responsive/masjid-interior-hero-20260806-960.webp 960w, ./public/images/responsive/masjid-interior-hero-20260806-1536.webp 1536w";
+      source.sizes = "(max-width: 820px) 100vw, 62vw";
+    } else {
+      source.removeAttribute("srcset");
+      source.removeAttribute("sizes");
+    }
+  }
+  image.src = heroImage;
   image.alt = content.hero.imageAlt || "";
 }
+async function renderPrayerTimes() {
+  const sequence = ++prayerRenderSequence;
+  const now2 = getPrayerNow();
+  if (prayerDateTracksToday) {
+    selectedPrayerDate = now2;
+    renderDateNavigator();
+  }
+  const selectedDate = prayerDateFor(selectedPrayerDate);
+  const selectedKey = dateKey(selectedDate);
+  let selectedRow;
+  let currentRows = [];
+  try {
+    const selectedSchedule = await loadMonth(selectedKey.slice(0, 7));
+    selectedRow = selectedSchedule.rows.find((row) => row.key === selectedKey);
+    const currentKey2 = dateKey(prayerDateFor(now2));
+    currentRows = selectedKey.slice(0, 7) === currentKey2.slice(0, 7) ? selectedSchedule.rows : (await loadMonth(currentKey2.slice(0, 7))).rows;
+  } catch {
+    selectedRow = null;
+  }
+  if (sequence !== prayerRenderSequence) return;
+  for (const key of prayerOrder) {
+    setText(`[data-prayer-time="${key}"]`, selectedRow?.[key] || "\u2014");
+  }
+  const currentKey = dateKey(prayerDateFor(now2));
+  const todayRow = currentRows.find((row) => row.key === currentKey);
+  const candidates = todayRow ? prayerOrder.map((key) => ({ key, label: todayRow[key], time: prayerInstant(currentKey, todayRow[key]) })) : [];
+  let current = [...candidates].reverse().find((entry) => entry.time <= Date.now());
+  let next = candidates.find((entry) => entry.time > Date.now());
+  if (!next && todayRow) {
+    const tomorrowDate = prayerDateFor(now2, 1);
+    const tomorrowKey = dateKey(tomorrowDate);
+    try {
+      const tomorrowRows = tomorrowKey.slice(0, 7) === currentKey.slice(0, 7) ? currentRows : (await loadMonth(tomorrowKey.slice(0, 7))).rows;
+      const tomorrow = tomorrowRows.find((row) => row.key === tomorrowKey);
+      if (tomorrow) next = { key: "fajr", label: tomorrow.fajr, time: prayerInstant(tomorrowKey, tomorrow.fajr) };
+    } catch {
+    }
+  }
+  if (sequence !== prayerRenderSequence) return;
+  if (!current && candidates.length) current = { ...candidates[candidates.length - 1], key: "isha" };
+  const currentLabel = current ? prayerLabels[current.key] : "Schedule unavailable";
+  const nextLabel = next ? prayerLabels[next.key] : "Next prayer";
+  setText(".next-label span", current?.key === "sunrise" ? "Current Period" : "Current Prayer");
+  setText("[data-next-name]", currentLabel);
+  setText("[data-next-time]", current?.label || "\u2014");
+  setText("[data-countdown-target]", nextLabel);
+  const countdown = document.querySelector("[data-countdown]");
+  if (countdown) countdown.setAttribute("aria-label", next ? `Time remaining until ${nextLabel}` : "Prayer countdown unavailable");
+  const prayerCarousel = document.querySelector(".prayer-carousel");
+  const previousPrayerKey = prayerCarousel?.querySelector("[data-prayer-tile].active")?.getAttribute("data-prayer-tile");
+  let activePrayerTile = null;
+  document.querySelectorAll("[data-prayer-tile]").forEach((tile) => {
+    const isCurrent = tile.dataset.prayerTile === current?.key;
+    tile.classList.toggle("active", isCurrent);
+    if (isCurrent) {
+      activePrayerTile = tile;
+      tile.setAttribute("aria-current", "time");
+    } else tile.removeAttribute("aria-current");
+  });
+  if (prayerCarousel?.hasAttribute("data-prayer-ready") && previousPrayerKey && previousPrayerKey !== current?.key && activePrayerTile) {
+    animatePrayerActivation(
+      activePrayerTile,
+      prayerTransitionDirection(previousPrayerKey, current.key)
+    );
+    revealActivePrayerTile(prayerCarousel, activePrayerTile, { smooth: true });
+  }
+  if (prayerCarousel && !prayerCarousel.hasAttribute("data-prayer-ready")) {
+    requestAnimationFrame(() => {
+      prayerCarousel.setAttribute("data-prayer-ready", "");
+      if (activePrayerTile) revealActivePrayerTile(prayerCarousel, activePrayerTile);
+    });
+  }
+  if (countdownTimer) window.clearInterval(countdownTimer);
+  const tick = () => {
+    const remaining = next ? Math.max(0, Math.ceil((next.time - Date.now()) / 1e3)) : 0;
+    setAnimatedText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
+    setAnimatedText("[data-countdown-minutes]", String(Math.floor(remaining % 3600 / 60)).padStart(2, "0"));
+    setAnimatedText("[data-countdown-seconds]", String(remaining % 60).padStart(2, "0"));
+    if (next && remaining <= 0) renderPrayerTimes();
+  };
+  tick();
+  countdownTimer = window.setInterval(tick, 1e3);
+}
 function renderJummah(content) {
-  const label = content.jummah.dateLabel || emptyContent.jummah.dateLabel;
-  setText("[data-jummah-date]", `- ${label.toUpperCase()}`);
+  const targetDate = getNextJummahDate();
+  const postedDate = parseJummahDateLabel(content.jummah.dateLabel || defaultContent.jummah.dateLabel);
+  setText("[data-jummah-date]", formatJummahDate(postedDate || targetDate));
   const tbody = document.querySelector("[data-jummah-body]");
   if (!tbody) return;
-  const shifts = content.jummah.shifts;
+  const shifts = getJummahRowsForDate(content, targetDate);
+  if (!shifts.length) {
+    tbody.innerHTML = '<tr><td colspan="4"><p class="content-empty">The Jumu\u2019ah schedule is awaiting publication.</p></td></tr>';
+    finishLoadingRegion(tbody);
+    return;
+  }
   tbody.innerHTML = shifts.map(
-    (shift) => `
+    (shift) => {
+      const speakerFit = textFitClass(shift.speaker, { small: 28, smaller: 42, tiny: 50 });
+      const topicFit = textFitClass(shift.topic, { small: 42, smaller: 68, tiny: 92 });
+      const isTbdTopic = shift.topic.trim().toLowerCase() === "tbd";
+      const topicIcon = isTbdTopic ? "" : `<span class="topic-icon">${topicIconSvg(shift.topic)}</span>`;
+      return `
         <tr>
-          <td><span class="shift">${esc(shift.shift)}</span></td>
-          <td class="time">${esc(shift.time)}</td>
-          <td>${esc(shift.speaker)}</td>
-          <td>${esc(shift.topic)}</td>
+          <td><span class="shift">${escapeHtml(shift.shift)}</span></td>
+          <td class="time">${escapeHtml(shift.time)}</td>
+          <td><span class="speaker-name ${speakerFit}">${escapeHtml(shift.speaker)}</span></td>
+          <td><span class="topic-chip ${topicFit}${isTbdTopic ? " is-tbd" : ""}">${topicIcon}<span class="topic-text">${escapeHtml(shift.topic)}</span></span></td>
         </tr>
-      `
+      `;
+    }
   ).join("");
+  finishLoadingRegion(tbody);
 }
 function renderEvents(content) {
   const list = document.querySelector("[data-events-list]");
   if (!list) return;
-  const events = content.events.filter((e) => e.date >= (/* @__PURE__ */ new Date()).toLocaleDateString("en-CA", { timeZone: TIME_ZONE }));
+  const now2 = Date.now();
+  const sourceEvents = (Array.isArray(content.events) ? content.events : defaultContent.events).map((event, originalIndex) => ({ event, originalIndex }));
+  const upcomingEvents = sourceEvents.filter(({ event }) => eventEndValue(event) > now2).sort((first, second) => eventStartValue(first.event) - eventStartValue(second.event));
+  const pastEvents = sourceEvents.filter(({ event }) => eventEndValue(event) <= now2).sort((first, second) => eventEndValue(second.event) - eventEndValue(first.event));
+  const events = [...upcomingEvents, ...pastEvents].slice(0, HOME_EVENT_LIMIT);
   if (!events.length) {
     list.innerHTML = '<p class="content-empty">No upcoming events have been published yet.</p>';
+    finishLoadingRegion(list);
     return;
   }
-  list.innerHTML = events.map((event) => {
-    const badge = getDateBadgeParts(event.date);
-    const dateLabel = formatLongDate(event.date);
+  const firstPastDisplayIndex = events.findIndex(({ event }) => eventEndValue(event) <= now2);
+  list.classList.toggle("has-past-divider-in-preview", firstPastDisplayIndex >= 0 && firstPastDisplayIndex < 3);
+  list.innerHTML = events.map(({ event, originalIndex }, displayIndex) => {
+    const eventDate = formatLongDate(event.date);
+    const isPast = eventEndValue(event) <= now2;
+    const poster = eventPoster(event);
+    const pastDivider = displayIndex === firstPastDisplayIndex ? `<div class="event-group-divider" data-group="past">Recently Passed</div>` : "";
     return `
-        <div class="event-item">
-          <div class="date-badge"><span>${esc(badge.month)}</span><strong>${esc(badge.day)}</strong></div>
-          <div>
-            <h3>${esc(event.title)}</h3>
-            <p>${esc(dateLabel)} &bull; ${esc(event.time)}<br>${esc(event.location)}</p>
+        ${pastDivider}
+        <a class="event-item${isPast ? " is-past" : ""}${displayIndex > 2 ? " is-scroll-extra" : ""}" href="./calendar.html#event-${escapeHtml(eventSlug(event, originalIndex))}">
+          ${poster ? responsiveImageMarkup(poster, eventPosterAlt(event), { className: "event-thumb", sizes: "110px" }) : ""}
+          <div class="event-item-body">
+            <h3>${escapeHtml(eventTitle(event))}</h3>
+            ${eventDate || event.time || event.location ? `<p>${eventDate ? `<span class="event-date-line">${escapeHtml(eventDate)}</span>` : ""}${event.time ? `<span class="event-time-line">${escapeHtml(event.time)}</span>` : ""}${event.location ? `<span class="event-location">${escapeHtml(event.location)}</span>` : ""}</p>` : ""}
           </div>
-        </div>
+        </a>
       `;
   }).join("");
+  finishLoadingRegion(list);
+  markCardImageShapes(list, ".event-item", ".event-thumb");
 }
 function renderNews(content) {
   const list = document.querySelector("[data-news-list]");
   if (!list) return;
-  const news = content.news;
+  const news = sortNewsEntries(
+    normalizeNewsItems(content.news, defaultContent.news).map((item, originalIndex) => ({ item, originalIndex })),
+    dateValue
+  ).slice(0, HOME_NEWS_LIMIT);
   if (!news.length) {
     list.innerHTML = '<p class="content-empty">No news or newsletters have been published yet.</p>';
+    finishLoadingRegion(list);
     return;
   }
   list.innerHTML = news.map(
-    (item) => `
-        <article class="news-item${item.image ? "" : " no-image"}">
-          ${item.image ? `<img src="${esc(item.image)}" alt="${esc(item.imageAlt || item.title)}">` : ""}
-          <div>
-            <h3><a href="${articleLink(item)}" style="color:inherit;text-decoration:none">${esc(item.title)}</a></h3>
-            <p>${esc(item.summary)}</p>
+    ({ item, originalIndex }) => `
+        <a class="news-item${newsTitle(item, originalIndex).length <= 42 ? " news-item--short-title" : ""}" href="./news.html#news-${escapeHtml(newsSlug(item, originalIndex))}">
+          ${item.image ? responsiveImageMarkup(item.image, item.imageAlt || newsTitle(item, originalIndex), { sizes: "120px" }) : ""}
+          <span class="news-category">${escapeHtml(newsCategory(item))}</span>
+          <div class="news-item-body">
+            ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
+            ${item.title ? `<h3>${escapeHtml(item.title)}</h3>` : ""}
+            ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
           </div>
-          <time datetime="${esc(item.date)}">${esc(formatShortDate(item.date))}</time>
-        </article>
+        </a>
       `
   ).join("");
+  finishLoadingRegion(list);
+  markCardImageShapes(list, ".news-item", "img");
 }
-function boot() {
+function markCardImageShapes(root, cardSelector, imageSelector) {
+  root.querySelectorAll(imageSelector).forEach((image) => {
+    const revealImage = (state = "loaded") => {
+      image.dataset.loadState = state;
+    };
+    const applyShape = () => {
+      const card = image.closest(cardSelector);
+      if (!card || !image.naturalWidth || !image.naturalHeight) return;
+      const isPortrait = image.naturalHeight / image.naturalWidth > 1.08;
+      card.classList.toggle("is-portrait-media", isPortrait);
+      card.classList.toggle("is-wide-media", !isPortrait);
+    };
+    const onSettled = () => {
+      revealImage();
+      applyShape();
+    };
+    if (image.complete) {
+      queueMicrotask(() => {
+        if (image.naturalWidth) onSettled();
+        else revealImage("error");
+      });
+    } else {
+      image.addEventListener("load", onSettled, { once: true });
+      image.addEventListener("error", () => revealImage("error"), { once: true });
+    }
+  });
+}
+async function boot() {
   initMobileNav();
-  watchContent((content) => {
+  initDateNavigator();
+  renderPrayerTimes();
+  const refresh = async () => {
+    const content = await loadCmsContent();
     renderHero(content);
     renderJummah(content);
     renderEvents(content);
     renderNews(content);
     contentLinks(content);
+  };
+  await refresh();
+  window.setInterval(() => {
+    if (!document.hidden) refresh();
+  }, 15e3);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) refresh();
   });
-  renderWebsitePrayers();
-  setInterval(renderWebsitePrayers, 6e4);
+  window.addEventListener("online", refresh);
 }
 boot();
+export {
+  getIcmPrayerTimes
+};

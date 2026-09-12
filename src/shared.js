@@ -27,11 +27,10 @@ export function watchContent(render) {
 }
 export function prayerInstant(day,time) {return DateTime.fromFormat(day+' '+time,'yyyy-MM-dd h:mm a',{zone,locale:'en-US'}).toMillis();}
 export function contentLinks(content) {
-  const s=content.settings;
-  document.querySelectorAll('[data-newsletter-link]').forEach(link=>link.href=s.newsletterUrl);
-  document.querySelectorAll('a[href="https://www.icmnc.org/donate/"]').forEach(link=>link.setAttribute('data-donation-link',''));
-  for(const link of document.querySelectorAll('a[href="https://www.icmnc.org/donate/"]'))link.href=s.donationUrl||'https://www.icmnc.org/donate/';
-  document.querySelectorAll('[data-donation-link]').forEach(link=>link.href=s.donationUrl);
+  const s=content.settings||{};
+  document.querySelectorAll('[data-newsletter-link]').forEach(link=>{if(s.newsletterUrl)link.href=s.newsletterUrl;});
+  document.querySelectorAll('a[href="https://www.icmnc.org/donate/"], a[href="./donate.html"], a[href="/donate.html"]').forEach(link=>link.setAttribute('data-donation-link',''));
+  document.querySelectorAll('[data-donation-link]').forEach(link=>{if(s.donationUrl)link.href=s.donationUrl;});
   for(const link of document.querySelectorAll('.socials a')){const name=link.getAttribute('aria-label')?.toLowerCase();if(name in s){if(s[name])link.href=s[name];else link.removeAttribute('href');}}
 }
 export function articleLink(item){return '/news.html#'+encodeURIComponent(item.id);}

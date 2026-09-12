@@ -40,6 +40,20 @@ test('verified original mobile prototype keeps valid scripts and shared API hook
  assert.match(html,/id="newsletterSubscribe"/);assert.match(html,/plainBodyText/);assert.match(html,/id="qiblaManualHeading"/);assert.match(html,/reading\?\.status === "starting" \|\| reading\?\.status === "live"/);assert.doesNotMatch(html,/item\.image \|\| "assets\/news\/ramadan\.png"/);assert.match(fallback,/newsletterUrl: "https:\/\/lp\.constantcontactpages\.com\/su\/4AalmfK\/ICMweekly"/);assert.match(fallback,/news: \[\]/);assert.match(fallback,/shifts: \[\]/);
  assert.match(fallbackTimetable,/Rabī al-Awwal/);assert.doesNotMatch(fallbackTimetable,/RabÄ/);
 });
+test('connected website uses the latest organization frontend and shared data routes',()=>{
+ const home=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+ const news=readFileSync(new URL('../news.html',import.meta.url),'utf8');
+ const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
+ const pages=readFileSync(new URL('../src/pages.js',import.meta.url),'utf8');
+ const site=readFileSync(new URL('../src/site.js',import.meta.url),'utf8');
+ assert.match(home,/masjid-interior-hero-clean\.png/);
+ assert.match(home,/styles\.css\?v=20260807-isha-gap-v102/);
+ assert.match(news,/data-newsletter-link/);
+ assert.match(main,/loadMonth\(selectedKey\.slice/);
+ assert.match(pages,/loadMonth\(key\.slice/);
+ assert.match(site,/fetch\(`\/api\/prayers\?month=/);
+ assert.doesNotMatch(main,/content\.events\?\.length \? content\.events : defaultContent\.events/);
+});
 test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, and private files',async(t)=>{
  const app=createApp({dbPath:':memory:',fetcher:async()=>new Response(fixture())});
  app.store.addUser('review-admin','test-password-for-integration');
@@ -80,7 +94,8 @@ test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, a
  assert.equal((await call('/api/prayers?month=bad-month')).status,400);
  assert.equal((await call('/api/admin/content',{method:'PUT',headers:{...headers,origin:'https://evil.example'},body:JSON.stringify(payload)})).status,403);
  for(const p of ['/server.js','/data/cms.json','/.git/config','/runtime/icm.sqlite','/package.json'])assert.equal((await call(p)).status,404,p);
- for(const p of ['/','/admin','/calendar.html'])assert.equal((await call(p)).status,200,p);
+ for(const p of ['/','/admin','/calendar.html','/prayer-times.html','/financial-aid.html','/food-pantry.html','/volunteer.html','/al-falah-quran-school.html','/al-mizaan-academy.html','/nibraas-institute.html','/social-welfare-services.html','/public/programs/al-falah-quran-school.png','/public/docs/monthly-prayer-time-icm.pdf'])assert.equal((await call(p)).status,200,p);
+ const donation=await call('/donate.html',{redirect:'manual'});assert.equal(donation.status,302);assert.equal(donation.headers.get('location'),'https://www.icmnc.org/donate/');
  assert.equal((await call('/api/logout',{method:'POST',headers})).status,200);assert.equal((await call('/api/admin/content',{headers})).status,401);
 });
 

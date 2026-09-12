@@ -9,7 +9,7 @@ export const contentSchema = z.object({
   hero:z.object({image:url,imageAlt:text}),
   jummah:z.object({dateLabel:text,shifts:z.array(z.object({shift:text,time:text,speaker:text,topic:text})).max(12)}),
   news:z.array(item).max(500),
-  events:z.array(z.object({id:z.string().uuid(),title:text.min(1),date,time:text,location:text,description:text,url:url.default('')})).max(500),
+  events:z.array(z.object({id:z.string().uuid(),title:text.min(1),date,time:text,location:text,description:text,url:url.default(''),image:url.default(''),imageAlt:text.default('')})).max(500),
   programs:z.array(z.object({id:z.string().uuid(),title:text.min(1),description:text,schedule:text,url,category:text})).max(100),
   settings:z.object({donationUrl:url,newsletterUrl:url,contactEmail:z.string().email(),address:text,facebook:url,instagram:url,youtube:url}),
 }).strict();

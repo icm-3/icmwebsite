@@ -7,13 +7,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="icon" href="./public/images/icm-logo-provided-transparent.png"><link rel="stylesheet" href="./styles.css?v=20260807-isha-gap-v102">
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="./index.html" aria-label="Islamic Center of Morrisville home"><img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville"></a>
       <nav class="top-nav" aria-label="Primary navigation">
-        <a class="nav-donate" href="./donate.html"><img src="./public/icons/generated/donate.png" alt="" aria-hidden="true"><span>Donate</span></a>
+        <a class="nav-donate" href="./donate.html" aria-label="Donate"><img src="./public/icons/generated/donate.png" alt="" aria-hidden="true"><span>Donate</span></a>
         <a href="./calendar.html">Calendar</a>
         <a href="./programs.html">Programs</a>
         <a href="./news.html">News</a>
@@ -26,73 +26,85 @@
       <section class="page-hero">
         <p class="eyebrow">About ICM</p>
         <h1>Islamic Center of Morrisville</h1>
-        <p>Serving Morrisville, West Cary, and the RTP area through worship, learning, service, and community connection.</p>
       </section>
 
-      <section class="page-split">
+      <section class="page-split about-community-copy">
         <div>
-          <h2>Our Community</h2>
-          <p>ICM was founded in Ramadan 2009 to serve the growing Muslim community around Morrisville and the greater RTP area. The masjid welcomes families and neighbors from many backgrounds and offers worship, education, youth activities, and service programs.</p>
-          <p>As the community has grown, ICM has continued to make room for multiple Jumu'ah shifts, family programming, youth engagement, and regular classes.</p>
-        </div>
-        <div class="callout">
-          <h3>What ICM Offers</h3>
-          <ul class="check-list">
-            <li>Daily prayers and Jumu'ah shifts</li>
-            <li>Quran and Islamic studies programs</li>
-            <li>Youth and family gatherings</li>
-            <li>Social and welfare services</li>
-          </ul>
+          <h2 class="section-heading-charcoal">Our Community</h2>
+          <p>ICM began as a response to the needs of a growing Muslim community around Morrisville and RTP. The masjid welcomes residents from many backgrounds and offers Islamic programs for children, youth, adults, and families.</p>
+          <p>As attendance has grown, ICM has made room for multiple Jumu'ah shifts, regular Quran learning, youth halaqas, women's gatherings, social welfare work, and weekend education.</p>
         </div>
       </section>
 
-      <section class="page-band">
+      <section class="page-band" id="imam">
         <div class="section-heading">
-          <h2>Meet the Imam</h2>
-          <p>Imam Manzar ul Islam al Azhari serves as Imam and resident scholar for the ICM community.</p>
+          <h2 class="section-heading-charcoal">Meet the Imam</h2>
         </div>
-        <div class="bio-panel">
+        <div class="bio-panel imam-bio-panel">
           <div>
             <h3>Imam Manzar ul Islam al Azhari</h3>
-            <p>Imam Manzar studied traditional Islamic sciences before continuing Islamic studies at Al-Azhar University. His public biography notes further academic work in the United States and the United Kingdom, along with teaching and research across Islamic studies.</p>
-            <p>At ICM, he supports the community through classes, reminders, guidance, and scholarship.</p>
-            <a href="https://www.icmnc.org/imams-corner/" target="_blank" rel="noopener">Read more on ICMNC</a>
+            <p>Imam Manzar was born in India in 1980 and completed an eight-year Alim education in a traditional seminary, studying Islamic sciences and languages including Urdu, Persian, Hindi, and Arabic.</p>
+            <p>He earned an undergraduate degree in Islamic Studies from Al-Azhar University in Cairo and completed Mufti training through Egypt's Dar al-Ifta. After moving to the United States, he studied at UNC Chapel Hill and Duke University, taught at Duke, and continued advanced academic work in Islamic studies.</p>
+            <p>His public biography notes more than 50 research papers and books, presentations at international universities, and ongoing service to the ICM community through scholarship, classes, reminders, and guidance.</p>
+            <p class="contact-line">Contact: imam@icmnc.org</p>
           </div>
+          <figure class="imam-photo">
+            <img
+              src="./public/images/responsive/imam-manzar-20260806-582.webp"
+              srcset="./public/images/responsive/imam-manzar-20260806-320.webp 320w, ./public/images/responsive/imam-manzar-20260806-582.webp 582w"
+              sizes="(max-width: 760px) min(100vw - 48px, 360px), 340px"
+              width="582"
+              height="582"
+              loading="lazy"
+              decoding="async"
+              data-load-reveal
+              data-load-state="pending"
+              alt="Imam Manzar ul Islam al Azhari">
+          </figure>
         </div>
       </section>
 
       <section class="page-band" id="contact">
         <div class="section-heading">
-          <h2>Location & Contact</h2>
-          <p>Visit ICM or reach out for current program, service, and community information.</p>
+          <h2 class="section-heading-charcoal">Location & Contact</h2>
         </div>
-        <div class="contact-grid">
-          <article class="feature-card">
-            <h3>Islamic Center of Morrisville</h3>
-            <p>107 Quail Fields Court<br>Morrisville, NC 27560</p>
-          </article>
-          <article class="feature-card">
-            <h3>Email</h3>
-            <p>contact@icmnc.org</p>
-          </article>
-          <article class="feature-card">
-            <h3>Online</h3>
-            <p>For current details, announcements, and external program forms, visit the official ICMNC website.</p>
-            <a href="https://www.icmnc.org/" target="_blank" rel="noopener">Visit ICMNC</a>
-          </article>
+        <div class="location-layout">
+          <div class="map-panel">
+            <iframe
+              title="Map to Islamic Center of Morrisville"
+              src="https://maps.google.com/maps?hl=en&amp;q=107%20Quail%20Fields%20Court%2C%20Morrisville%2C%20NC%2027560&amp;z=15&amp;output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <div class="contact-grid location-cards">
+            <article class="feature-card">
+              <h3 class="heading-green">Islamic Center of Morrisville</h3>
+              <p data-cms-address>107 Quail Fields Court, Morrisville, NC 27560</p>
+              <a href="https://www.google.com/maps/dir/?api=1&destination=107%20Quail%20Fields%20Court%2C%20Morrisville%2C%20NC%2027560" target="_blank" rel="noopener">Get Directions</a>
+            </article>
+            <article class="feature-card">
+              <h3 class="heading-green">General Contact</h3>
+              <p><a data-cms-email href="mailto:contact@icmnc.org">contact@icmnc.org</a></p>
+              <p class="contact-line">For prayer, facility, and general masjid questions.</p>
+            </article>
+            <article class="feature-card">
+              <h3 class="heading-green">Program Contacts</h3>
+              <p><strong>Al Mizan:</strong> almizaan@icmnc.org<br><strong>Social Welfare:</strong> socialwelfare@icmnc.org<br><strong>Volunteer Hours:</strong> volunteer@icmnc.org</p>
+            </article>
+          </div>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="socials" aria-label="Social links">
-        <a href="#" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a>
-        <a href="#" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a>
-        <a href="#" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a>
+        <a href="https://www.facebook.com/ICMMASJID/" target="_blank" rel="noopener" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a>
+        <a href="https://www.instagram.com/icmmasjid/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a>
+        <a href="https://www.youtube.com/@islamiccenterofmorrisville1071" target="_blank" rel="noopener" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a>
       </div>
       <p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p>
       <a href="#contact">Contact Us</a>
     </footer>
-    <script type="module" src="./public/app/site.js"></script>
+    <script type="module" src="./public/app/site.js?v=20260806-exact-motion-v100"></script>
   </body>
 </html>

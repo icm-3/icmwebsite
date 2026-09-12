@@ -109,15 +109,19 @@ export function createApp({dbPath=process.env.DB_PATH||path.join(root,'runtime/i
       if(p==='/api/admin/wordpress'&&method==='GET')return json(res,200,{source:WORDPRESS,editorUrl:WORDPRESS+'/wp-admin/admin.php?page=dpt',writeConnected:false,reason:'The existing plugin API is read-only. Use its WordPress editor to apply approved proposals.'});
       if(p.startsWith('/api/'))fail(404,'API route not found');
       if(method!=='GET'&&method!=='HEAD')fail(405,'Method not allowed');
+      if(p==='/donate.html') {
+        const donationUrl=store.read('published').content.settings?.donationUrl;
+        if(/^https:\/\//.test(donationUrl||'')){res.writeHead(302,{location:donationUrl,'cache-control':'no-store'});return res.end();}
+      }
       if(/^\/media\/[a-f0-9-]{36}$/.test(p)) {
         const r=store.db.prepare('SELECT mime,data FROM media WHERE id=?').get(p.slice(7));if(!r)fail(404,'Image not found');
         res.writeHead(200,{'content-type':r.mime,'cache-control':'public,max-age=31536000,immutable'});return res.end(method==='HEAD'?undefined:Buffer.from(r.data));
       }
       const aliases={'/':'index.html','/admin':'admin.html'};
       const relative=aliases[p]||decodeURIComponent(p).replace(/^\//,'');
-      const allowed=/^(?:index|about|calendar|donate|news|programs|admin)\.html$/.test(relative)||relative==='styles.css'||/^public\/(?:app|images|icons|news)\/[a-zA-Z0-9_./-]+$/.test(relative);
+      const allowed=/^(?:index|about|calendar|donate|news|programs|admin|prayer-times|al-falah-quran-school|al-mizaan-academy|financial-aid|food-pantry|nibraas-institute|social-welfare-services|volunteer)\.html$/.test(relative)||relative==='styles.css'||/^public\/(?:app|images|icons|news|programs|docs)\/[a-zA-Z0-9_./-]+$/.test(relative);
       if(!allowed||relative.split('/').some(s=>s==='..'||s.startsWith('.')))fail(404,'Not found');
-      const types={'.html':'text/html','.css':'text/css','.js':'text/javascript','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp'};
+      const types={'.html':'text/html','.css':'text/css','.js':'text/javascript','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.pdf':'application/pdf'};
       const data=await readFile(path.join(root,relative));
       res.writeHead(200,{'content-type':(types[path.extname(relative)]||'application/octet-stream')+'; charset=utf-8','cache-control':'no-cache'});
       res.end(method==='HEAD'?undefined:data);

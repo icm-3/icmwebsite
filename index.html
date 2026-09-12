@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="icon" href="./public/images/icm-logo-provided-transparent.png"><link rel="stylesheet" href="./styles.css?v=20260807-isha-gap-v102">
   </head>
   <body>
     <header class="site-header">
@@ -15,7 +15,7 @@
         <img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville">
       </a>
       <nav class="top-nav" aria-label="Primary navigation">
-        <a class="nav-donate" href="./donate.html">
+        <a class="nav-donate" href="./donate.html" aria-label="Donate">
           <img src="./public/icons/generated/donate.png" alt="" aria-hidden="true">
           <span>Donate</span>
         </a>
@@ -33,8 +33,8 @@
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
           <p class="eyebrow">Welcome to our masjid</p>
-          <h1 id="hero-title">Our Masjid.<br>Our Community.</h1>
-          <p class="hero-subtitle">A place of worship, learning, and service for<br>you and your family.</p>
+          <h1 id="hero-title">Our Masjid.<br><span class="hero-title-line">Our Community.</span></h1>
+          <p class="hero-subtitle">A place of worship, learning, and service for<br> you and your family.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="./donate.html">
               <img src="./public/icons/generated/donate.png" alt="" aria-hidden="true">
@@ -46,75 +46,109 @@
             </a>
           </div>
         </div>
-        <div class="hero-image" aria-hidden="true">
-          <img src="./public/images/masjid-hero.png" alt="" data-hero-image>
+        <div class="hero-image">
+          <picture>
+            <source
+              type="image/webp"
+              srcset="./public/images/responsive/masjid-interior-hero-20260806-640.webp 640w, ./public/images/responsive/masjid-interior-hero-20260806-960.webp 960w, ./public/images/responsive/masjid-interior-hero-20260806-1536.webp 1536w"
+              sizes="(max-width: 820px) 100vw, 62vw"
+              data-hero-source>
+            <img
+              src="./public/images/masjid-interior-hero-clean.png"
+              width="1535"
+              height="1024"
+              fetchpriority="high"
+              decoding="async"
+              alt="Islamic Center of Morrisville main prayer hall interior with carpet rows, qibla wall, and open worship space"
+              data-hero-image>
+          </picture>
         </div>
       </section>
 
-      <section class="prayer-strip" aria-label="Prayer times">
+      <section class="prayer-section" aria-label="Prayer times">
+        <div class="date-navigator" aria-label="Prayer date navigation">
+          <button class="date-nav-button" type="button" data-date-nav="prev" aria-label="Previous day">
+            <img src="/public/icons/chevron-left.svg" alt="" aria-hidden="true">
+          </button>
+          <button class="date-nav-main" type="button" aria-label="Selected prayer date">
+            <img src="/public/icons/calendar.svg" alt="" aria-hidden="true">
+            <span data-date-label>Tue, June 16</span>
+          </button>
+          <button class="date-nav-button" type="button" data-date-nav="next" aria-label="Next day">
+            <img src="/public/icons/chevron-right.svg" alt="" aria-hidden="true">
+          </button>
+          <button class="date-nav-today" type="button" data-date-nav="today">Today</button>
+        </div>
+        <section class="prayer-strip" aria-label="Prayer times">
         <div class="next-prayer">
           <div class="next-label">
             <img src="./public/icons/generated/clock.png" alt="" aria-hidden="true">
-            <span>Next Prayer</span>
+            <span>Current Prayer</span>
           </div>
           <p class="next-name" data-next-name>Asr</p>
           <p class="next-time" data-next-time>6:21 PM</p>
-          <div class="countdown" aria-label="Time remaining until Asr" data-countdown>
-            <span class="countdown-unit">
-              <strong data-countdown-hours>00</strong>
-              <em>hrs</em>
-            </span>
-            <span class="countdown-separator" aria-hidden="true">:</span>
-            <span class="countdown-unit">
-              <strong data-countdown-minutes>15</strong>
-              <em>min</em>
-            </span>
-            <span class="countdown-separator" aria-hidden="true">:</span>
-            <span class="countdown-unit">
-              <strong data-countdown-seconds>00</strong>
-              <em>sec</em>
-            </span>
+          <div class="next-countdown">
+            <p class="countdown-label"><span data-countdown-target>Maghrib</span> is in</p>
+            <div class="countdown" aria-label="Time remaining until Asr" data-countdown>
+              <span class="countdown-unit">
+                <strong data-countdown-hours>00</strong>
+                <em>hrs</em>
+              </span>
+              <span class="countdown-separator" aria-hidden="true">:</span>
+              <span class="countdown-unit">
+                <strong data-countdown-minutes>15</strong>
+                <em>min</em>
+              </span>
+              <span class="countdown-separator" aria-hidden="true">:</span>
+              <span class="countdown-unit">
+                <strong data-countdown-seconds>00</strong>
+                <em>sec</em>
+              </span>
+            </div>
           </div>
-          <a href="./calendar.html">View Full Schedule <span aria-hidden="true">&rarr;</span></a>
+          <a href="./prayer-times.html">Full Schedule <span aria-hidden="true">&rarr;</span></a>
         </div>
-        <div class="prayer-tile" data-prayer-tile="fajr">
-          <img src="./public/icons/generated/fajr.png" alt="" aria-hidden="true">
-          <span>Fajr</span>
-          <strong data-prayer-time="fajr">4:10 AM</strong>
+        <div class="prayer-carousel" aria-label="Daily prayer times">
+          <div class="prayer-tile" data-prayer-tile="fajr">
+            <img src="./public/icons/fajr.svg?v=20260620-isha-stars" alt="" aria-hidden="true">
+            <span>Fajr</span>
+            <strong data-prayer-time="fajr">4:10 AM</strong>
+          </div>
+          <div class="prayer-tile" data-prayer-tile="sunrise">
+            <img src="./public/icons/sunrise.svg?v=20260620-isha-stars" alt="" aria-hidden="true">
+            <span>Sunrise</span>
+            <strong data-prayer-time="sunrise">5:58 AM</strong>
+          </div>
+          <div class="prayer-tile" data-prayer-tile="dhuhr">
+            <img src="./public/icons/dhuhr.svg?v=20260620-isha-stars" alt="" aria-hidden="true">
+            <span>Dhuhr</span>
+            <strong data-prayer-time="dhuhr">1:16 PM</strong>
+          </div>
+          <div class="prayer-tile active" data-prayer-tile="asr">
+            <img src="./public/icons/asr.svg?v=20260620-isha-stars" alt="" aria-hidden="true">
+            <span>Asr</span>
+            <strong data-prayer-time="asr">6:21 PM</strong>
+          </div>
+          <div class="prayer-tile" data-prayer-tile="maghrib">
+            <img src="./public/icons/maghrib.svg?v=20260620-isha-stars" alt="" aria-hidden="true">
+            <span>Maghrib</span>
+            <strong data-prayer-time="maghrib">8:34 PM</strong>
+          </div>
+          <div class="prayer-tile" data-prayer-tile="isha">
+            <img src="./public/icons/isha.svg?v=20260620-isha-stars" alt="" aria-hidden="true">
+            <span>Isha</span>
+            <strong data-prayer-time="isha">10:23 PM</strong>
+          </div>
         </div>
-        <div class="prayer-tile" data-prayer-tile="sunrise">
-          <img src="./public/icons/generated/sunrise.png" alt="" aria-hidden="true">
-          <span>Sunrise</span>
-          <strong data-prayer-time="sunrise">5:58 AM</strong>
-        </div>
-        <div class="prayer-tile" data-prayer-tile="dhuhr">
-          <img src="./public/icons/generated/dhuhr.png" alt="" aria-hidden="true">
-          <span>Dhuhr</span>
-          <strong data-prayer-time="dhuhr">1:16 PM</strong>
-        </div>
-        <div class="prayer-tile active" data-prayer-tile="asr">
-          <img src="./public/icons/generated/asr.png?v=20260616d" alt="" aria-hidden="true">
-          <span>Asr</span>
-          <strong data-prayer-time="asr">6:21 PM</strong>
-        </div>
-        <div class="prayer-tile" data-prayer-tile="maghrib">
-          <img src="./public/icons/generated/maghrib.png?v=20260616c" alt="" aria-hidden="true">
-          <span>Maghrib</span>
-          <strong data-prayer-time="maghrib">8:34 PM</strong>
-        </div>
-        <div class="prayer-tile" data-prayer-tile="isha">
-          <img src="./public/icons/generated/isha.png?v=20260616c" alt="" aria-hidden="true">
-          <span>Isha</span>
-          <strong data-prayer-time="isha">10:23 PM</strong>
-        </div>
+        </section>
       </section>
 
       <section class="info-grid" aria-label="Masjid information">
-        <article class="info-card jummah-card">
+        <article class="info-card jummah-card is-loading">
           <header class="card-header">
             <div class="card-title">
               <img src="./public/icons/generated/jummah.png" alt="" aria-hidden="true">
-              <h2>JUMU&rsquo;AH TODAY <span data-jummah-date>&ndash; FRIDAY, JUNE 19, 2026</span></h2>
+              <h2>JUMU&rsquo;AH SCHEDULE <span data-jummah-date></span></h2>
             </div>
           </header>
           <div class="table-wrap">
@@ -127,102 +161,81 @@
                   <th>Topic</th>
                 </tr>
               </thead>
-              <tbody data-jummah-body>
-                <tr>
-                  <td><span class="shift">1</span></td>
-                  <td class="time">1:00 PM</td>
-                  <td>Imam Sami Ko&ccedil;ak</td>
-                  <td>Muhasabah: Self Reflection</td>
+              <tbody class="skeleton-region" data-jummah-body aria-busy="true" aria-label="Friday prayer schedule">
+                <tr class="jummah-skeleton-row" aria-hidden="true">
+                  <td><span class="skeleton-block skeleton-shift"></span></td>
+                  <td><span class="skeleton-block skeleton-time"></span></td>
+                  <td><span class="skeleton-block skeleton-line skeleton-line-medium"></span></td>
+                  <td><span class="skeleton-block skeleton-line"></span></td>
                 </tr>
-                <tr>
-                  <td><span class="shift">2</span></td>
-                  <td class="time">2:00 PM</td>
-                  <td>Mikael Raza</td>
-                  <td>Gaining Taqwa by Avoiding Ostentation</td>
+                <tr class="jummah-skeleton-row" aria-hidden="true">
+                  <td><span class="skeleton-block skeleton-shift"></span></td>
+                  <td><span class="skeleton-block skeleton-time"></span></td>
+                  <td><span class="skeleton-block skeleton-line"></span></td>
+                  <td><span class="skeleton-block skeleton-line skeleton-line-medium"></span></td>
                 </tr>
-                <tr>
-                  <td><span class="shift">3</span></td>
-                  <td class="time">3:00 PM</td>
-                  <td>Mansoor Kazi</td>
-                  <td>The Green Deen</td>
+                <tr class="jummah-skeleton-row" aria-hidden="true">
+                  <td><span class="skeleton-block skeleton-shift"></span></td>
+                  <td><span class="skeleton-block skeleton-time"></span></td>
+                  <td><span class="skeleton-block skeleton-line skeleton-line-short"></span></td>
+                  <td><span class="skeleton-block skeleton-line skeleton-line-medium"></span></td>
                 </tr>
-                <tr>
-                  <td><span class="shift">4</span></td>
-                  <td class="time">4:00 PM</td>
-                  <td>Mansoor Syed</td>
-                  <td>Ghallah: Spiritual Negligence</td>
+                <tr class="jummah-skeleton-row" aria-hidden="true">
+                  <td><span class="skeleton-block skeleton-shift"></span></td>
+                  <td><span class="skeleton-block skeleton-time"></span></td>
+                  <td><span class="skeleton-block skeleton-line skeleton-line-medium"></span></td>
+                  <td><span class="skeleton-block skeleton-line"></span></td>
                 </tr>
               </tbody>
             </table>
           </div>
         </article>
 
-        <article class="info-card events-card">
+        <article class="info-card events-card is-loading">
           <header class="card-header">
             <div class="card-title">
               <img src="./public/icons/generated/calendar.png" alt="" aria-hidden="true">
               <h2>Upcoming Events</h2>
             </div>
-            <a href="./calendar.html">View Full Calendar <span aria-hidden="true">&rarr;</span></a>
+            <a href="./calendar.html">Full Calendar <span aria-hidden="true">&rarr;</span></a>
           </header>
-          <div class="event-list" data-events-list>
-            <div class="event-item">
-              <div class="date-badge"><span>Jun</span><strong>21</strong></div>
-              <div>
-                <h3>Youth Hike &amp; BBQ</h3>
-                <p>Saturday, June 21, 2026 &bull; 10:00 AM<br>William B. Umstead State Park</p>
-              </div>
+          <div class="event-list skeleton-region" data-events-list aria-busy="true" aria-label="Upcoming events">
+            <div class="event-item event-item--skeleton" aria-hidden="true">
+              <span class="skeleton-block event-skeleton-media"></span>
+              <div class="event-item-body"><span class="skeleton-block skeleton-line skeleton-line-title"></span><span class="skeleton-block skeleton-line"></span><span class="skeleton-block skeleton-line skeleton-line-medium"></span></div>
             </div>
-            <div class="event-item">
-              <div class="date-badge"><span>Jun</span><strong>27</strong></div>
-              <div>
-                <h3>Sisters&rsquo; Tea &amp; Talk</h3>
-                <p>Friday, June 27, 2026 &bull; 6:30 PM<br>ICM Community Hall</p>
-              </div>
+            <div class="event-item event-item--skeleton" aria-hidden="true">
+              <span class="skeleton-block event-skeleton-media"></span>
+              <div class="event-item-body"><span class="skeleton-block skeleton-line skeleton-line-medium"></span><span class="skeleton-block skeleton-line"></span><span class="skeleton-block skeleton-line skeleton-line-short"></span></div>
             </div>
-            <div class="event-item">
-              <div class="date-badge"><span>Jul</span><strong>04</strong></div>
-              <div>
-                <h3>Independence Day Potluck</h3>
-                <p>Friday, July 4, 2026 &bull; 1:00 PM<br>ICM Community Hall</p>
-              </div>
+            <div class="event-item event-item--skeleton" aria-hidden="true">
+              <span class="skeleton-block event-skeleton-media"></span>
+              <div class="event-item-body"><span class="skeleton-block skeleton-line skeleton-line-title"></span><span class="skeleton-block skeleton-line"></span><span class="skeleton-block skeleton-line skeleton-line-medium"></span></div>
             </div>
           </div>
         </article>
 
-        <article class="info-card news-card">
+        <article class="info-card news-card is-loading">
           <header class="card-header">
             <div class="card-title">
               <img src="./public/icons/generated/megaphone.png" alt="" aria-hidden="true">
               <h2>Latest News &amp; Announcements</h2>
             </div>
-            <a href="./news.html">View All News <span aria-hidden="true">&rarr;</span></a>
+            <a href="./news.html">All News <span aria-hidden="true">&rarr;</span></a>
           </header>
-          <div class="news-list" data-news-list>
-            <article class="news-item">
-              <img src="./public/news/ramadan.png" alt="Mosque at sunset during Ramadan">
-              <div>
-                <h3>Ramadan Programs &amp; Taraweeh Schedule</h3>
-                <p>Join us for special programs throughout Ramadan.</p>
-              </div>
-              <time datetime="2026-04-28">Apr 28, 2026</time>
-            </article>
-            <article class="news-item">
-              <img src="./public/news/eid.png" alt="Mosque scene for Eid announcement">
-              <div>
-                <h3>Eid Al-Adha Announcements</h3>
-                <p>Important information for Eid prayers and events.</p>
-              </div>
-              <time datetime="2026-04-24">Apr 24, 2026</time>
-            </article>
-            <article class="news-item">
-              <img src="./public/news/camp.png" alt="Youth summer camp activity">
-              <div>
-                <h3>Youth Summer Camp Registration Open</h3>
-                <p>Fun, faith, and friends this summer!</p>
-              </div>
-              <time datetime="2026-04-18">Apr 18, 2026</time>
-            </article>
+          <div class="news-list skeleton-region" data-news-list aria-busy="true" aria-label="News and announcements">
+            <div class="news-item news-item--skeleton" aria-hidden="true">
+              <span class="skeleton-block news-skeleton-media"></span><span class="skeleton-block skeleton-chip"></span>
+              <div class="news-item-body"><span class="skeleton-block skeleton-date"></span><span class="skeleton-block skeleton-line skeleton-line-title"></span><span class="skeleton-block skeleton-line skeleton-line-medium"></span></div>
+            </div>
+            <div class="news-item news-item--skeleton" aria-hidden="true">
+              <span class="skeleton-block news-skeleton-media"></span><span class="skeleton-block skeleton-chip"></span>
+              <div class="news-item-body"><span class="skeleton-block skeleton-date"></span><span class="skeleton-block skeleton-line skeleton-line-medium"></span><span class="skeleton-block skeleton-line"></span></div>
+            </div>
+            <div class="news-item news-item--skeleton" aria-hidden="true">
+              <span class="skeleton-block news-skeleton-media"></span><span class="skeleton-block skeleton-chip"></span>
+              <div class="news-item-body"><span class="skeleton-block skeleton-date"></span><span class="skeleton-block skeleton-line skeleton-line-title"></span><span class="skeleton-block skeleton-line skeleton-line-short"></span></div>
+            </div>
           </div>
         </article>
       </section>
@@ -230,13 +243,13 @@
 
     <footer class="site-footer">
       <div class="socials" aria-label="Social links">
-        <a href="#" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a>
-        <a href="#" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a>
-        <a href="#" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a>
+        <a href="https://www.facebook.com/ICMMASJID/" target="_blank" rel="noopener" aria-label="Facebook"><img src="./public/icons/generated/facebook.png" alt="" aria-hidden="true"></a>
+        <a href="https://www.instagram.com/icmmasjid/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./public/icons/generated/instagram.png" alt="" aria-hidden="true"></a>
+        <a href="https://www.youtube.com/@islamiccenterofmorrisville1071" target="_blank" rel="noopener" aria-label="YouTube"><img src="./public/icons/generated/youtube.png" alt="" aria-hidden="true"></a>
       </div>
       <p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p>
       <a href="./about.html#contact">Contact Us</a>
     </footer>
-    <script type="module" src="./public/app/main.js"></script>
+    <script type="module" src="./public/app/main.js?v=20260806-exact-motion-v100"></script>
   </body>
 </html>

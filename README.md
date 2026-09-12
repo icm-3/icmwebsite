@@ -4,7 +4,7 @@ This repository joins the existing Islamic Center of Morrisville website and the
 
 ## Source versions
 
-- Website: `kamilawan38-debug/icmwebsite`
+- Website: `icm-3/icmwebsite`, commit `78f6e000ae0ca8f9eafcf536f7fadb1ba5b66c25` (latest `main` push on August 7, 2026)
 - Mobile app: `kamilawan38-debug/icm-mobile-companion-qibla`, commit `09cd28f4ca59fc09f251098c3a7f40d3ccb54b79` (`codex/add-poster-news-detail`)
 - Connected work: branch `feature/shared-backend-cms`
 
