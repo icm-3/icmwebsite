@@ -1672,6 +1672,27 @@
       line-height: 1.5;
     }
 
+    .news-subscribe {
+      min-height: 48px;
+      margin: 0 0 15px;
+      padding: 10px 13px;
+      border: 1px solid color-mix(in srgb, var(--gold) 38%, var(--border));
+      border-radius: 16px;
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      color: var(--primary);
+      background: color-mix(in srgb, var(--green-pale) 72%, var(--surface));
+      text-decoration: none;
+    }
+    .news-subscribe[hidden] { display: none; }
+    .news-subscribe > i, .news-subscribe > svg { width: 20px; height: 20px; }
+    .news-subscribe-copy { display: grid; gap: 2px; }
+    .news-subscribe-copy strong { color: var(--text); font-size: 13px; }
+    .news-subscribe-copy small { color: var(--muted); font-size: 10px; line-height: 1.3; }
+    .news-subscribe .news-subscribe-arrow { width: 17px; height: 17px; }
+
     .news-feed { display: grid; gap: 17px; }
 
     .news-card {
@@ -1711,6 +1732,7 @@
 
     .news-card:active { transform: scale(.985); }
     .news-card:focus-visible { outline: 3px solid color-mix(in srgb, var(--gold) 70%, transparent); outline-offset: 3px; }
+    .news-card.news-card--text .news-card-copy { padding-top: 18px; }
 
     .news-card-poster-wrap {
       width: 100%;
@@ -1853,6 +1875,7 @@
       place-items: center;
       background: var(--alt);
     }
+    .news-detail-poster-wrap[hidden] { display: none; }
 
     .news-detail-poster {
       width: 100%;
@@ -3899,9 +3922,11 @@
     .qibla-stats { margin-top: 18px; }
 
     .qibla-manual-card {
-      margin-top: 14px;
+      width: min(calc(100% - 32px), 334px);
+      margin-top: -8px;
       padding: 14px 16px 16px;
     }
+    .qibla-manual-card[hidden] { display: none; }
 
     .qibla-manual-card .qibla-manual { display: grid; gap: 10px; }
     .qibla-manual-card .qibla-manual label {
@@ -4489,6 +4514,11 @@
             <p class="news-page-eyebrow">ICM Community</p>
             <h2>News & Updates</h2>
             <p class="news-intro">Announcements, programs, events, and reminders from the masjid.</p>
+            <a class="news-subscribe" id="newsletterSubscribe" href="https://lp.constantcontactpages.com/su/4AalmfK/ICMweekly" target="_blank" rel="noopener">
+              <i data-lucide="mail"></i>
+              <span class="news-subscribe-copy"><strong>Get the weekly ICM newsletter</strong><small>Official updates delivered by email</small></span>
+              <i class="news-subscribe-arrow" data-lucide="external-link"></i>
+            </a>
           </header>
           <div class="news-feed" id="newsList"></div>
         </div>
@@ -4526,6 +4556,12 @@
               </span>
             </button>
             <p class="qibla-instruction" id="qiblaInstruction" role="status">The gold marker is your target</p>
+            <article class="card qibla-manual-card" id="qiblaManualCard" hidden>
+              <div class="qibla-manual">
+                <label for="qiblaManualHeading"><span>Manual phone heading</span><strong id="qiblaManualValue">0°</strong></label>
+                <input id="qiblaManualHeading" type="range" min="0" max="359" step="1" value="0" aria-label="Manual phone heading">
+              </div>
+            </article>
           </div>
         </div>
 
@@ -4885,6 +4921,13 @@
       }
       const compassButton = $("#qiblaCompassButton");
       if (compassButton) compassButton.setAttribute("aria-label", aligned ? "Facing the Qibla" : qiblaState.compassReady ? "Qibla compass is active" : "Start Qibla compass");
+      const manualCard = $("#qiblaManualCard");
+      const manualInput = $("#qiblaManualHeading");
+      const manualValue = $("#qiblaManualValue");
+      const manualVisible = qiblaState.sensorState === "permission-denied" || qiblaState.sensorState === "unavailable";
+      if (manualCard) manualCard.hidden = !manualVisible;
+      if (manualInput && qiblaState.headingMode === "manual") manualInput.value = String(Math.round(heading));
+      if (manualValue) manualValue.textContent = `${Math.round(heading)}°`;
     }
 
     function setQiblaLocation(lat, lon, label = "Current") {
@@ -4994,8 +5037,9 @@
 
       if (window.icmNativeQibla?.start) {
         try {
-          applyNativeQiblaReading(await window.icmNativeQibla.start());
-          startNativeQiblaPolling();
+          const reading = await window.icmNativeQibla.start();
+          applyNativeQiblaReading(reading);
+          if (reading?.status === "starting" || reading?.status === "live") startNativeQiblaPolling();
           qiblaState.starting = false;
           return;
         } catch {
@@ -5436,6 +5480,11 @@
         if (image.dataset.fallbackBound) return;
         image.dataset.fallbackBound = "true";
         image.addEventListener("error", () => {
+          if (!image.dataset.fallbackSrc) {
+            image.hidden = true;
+            image.closest(".news-card-poster-wrap, .news-detail-poster-wrap")?.setAttribute("hidden", "");
+            return;
+          }
           if (image.dataset.fallbackApplied) {
             image.hidden = true;
             return;
@@ -5450,6 +5499,11 @@
 
     function renderNews() {
       const feed = $("#newsList");
+      const subscribe = $("#newsletterSubscribe");
+      const newsletterUrl = safeContentUrl(appContent.site.newsletterUrl, appContent.site.websiteUrl || DEFAULT_WEBSITE_ORIGIN);
+      subscribe.hidden = !newsletterUrl;
+      if (newsletterUrl) subscribe.href = newsletterUrl;
+      else subscribe.removeAttribute("href");
       if (!news.length) {
         feed.innerHTML = `
           <div class="news-empty" role="status">
@@ -5463,9 +5517,10 @@
       feed.innerHTML = news.map((item, sourceIndex) => {
         const image = newsImagePresentation(item);
         const category = plainText(item.category, "Announcement", 40);
+        const poster = item.image ? `<span class="news-card-poster-wrap" style="${image.style}"><img class="news-card-poster" data-news-image data-fit="${image.fit}" data-fallback-src="" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt)}" loading="lazy" decoding="async" style="${image.style}"></span>` : "";
         return `
-        <button class="card news-card" type="button" data-news-index="${sourceIndex}" aria-label="Read ${escapeHtml(item.title)}" style="--news-delay:${Math.min(sourceIndex * 42, 210)}ms">
-          <span class="news-card-poster-wrap" style="${image.style}"><img class="news-card-poster" data-news-image data-fit="${image.fit}" data-fallback-src="assets/news/ramadan.png" src="${escapeHtml(item.image || "assets/news/ramadan.png")}" alt="${escapeHtml(item.imageAlt)}" loading="lazy" decoding="async" style="${image.style}"></span>
+        <button class="card news-card ${item.image ? "" : "news-card--text"}" type="button" data-news-index="${sourceIndex}" aria-label="Read ${escapeHtml(item.title)}" style="--news-delay:${Math.min(sourceIndex * 42, 210)}ms">
+          ${poster}
           <span class="news-card-copy">
             <span class="news-card-meta">
               <span class="news-category">${escapeHtml(category)}</span>
@@ -5513,6 +5568,19 @@
     function plainText(value, fallback = "", maxLength = 500) {
       const parsed = new DOMParser().parseFromString(String(value ?? ""), "text/html");
       const text = (parsed.body.textContent || "").replace(/\s+/g, " ").trim();
+      return (text || fallback).slice(0, maxLength);
+    }
+
+    function plainBodyText(value, fallback = "", maxLength = 10000) {
+      const source = String(value ?? "")
+        .replace(/<br\s*\/?\s*>/gi, "\n")
+        .replace(/<\/(p|div|li|h[1-6]|blockquote)>/gi, "\n\n");
+      const parsed = new DOMParser().parseFromString(source, "text/html");
+      const text = (parsed.body.textContent || "")
+        .replace(/[^\S\r\n]+/g, " ")
+        .replace(/\s*\n\s*/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
       return (text || fallback).slice(0, maxLength);
     }
 
@@ -5722,7 +5790,7 @@
             title: plainText(record?.title?.rendered || record?.title || record?.name || item.name, "ICM Announcement", 160),
             date: String(record?.date || record?.publishedAt || record?.published_at || record?.modified || item.published_at || "").slice(0, 10),
             summary: plainText(record?.summary || record?.excerpt?.rendered || record?.excerpt || record?.description || record?.body || record?.content?.rendered, "", 500),
-            body: plainText(record?.body || record?.content?.rendered || record?.content || "", "", 10000),
+            body: plainBodyText(record?.body || record?.content?.rendered || record?.content || "", "", 10000),
             category: plainText(record?.category?.title || record?.category?.name || record?.category || record?.type || record?.tag, "Announcement", 40),
             image: safeContentUrl(record?.image?.url || record?.image?.filename || record?.image?.fields?.file?.url || record?.image || record?.featuredImage?.url || record?.featuredImage || record?.featured_image_url || media?.source_url, endpoint, { image: true }),
             imageAlt: plainText(record?.imageAlt || record?.image_alt || record?.image?.description || media?.alt_text || record?.title?.rendered || record?.title, "ICM announcement", 180),
@@ -5755,7 +5823,8 @@
         tagline: plainText(siteSource.tagline || siteSource.description, "", 240),
         address: plainText(siteSource.address, "", 240),
         email: plainText(siteSource.email, "", 180),
-        websiteUrl: safeContentUrl(siteSource.websiteUrl || siteSource.website_url || siteSource.url, endpoint)
+        websiteUrl: safeContentUrl(siteSource.websiteUrl || siteSource.website_url || siteSource.url, endpoint),
+        newsletterUrl: safeContentUrl(siteSource.newsletterUrl || siteSource.newsletter_url, endpoint)
       };
       normalized.donation = {
         title: plainText(donationSource.title, "", 160),
@@ -5896,16 +5965,24 @@
         detailCard?.classList.add("has-poster-handoff");
       }
       const image = newsImagePresentation(item);
-      $("#newsDetailPoster").hidden = false;
-      delete $("#newsDetailPoster").dataset.fallbackApplied;
-      $("#newsDetailPoster").src = item.image || "assets/news/ramadan.png";
-      $("#newsDetailPoster").alt = item.imageAlt;
-      $("#newsDetailPoster").dataset.fit = image.fit;
-      $("#newsDetailPoster").dataset.newsImage = "";
-      $("#newsDetailPoster").dataset.fallbackSrc = "assets/news/ramadan.png";
-      $("#newsDetailPoster").style.cssText = image.style;
-      $("#newsDetailPoster").parentElement.style.cssText = image.style;
-      bindNewsImageFallbacks($("#newsDetailPoster").parentElement);
+      const detailPoster = $("#newsDetailPoster");
+      const detailPosterParent = detailPoster.parentElement;
+      detailPosterParent.hidden = !item.image;
+      if (item.image) {
+        detailPoster.hidden = false;
+        delete detailPoster.dataset.fallbackApplied;
+        detailPoster.src = item.image;
+        detailPoster.alt = item.imageAlt;
+        detailPoster.dataset.fit = image.fit;
+        detailPoster.dataset.newsImage = "";
+        detailPoster.dataset.fallbackSrc = "";
+        detailPoster.style.cssText = image.style;
+        detailPosterParent.style.cssText = image.style;
+        bindNewsImageFallbacks(detailPosterParent);
+      } else {
+        detailPoster.removeAttribute("src");
+        detailPoster.alt = "";
+      }
       $("#newsDetailCategory").textContent = plainText(item.category, "Announcement", 40);
       $("#newsDetailDate").dateTime = item.date;
       $("#newsDetailDate").textContent = formatNewsDate(item.date);
@@ -5915,7 +5992,10 @@
       $("#newsDetailSummary").hidden = !detailText;
       const sourceLink = $("#newsDetailSourceLink");
       sourceLink.hidden = !item.url;
-      if (item.url) sourceLink.href = item.url;
+      if (item.url) {
+        sourceLink.href = item.url;
+        sourceLink.textContent = item.category === "Newsletter" ? "Open newsletter" : item.category === "Event" ? "Event details" : item.id.startsWith("program-") ? "Program details" : "Read on website";
+      }
       else sourceLink.removeAttribute("href");
       setPage("News Detail", { direction: 1, animatePage: !canHandoff });
       if (detailCard) {
@@ -6205,15 +6285,19 @@
       let websiteHost = site.websiteUrl;
       try { websiteHost = new URL(site.websiteUrl).hostname.replace(/^www\./, ""); } catch {}
       const addressMeta = escapeHtml(site.address).replace(/,\s+(?=[A-Za-z]{2}\s+\d{5})/, "<br>");
-      const infoRow = ({ label, icon, description, meta }) => `
-        <div class="settings-row" aria-label="${label}">
+      const infoRow = ({ label, icon, description, meta, url = "" }) => {
+        const tag = url ? "a" : "div";
+        const link = url ? ` href="${escapeHtml(url)}" target="_blank" rel="noopener"` : "";
+        return `
+        <${tag} class="settings-row" aria-label="${label}"${link}>
           <span class="settings-icon"><i data-lucide="${icon}"></i></span>
           <span class="settings-copy">
             <strong>${label}</strong>
             <small>${description}</small>
           </span>
-          <span class="settings-row-tail"><span>${meta}</span></span>
-        </div>`;
+          <span class="settings-row-tail"><span>${meta}</span>${url ? '<i data-lucide="external-link"></i>' : ""}</span>
+        </${tag}>`;
+      };
 
       $("#settingsList").innerHTML = `
         <section class="settings-section">
@@ -6281,8 +6365,9 @@
         <section class="settings-section">
           <h3 class="settings-section-title">App & mosque</h3>
           <div class="settings-card">
-            ${infoRow({ label: escapeHtml(site.name), icon: "map-pin", description: escapeHtml(site.tagline), meta: addressMeta })}
-            ${infoRow({ label: `Contact ${escapeHtml(site.shortName)}`, icon: "mail", description: "Questions, programs, and community information.", meta: `${escapeHtml(site.email)}<br>${escapeHtml(websiteHost)}` })}
+            ${infoRow({ label: escapeHtml(site.name), icon: "map-pin", description: escapeHtml(site.tagline), meta: addressMeta, url: site.websiteUrl })}
+            ${infoRow({ label: `Contact ${escapeHtml(site.shortName)}`, icon: "mail", description: "Questions, programs, and community information.", meta: escapeHtml(site.email), url: `mailto:${site.email}` })}
+            ${site.newsletterUrl ? infoRow({ label: "Weekly ICM newsletter", icon: "newspaper", description: "Sign up for official events and announcements by email.", meta: "Subscribe", url: site.newsletterUrl }) : ""}
           </div>
         </section>`;
       $("#settingsFooter").textContent = `${site.name} · ${site.address}`;
@@ -6484,6 +6569,14 @@
     });
 
     document.addEventListener("input", (event) => {
+      if (event.target.id === "qiblaManualHeading") {
+        qiblaState.headingMode = "manual";
+        qiblaState.compassReady = false;
+        qiblaState.smoothedHeading = normalizeDegrees(Number(event.target.value));
+        qiblaState.heading = qiblaState.smoothedHeading;
+        renderQibla();
+        return;
+      }
       if (event.target.matches("[data-prayer-lead], [data-jummah-lead]")) {
         updateWarningSlider(event.target);
       }

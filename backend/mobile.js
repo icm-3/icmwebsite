@@ -45,7 +45,8 @@ export function mobileContent(content) {
       tagline: 'Serving Morrisville, West Cary, and RTP.',
       address: content.settings.address,
       email: content.settings.contactEmail,
-      websiteUrl: '/',
+      websiteUrl: 'https://www.icmnc.org/',
+      newsletterUrl: content.settings.newsletterUrl,
     },
     donation: {
       title: 'Support ICM',

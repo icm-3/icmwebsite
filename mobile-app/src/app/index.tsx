@@ -213,6 +213,14 @@ export default function IndexScreen() {
   }, []);
 
   const startQibla = useCallback(async (): Promise<QiblaReading> => {
+    if (process.env.EXPO_OS === 'web') {
+      latestQiblaReading.current = {
+        ...latestQiblaReading.current,
+        status: 'unavailable',
+        message: 'A live compass needs Expo Go or an installed build. Use the manual heading slider here.',
+      };
+      return { ...latestQiblaReading.current };
+    }
     latestQiblaReading.current = {
       ...latestQiblaReading.current,
       status: 'starting',

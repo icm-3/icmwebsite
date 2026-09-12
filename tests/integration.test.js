@@ -33,8 +33,12 @@ test('New York schedule instants handle DST without depending on device timezone
 });
 test('verified original mobile prototype keeps valid scripts and shared API hooks',()=>{
  const html=readFileSync(new URL('../mobile-app/assets/prototype/icm-mobile-app.html',import.meta.url),'utf8'),$=load(html);
+ const fallback=readFileSync(new URL('../mobile-app/assets/prototype/assets/content/fallback-content.txt',import.meta.url),'utf8');
+ const fallbackTimetable=readFileSync(new URL('../mobile-app/assets/prototype/assets/content/fallback-timetable.txt',import.meta.url),'utf8');
  $('script:not([src])').each((_,script)=>{const source=$(script).html();if(source?.trim())new Script(source);});
  assert.match(html,/ICM_PRAYER_API_URL/);assert.match(html,/apiUrl\.searchParams\.set\("month", key\)/);assert.match(html,/setInterval\(\(\) => \{ if \(!document\.hidden\) loadWebsiteCms\(\); \}, 15000\)/);
+ assert.match(html,/id="newsletterSubscribe"/);assert.match(html,/plainBodyText/);assert.match(html,/id="qiblaManualHeading"/);assert.match(html,/reading\?\.status === "starting" \|\| reading\?\.status === "live"/);assert.doesNotMatch(html,/item\.image \|\| "assets\/news\/ramadan\.png"/);assert.match(fallback,/newsletterUrl: "https:\/\/lp\.constantcontactpages\.com\/su\/4AalmfK\/ICMweekly"/);assert.match(fallback,/news: \[\]/);assert.match(fallback,/shifts: \[\]/);
+ assert.match(fallbackTimetable,/Rabī al-Awwal/);assert.doesNotMatch(fallbackTimetable,/RabÄ/);
 });
 test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, and private files',async(t)=>{
  const app=createApp({dbPath:':memory:',fetcher:async()=>new Response(fixture())});
@@ -62,7 +66,7 @@ test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, a
  const published=await call('/api/admin/content',{method:'PUT',headers,body:JSON.stringify({content:draft.content,revision:draft.revision,publish:true})});assert.equal(published.status,200);draft=await published.json();
  const site=await (await call('/api/cms')).json(),mobile=await (await call('/api/content')).json();assert.deepEqual(site.news,mobile.content.news);assert.equal(site.news[0].title,'Connected newsletter');
  const appContent=await (await call('/api/mobile-content')).json();
- assert.equal(appContent.schemaVersion,1);assert.equal(appContent.site.address,mobile.content.settings.address);assert.equal(appContent.donation.url,mobile.content.settings.donationUrl);assert.equal(appContent.prayerTimes.apiUrl,'/api/prayers');assert.equal(appContent.news.find(item=>item.title==='Connected newsletter').body,'Complete newsletter');assert.ok(appContent.news.some(item=>item.id.startsWith('program-')));assert.deepEqual(appContent.jummah.shifts,[]);
+ assert.equal(appContent.schemaVersion,1);assert.equal(appContent.site.address,mobile.content.settings.address);assert.equal(appContent.site.websiteUrl,'https://www.icmnc.org/');assert.equal(appContent.site.newsletterUrl,mobile.content.settings.newsletterUrl);assert.equal(appContent.donation.url,mobile.content.settings.donationUrl);assert.equal(appContent.prayerTimes.apiUrl,'/api/prayers');assert.equal(appContent.news.find(item=>item.title==='Connected newsletter').body,'Complete newsletter');assert.ok(appContent.news.some(item=>item.id.startsWith('program-')));assert.deepEqual(appContent.jummah.shifts,[]);
  const png=Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),Buffer.alloc(12)]);
  const media=await call('/api/admin/media',{method:'POST',headers,body:JSON.stringify({mime:'image/png',data:png.toString('base64')})});
  assert.equal(media.status,201);const mediaUrl=(await media.json()).url,mediaRead=await call(mediaUrl);assert.equal(mediaRead.status,200);assert.equal(mediaRead.headers.get('content-type'),'image/png');assert.deepEqual(Buffer.from(await mediaRead.arrayBuffer()),png);

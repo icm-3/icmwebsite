@@ -14,7 +14,8 @@
         "tagline": { "type": "string", "maxLength": 240 },
         "address": { "type": "string", "maxLength": 240 },
         "email": { "type": "string", "format": "email" },
-        "websiteUrl": { "type": "string", "format": "uri" }
+        "websiteUrl": { "type": "string", "format": "uri" },
+        "newsletterUrl": { "type": "string", "format": "uri" }
       },
       "additionalProperties": true
     },

@@ -42,6 +42,8 @@ Open `/admin`, sign in, and choose a section from the left navigation. The CMS p
 - Revision history and restore-to-draft
 - Official WordPress prayer sync and correction-proposal export
 
+ICM's public newsletter link is a Constant Contact signup page, not a public issue feed. Keep that permanent signup URL under **Contact & links**. For each new weekly issue, choose **Add newsletter**, paste the issue's public Constant Contact link, add the headline/summary/article, and publish once; the issue then appears in both the website and app. Automatic issue import would require ICM's Constant Contact account/API access.
+
 ## Run locally
 
 Install and run the website, backend, and CMS:
