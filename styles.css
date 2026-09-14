@@ -15462,6 +15462,11 @@ body:has(.about-community-copy) .page-hero h1 {
   font-size: 12px;
 }
 
+.cms-preview button {
+  width: 150px;
+  min-height: 36px;
+}
+
 .cms-steps,
 .cms-prayer-guide ol {
   margin: 0;

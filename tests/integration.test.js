@@ -82,9 +82,18 @@ test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, a
  const site=await (await call('/api/cms')).json(),mobile=await (await call('/api/content')).json();assert.deepEqual(site.news,mobile.content.news);assert.equal(site.news[0].title,'Connected newsletter');
  const appContent=await (await call('/api/mobile-content')).json();
  assert.equal(appContent.schemaVersion,1);assert.equal(appContent.site.address,mobile.content.settings.address);assert.equal(appContent.site.websiteUrl,undefined);assert.equal(appContent.site.newsletterUrl,mobile.content.settings.newsletterUrl);assert.equal(appContent.site.facebook,mobile.content.settings.facebook);assert.equal(appContent.site.instagram,mobile.content.settings.instagram);assert.equal(appContent.site.youtube,mobile.content.settings.youtube);assert.equal(appContent.donation.url,'/donate.html');assert.equal(appContent.prayerTimes.apiUrl,'/api/prayers');assert.equal(appContent.news.find(item=>item.title==='Connected newsletter').body,'Complete newsletter');assert.ok(appContent.news.some(item=>item.id.startsWith('program-')));assert.equal(appContent.jummah.shifts.length,3);
- const png=Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),Buffer.alloc(12)]);
+ const png=readFileSync(new URL('../public/news/friday-announcements-june-12-2026.png',import.meta.url));
  const media=await call('/api/admin/media',{method:'POST',headers,body:JSON.stringify({mime:'image/png',data:png.toString('base64')})});
  assert.equal(media.status,201);const mediaUrl=(await media.json()).url,mediaRead=await call(mediaUrl);assert.equal(mediaRead.status,200);assert.equal(mediaRead.headers.get('content-type'),'image/png');assert.deepEqual(Buffer.from(await mediaRead.arrayBuffer()),png);
+ const connected=draft.content.news.find(item=>item.title==='Connected newsletter');connected.image=mediaUrl;connected.imageAlt='Friday community announcements';
+ let republished=await call('/api/admin/content',{method:'PUT',headers,body:JSON.stringify({content:draft.content,revision:draft.revision,publish:true})});assert.equal(republished.status,200);draft=await republished.json();
+ let updatedSite=await (await call('/api/cms')).json(),updatedApp=await (await call('/api/mobile-content')).json();
+ assert.equal(updatedSite.news.find(item=>item.id===connected.id).image,mediaUrl);assert.equal(updatedApp.news.find(item=>item.id===connected.id).image,mediaUrl);
+ draft.content.news.find(item=>item.id===connected.id).summary='Edited after the first publication';
+ republished=await call('/api/admin/content',{method:'PUT',headers,body:JSON.stringify({content:draft.content,revision:draft.revision,publish:true})});assert.equal(republished.status,200);draft=await republished.json();
+ updatedSite=await (await call('/api/cms')).json();updatedApp=await (await call('/api/mobile-content')).json();
+ assert.equal(updatedSite.news.find(item=>item.id===connected.id).summary,'Edited after the first publication');assert.equal(updatedApp.news.find(item=>item.id===connected.id).summary,'Edited after the first publication');
+ const revisions=await (await call('/api/admin/revisions',{headers})).json();assert.ok(revisions.filter(item=>item.action==='publish').length>=3);
  assert.equal((await call('/api/admin/media',{method:'POST',headers,body:JSON.stringify({mime:'image/png',data:Buffer.alloc(20).toString('base64')})})).status,400);
  const bad=structuredClone(draft.content);bad.settings.donationUrl='javascript:alert(1)';
  assert.equal((await call('/api/admin/content',{method:'PUT',headers,body:JSON.stringify({content:bad,revision:draft.revision})})).status,400);
@@ -103,5 +112,5 @@ test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, a
 test('CMS bundle exposes the complete plain-language editing workflow',()=>{
  const source=readFileSync(new URL('../src/admin.js',import.meta.url),'utf8');
  for(const label of ['Add newsletter','Add announcement','Add shift','Add event','Add program','Publish to website + app','Sync from WordPress','Save correction proposal','Publishing history'])assert.match(source,new RegExp(label.replace(/[+]/g,'\\+')));
- assert.match(source,/confirm\(`Remove/);assert.match(source,/Unsaved changes/);assert.match(source,/Move up/);assert.match(source,/Image must be smaller than 1\.5 MB/);
+ assert.match(source,/confirm\(`Remove/);assert.match(source,/Unsaved changes/);assert.match(source,/Move up/);assert.match(source,/Remove image/);assert.match(source,/keep editing and publish again/);assert.match(source,/Image must be smaller than 1\.5 MB/);
 });
