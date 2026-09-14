@@ -6534,6 +6534,16 @@ function say(message, tone = "") {
 function editorButtons(visible) {
   document.querySelectorAll("[data-editor-action]").forEach((element) => element.hidden = !visible);
 }
+function syncDirtyUi() {
+  document.body.classList.toggle("cms-has-changes", dirty);
+  document.querySelectorAll("[data-edit-state]").forEach((element) => {
+    element.dataset.state = dirty ? "dirty" : "saved";
+    element.querySelector("strong").textContent = dirty ? "Unsaved changes" : "Everything here is saved";
+    element.querySelector("span").textContent = dirty ? "Save a draft or publish these changes to the website and app." : "Edit any field below. Save a draft or publish when you make a change.";
+  });
+  document.querySelectorAll('[data-action="save"]').forEach((element) => element.textContent = dirty ? "Save changes" : "Save draft");
+  document.querySelectorAll('[data-action="publish"]').forEach((element) => element.textContent = dirty ? "Publish changes" : "Publish current draft");
+}
 function button(action, label, extra = "", className = "") {
   return `<button type="button" class="${className}" data-action="${action}" ${extra}>${esc(label)}</button>`;
 }
@@ -6553,11 +6563,14 @@ function itemActions(group, index, length) {
   return `<div class="cms-item-actions">${button("move", "Move up", `data-group="${group}" data-index="${index}" data-direction="-1" ${index === 0 ? "disabled" : ""}`)}${button("move", "Move down", `data-group="${group}" data-index="${index}" data-direction="1" ${index === length - 1 ? "disabled" : ""}`)}${button("remove", "Remove", `data-group="${group}" data-index="${index}"`, "cms-danger")}</div>`;
 }
 function item(title, summary, body, actions) {
-  return `<article class="cms-item cms-field-wide"><header class="cms-item-title"><span><strong>${esc(title || "Untitled")}</strong>${summary ? `<small>${esc(summary)}</small>` : ""}</span>${actions}</header><div class="cms-grid cms-item-fields">${body}</div></article>`;
+  return `<article class="cms-item cms-field-wide"><header class="cms-item-title"><span><strong>${esc(title || "Untitled")}</strong><em>Editable entry</em>${summary ? `<small>${esc(summary)}</small>` : ""}</span>${actions}</header><div class="cms-grid cms-item-fields">${body}</div></article>`;
 }
 function nav() {
   const counts = { news: state.news.length, jummah: state.jummah.shifts.length, events: state.events.length, programs: state.programs.length };
   return `<nav class="cms-section-nav" aria-label="CMS sections">${Object.entries(sectionNames).map(([key, label]) => `<button type="button" data-section="${key}" class="${activeSection === key ? "active" : ""}" ${activeSection === key ? 'aria-current="page"' : ""}>${esc(label)}${key in counts ? ` <span>${counts[key]}</span>` : ""}</button>`).join("")}</nav>`;
+}
+function editBar() {
+  return `<aside class="cms-edit-bar" data-edit-state data-state="${dirty ? "dirty" : "saved"}"><div><strong>${dirty ? "Unsaved changes" : "Everything here is saved"}</strong><span>${dirty ? "Save a draft or publish these changes to the website and app." : "Edit any field below. Save a draft or publish when you make a change."}</span></div><div class="cms-edit-bar-actions">${button("save", dirty ? "Save changes" : "Save draft")}${button("publish", dirty ? "Publish changes" : "Publish current draft", "", "cms-primary")}</div></aside>`;
 }
 function overview() {
   const cards = [["Newsletters & news", state.news.length, "news"], ["Jumu'ah shifts", state.jummah.shifts.length, "jummah"], ["Upcoming events", state.events.length, "events"], ["Programs", state.programs.length, "programs"]];
@@ -6569,7 +6582,7 @@ function newsEditor() {
 }
 function jummahEditor() {
   const shifts = state.jummah.shifts.length ? state.jummah.shifts.map((shift, index) => item(`Shift ${shift.shift}`, `${shift.time}${shift.speaker ? " \xB7 " + shift.speaker : ""}`, `${field(`jummah.shifts.${index}.shift`, "Shift name or number", shift.shift, { required: true })}${field(`jummah.shifts.${index}.time`, "Prayer time", shift.time, { placeholder: "1:00 PM", required: true })}${field(`jummah.shifts.${index}.speaker`, "Khateeb / speaker", shift.speaker, { wide: true })}${field(`jummah.shifts.${index}.topic`, "Khutbah topic", shift.topic, { wide: true })}`, itemActions("jummah", index, state.jummah.shifts.length), index)).join("") : '<div class="cms-empty cms-field-wide"><strong>No Jumu\u2019ah shifts are published.</strong><span>Add each shift when the schedule is confirmed. Public screens show that the schedule is awaiting publication until then.</span></div>';
-  return panel("Jumu'ah schedule", "This is the Friday schedule shown on the website and app.", `${field("jummah.dateLabel", "Friday date or schedule label", state.jummah.dateLabel, { help: "Example: Friday, September 18", wide: true })}${shifts}`, button("add-jummah", "Add shift", "", "cms-primary"));
+  return panel("Jumu'ah schedule", "Every field below is editable. Make a change, then use the save bar to keep it as a draft or publish it to both the website and app.", `${field("jummah.dateLabel", "Friday date or schedule label", state.jummah.dateLabel, { help: "Example: Friday, September 18", wide: true })}${shifts}`, button("add-jummah", "Add shift", "", "cms-primary"));
 }
 function eventsEditor() {
   const body = state.events.length ? state.events.map((entry, index) => item(entry.title, [entry.date, entry.time].filter(Boolean).join(" \xB7 "), `${field(`events.${index}.title`, "Event name", entry.title, { required: true, wide: true })}${field(`events.${index}.date`, "Date", entry.date, { type: "date", required: true })}${field(`events.${index}.time`, "Time", entry.time, { placeholder: "6:30 PM" })}${field(`events.${index}.location`, "Location", entry.location, { wide: true })}${area(`events.${index}.description`, "Description", entry.description)}${field(`events.${index}.url`, "Registration or details link", entry.url, { type: "url", help: "Optional. Use a complete https:// link.", wide: true })}${field(`events.${index}.image`, "Event image URL", entry.image || "", { help: "Upload below or paste an HTTPS image URL.", wide: true })}${upload(`events.${index}.image`, entry.image || "")}${field(`events.${index}.imageAlt`, "Image description", entry.imageAlt || "", { help: "Describe the image for people using screen readers.", wide: true })}`, itemActions("events", index, state.events.length), index)).join("") : '<div class="cms-empty cms-field-wide"><strong>No events have been added.</strong><span>Add an event when its date is confirmed.</span></div>';
@@ -6590,8 +6603,9 @@ function historyEditor() {
 }
 function render() {
   editorButtons(true);
-  const views = { overview, news: newsEditor, jummah: jummahEditor, events: eventsEditor, programs: programsEditor, settings: settingsEditor, prayers: prayersEditor, history: historyEditor };
-  app.innerHTML = `${nav()}<div class="cms-workspace">${views[activeSection]()}</div>`;
+  const views = { overview, news: newsEditor, jummah: jummahEditor, events: eventsEditor, programs: programsEditor, settings: settingsEditor, prayers: prayersEditor, history: historyEditor }, editable = ["news", "jummah", "events", "programs", "settings"].includes(activeSection);
+  app.innerHTML = `${nav()}<div class="cms-workspace">${views[activeSection]()}${editable ? editBar() : ""}</div>`;
+  syncDirtyUi();
   if (activeSection === "prayers" && prayerRows.length) scheduleTable();
 }
 function loginView() {
@@ -6604,7 +6618,8 @@ function set(path, value) {
   for (const part of parts.slice(0, -1)) target = target[part];
   target[parts.at(-1)] = value;
   dirty = true;
-  say("Unsaved changes", "warn");
+  say("Unsaved changes \u2014 use Save changes or Publish changes.", "warn");
+  syncDirtyUi();
 }
 async function api(url, method = "GET", data) {
   return request(url, { method, headers: { "content-type": "application/json", "x-csrf-token": session?.csrf || "" }, ...data ? { body: JSON.stringify(data) } : {} });
@@ -6643,6 +6658,7 @@ async function save(publish) {
   revision = result.revision;
   updated = result.updated;
   dirty = false;
+  syncDirtyUi();
   say(publish ? "Published successfully to the website and app. You can keep editing and publish again; open screens update within 15 seconds." : "Draft saved. Visitors still see the last published version.", "success");
 }
 function scheduleTable() {

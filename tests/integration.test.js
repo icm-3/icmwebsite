@@ -112,5 +112,5 @@ test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, a
 test('CMS bundle exposes the complete plain-language editing workflow',()=>{
  const source=readFileSync(new URL('../src/admin.js',import.meta.url),'utf8');
  for(const label of ['Add newsletter','Add announcement','Add shift','Add event','Add program','Publish to website + app','Sync from WordPress','Save correction proposal','Publishing history'])assert.match(source,new RegExp(label.replace(/[+]/g,'\\+')));
- assert.match(source,/confirm\(`Remove/);assert.match(source,/Unsaved changes/);assert.match(source,/Move up/);assert.match(source,/Remove image/);assert.match(source,/keep editing and publish again/);assert.match(source,/Image must be smaller than 1\.5 MB/);
+ assert.match(source,/confirm\(`Remove/);assert.match(source,/Unsaved changes — use Save changes or Publish changes/);assert.match(source,/Editable entry/);assert.match(source,/cms-edit-bar/);assert.match(source,/Move up/);assert.match(source,/Remove image/);assert.match(source,/keep editing and publish again/);assert.match(source,/Image must be smaller than 1\.5 MB/);
 });
