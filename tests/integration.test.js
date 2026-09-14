@@ -56,7 +56,7 @@ test('connected website uses the latest organization frontend and shared data ro
 });
 test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, and private files',async(t)=>{
  const app=createApp({dbPath:':memory:',fetcher:async()=>new Response(fixture())});
- app.store.addUser('review-admin','test-password-for-integration');
+ app.store.addUser('review-admin','test-password-for-integration');app.store.addUser('short-pass','a');assert.equal(app.store.login('short-pass','a')?.username,'short-pass');
  await new Promise(resolve=>app.server.listen(0,'127.0.0.1',resolve));
  t.after(()=>new Promise(resolve=>app.server.close(()=>{app.store.db.close();resolve();})));
  const base='http://127.0.0.1:'+app.server.address().port;

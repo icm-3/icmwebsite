@@ -55,11 +55,11 @@ npm run start:lan
 
 The website is at `http://localhost:4180/` and the CMS is at `http://localhost:4180/admin`.
 
-Create the first CMS administrator (use a password of at least 14 characters):
+Create the first CMS administrator:
 
 ```powershell
 $env:ICM_ADMIN_USERNAME='admin'
-$env:ICM_ADMIN_PASSWORD='replace-with-a-long-password'
+$env:ICM_ADMIN_PASSWORD='your-password'
 npm run admin:create
 ```
 

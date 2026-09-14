@@ -32,7 +32,7 @@ export function openStore(file,seed) {
     });
   }
   function addUser(username,password) {
-    if(!/^[a-zA-Z0-9@._-]{3,100}$/.test(username)||password.length<14) throw new Error('Use a username of 3–100 characters and a password of at least 14 characters.');
+    if(!/^[a-zA-Z0-9@._-]{3,100}$/.test(username)||typeof password!=='string'||!password.length) throw new Error('Use a username of 3–100 characters and a non-empty password.');
     const salt=randomBytes(16).toString('hex');
     db.prepare('INSERT INTO users VALUES (?,?,?) ON CONFLICT(username) DO UPDATE SET salt=excluded.salt,password=excluded.password').run(username,salt,scryptSync(password,salt,64).toString('hex'));
     db.prepare('DELETE FROM sessions WHERE username=?').run(username);
