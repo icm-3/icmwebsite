@@ -37,7 +37,7 @@ test('verified original mobile prototype keeps valid scripts and shared API hook
  const fallbackTimetable=readFileSync(new URL('../mobile-app/assets/prototype/assets/content/fallback-timetable.txt',import.meta.url),'utf8');
  $('script:not([src])').each((_,script)=>{const source=$(script).html();if(source?.trim())new Script(source);});
  assert.match(html,/ICM_PRAYER_API_URL/);assert.match(html,/apiUrl\.searchParams\.set\("month", key\)/);assert.match(html,/setInterval\(\(\) => \{ if \(!document\.hidden\) loadWebsiteCms\(\); \}, 15000\)/);
- assert.match(html,/id="newsletterSubscribe"/);assert.match(html,/plainBodyText/);assert.match(html,/id="qiblaManualHeading"/);assert.match(html,/reading\?\.status === "starting" \|\| reading\?\.status === "live"/);assert.doesNotMatch(html,/item\.image \|\| "assets\/news\/ramadan\.png"/);assert.match(html,/google\.com\/maps\/search/);assert.match(html,/site\.facebook/);assert.doesNotMatch(html,/websiteUrl/);assert.doesNotMatch(html,/\.schedule-table \.day-cell \{\s*position: sticky/);assert.match(fallback,/newsletterUrl: ""/);assert.match(fallback,/news: \[\]/);assert.match(fallback,/shifts: \[\]/);
+ assert.match(html,/id="newsletterSubscribe"/);assert.match(html,/plainBodyText/);assert.match(html,/id="qiblaManualHeading"/);assert.match(html,/reading\?\.status === "starting" \|\| reading\?\.status === "live"/);assert.doesNotMatch(html,/item\.image \|\| "assets\/news\/ramadan\.png"/);assert.match(html,/google\.com\/maps\/search/);assert.match(html,/site\.facebook/);assert.doesNotMatch(html,/websiteUrl/);assert.doesNotMatch(html,/\.schedule-table \.day-cell \{\s*position: sticky/);assert.doesNotMatch(html,/icon: "(?:facebook|instagram|youtube)"/);assert.match(fallback,/newsletterUrl: ""/);assert.match(fallback,/news: \[\]/);assert.match(fallback,/shifts: \[\]/);
  assert.match(fallbackTimetable,/Rabī al-Awwal/);assert.doesNotMatch(fallbackTimetable,/RabÄ/);
 });
 test('connected website uses the latest organization frontend and shared data routes',()=>{
@@ -72,7 +72,7 @@ test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, a
  const headers={'content-type':'application/json',cookie,'x-csrf-token':session.csrf,origin:base};
  let draft=await (await call('/api/admin/content',{headers})).json();
  const originalNewsCount=draft.content.news.length;
- draft.content.news.unshift({id:randomUUID(),title:'Connected newsletter',date:'2026-09-08',summary:'Shared across both clients',body:'Complete newsletter',image:'/public/news/ramadan.png',imageAlt:'',kind:'newsletter',icon:'megaphone',url:''});
+ draft.content.news.unshift({id:randomUUID(),title:'Connected newsletter',date:'2026-09-08',summary:'Shared across both clients',body:'Complete newsletter',image:'/public/news/ramadan.png',imageAlt:'Ramadan announcement',kind:'newsletter',icon:'megaphone',url:''});
  const payload={content:draft.content,revision:draft.revision,publish:false};
  assert.equal((await call('/api/admin/content',{method:'PUT',headers:{'content-type':'application/json',cookie},body:JSON.stringify(payload)})).status,403);
  let save=await call('/api/admin/content',{method:'PUT',headers,body:JSON.stringify(payload)});assert.equal(save.status,200);draft=await save.json();
@@ -95,6 +95,10 @@ test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, a
  assert.equal(updatedSite.news.find(item=>item.id===connected.id).summary,'Edited after the first publication');assert.equal(updatedApp.news.find(item=>item.id===connected.id).summary,'Edited after the first publication');
  const revisions=await (await call('/api/admin/revisions',{headers})).json();assert.ok(revisions.filter(item=>item.action==='publish').length>=3);
  assert.equal((await call('/api/admin/media',{method:'POST',headers,body:JSON.stringify({mime:'image/png',data:Buffer.alloc(20).toString('base64')})})).status,400);
+ const tooLarge=Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),Buffer.alloc(1500000)]);
+ assert.equal((await call('/api/admin/media',{method:'POST',headers,body:JSON.stringify({mime:'image/png',data:tooLarge.toString('base64')})})).status,400);
+ const missingAlt=structuredClone(draft.content);missingAlt.news.find(item=>item.id===connected.id).imageAlt='';
+ assert.equal((await call('/api/admin/content',{method:'PUT',headers,body:JSON.stringify({content:missingAlt,revision:draft.revision})})).status,400);
  const bad=structuredClone(draft.content);bad.settings.donationUrl='javascript:alert(1)';
  assert.equal((await call('/api/admin/content',{method:'PUT',headers,body:JSON.stringify({content:bad,revision:draft.revision})})).status,400);
  const schedule=await (await call('/api/prayers?month=2026-09')).json();const rows=structuredClone(schedule.rows);rows[0].fajrIqamah='6:10 AM';
@@ -111,6 +115,6 @@ test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, a
 
 test('CMS bundle exposes the complete plain-language editing workflow',()=>{
  const source=readFileSync(new URL('../src/admin.js',import.meta.url),'utf8');
- for(const label of ['Add newsletter','Add announcement','Add shift','Add event','Add program','Publish to website + app','Sync from WordPress','Save correction proposal','Publishing history'])assert.match(source,new RegExp(label.replace(/[+]/g,'\\+')));
- assert.match(source,/confirm\(`Remove/);assert.match(source,/Unsaved changes — use Save changes or Publish changes/);assert.match(source,/Editable entry/);assert.match(source,/cms-edit-bar/);assert.match(source,/Move up/);assert.match(source,/Remove image/);assert.match(source,/keep editing and publish again/);assert.match(source,/Image must be smaller than 1\.5 MB/);
+ for(const label of ['Add newsletter','Add announcement','Add shift','Add event','Add program','Publish to website + app','Sync from WordPress','Save correction proposal','Publishing history','Use an image already online instead'])assert.match(source,new RegExp(label.replace(/[+]/g,'\\+')));
+ assert.match(source,/confirm\(`Remove/);assert.match(source,/Unsaved changes — use Save changes or Publish changes/);assert.match(source,/Editable entry/);assert.match(source,/cms-edit-bar/);assert.match(source,/needs an image description/);assert.match(source,/Move up/);assert.match(source,/Remove image/);assert.match(source,/keep editing and publish again/);assert.match(source,/Image must be smaller than 1\.5 MB/);
 });

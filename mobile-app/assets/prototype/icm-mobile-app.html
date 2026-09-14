@@ -6367,9 +6367,9 @@
             ${site.address ? infoRow({ label: "Mosque address", icon: "map-pin", description: "Open this CMS-managed address in Maps.", meta: addressMeta, url: mapsUrl }) : ""}
             ${site.email ? infoRow({ label: `Email ${escapeHtml(site.shortName)}`, icon: "mail", description: "Questions, programs, and community information.", meta: escapeHtml(site.email), url: `mailto:${site.email}` }) : ""}
             ${site.newsletterUrl ? infoRow({ label: "Weekly ICM newsletter", icon: "newspaper", description: "Sign up for official events and announcements by email.", meta: "Subscribe", url: site.newsletterUrl }) : ""}
-            ${site.facebook ? infoRow({ label: "Facebook", icon: "facebook", description: "Open the CMS-managed Facebook page.", meta: linkMeta(site.facebook), url: site.facebook }) : ""}
-            ${site.instagram ? infoRow({ label: "Instagram", icon: "instagram", description: "Open the CMS-managed Instagram page.", meta: linkMeta(site.instagram), url: site.instagram }) : ""}
-            ${site.youtube ? infoRow({ label: "YouTube", icon: "youtube", description: "Open the CMS-managed YouTube channel.", meta: linkMeta(site.youtube), url: site.youtube }) : ""}
+            ${site.facebook ? infoRow({ label: "Facebook", icon: "users", description: "Open the CMS-managed Facebook page.", meta: linkMeta(site.facebook), url: site.facebook }) : ""}
+            ${site.instagram ? infoRow({ label: "Instagram", icon: "camera", description: "Open the CMS-managed Instagram page.", meta: linkMeta(site.instagram), url: site.instagram }) : ""}
+            ${site.youtube ? infoRow({ label: "YouTube", icon: "circle-play", description: "Open the CMS-managed YouTube channel.", meta: linkMeta(site.youtube), url: site.youtube }) : ""}
           </div>
         </section>`;
       $("#settingsFooter").textContent = `${site.name} · ${site.address}`;

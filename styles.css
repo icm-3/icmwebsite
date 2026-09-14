@@ -15539,6 +15539,30 @@ body:has(.about-community-copy) .page-hero h1 {
   font-size: 12px;
 }
 
+.cms-advanced {
+  overflow: hidden;
+  background: #f7faf8;
+  border: 1px solid #c4d1cb;
+  border-radius: 8px;
+}
+
+.cms-advanced summary {
+  padding: 12px 14px;
+  color: #355247;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.cms-advanced[open] summary {
+  background: #eef5f1;
+  border-bottom: 1px solid #c4d1cb;
+}
+
+.cms-advanced > div {
+  padding: 14px;
+}
+
 .cms-preview button {
   width: 150px;
   min-height: 36px;

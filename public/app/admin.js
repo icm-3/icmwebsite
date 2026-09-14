@@ -6534,6 +6534,9 @@ function say(message, tone = "") {
 function editorButtons(visible) {
   document.querySelectorAll("[data-editor-action]").forEach((element) => element.hidden = !visible);
 }
+function contentButtons(visible) {
+  document.querySelectorAll("[data-content-action]").forEach((element) => element.hidden = !visible);
+}
 function syncDirtyUi() {
   document.body.classList.toggle("cms-has-changes", dirty);
   document.querySelectorAll("[data-edit-state]").forEach((element) => {
@@ -6554,7 +6557,10 @@ function area(path, label, value, { help = "", placeholder = "", required = fals
   return `<label class="cms-field cms-field-wide"><span>${esc(label)}${required ? ' <b aria-hidden="true">*</b>' : ""}</span><textarea data-path="${path}" placeholder="${esc(placeholder)}" ${required ? "required" : ""}>${esc(value)}</textarea>${help ? `<small>${esc(help)}</small>` : ""}</label>`;
 }
 function upload(path, current = "") {
-  return `<div class="cms-upload cms-field-wide"><label class="cms-field"><span>${current ? "Replace" : "Upload"} image</span><input type="file" accept="image/png,image/jpeg,image/webp" data-upload="${path}"><small>PNG, JPEG, or WebP. Maximum 1.5 MB.</small></label>${current ? `<figure class="cms-preview"><img src="${esc(current)}" alt="Current image preview"><figcaption>Current image</figcaption>${button("remove-image", "Remove image", `data-path="${path}"`, "cms-danger")}</figure>` : ""}</div>`;
+  return `<div class="cms-upload cms-field-wide"><label class="cms-field"><span>${current ? "Replace current image" : "Add an image"}</span><input type="file" accept="image/png,image/jpeg,image/webp" data-upload="${path}"><small>Choose a PNG, JPEG, or WebP flyer/photo from this device. Maximum 1.5 MB.</small></label>${current ? `<figure class="cms-preview"><img src="${esc(current)}" alt="Current image preview"><figcaption>Current draft image</figcaption>${button("remove-image", "Remove image", `data-path="${path}"`, "cms-danger")}</figure>` : ""}</div>`;
+}
+function advanced(label, body) {
+  return `<details class="cms-advanced cms-field-wide"><summary>${esc(label)}</summary><div>${body}</div></details>`;
 }
 function panel(title, description, body, actions = "") {
   return `<section class="cms-panel"><header><div><h2>${esc(title)}</h2>${description ? `<p>${esc(description)}</p>` : ""}</div>${actions ? `<div class="cms-panel-actions">${actions}</div>` : ""}</header><div class="cms-grid">${body}</div></section>`;
@@ -6577,7 +6583,7 @@ function overview() {
   return `<section class="cms-overview"><div class="cms-summary-grid">${cards.map(([label, count, key]) => `<button type="button" data-section="${key}"><strong>${count}</strong><span>${esc(label)}</span><small>Open editor</small></button>`).join("")}</div>${panel("How publishing works", "There is one shared source for both public experiences.", `<ol class="cms-steps cms-field-wide"><li>Edit a section and check the information.</li><li>Select <strong>Save draft</strong> if it is not ready for visitors.</li><li>Select <strong>Publish to website + app</strong> when it is ready. Open screens update within 15 seconds.</li><li>Published items stay editable. Change any field or image and publish again to update both places.</li></ol><div class="cms-system cms-field-wide"><strong>Connected services</strong><span>Website content API</span><b>Ready</b><span>Mobile app content API</span><b>Ready</b><span>Prayer times</span><b>Official ICM WordPress feed</b><span>Storage</span><b>SQLite database on this server</b></div>`)}${panel("Quick links", "Open the public pages in a new tab.", `<div class="cms-quick-links cms-field-wide"><a href="/" target="_blank" rel="noopener">Homepage</a><a href="/news.html" target="_blank" rel="noopener">News</a><a href="/calendar.html" target="_blank" rel="noopener">Calendar</a><a href="/programs.html" target="_blank" rel="noopener">Programs</a></div>`)}</section>`;
 }
 function newsEditor() {
-  const body = state.news.length ? state.news.map((entry, index) => item(entry.title, `${entry.kind === "newsletter" ? "Newsletter" : "News"} \xB7 ${entry.date}`, `${field(`news.${index}.title`, "Headline", entry.title, { required: true, wide: true })}${field(`news.${index}.date`, "Publication date", entry.date, { type: "date", required: true })}<label class="cms-field"><span>Content type</span><select data-path="news.${index}.kind"><option value="news" ${entry.kind === "news" ? "selected" : ""}>News announcement</option><option value="newsletter" ${entry.kind === "newsletter" ? "selected" : ""}>Newsletter</option></select></label>${area(`news.${index}.summary`, "Short summary", entry.summary, { help: "Shown on cards in the website and app.", required: true })}${area(`news.${index}.body`, "Full article", entry.body, { help: "Shown when a visitor opens the story." })}${field(`news.${index}.url`, "Newsletter issue or details link", entry.url, { type: "url", help: "For a newsletter, paste its public Constant Contact issue link. Otherwise use the original or registration link.", wide: true })}${field(`news.${index}.image`, "Image URL", entry.image, { help: "Upload below or paste an HTTPS image URL.", wide: true })}${upload(`news.${index}.image`, entry.image)}${field(`news.${index}.imageAlt`, "Image description", entry.imageAlt, { help: "Describe the image for people using screen readers.", wide: true })}`, itemActions("news", index, state.news.length), index)).join("") : '<div class="cms-empty cms-field-wide"><strong>No news has been added yet.</strong><span>Add a newsletter or announcement to get started.</span></div>';
+  const body = state.news.length ? state.news.map((entry, index) => item(entry.title, `${entry.kind === "newsletter" ? "Newsletter" : "News"} \xB7 ${entry.date}`, `${field(`news.${index}.title`, "Headline", entry.title, { required: true, wide: true })}${field(`news.${index}.date`, "Publication date", entry.date, { type: "date", required: true })}<label class="cms-field"><span>Content type</span><select data-path="news.${index}.kind"><option value="news" ${entry.kind === "news" ? "selected" : ""}>News announcement</option><option value="newsletter" ${entry.kind === "newsletter" ? "selected" : ""}>Newsletter</option></select></label>${area(`news.${index}.summary`, "Short summary", entry.summary, { help: "Shown on cards in the website and app.", required: true })}${area(`news.${index}.body`, "Full article", entry.body, { help: "Shown when a visitor opens the story." })}${field(`news.${index}.url`, "Newsletter issue or details link", entry.url, { type: "url", help: "For a newsletter, paste its public Constant Contact issue link. Otherwise use the original or registration link.", wide: true })}${upload(`news.${index}.image`, entry.image)}${advanced("Use an image already online instead", field(`news.${index}.image`, "Image web address", entry.image, { help: "Optional advanced option. Paste an HTTPS address or a site path beginning with /.", wide: true }))}${field(`news.${index}.imageAlt`, "Image description", entry.imageAlt, { help: "Describe the flyer or photo for people using screen readers. A basic description is added automatically when you upload.", wide: true })}`, itemActions("news", index, state.news.length), index)).join("") : '<div class="cms-empty cms-field-wide"><strong>No news has been added yet.</strong><span>Add a newsletter or announcement to get started.</span></div>';
   return panel("Newsletters & news", "Create, publish, and later edit any item here. Republishing updates the same item on both the website and app.", body, button("add-newsletter", "Add newsletter") + button("add-news", "Add announcement", "", "cms-primary"));
 }
 function jummahEditor() {
@@ -6585,7 +6591,7 @@ function jummahEditor() {
   return panel("Jumu'ah schedule", "Every field below is editable. Make a change, then use the save bar to keep it as a draft or publish it to both the website and app.", `${field("jummah.dateLabel", "Friday date or schedule label", state.jummah.dateLabel, { help: "Example: Friday, September 18", wide: true })}${shifts}`, button("add-jummah", "Add shift", "", "cms-primary"));
 }
 function eventsEditor() {
-  const body = state.events.length ? state.events.map((entry, index) => item(entry.title, [entry.date, entry.time].filter(Boolean).join(" \xB7 "), `${field(`events.${index}.title`, "Event name", entry.title, { required: true, wide: true })}${field(`events.${index}.date`, "Date", entry.date, { type: "date", required: true })}${field(`events.${index}.time`, "Time", entry.time, { placeholder: "6:30 PM" })}${field(`events.${index}.location`, "Location", entry.location, { wide: true })}${area(`events.${index}.description`, "Description", entry.description)}${field(`events.${index}.url`, "Registration or details link", entry.url, { type: "url", help: "Optional. Use a complete https:// link.", wide: true })}${field(`events.${index}.image`, "Event image URL", entry.image || "", { help: "Upload below or paste an HTTPS image URL.", wide: true })}${upload(`events.${index}.image`, entry.image || "")}${field(`events.${index}.imageAlt`, "Image description", entry.imageAlt || "", { help: "Describe the image for people using screen readers.", wide: true })}`, itemActions("events", index, state.events.length), index)).join("") : '<div class="cms-empty cms-field-wide"><strong>No events have been added.</strong><span>Add an event when its date is confirmed.</span></div>';
+  const body = state.events.length ? state.events.map((entry, index) => item(entry.title, [entry.date, entry.time].filter(Boolean).join(" \xB7 "), `${field(`events.${index}.title`, "Event name", entry.title, { required: true, wide: true })}${field(`events.${index}.date`, "Date", entry.date, { type: "date", required: true })}${field(`events.${index}.time`, "Time", entry.time, { placeholder: "6:30 PM" })}${field(`events.${index}.location`, "Location", entry.location, { wide: true })}${area(`events.${index}.description`, "Description", entry.description)}${field(`events.${index}.url`, "Registration or details link", entry.url, { type: "url", help: "Optional. Paste an HTTPS address or an ICM site path beginning with /.", wide: true })}${upload(`events.${index}.image`, entry.image || "")}${advanced("Use an image already online instead", field(`events.${index}.image`, "Image web address", entry.image || "", { help: "Optional advanced option. Paste an HTTPS address or a site path beginning with /.", wide: true }))}${field(`events.${index}.imageAlt`, "Image description", entry.imageAlt || "", { help: "Describe the flyer or photo for people using screen readers. A basic description is added automatically when you upload.", wide: true })}`, itemActions("events", index, state.events.length), index)).join("") : '<div class="cms-empty cms-field-wide"><strong>No events have been added.</strong><span>Add an event when its date is confirmed.</span></div>';
   return panel("Events", "Upcoming events are shared with the calendar and mobile news feed.", body, button("add-event", "Add event", "", "cms-primary"));
 }
 function programsEditor() {
@@ -6593,7 +6599,7 @@ function programsEditor() {
   return panel("Programs", "Manage the ongoing programs shown on the website and in the app.", body, button("add-program", "Add program", "", "cms-primary"));
 }
 function settingsEditor() {
-  return panel("Contact details and links", "These values are reused wherever the website and app need them.", `${field("settings.donationUrl", "Donation page", state.settings.donationUrl, { type: "url", required: true, wide: true })}${field("settings.newsletterUrl", "Newsletter signup page", state.settings.newsletterUrl, { type: "url", required: true, wide: true })}${field("settings.contactEmail", "Contact email", state.settings.contactEmail, { type: "email", required: true })}${field("settings.address", "Masjid address", state.settings.address, { required: true })}${field("settings.facebook", "Facebook page", state.settings.facebook, { type: "url", wide: true })}${field("settings.instagram", "Instagram page", state.settings.instagram, { type: "url", wide: true })}${field("settings.youtube", "YouTube channel", state.settings.youtube, { type: "url", wide: true })}`) + panel("Homepage image", "This controls the existing homepage hero image.", field("hero.image", "Image URL", state.hero.image, { wide: true }) + upload("hero.image", state.hero.image) + field("hero.imageAlt", "Image description", state.hero.imageAlt, { required: true, wide: true }));
+  return panel("Contact details and links", "These values are reused wherever the website and app need them.", `${field("settings.donationUrl", "Donation page", state.settings.donationUrl, { type: "url", required: true, wide: true })}${field("settings.newsletterUrl", "Newsletter signup page", state.settings.newsletterUrl, { type: "url", required: true, wide: true })}${field("settings.contactEmail", "Contact email", state.settings.contactEmail, { type: "email", required: true })}${field("settings.address", "Masjid address", state.settings.address, { required: true })}${field("settings.facebook", "Facebook page", state.settings.facebook, { type: "url", wide: true })}${field("settings.instagram", "Instagram page", state.settings.instagram, { type: "url", wide: true })}${field("settings.youtube", "YouTube channel", state.settings.youtube, { type: "url", wide: true })}`) + panel("Homepage image", "This controls the existing homepage hero image.", upload("hero.image", state.hero.image) + advanced("Use an image already online instead", field("hero.image", "Image web address", state.hero.image, { help: "Optional advanced option. Paste an HTTPS address or a site path beginning with /.", wide: true })) + field("hero.imageAlt", "Image description", state.hero.imageAlt, { required: true, wide: true }));
 }
 function prayersEditor() {
   return panel("Official WordPress prayer schedule", "Prayer times remain controlled by ICM\u2019s existing WordPress system.", `<div class="cms-prayer-guide cms-field-wide"><strong>Normal workflow</strong><ol><li>Select the month and sync the official timetable.</li><li>If a correction is needed, prepare and download a proposal here.</li><li>Apply the approved correction in WordPress, then sync again.</li></ol></div><label class="cms-field"><span>Month</span><input id="prayer-month" type="month" value="${esc(prayerMonth)}"></label><div class="cms-inline-actions">${button("schedule", "Load saved schedule")}${button("sync", "Sync from WordPress", "", "cms-primary")}<a href="https://www.icmnc.org/wp-admin/admin.php?page=dpt" target="_blank" rel="noopener">Open WordPress prayer editor</a></div><p id="prayer-status" class="cms-field-wide cms-note">Choose a month, then load or sync its official schedule.</p><div id="prayer-table" class="cms-prayer-table cms-field-wide"></div><div class="cms-inline-actions cms-field-wide">${button("proposal", "Save correction proposal")}${button("export-proposal", "Download proposal")}</div>`);
@@ -6602,8 +6608,9 @@ function historyEditor() {
   return panel("Publishing history", "Review recent saves and publications. Restoring creates a draft; it never publishes automatically.", `<div id="revisions" class="cms-history cms-field-wide"><p>Select \u201CLoad history\u201D to view recent changes.</p></div>`, button("history", "Load history", "", "cms-primary"));
 }
 function render() {
-  editorButtons(true);
   const views = { overview, news: newsEditor, jummah: jummahEditor, events: eventsEditor, programs: programsEditor, settings: settingsEditor, prayers: prayersEditor, history: historyEditor }, editable = ["news", "jummah", "events", "programs", "settings"].includes(activeSection);
+  editorButtons(true);
+  contentButtons(!["prayers", "history"].includes(activeSection));
   app.innerHTML = `${nav()}<div class="cms-workspace">${views[activeSection]()}${editable ? editBar() : ""}</div>`;
   syncDirtyUi();
   if (activeSection === "prayers" && prayerRows.length) scheduleTable();
@@ -6638,10 +6645,12 @@ function validate() {
   state.news.forEach((entry, index) => {
     if (!entry.title.trim()) missing.push(`News item ${index + 1} needs a headline`);
     if (!entry.date) missing.push(`News item ${index + 1} needs a date`);
+    if (entry.image && !entry.imageAlt.trim()) missing.push(`News item ${index + 1} needs an image description`);
   });
   state.events.forEach((entry, index) => {
     if (!entry.title.trim()) missing.push(`Event ${index + 1} needs a name`);
     if (!entry.date) missing.push(`Event ${index + 1} needs a date`);
+    if (entry.image && !entry.imageAlt.trim()) missing.push(`Event ${index + 1} needs an image description`);
   });
   state.programs.forEach((entry, index) => {
     if (!entry.title.trim()) missing.push(`Program ${index + 1} needs a name`);
@@ -6649,6 +6658,9 @@ function validate() {
   state.jummah.shifts.forEach((entry, index) => {
     if (!entry.shift.trim() || !entry.time.trim()) missing.push(`Jumu'ah shift ${index + 1} needs a name and time`);
   });
+  if (!state.settings.contactEmail.trim() || !/^\S+@\S+\.\S+$/.test(state.settings.contactEmail)) missing.push("Contact & links needs a valid contact email");
+  if (!state.settings.address.trim()) missing.push("Contact & links needs the masjid address");
+  if (state.hero.image && !state.hero.imageAlt.trim()) missing.push("Homepage image needs an image description");
   if (missing.length) throw new Error(missing.slice(0, 3).join(". "));
 }
 async function save(publish) {
@@ -6714,10 +6726,21 @@ document.addEventListener("change", async (event) => {
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
-    const result = await api("/api/admin/media", "POST", { mime: file.type, data });
-    set(event.target.dataset.upload, result.url);
+    const path = event.target.dataset.upload, result = await api("/api/admin/media", "POST", { mime: file.type, data });
+    set(path, result.url);
+    if (path.endsWith(".image")) {
+      const altPath = path.replace(/\.image$/, ".imageAlt"), parts = altPath.split(".");
+      let target = state;
+      for (const part of parts.slice(0, -1)) target = target[part];
+      if (!String(target[parts.at(-1)] || "").trim()) {
+        const titlePath = path.replace(/\.image$/, ".title").split(".");
+        let title = state;
+        for (const part of titlePath) title = title?.[part];
+        set(altPath, String(title || "Islamic Center of Morrisville image"));
+      }
+    }
     render();
-    say("Image uploaded. Save the draft or publish when ready.", "success");
+    say("Image uploaded. Preview it below, then save the draft or publish.", "success");
   } catch (error) {
     say(error.message, "error");
   }
@@ -6727,6 +6750,8 @@ document.addEventListener("click", async (event) => {
   if (section) {
     activeSection = section.dataset.section;
     render();
+    const messages = { overview: "Choose a section to manage.", prayers: "Prayer times come from WordPress. Load or sync a month below.", history: "Review earlier saves and publications below." };
+    say(messages[activeSection] || `Editing ${sectionNames[activeSection]}. Changes are not saved until you save a draft or publish.`);
     document.querySelector(".cms-workspace")?.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
   }
@@ -6798,6 +6823,7 @@ document.addEventListener("click", async (event) => {
     if (action === "history") {
       const list = await api("/api/admin/revisions");
       document.querySelector("#revisions").innerHTML = list.length ? list.map((entry) => `<article><div><strong>${entry.action === "publish" ? "Published" : "Draft saved"}</strong><span>${new Date(entry.created).toLocaleString()} \xB7 ${esc(entry.actor)}</span></div>${button("restore", "Restore as draft", `data-id="${entry.id}"`)}</article>`).join("") : "<p>No saved revisions yet.</p>";
+      say("Publishing history loaded.", "success");
     }
     if (action === "restore") {
       if (dirty && !confirm("Replace your unsaved changes with this revision?")) return;

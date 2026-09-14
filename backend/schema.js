@@ -12,7 +12,11 @@ export const contentSchema = z.object({
   events:z.array(z.object({id:z.string().uuid(),title:text.min(1),date,time:text,location:text,description:text,url:url.default(''),image:url.default(''),imageAlt:text.default('')})).max(500),
   programs:z.array(z.object({id:z.string().uuid(),title:text.min(1),description:text,schedule:text,url,category:text})).max(100),
   settings:z.object({donationUrl:url,newsletterUrl:url,contactEmail:z.string().email(),address:text,facebook:url,instagram:url,youtube:url}),
-}).strict();
+}).strict().superRefine((content,ctx)=>{
+  content.news.forEach((entry,index)=>{if(entry.image&&!entry.imageAlt.trim())ctx.addIssue({code:'custom',path:['news',index,'imageAlt'],message:'Describe the image before publishing'});});
+  content.events.forEach((entry,index)=>{if(entry.image&&!entry.imageAlt.trim())ctx.addIssue({code:'custom',path:['events',index,'imageAlt'],message:'Describe the image before publishing'});});
+  if(content.hero.image&&!content.hero.imageAlt.trim())ctx.addIssue({code:'custom',path:['hero','imageAlt'],message:'Describe the image before publishing'});
+});
 
 export const prayerFields=['fajr','fajrIqamah','sunrise','dhuhr','dhuhrIqamah','asr','asrIqamah','maghrib','maghribIqamah','isha','ishaIqamah'];
 const time=z.string().regex(/^(?:[1-9]|1[0-2]):[0-5]\d (?:AM|PM)$/);
