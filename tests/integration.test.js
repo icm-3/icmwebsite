@@ -37,7 +37,8 @@ test('connected website uses the latest organization frontend and shared data ro
  const site=readFileSync(new URL('../src/site.js',import.meta.url),'utf8');
  assert.match(home,/masjid-interior-hero-clean\.png/);
  assert.match(home,/styles\.css\?v=20260807-isha-gap-v102/);
- assert.match(news,/data-newsletter-link/);
+ assert.doesNotMatch(news,/data-newsletter-link/);
+ assert.match(readFileSync(new URL('../donate.html',import.meta.url),'utf8'),/Continue to Secure Donation/);
  assert.match(main,/loadMonth\(selectedKey\.slice/);
  assert.match(pages,/loadMonth\(key\.slice/);
  assert.match(site,/fetch\(`\/api\/prayers\?month=/);
