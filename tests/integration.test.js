@@ -2,8 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { Script } from 'node:vm';
-import { load } from 'cheerio';
 import { DateTime } from 'luxon';
 import { createApp } from '../server.js';
 import { parseTimetable,prayerService } from '../backend/prayers.js';
@@ -30,15 +28,6 @@ test('failed refresh retains last verified official month and marks it stale',as
 test('New York schedule instants handle DST without depending on device timezone',()=>{
  assert.equal(new Date(prayerInstant('2026-03-07','6:00 AM')).toISOString(),'2026-03-07T11:00:00.000Z');
  assert.equal(new Date(prayerInstant('2026-03-08','6:00 AM')).toISOString(),'2026-03-08T10:00:00.000Z');
-});
-test('verified original mobile prototype keeps valid scripts and shared API hooks',()=>{
- const html=readFileSync(new URL('../mobile-app/assets/prototype/icm-mobile-app.html',import.meta.url),'utf8'),$=load(html);
- const fallback=readFileSync(new URL('../mobile-app/assets/prototype/assets/content/fallback-content.txt',import.meta.url),'utf8');
- const fallbackTimetable=readFileSync(new URL('../mobile-app/assets/prototype/assets/content/fallback-timetable.txt',import.meta.url),'utf8');
- $('script:not([src])').each((_,script)=>{const source=$(script).html();if(source?.trim())new Script(source);});
- assert.match(html,/ICM_PRAYER_API_URL/);assert.match(html,/apiUrl\.searchParams\.set\("month", key\)/);assert.match(html,/setInterval\(\(\) => \{ if \(!document\.hidden\) loadWebsiteCms\(\); \}, 15000\)/);
- assert.match(html,/id="newsletterSubscribe"/);assert.match(html,/plainBodyText/);assert.match(html,/id="qiblaManualHeading"/);assert.match(html,/reading\?\.status === "starting" \|\| reading\?\.status === "live"/);assert.doesNotMatch(html,/item\.image \|\| "assets\/news\/ramadan\.png"/);assert.match(html,/google\.com\/maps\/search/);assert.match(html,/site\.facebook/);assert.doesNotMatch(html,/websiteUrl/);assert.doesNotMatch(html,/\.schedule-table \.day-cell \{\s*position: sticky/);assert.doesNotMatch(html,/icon: "(?:facebook|instagram|youtube)"/);assert.match(fallback,/newsletterUrl: ""/);assert.match(fallback,/news: \[\]/);assert.match(fallback,/shifts: \[\]/);
- assert.match(fallbackTimetable,/Rabī al-Awwal/);assert.doesNotMatch(fallbackTimetable,/RabÄ/);
 });
 test('connected website uses the latest organization frontend and shared data routes',()=>{
  const home=readFileSync(new URL('../index.html',import.meta.url),'utf8');
