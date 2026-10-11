@@ -98,7 +98,7 @@ test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, a
  assert.equal((await call('/api/prayers?month=bad-month')).status,400);
  assert.equal((await call('/api/admin/content',{method:'PUT',headers:{...headers,origin:'https://evil.example'},body:JSON.stringify(payload)})).status,403);
  for(const p of ['/server.js','/data/cms.json','/.git/config','/runtime/icm.sqlite','/package.json'])assert.equal((await call(p)).status,404,p);
- for(const p of ['/','/admin','/calendar.html','/prayer-times.html','/financial-aid.html','/food-pantry.html','/volunteer.html','/al-falah-quran-school.html','/al-mizaan-academy.html','/nibraas-institute.html','/social-welfare-services.html','/public/programs/al-falah-quran-school.png','/public/docs/monthly-prayer-time-icm.pdf'])assert.equal((await call(p)).status,200,p);
+ for(const p of ['/','/admin','/calendar.html','/prayer-times.html','/financial-aid.html','/food-pantry.html','/volunteer.html','/al-falah-quran-school.html','/al-mizaan-academy.html','/nibraas-institute.html','/social-welfare-services.html','/public/home-banner.css','/public/home-reveal.js','/public/site-reveal.js','/public/programs/al-falah-quran-school.png','/public/docs/monthly-prayer-time-icm.pdf'])assert.equal((await call(p)).status,200,p);
  const donation=await call('/donate.html',{redirect:'manual'});assert.equal(donation.status,200);assert.match(await donation.text(),/Make a Donation/);
  assert.equal((await call('/api/logout',{method:'POST',headers})).status,200);assert.equal((await call('/api/admin/content',{headers})).status,401);
 });

@@ -148,46 +148,15 @@
           <header class="card-header">
             <div class="card-title">
               <img src="./public/icons/generated/jummah.png" alt="" aria-hidden="true">
-              <h2>JUMU&rsquo;AH SCHEDULE <span data-jummah-date></span></h2>
+              <h2>JUMU&rsquo;AH SCHEDULE</h2>
             </div>
+            <time class="jummah-date" data-jummah-date></time>
           </header>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Shift</th>
-                  <th>Time</th>
-                  <th>Speaker</th>
-                  <th>Topic</th>
-                </tr>
-              </thead>
-              <tbody class="skeleton-region" data-jummah-body aria-busy="true" aria-label="Friday prayer schedule">
-                <tr class="jummah-skeleton-row" aria-hidden="true">
-                  <td><span class="skeleton-block skeleton-shift"></span></td>
-                  <td><span class="skeleton-block skeleton-time"></span></td>
-                  <td><span class="skeleton-block skeleton-line skeleton-line-medium"></span></td>
-                  <td><span class="skeleton-block skeleton-line"></span></td>
-                </tr>
-                <tr class="jummah-skeleton-row" aria-hidden="true">
-                  <td><span class="skeleton-block skeleton-shift"></span></td>
-                  <td><span class="skeleton-block skeleton-time"></span></td>
-                  <td><span class="skeleton-block skeleton-line"></span></td>
-                  <td><span class="skeleton-block skeleton-line skeleton-line-medium"></span></td>
-                </tr>
-                <tr class="jummah-skeleton-row" aria-hidden="true">
-                  <td><span class="skeleton-block skeleton-shift"></span></td>
-                  <td><span class="skeleton-block skeleton-time"></span></td>
-                  <td><span class="skeleton-block skeleton-line skeleton-line-short"></span></td>
-                  <td><span class="skeleton-block skeleton-line skeleton-line-medium"></span></td>
-                </tr>
-                <tr class="jummah-skeleton-row" aria-hidden="true">
-                  <td><span class="skeleton-block skeleton-shift"></span></td>
-                  <td><span class="skeleton-block skeleton-time"></span></td>
-                  <td><span class="skeleton-block skeleton-line skeleton-line-medium"></span></td>
-                  <td><span class="skeleton-block skeleton-line"></span></td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="jummah-session-list skeleton-region" data-jummah-body aria-busy="true" aria-label="Friday prayer schedule" role="region" tabindex="0">
+            <div class="jummah-session-skeleton" aria-hidden="true"></div>
+            <div class="jummah-session-skeleton" aria-hidden="true"></div>
+            <div class="jummah-session-skeleton" aria-hidden="true"></div>
+            <div class="jummah-session-skeleton" aria-hidden="true"></div>
           </div>
         </article>
 

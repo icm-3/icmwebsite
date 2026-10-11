@@ -618,3 +618,146 @@
 
 .homepage .news-card .news-item--bulletin { position: relative; padding-top: 42px !important; }
 .homepage .news-card .news-item--bulletin > .news-pinned { position: absolute; top: 0; left: 0; z-index: 2; width: max-content; padding: 5px 9px; border-radius: 0 0 6px 0; background: #005b46; color: #fff; font-size: 10px; }
+
+/* Jumu'ah: equal-height, readable shifts in a dedicated scroll region. */
+.homepage .jummah-card {
+  padding: 0 !important;
+  height: 565px !important;
+  min-height: 565px !important;
+  overflow: hidden !important;
+}
+.homepage .jummah-card .card-header {
+  min-height: 68px !important;
+  margin: 0 !important;
+  padding: 12px 22px !important;
+  background: var(--green) !important;
+  background-image: none !important;
+}
+.homepage .jummah-card .card-header h2 {
+  margin: 0;
+  font-family: inherit;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+}
+.homepage .jummah-card .card-title { min-width: 0; gap: 8px; }
+.homepage .jummah-card .card-title > img { width: 24px; height: 24px; flex: 0 0 24px; }
+.homepage .jummah-date {
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.homepage .jummah-session-list {
+  display: grid;
+  grid-auto-rows: minmax(min-content, 1fr);
+  gap: 4px;
+  flex: 1 1 0;
+  min-height: 0;
+  margin: 0;
+  padding: 4px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #e8f0e9;
+  scrollbar-color: #8eafa1 transparent;
+  scrollbar-width: thin;
+}
+.homepage .jummah-session-list::-webkit-scrollbar { width: 8px; }
+.homepage .jummah-session-list::-webkit-scrollbar-track { background: transparent; }
+.homepage .jummah-session-list::-webkit-scrollbar-thumb { background: #8eafa1; border: 2px solid #e8f0e9; border-radius: 999px; }
+.homepage .jummah-session-list:focus-visible { outline: 3px solid #d8a52c; outline-offset: -3px; }
+.homepage .jummah-session-card,
+.homepage .jummah-session-skeleton {
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #b8d6c8;
+  border-radius: 12px;
+  background: #fff;
+}
+.homepage .jummah-session-skeleton {
+  background: linear-gradient(100deg, #edf3ef 20%, #fff 38%, #edf3ef 56%);
+  background-size: 250% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+}
+.homepage .jummah-session-card { display: grid; grid-template-rows: 28px auto minmax(min-content, 1fr); font-family: inherit; }
+.homepage .jummah-session-skeleton { min-height: 100px; }
+.homepage .jummah-session-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px;
+  background: var(--green);
+  color: #fff;
+}
+.homepage .jummah-session-header h3,
+.homepage .jummah-session-header strong {
+  margin: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 18px;
+}
+.homepage .jummah-session-speaker,
+.homepage .jummah-session-topic {
+  display: grid;
+  align-content: center;
+  min-width: 0;
+  padding: 4px 12px;
+  font-size: 14px;
+  line-height: 18px;
+}
+.homepage .jummah-session-speaker {
+  padding-block: 5px;
+  border-top: 1px solid #b8d6c8;
+  background: #fff;
+}
+.homepage .jummah-session-topic {
+  padding-block: 2px;
+  border-top: 1px solid #b8d6c8;
+  background: #f8faf6;
+}
+.homepage .jummah-session-speaker span,
+.homepage .jummah-session-topic span {
+  margin-right: 0;
+  color: var(--green);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+}
+.homepage .jummah-session-speaker strong,
+.homepage .jummah-session-speaker p,
+.homepage .jummah-session-topic p {
+  margin: 0;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+.homepage .jummah-session-speaker strong { font-weight: 700; }
+.homepage .jummah-session-topic p { font-weight: 400; }
+.homepage .jummah-card .card-header h2 span::before { content: none !important; }
+
+@media (max-width: 768px) {
+  .homepage .jummah-card { height: 565px !important; min-height: 565px !important; }
+  .homepage .jummah-card .card-header { height: 64px !important; min-height: 64px !important; flex-basis: 64px !important; margin: 0 !important; padding-inline: 14px !important; }
+  .homepage .jummah-session-list { margin: 0; padding: 4px; }
+  .homepage .jummah-session-header,
+  .homepage .jummah-session-speaker,
+  .homepage .jummah-session-topic { padding-inline: 12px; }
+}
+@media (max-width: 380px) {
+  .homepage .jummah-card .card-header { gap: 8px !important; padding-inline: 10px !important; }
+  .homepage .jummah-card .card-header h2 { font-size: 13px !important; }
+  .homepage .jummah-card .card-title { gap: 6px; }
+  .homepage .jummah-card .card-title > img { width: 20px; height: 20px; flex-basis: 20px; }
+  .homepage .jummah-date { font-size: 13px; }
+}

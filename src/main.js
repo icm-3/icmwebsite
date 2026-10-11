@@ -932,36 +932,41 @@ async function renderPrayerTimes() {
 
 function renderJummah(content) {
   const targetDate = getNextJummahDate();
-  const postedDate = parseJummahDateLabel(content.jummah.dateLabel || defaultContent.jummah.dateLabel);
-  setText("[data-jummah-date]", formatJummahDate(postedDate || targetDate));
+  const dateLabel = targetDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  setText("[data-jummah-date]", dateLabel);
+  const dateElement = document.querySelector("[data-jummah-date]");
+  if (dateElement) {
+    dateElement.setAttribute("datetime", dateKey(targetDate));
+    dateElement.setAttribute("aria-label", `Upcoming Jumu'ah: ${formatJummahDate(targetDate)}`);
+  }
 
-  const tbody = document.querySelector("[data-jummah-body]");
-  if (!tbody) return;
+  const list = document.querySelector("[data-jummah-body]");
+  if (!list) return;
   const shifts = getJummahRowsForDate(content, targetDate);
   if (!shifts.length) {
-    tbody.innerHTML = '<tr><td colspan="4"><p class="content-empty">The Jumu\u2019ah schedule is awaiting publication.</p></td></tr>';
-    finishLoadingRegion(tbody);
+    list.innerHTML = '<p class="content-empty">The Jumu\u2019ah schedule is awaiting publication.</p>';
+    finishLoadingRegion(list);
     return;
   }
-  tbody.innerHTML = shifts
+  list.innerHTML = shifts
     .map(
-      (shift) => {
-        const speakerFit = textFitClass(shift.speaker, { small: 28, smaller: 42, tiny: 50 });
-        const topicFit = textFitClass(shift.topic, { small: 42, smaller: 68, tiny: 92 });
-        const isTbdTopic = shift.topic.trim().toLowerCase() === "tbd";
-        const topicIcon = isTbdTopic ? "" : `<span class="topic-icon">${topicIconSvg(shift.topic)}</span>`;
-        return `
-        <tr>
-          <td><span class="shift">${escapeHtml(shift.shift)}</span></td>
-          <td class="time">${escapeHtml(shift.time)}</td>
-          <td><span class="speaker-name ${speakerFit}">${escapeHtml(shift.speaker)}</span></td>
-          <td><span class="topic-chip ${topicFit}${isTbdTopic ? " is-tbd" : ""}">${topicIcon}<span class="topic-text">${escapeHtml(shift.topic)}</span></span></td>
-        </tr>
-      `;
-      },
+      (shift, index) => `
+        <article class="jummah-session-card" aria-labelledby="jummah-shift-${index}">
+          <header class="jummah-session-header">
+            <h3 id="jummah-shift-${index}">Shift ${escapeHtml(shift.shift)}</h3>
+            <strong>${escapeHtml(shift.time)}</strong>
+          </header>
+          <div class="jummah-session-speaker">
+            <p><span>Speaker:</span> <strong>${escapeHtml(shift.speaker)}</strong></p>
+          </div>
+          <div class="jummah-session-topic">
+            <p><span>Topic:</span> ${escapeHtml(shift.topic)}</p>
+          </div>
+        </article>
+      `,
     )
     .join("");
-  finishLoadingRegion(tbody);
+  finishLoadingRegion(list);
 }
 
 function renderEvents(content) {

@@ -115,7 +115,7 @@ export function createApp({dbPath=process.env.DB_PATH||path.join(root,'runtime/i
       }
       const aliases={'/':'index.html','/admin':'admin.html'};
       const relative=aliases[p]||decodeURIComponent(p).replace(/^\//,'');
-      const allowed=/^(?:index|about|calendar|donate|news|programs|admin|prayer-times|al-falah-quran-school|al-mizaan-academy|financial-aid|food-pantry|nibraas-institute|social-welfare-services|volunteer)\.html$/.test(relative)||relative==='styles.css'||/^public\/(?:app|images|icons|news|programs|docs)\/[a-zA-Z0-9_./-]+$/.test(relative);
+      const allowed=/^(?:index|about|calendar|donate|news|programs|admin|prayer-times|al-falah-quran-school|al-mizaan-academy|financial-aid|food-pantry|nibraas-institute|social-welfare-services|volunteer)\.html$/.test(relative)||relative==='styles.css'||/^public\/[a-zA-Z0-9_-]+\.(?:css|js)$/.test(relative)||/^public\/(?:app|images|icons|news|programs|docs)\/[a-zA-Z0-9_./-]+$/.test(relative);
       if(!allowed||relative.split('/').some(s=>s==='..'||s.startsWith('.')))fail(404,'Not found');
       const types={'.html':'text/html','.css':'text/css','.js':'text/javascript','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.pdf':'application/pdf'};
       const data=await readFile(path.join(root,relative));

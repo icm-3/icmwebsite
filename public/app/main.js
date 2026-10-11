@@ -8026,14 +8026,6 @@ var prayerOrder = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
 var nextPrayerOrder = prayerOrder;
 var HOME_EVENT_LIMIT = 6;
 var HOME_NEWS_LIMIT = 4;
-var topicIconRules = [
-  { icon: "leaf", words: ["gratitude", "shukr", "blessing", "thanks", "worship", "ibadah", "prayer", "salah", "daily", "green", "environment", "deen", "stewardship", "earth", "creation", "sustainability", "nature", "cleanliness", "purity"] },
-  { icon: "heart", words: ["love", "mercy", "rahma", "compassion", "kindness", "service", "sincerity", "ikhlas", "charity", "giving", "donation", "zakat", "sadaqah", "muhasaba", "self reflection", "forgiveness", "healing", "care"] },
-  { icon: "community", words: ["justice", "responsibility", "accountability", "community", "trust", "amanah", "unity", "neighbors", "ummah", "family", "parents", "children", "marriage", "brotherhood", "sisterhood", "society", "rights", "service"] },
-  { icon: "feather", words: ["patience", "sabr", "change", "hardship", "steadfast", "resilience", "forgiveness", "healing", "trials", "tests", "hope", "courage", "character", "akhlaq", "manners", "humility"] },
-  { icon: "moon", words: ["ramadan", "taraweeh", "quran", "taqwa", "faith", "iman", "spiritual", "eid", "dhul hijjah", "hajj", "umrah", "ghaflah", "heedlessness", "night", "dua", "dhikr", "akhirah", "jannah", "repentance", "tawbah"] },
-  { icon: "spark", words: ["reflection", "reminder", "youth", "knowledge", "learning", "ilm", "education", "wisdom", "seerah", "sunnah", "hadith", "ostentation", "riya", "intention", "niyyah", "growth", "leadership"] }
-];
 var countdownTimer = null;
 var selectedPrayerDate = /* @__PURE__ */ new Date();
 var selectedDatePickerMonth = new Date(selectedPrayerDate.getFullYear(), selectedPrayerDate.getMonth(), 1);
@@ -8228,22 +8220,6 @@ function newsTitle(item, index = 0) {
 function newsSlug(item, index = 0) {
   if (item.id) return slugify(item.id);
   return slugify([newsTitle(item, index), item.date, index].filter(Boolean).join("-")) || `announcement-${index}`;
-}
-function getTopicIcon(topic) {
-  const normalized = topic.toLowerCase();
-  return topicIconRules.find((rule) => rule.words.some((word) => normalized.includes(word)))?.icon || "\u2726";
-}
-function topicIconSvg(topic) {
-  const icon = getTopicIcon(topic);
-  const icons = {
-    leaf: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c6.6 0 11-4.4 11-11V5h-3C6.4 5 3 8.4 3 15v4h2Z"/><path d="M5 19 16 8"/></svg>`,
-    heart: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 6.7a5 5 0 0 0-7.1 0L12 7.9l-1.2-1.2a5 5 0 1 0-7.1 7.1L12 22l8.3-8.2a5 5 0 0 0 0-7.1Z"/></svg>`,
-    community: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M16 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M3 20a5 5 0 0 1 10 0"/><path d="M11 20a5 5 0 0 1 10 0"/></svg>`,
-    feather: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4c-7 0-12 5-12 12v4h4c7 0 12-5 12-12V4h-4Z"/><path d="M8 20 20 8"/><path d="M11 17H7"/><path d="M14 14h-4"/></svg>`,
-    moon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5Z"/></svg>`,
-    spark: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 14.4 9.6 21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4L12 3Z"/></svg>`
-  };
-  return icons[icon] || icons.spark;
 }
 function slugify(value) {
   return String(value ?? "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
@@ -8538,13 +8514,6 @@ function getJummahRowsForDate(content, targetDate) {
   if (isSameDate(postedDate, targetDate)) return shifts;
   return shifts;
 }
-function textFitClass(value, thresholds) {
-  const length = String(value ?? "").trim().length;
-  if (length >= thresholds.tiny) return "fit-tiny";
-  if (length >= thresholds.smaller) return "fit-smaller";
-  if (length >= thresholds.small) return "fit-small";
-  return "fit-normal";
-}
 function renderDateNavigator() {
   setText("[data-date-label]", formatNavigatorDate(selectedPrayerDate));
   const navigator = document.querySelector(".date-navigator");
@@ -8742,33 +8711,38 @@ async function renderPrayerTimes() {
 }
 function renderJummah(content) {
   const targetDate = getNextJummahDate();
-  const postedDate = parseJummahDateLabel(content.jummah.dateLabel || defaultContent.jummah.dateLabel);
-  setText("[data-jummah-date]", formatJummahDate(postedDate || targetDate));
-  const tbody = document.querySelector("[data-jummah-body]");
-  if (!tbody) return;
+  const dateLabel = targetDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  setText("[data-jummah-date]", dateLabel);
+  const dateElement = document.querySelector("[data-jummah-date]");
+  if (dateElement) {
+    dateElement.setAttribute("datetime", dateKey(targetDate));
+    dateElement.setAttribute("aria-label", `Upcoming Jumu'ah: ${formatJummahDate(targetDate)}`);
+  }
+  const list = document.querySelector("[data-jummah-body]");
+  if (!list) return;
   const shifts = getJummahRowsForDate(content, targetDate);
   if (!shifts.length) {
-    tbody.innerHTML = '<tr><td colspan="4"><p class="content-empty">The Jumu\u2019ah schedule is awaiting publication.</p></td></tr>';
-    finishLoadingRegion(tbody);
+    list.innerHTML = '<p class="content-empty">The Jumu\u2019ah schedule is awaiting publication.</p>';
+    finishLoadingRegion(list);
     return;
   }
-  tbody.innerHTML = shifts.map(
-    (shift) => {
-      const speakerFit = textFitClass(shift.speaker, { small: 28, smaller: 42, tiny: 50 });
-      const topicFit = textFitClass(shift.topic, { small: 42, smaller: 68, tiny: 92 });
-      const isTbdTopic = shift.topic.trim().toLowerCase() === "tbd";
-      const topicIcon = isTbdTopic ? "" : `<span class="topic-icon">${topicIconSvg(shift.topic)}</span>`;
-      return `
-        <tr>
-          <td><span class="shift">${escapeHtml(shift.shift)}</span></td>
-          <td class="time">${escapeHtml(shift.time)}</td>
-          <td><span class="speaker-name ${speakerFit}">${escapeHtml(shift.speaker)}</span></td>
-          <td><span class="topic-chip ${topicFit}${isTbdTopic ? " is-tbd" : ""}">${topicIcon}<span class="topic-text">${escapeHtml(shift.topic)}</span></span></td>
-        </tr>
-      `;
-    }
+  list.innerHTML = shifts.map(
+    (shift, index) => `
+        <article class="jummah-session-card" aria-labelledby="jummah-shift-${index}">
+          <header class="jummah-session-header">
+            <h3 id="jummah-shift-${index}">Shift ${escapeHtml(shift.shift)}</h3>
+            <strong>${escapeHtml(shift.time)}</strong>
+          </header>
+          <div class="jummah-session-speaker">
+            <p><span>Speaker:</span> <strong>${escapeHtml(shift.speaker)}</strong></p>
+          </div>
+          <div class="jummah-session-topic">
+            <p><span>Topic:</span> ${escapeHtml(shift.topic)}</p>
+          </div>
+        </article>
+      `
   ).join("");
-  finishLoadingRegion(tbody);
+  finishLoadingRegion(list);
 }
 function renderEvents(content) {
   const list = document.querySelector("[data-events-list]");
