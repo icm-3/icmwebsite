@@ -930,6 +930,47 @@ async function renderPrayerTimes() {
   countdownTimer = window.setInterval(tick, 1000);
 }
 
+let jummahFitObserver;
+let jummahFitFrame;
+
+function fitJummahTopics(list) {
+  list.style.setProperty("--jummah-card-min", "118px");
+  let minimumHeight = 118;
+  for (const card of list.querySelectorAll(".jummah-session-card")) {
+    const topic = card.querySelector(".jummah-session-topic");
+    const text = topic.querySelector("p");
+    const style = getComputedStyle(topic);
+    const padding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+    let size = 14;
+    topic.style.setProperty("--jummah-topic-size", `${size}px`);
+    while (size > 12 && text.getBoundingClientRect().height > topic.clientHeight - padding + 0.5) {
+      size -= 0.5;
+      topic.style.setProperty("--jummah-topic-size", `${size}px`);
+    }
+    const overflow = Math.ceil(text.getBoundingClientRect().height - (topic.clientHeight - padding));
+    // Extremely long CMS text grows the card rather than shrinking below 12px or clipping.
+    if (overflow > 0) minimumHeight = Math.max(minimumHeight, Math.ceil(card.getBoundingClientRect().height + overflow));
+  }
+  list.style.setProperty("--jummah-card-min", `${minimumHeight}px`);
+}
+
+function observeJummahTopics(list) {
+  const scheduleFit = () => {
+    cancelAnimationFrame(jummahFitFrame);
+    jummahFitFrame = requestAnimationFrame(() => fitJummahTopics(list));
+  };
+  jummahFitObserver?.disconnect();
+  let lastWidth = -1;
+  jummahFitObserver = new ResizeObserver(([entry]) => {
+    if (entry.contentRect.width === lastWidth) return;
+    lastWidth = entry.contentRect.width;
+    scheduleFit();
+  });
+  jummahFitObserver.observe(list);
+  scheduleFit();
+  document.fonts?.ready.then(scheduleFit);
+}
+
 function renderJummah(content) {
   const targetDate = getNextJummahDate();
   const dateLabel = targetDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
@@ -967,6 +1008,7 @@ function renderJummah(content) {
     )
     .join("");
   finishLoadingRegion(list);
+  observeJummahTopics(list);
 }
 
 function renderEvents(content) {
