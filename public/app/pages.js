@@ -8,36 +8,288 @@ var Coordinates = class {
 
 // src/default-content.js
 var defaultContent = {
-  hero: {
-    image: "./public/images/masjid-interior-hero-clean.png",
-    imageAlt: "Islamic Center of Morrisville main prayer hall interior with carpet rows, qibla wall, and open worship space"
+  "hero": {
+    "image": "/public/images/masjid-interior-hero-clean.png",
+    "imageAlt": "ICM prayer hall with red carpet and hanging lights"
   },
-  jummah: {
-    dateLabel: "September 18, 2026",
-    shifts: [
-      { shift: "1", time: "12:30 PM", speaker: "To be announced (sample)", topic: "Khutbah topic to be announced" },
-      { shift: "2", time: "1:30 PM", speaker: "To be announced (sample)", topic: "Khutbah topic to be announced" },
-      { shift: "3", time: "2:30 PM", speaker: "To be announced (sample)", topic: "Khutbah topic to be announced" }
+  "jummah": {
+    "dateLabel": "Friday, October 2, 2026",
+    "sourceUrl": "https://www.icmnc.org/",
+    "shifts": [
+      {
+        "shift": "1",
+        "time": "1:00 PM",
+        "speaker": "Shaykh Mohammed ElFarooqui",
+        "topic": "Beyond Basics"
+      },
+      {
+        "shift": "2",
+        "time": "2:00 PM",
+        "speaker": "Shaykh Manzar ul Islam Al-Azhari",
+        "topic": "When \u1E24ay\u0101\u02BE Disappears: Lessons from the Cornell University Incident on Human Dignity and Moral Boundaries"
+      },
+      {
+        "shift": "3",
+        "time": "3:00 PM",
+        "speaker": "Mansoor Syed",
+        "topic": "Success"
+      },
+      {
+        "shift": "4",
+        "time": "4:00 PM",
+        "speaker": "Imam Sami Ko\xE7ak",
+        "topic": "Stinginess: A Disease of the Heart"
+      }
     ]
   },
-  calendar: { today: "" },
-  events: [
-    { id: "33333333-3333-4333-8333-333333333333", title: "Sample Community Family Night", date: "2026-09-18", time: "7:30 PM", location: "ICM \u2014 confirm room in CMS", description: "Sample event content for preview. Replace the date, time, location, and description in the CMS before publishing official information.", url: "", image: "", imageAlt: "" },
-    { id: "44444444-4444-4444-8444-444444444444", title: "Sample Volunteer Orientation", date: "2026-09-20", time: "11:00 AM", location: "Islamic Center of Morrisville", description: "Sample listing demonstrating how volunteer opportunities appear on the website calendar and in the mobile app.", url: "/volunteer.html", image: "", imageAlt: "" }
+  "news": [
+    {
+      "pinned": true,
+      "category": "Announcements",
+      "issueDate": "2026-10-02",
+      "sourceUrl": "https://www.icmnc.org/wp-content/uploads/2026/10/Oct02-2026-FridayAnnouncements-website.jpg",
+      "id": "5bf2bad7-4b24-5926-b5c9-4768beaf4ce9",
+      "title": "Friday Announcements",
+      "date": "2026-10-02",
+      "summary": "Masjid support, parking reminders, school registration, and weekly programs in ICM\u2019s October 2 community update.",
+      "body": "",
+      "image": "/public/news/icm-current/friday-oct-02-2026.jpg",
+      "imageAlt": "ICM Friday Announcements for October 2, 2026",
+      "kind": "news",
+      "icon": "megaphone",
+      "url": ""
+    },
+    {
+      "category": "Sample",
+      "id": "b798ddee-0340-585d-9c85-7ad75ee7b812",
+      "title": "Sample: Portrait poster",
+      "date": "2026-10-04",
+      "summary": "Sample announcement using a vertical poster. This date and description are for layout review, not an actual new ICM announcement.",
+      "body": "",
+      "image": "/public/news/icm-current/bukhari-circle.jpeg",
+      "imageAlt": "Portrait ICM poster used as a layout sample",
+      "kind": "news",
+      "icon": "megaphone",
+      "url": ""
+    },
+    {
+      "category": "Sample",
+      "id": "50a7938e-769f-5afd-a6ce-18064a400053",
+      "title": "Sample: Wide poster",
+      "date": "2026-10-03",
+      "summary": "Sample announcement using a horizontal poster. This date and description are for layout review, not an actual new ICM announcement.",
+      "body": "",
+      "image": "/public/news/icm-current/friday-oct-02-2026.jpg",
+      "imageAlt": "Landscape ICM bulletin used as a layout sample",
+      "kind": "news",
+      "icon": "megaphone",
+      "url": ""
+    },
+    {
+      "pinned": false,
+      "archived": true,
+      "category": "ICM",
+      "sourceUrl": "https://www.icmnc.org/wp-content/uploads/2026/09/ICM-Sciences-of-the-Heart.jpeg",
+      "id": "3f67ad64-29d3-53c9-9b12-4daf13a8a504",
+      "title": "Sciences of the Heart",
+      "date": "",
+      "summary": "ICM\u2019s October 3 workshop with Imam Mohammed Elfarooqui, from Asr to Isha, includes dinner and nasheeds. See the official flyer for details.",
+      "body": "",
+      "image": "/public/news/icm-current/sciences-of-the-heart.jpeg",
+      "imageAlt": "Sciences of the Heart workshop flyer",
+      "kind": "news",
+      "icon": "megaphone",
+      "url": ""
+    },
+    {
+      "pinned": false,
+      "archived": true,
+      "category": "Weekly program",
+      "sourceUrl": "https://www.icmnc.org/wp-content/uploads/2026/09/Love-your-Prophet.png",
+      "id": "2beb8318-e8f7-574c-a4ac-b91d35be87a6",
+      "title": "Love Your Prophet",
+      "date": "",
+      "summary": "Join Imam Sami Ko\xE7ak on Tuesdays after Maghrib for a weekly talk and Q&A at ICM.",
+      "body": "",
+      "image": "/public/news/icm-current/love-your-prophet.png",
+      "imageAlt": "Love Your Prophet weekly talk flyer",
+      "kind": "news",
+      "icon": "megaphone",
+      "url": ""
+    },
+    {
+      "pinned": false,
+      "archived": true,
+      "category": "Sisters",
+      "sourceUrl": "https://www.icmnc.org/wp-content/uploads/2026/05/ICMSistersSewingClass.jpeg",
+      "id": "91a33760-c850-59c9-b3b5-f6f04e39b07a",
+      "title": "Sisters Sewing Classes",
+      "date": "",
+      "summary": "Learn with Abida Mushtaq on Wednesdays, 11 AM\u20131:15 PM. All skill levels welcome; no prerequisites.",
+      "body": "",
+      "image": "/public/news/icm-current/sisters-sewing.jpeg",
+      "imageAlt": "Sisters sewing classes official flyer",
+      "kind": "news",
+      "icon": "megaphone",
+      "url": ""
+    }
   ],
-  news: [
-    { id: "11111111-1111-4111-8111-111111111111", title: "Sample Weekly ICM Newsletter", date: "2026-09-12", summary: "Preview of a weekly newsletter shared automatically with the ICM website and mobile app.", body: "Assalamu alaikum. This is clearly labeled sample newsletter content for testing the connected publishing workflow.\n\nReplace this text with the confirmed weekly announcements in the CMS, add the public issue link if available, and select Publish to website + app.", image: "", imageAlt: "", kind: "newsletter", icon: "megaphone", url: "" },
-    { id: "22222222-2222-4222-8222-222222222222", title: "Sample Community Announcement", date: "2026-09-12", summary: "Example announcement showing how a short community update appears on both connected frontends.", body: "This sample can be edited or removed from the CMS. Add a registration link and image when an official announcement is ready.", image: "", imageAlt: "", kind: "news", icon: "megaphone", url: "" }
+  "events": [
+    {
+      "id": "2588dde7-d6bc-5065-b407-a7f84170f539",
+      "title": "Love Your Prophet",
+      "date": "2026-10-06",
+      "time": "After Maghrib",
+      "location": "ICM \xB7 101 Quail Fields Ct",
+      "description": "Weekly talk and Q&A with Imam Sami Ko\xE7ak on the characteristics of Prophet Muhammad \uFDFA. ICM advertises this program on Tuesdays after Maghrib.",
+      "sourceUrl": "https://www.icmnc.org/wp-content/uploads/2026/09/Love-your-Prophet.png",
+      "url": "",
+      "image": "",
+      "imageAlt": ""
+    },
+    {
+      "id": "2c88d16f-6db8-5dbb-9b62-0a4c45efa7e9",
+      "title": "Sisters Sewing Class",
+      "date": "2026-10-07",
+      "time": "11:00 AM - 1:15 PM",
+      "location": "ICM \xB7 107 Quail Fields Ct",
+      "description": "Wednesday sewing classes with Abida Mushtaq, open to sisters of all skill levels. Text 919-720-0731 for details.",
+      "sourceUrl": "https://www.icmnc.org/wp-content/uploads/2026/05/ICMSistersSewingClass.jpeg",
+      "url": "",
+      "image": "",
+      "imageAlt": ""
+    },
+    {
+      "id": "2588dde7-d6bc-5065-b407-a7f84170f539",
+      "title": "Love Your Prophet",
+      "date": "2026-10-13",
+      "time": "After Maghrib",
+      "location": "ICM \xB7 101 Quail Fields Ct",
+      "description": "Weekly talk and Q&A with Imam Sami Ko\xE7ak on the characteristics of Prophet Muhammad \uFDFA. ICM advertises this program on Tuesdays after Maghrib.",
+      "sourceUrl": "https://www.icmnc.org/wp-content/uploads/2026/09/Love-your-Prophet.png",
+      "url": "",
+      "image": "",
+      "imageAlt": ""
+    },
+    {
+      "id": "2c88d16f-6db8-5dbb-9b62-0a4c45efa7e9",
+      "title": "Sisters Sewing Class",
+      "date": "2026-10-14",
+      "time": "11:00 AM - 1:15 PM",
+      "location": "ICM \xB7 107 Quail Fields Ct",
+      "description": "Wednesday sewing classes with Abida Mushtaq, open to sisters of all skill levels. Text 919-720-0731 for details.",
+      "sourceUrl": "https://www.icmnc.org/wp-content/uploads/2026/05/ICMSistersSewingClass.jpeg",
+      "url": "",
+      "image": "",
+      "imageAlt": ""
+    },
+    {
+      "id": "2588dde7-d6bc-5065-b407-a7f84170f539",
+      "title": "Love Your Prophet",
+      "date": "2026-10-20",
+      "time": "After Maghrib",
+      "location": "ICM \xB7 101 Quail Fields Ct",
+      "description": "Weekly talk and Q&A with Imam Sami Ko\xE7ak on the characteristics of Prophet Muhammad \uFDFA. ICM advertises this program on Tuesdays after Maghrib.",
+      "sourceUrl": "https://www.icmnc.org/wp-content/uploads/2026/09/Love-your-Prophet.png",
+      "url": "",
+      "image": "",
+      "imageAlt": ""
+    },
+    {
+      "id": "2c88d16f-6db8-5dbb-9b62-0a4c45efa7e9",
+      "title": "Sisters Sewing Class",
+      "date": "2026-10-21",
+      "time": "11:00 AM - 1:15 PM",
+      "location": "ICM \xB7 107 Quail Fields Ct",
+      "description": "Wednesday sewing classes with Abida Mushtaq, open to sisters of all skill levels. Text 919-720-0731 for details.",
+      "sourceUrl": "https://www.icmnc.org/wp-content/uploads/2026/05/ICMSistersSewingClass.jpeg",
+      "url": "",
+      "image": "",
+      "imageAlt": ""
+    },
+    {
+      "id": "2588dde7-d6bc-5065-b407-a7f84170f539",
+      "title": "Love Your Prophet",
+      "date": "2026-10-27",
+      "time": "After Maghrib",
+      "location": "ICM \xB7 101 Quail Fields Ct",
+      "description": "Weekly talk and Q&A with Imam Sami Ko\xE7ak on the characteristics of Prophet Muhammad \uFDFA. ICM advertises this program on Tuesdays after Maghrib.",
+      "sourceUrl": "https://www.icmnc.org/wp-content/uploads/2026/09/Love-your-Prophet.png",
+      "url": "",
+      "image": "",
+      "imageAlt": ""
+    },
+    {
+      "id": "2c88d16f-6db8-5dbb-9b62-0a4c45efa7e9",
+      "title": "Sisters Sewing Class",
+      "date": "2026-10-28",
+      "time": "11:00 AM - 1:15 PM",
+      "location": "ICM \xB7 107 Quail Fields Ct",
+      "description": "Wednesday sewing classes with Abida Mushtaq, open to sisters of all skill levels. Text 919-720-0731 for details.",
+      "sourceUrl": "https://www.icmnc.org/wp-content/uploads/2026/05/ICMSistersSewingClass.jpeg",
+      "url": "",
+      "image": "",
+      "imageAlt": ""
+    }
   ],
-  programs: [],
-  settings: {
-    donationUrl: "https://www.icmnc.org/donate/",
-    newsletterUrl: "https://lp.constantcontactpages.com/su/4AalmfK/ICMweekly",
-    contactEmail: "contact@icmnc.org",
-    address: "107 Quail Fields Ct, Morrisville, NC 27560",
-    facebook: "https://www.facebook.com/ICMMASJID/",
-    instagram: "https://www.instagram.com/icmmasjid/",
-    youtube: "https://www.youtube.com/@islamiccenterofmorrisville1071"
+  "programs": [
+    {
+      "id": "433ffd33-9377-40f4-be01-efe7c4811dde",
+      "title": "Nibraas Institute",
+      "description": "A four-year Alim Bachelor's Degree program in Islamic Studies committed to advancing Islamic higher education.",
+      "schedule": "Four-year degree with eight total semesters \xB7 In-person learning opportunities \xB7 Classes three times a week for one hour each",
+      "url": "/nibraas-institute.html",
+      "category": "Education Programs"
+    },
+    {
+      "id": "873eccac-9fea-4e92-987c-d0e58c596dbd",
+      "title": "Al Mizaan Leadership Academy",
+      "description": "Inclusive Islamic education and leadership skills that empower youth to be future leaders in their homes and communities.",
+      "schedule": "Weekend learning environment for local Muslim youth \xB7 Islamic teachings and Quranic Arabic \xB7 Leadership skills connected to daily life",
+      "url": "/al-mizaan-academy.html",
+      "category": "Education Programs"
+    },
+    {
+      "id": "ef059bfa-b59b-451b-9dc5-72b5c89b2205",
+      "title": "Al-Falah Quran School",
+      "description": "Quran memorization and reading program with Tajweed, personalized learning plans, and qualified teachers.",
+      "schedule": "For Grade 1 and up \xB7 Monday-Thursday, 5:00-6:30 PM \xB7 $100/month for one child with family discount",
+      "url": "/al-falah-quran-school.html",
+      "category": "Education Programs"
+    },
+    {
+      "id": "9c8e9fa9-554a-44cf-8f2a-47c57e6ae9b2",
+      "title": "Financial Aid",
+      "description": "Confidential support requests for rent, utility bills, basic needs, disaster support, and other reviewed hardships.",
+      "schedule": "Separate financial aid application \xB7 Required document uploads \xB7 Reviewed by Social and Welfare Committee",
+      "url": "/financial-aid.html",
+      "category": "Services"
+    },
+    {
+      "id": "ee588968-347f-4297-ab43-1b390a0b7cd4",
+      "title": "Food Pantry",
+      "description": "In-person pantry support for community members. Applications are completed at ICM during pantry service hours.",
+      "schedule": "First Saturday of each month \xB7 9:00-11:00 AM \xB7 No online food pantry form",
+      "url": "/food-pantry.html",
+      "category": "Services"
+    },
+    {
+      "id": "ec3df986-5780-4334-8129-a3b94849f7e9",
+      "title": "Volunteer Opportunities",
+      "description": "Volunteers support events, education, social service, prayer logistics, and community operations.",
+      "schedule": "Event and program support \xB7 Service-hour request support \xB7 Community operations",
+      "url": "/volunteer.html",
+      "category": "Services"
+    }
+  ],
+  "settings": {
+    "donationUrl": "https://www.icmnc.org/donate/",
+    "newsletterUrl": "https://lp.constantcontactpages.com/su/4AalmfK/ICMweekly",
+    "contactEmail": "contact@icmnc.org",
+    "address": "107 Quail Fields Ct, Morrisville, NC 27560",
+    "facebook": "https://www.facebook.com/ICMMASJID/",
+    "instagram": "https://www.instagram.com/icmmasjid/",
+    "youtube": "https://www.youtube.com/@islamiccenterofmorrisville1071"
   }
 };
 
@@ -185,7 +437,7 @@ function normalizeNewsItems(items, fallbackItems = []) {
   let evergreenAssigned = false;
   return source.map((item) => {
     const normalized = { ...item };
-    const isEvergreen = !evergreenAssigned && (normalized.id === EVERGREEN_ANNOUNCEMENT_ID || normalized.pinned === true || fridayAnnouncementPattern.test(String(normalized.title || "")));
+    const isEvergreen = !evergreenAssigned && !normalized.archived && (normalized.id === EVERGREEN_ANNOUNCEMENT_ID || normalized.pinned === true || fridayAnnouncementPattern.test(String(normalized.title || "")));
     if (isEvergreen) {
       evergreenAssigned = true;
       normalized.id = EVERGREEN_ANNOUNCEMENT_ID;
@@ -213,6 +465,7 @@ function newsCategory(item) {
   if (text.includes("parking") || text.includes("arrival")) return "Notice";
   return "Announcement";
 }
+var announcementPin = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Pinned"><path d="M8 2h8a1 1 0 0 1 0 2h-1v5l3 4v2h-5v6l-1 2-1-2v-6H6v-2l3-4V4H8a1 1 0 0 1 0-2Z"/></svg>`;
 
 // src/media.js
 var responsiveMedia = /* @__PURE__ */ new Map([
@@ -975,6 +1228,7 @@ function setCalendarDetail(event, index = 0) {
                 ${event.location ? `<span class="calendar-detail-location"><b>Location</b><span>${escapeHtml(event.location)}</span></span>` : ""}
               </div>` : ""}
         ${event.description ? `<p class="calendar-detail-description">${escapeHtml(event.description)}</p>` : ""}
+        ${/^https:\/\//.test(event.sourceUrl || "") ? `<a href="${escapeHtml(event.sourceUrl)}" target="_blank" rel="noopener">Official ICM flyer \u2197</a>` : ""}
         ${eventLink(event) ? `<a class="calendar-detail-link" href="${escapeHtml(eventLink(event))}" target="_blank" rel="noopener">Register</a>` : ""}
       </div>
       ${poster ? `<figure class="calendar-detail-poster">${responsiveImageMarkup(poster, eventPosterAlt(event), { sizes: "(max-width: 768px) calc(100vw - 48px), 960px" })}</figure>` : ""}
@@ -1159,9 +1413,10 @@ function renderNews(content) {
       return `
           <a class="news-feature${shortTitleClass}" id="${escapeHtml(newsId)}" href="./news.html#${escapeHtml(newsId)}">
             ${item.image ? responsiveImageMarkup(item.image, item.imageAlt || newsTitle(item, originalIndex), { sizes: "(max-width: 768px) calc(100vw - 48px), 210px" }) : ""}
+            ${item.pinned ? `<span class="news-pinned">${announcementPin}<span>PINNED</span></span>` : ""}
             <span class="news-feature-category">${escapeHtml(newsCategory(item))}</span>
             <div>
-              ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
+              ${item.date ? `<time datetime="${escapeHtml(item.date)}">${item.pinned || item.issueDate ? "Updated " : ""}${escapeHtml(formatShortDate(item.date))}</time>` : `<span class="news-undated">Date not provided</span>`}
               ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
               ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
             </div>
@@ -1182,9 +1437,11 @@ function renderNews(content) {
       <article class="news-detail" data-news-detail data-news-id="${escapeHtml(newsId)}">
         <a class="news-detail-back" href="./news.html">Back to news</a>
         <div class="news-detail-body">
+
           <span class="news-feature-category">${escapeHtml(newsCategory(item))}</span>
-          ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
+          ${item.date ? `<time datetime="${escapeHtml(item.date)}">${item.pinned || item.issueDate ? "Updated " : ""}${escapeHtml(formatShortDate(item.date))}</time>` : `<span class="news-undated">Date not provided</span>`}
           ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
+
           ${item.summary ? `<div class="news-detail-summary"><p>${escapeHtml(item.summary)}</p></div>` : ""}
           ${item.body ? `<div class="news-detail-copy">${String(item.body).split(/\n{2,}/).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}</div>` : ""}
           ${item.url ? `<a class="calendar-detail-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${item.kind === "newsletter" ? "Open newsletter" : "Read more"}</a>` : ""}

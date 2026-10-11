@@ -1,0 +1,620 @@
+/* Homepage-only banner: keep the shared cards and interior pages unchanged. */
+.homepage .site-header {
+  background: #fff;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.homepage .hero {
+  display: flex;
+  align-items: center;
+  min-height: calc(100svh - var(--home-header-height));
+  background: var(--green-dark);
+}
+
+.homepage .hero::before {
+  background: linear-gradient(90deg, rgba(0, 45, 33, 0.88) 0%, rgba(0, 45, 33, 0.76) 32%, rgba(0, 45, 33, 0.32) 62%, rgba(0, 0, 0, 0.08) 100%);
+}
+
+.homepage .hero-copy {
+  width: 100%;
+  padding: 80px clamp(28px, 6vw, 116px) 100px;
+}
+
+.homepage .hero-copy::before {
+  content: none;
+}
+
+.homepage .hero h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(58px, 5.5vw, 88px);
+  line-height: 1.04;
+  text-indent: 0;
+}
+
+.homepage .hero-title-line {
+  display: block;
+  color: #c9e2d5;
+  font-size: 1em;
+  white-space: normal;
+}
+
+.homepage .hero-subtitle {
+  max-width: 490px;
+  margin: 24px 0 30px;
+  color: var(--green-pale);
+  font-size: clamp(17px, 1.4vw, 20px);
+  line-height: 1.55;
+}
+
+.homepage .hero-subtitle br {
+  display: none;
+}
+
+.homepage .hero-image img {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  object-position: center top;
+}
+
+.homepage .hero-actions .button {
+  width: 190px;
+  padding-inline: 18px;
+  white-space: nowrap;
+  height: 52px;
+  font-size: 16px;
+}
+
+.homepage .hero-actions .button-secondary {
+  color: #fff;
+  background: rgba(0, 45, 33, 0.24);
+  border-color: rgba(234, 244, 238, 0.7);
+}
+
+.homepage .hero-actions .button-secondary img {
+  filter: brightness(0) invert(1);
+}
+
+.homepage .hero-actions .button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 5px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .homepage .hero-actions .button-secondary:hover {
+    background: var(--green-dark);
+    border-color: #fff;
+  }
+}
+
+
+.homepage { --home-header-height: 90px; background: #fff; }
+.homepage .site-header { height: var(--home-header-height); }
+.homepage .hero { margin-top: 0; }
+.homepage .hero-image img { object-fit: cover; filter: none; }
+.homepage .hero::before {
+  background: transparent;
+  
+}
+.homepage .top-nav > .nav-donate { background: #fff !important; color: var(--green) !important; border-color: var(--green); }
+.homepage .nav-donate img { filter: none; }
+/* Shared dark-green courtyard surface with a quiet prayer-mat arch motif. */
+.homepage main { background: #e8f0e9; }
+.homepage .info-grid { background: transparent; }
+.homepage .info-card { background: #fff; }
+.homepage .info-card .table-wrap, .homepage .info-card .event-list,
+.homepage .info-card .news-list { background: transparent; }
+.homepage .jummah-card td { background: transparent; }
+.homepage .jummah-card td.time { background: var(--green) !important; color: #fff !important; }
+.homepage .jummah-card td.time::before { color: rgba(255,255,255,.8); }
+.homepage .prayer-section { background: transparent; padding-top: 62px; }
+.homepage .date-navigator { top: 18px; right: 30px; border-radius: 12px 12px 0 0; border-bottom: 0; box-shadow: none; }
+.homepage .info-card .card-header {
+  position: relative; isolation: isolate;
+  background: var(--green) !important;
+  border-color: var(--green);
+}
+.homepage .info-card .card-header h2,
+.homepage .info-card .card-header h2 span,
+.homepage .info-card .card-header > a,
+.homepage .info-card .card-header > a span { color: #fff !important; }
+.homepage .info-card .card-title > img { filter: brightness(0) invert(1); }
+.homepage .scroll-reveal { transition: opacity 360ms ease-out, transform 480ms cubic-bezier(.22,1,.36,1); }
+.homepage .scroll-reveal.is-pending { opacity: 0; transform: translateY(28px); }
+@media (max-width: 820px) {
+  .homepage { --home-header-height: 76px; }
+  .homepage .hero-copy { padding: 64px 20px 80px; text-align: center; }
+  .homepage .hero h1 { font-size: clamp(39px, 7.8vw, 64px); }
+  .homepage .hero::before { background: linear-gradient(180deg, transparent 15%, rgba(0,25,18,.38) 40%, rgba(0,25,18,.42) 70%, transparent); }
+  .homepage .hero-image { position: absolute; inset: 0; min-height: 100%; }
+  .homepage .hero-image img { position: absolute; object-position: 57% top; }
+  .homepage .hero-subtitle { margin-inline: auto; font-size: 19px; max-width: 370px; }
+  .homepage .hero-actions { width: 100%; justify-content: center; flex-direction: row; flex-wrap: nowrap; gap: 10px; }
+  .homepage .hero-actions .button { flex: 0 0 auto; width: auto; height: 46px; min-height: 46px; padding-inline: 16px; gap: 8px; font-size: 14px; }
+}
+@media (max-width: 520px) {
+  .homepage .hero h1 { font-size: clamp(39px, 11vw, 55px); }
+  .homepage .hero-actions .button img { width: 22px; height: 22px; }
+}
+@media (max-width: 380px) {
+  .homepage { --home-header-height: 70px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .homepage .scroll-reveal, .homepage .scroll-reveal.is-pending { opacity: 1; transform: none; transition: none; }
+}
+
+/* Color belongs to the shared outer surfaces, not the individual entries. */
+.homepage .info-card { background: #e8f0e9; }
+.homepage .events-card .event-item,
+.homepage .news-card .news-item { background: #f8faf6 !important; border-color: #d6e0d6 !important; box-shadow: 0 2px 6px rgba(20,50,35,.035) !important; }
+.homepage .home-events-empty { padding: 24px; line-height: 1.6; }
+@media (max-width: 768px) {
+  .homepage .prayer-section { padding-top: 58px; }
+  .homepage .date-navigator { right: 6px; }
+}
+
+/* Matching full-width section headings across desktop and phone. */
+.homepage .info-card .card-header {
+  box-sizing: border-box !important;
+  flex-direction: row !important;
+  height: 68px !important;
+  min-height: 68px !important;
+  flex: 0 0 68px !important;
+  padding: 12px 22px !important;
+  align-items: center !important;
+  border: 0 !important;
+}
+.homepage .info-card .card-header::before,
+.homepage .info-card .card-header::after { content: none !important; }
+.homepage .events-card .card-header,
+.homepage .news-card .card-header { margin: -21px -22px 0 !important; }
+.homepage .prayer-strip { border-top-right-radius: 0 !important; }
+.homepage .date-navigator { border-color: rgba(165,100,5,.24); }
+@media (max-width: 768px) {
+  .homepage .info-card .card-header {
+    height: 64px !important;
+    min-height: 64px !important;
+    flex-basis: 64px !important;
+    margin: -18px -14px 0 !important;
+    padding: 10px 14px !important;
+  }
+}
+
+/* A single motif belongs to Jumu’ah; the transition band has its own treatment. */
+.homepage .jummah-card .card-header {
+  background-image: url('./icons/section-masjid.svg') !important;
+  background-repeat: no-repeat !important;
+  background-position: right center !important;
+  background-size: 150px auto !important;
+}
+
+@media (max-width: 380px) {
+  .homepage .date-navigator { right: 5px; }
+}
+
+/* Event details read as one compact list rather than loose lines. */
+.homepage .events-card .event-item-body p > span {
+  position: relative;
+  padding-left: 12px;
+}
+.homepage .events-card .event-item-body p > span::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: .5lh;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #111;
+}
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  .homepage .events-card.scroll-reveal { transition-delay: 60ms; }
+  .homepage .news-card.scroll-reveal { transition-delay: 120ms; }
+}
+.homepage .scroll-reveal:focus-within { transition: none; }
+
+/* Balance the Today control within the end of the date tab. */
+.homepage .date-nav-today { position: relative; left: -3px; }
+
+/* Allow wrapped desktop topics to keep the same inset as short topics. */
+@media (min-width: 769px) {
+  .homepage .jummah-card tbody tr {
+    height: auto !important;
+    min-height: 112px !important;
+    grid-template-rows: 19px minmax(31px, auto) auto !important;
+    padding-bottom: 8px !important;
+  }
+}
+.homepage .prayer-section,
+.homepage .prayer-strip,
+.homepage .info-card { border-color: #d6e0d6 !important; }
+.homepage .date-navigator {
+  background: var(--green);
+  border-color: var(--green) !important;
+}
+.homepage .date-nav-main,
+.homepage .date-nav-button,
+.homepage .date-nav-today {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255,255,255,.3);
+}
+.homepage .date-nav-main img,
+.homepage .date-nav-button img { filter: brightness(0) invert(1); }
+.homepage .date-nav-today:hover,
+.homepage .date-nav-button:hover,
+.homepage .date-nav-main:hover { background: rgba(255,255,255,.14); }
+.homepage .date-navigator button:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+@media (min-width: 769px) {
+  .homepage .jummah-card tbody {
+    height: auto !important;
+    grid-template-rows: repeat(4, auto) !important;
+    row-gap: 8px !important;
+    overflow: visible !important;
+  }
+  .homepage .jummah-card td:last-child { min-height: min-content !important; }
+}
+@media (min-width: 769px) {
+  .homepage .jummah-card tbody tr:has(.topic-chip.fit-tiny) {
+    min-height: 120px !important;
+    grid-template-rows: 19px 31px minmax(47px, auto) !important;
+  }
+}
+
+/* Quiet edge decoration; keep the reading area clear. */
+.homepage main {
+  background-color: #e8f0e9;
+  background-image: url('./icons/prayer-mat-arches.svg?v=2'), url('./icons/prayer-mat-arches.svg?v=2');
+  background-position: left top, right top;
+  background-repeat: repeat-y;
+  background-size: 110px 126px;
+}
+.homepage .date-navigator {
+  background: #e8f0e9;
+  border-color: #c8d8ce !important;
+}
+.homepage .date-nav-main {
+  background: #f7f5ef;
+  color: var(--green);
+  border-color: #c8d8ce;
+}
+.homepage .date-nav-button { color: var(--green); }
+.homepage .date-nav-main img,
+.homepage .date-nav-button img { filter: none; }
+.homepage .date-nav-today {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+.homepage .date-nav-main:hover,
+.homepage .date-nav-button:hover { background: #d7e5da; }
+.homepage .date-nav-today:hover { background: var(--green-dark); }
+.homepage .date-navigator button:focus-visible { outline-color: #a56405; }
+
+.homepage .date-nav-main,
+.homepage .date-nav-button { background: #f7f5ef; color: #111; }
+.homepage .date-nav-main img,
+.homepage .date-nav-button img { filter: brightness(0); }
+.homepage .events-card,
+.homepage .news-card {
+  --preview-row: 148px;
+  --preview-gap: 8px;
+  height: auto !important;
+  align-self: start;
+  padding-bottom: 12px !important;
+}
+.homepage .events-card .event-list,
+.homepage .news-card .news-list {
+  display: flex !important;
+  flex-direction: column;
+  gap: var(--preview-gap) !important;
+  flex: none !important;
+  height: calc(3 * var(--preview-row) + 2 * var(--preview-gap)) !important;
+  max-height: calc(3 * var(--preview-row) + 2 * var(--preview-gap)) !important;
+  padding-block: 0 !important;
+}
+.homepage .events-card .event-item,
+.homepage .news-card .news-item {
+  box-sizing: border-box !important;
+  flex: 0 0 var(--preview-row) !important;
+  height: var(--preview-row) !important;
+  min-height: var(--preview-row) !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  grid-template-columns: 96px minmax(0, 1fr) !important;
+  gap: 10px !important;
+  align-items: center !important;
+}
+.homepage .events-card .event-item .event-thumb,
+.homepage .news-card .news-item img {
+  width: 96px !important;
+  height: 112px !important;
+  object-fit: contain !important;
+}
+.homepage .events-card .event-item h3,
+.homepage .news-card .news-item h3,
+.homepage .news-card .news-item p {
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 3 !important;
+  overflow: hidden !important;
+  max-height: none !important;
+}
+@media (max-width: 768px) {
+  .homepage .events-card,
+  .homepage .news-card { --preview-row: 124px; }
+  .homepage .events-card .event-item,
+  .homepage .news-card .news-item { grid-template-columns: 72px minmax(0, 1fr) !important; gap: 8px !important; }
+  .homepage .events-card .event-item .event-thumb,
+  .homepage .news-card .news-item img { width: 72px !important; height: 96px !important; }
+}
+.homepage .news-card .news-item-body,
+.homepage .events-card .event-item-body {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  padding-right: 0 !important;
+}
+.homepage .news-card .news-item h3,
+.homepage .news-card .news-item p {
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+}
+
+/* One quiet date surface; Today is the sole filled accent. */
+.homepage .date-navigator { background: #f7f5ef; border-color: #d8ddd6 !important; }
+.homepage .date-nav-main:hover,
+.homepage .date-nav-button:hover { background: #e9e7e0; }
+.homepage main { background-image: none; }
+.homepage .prayer-section {
+  background-image: url('./icons/mihrab-weave.svg'), url('./icons/mihrab-weave.svg');
+  background-size: 180px 120px;
+  background-position: 6% top, 62% top;
+  background-repeat: no-repeat;
+}
+.homepage .info-grid {
+  background-image: url('./icons/mihrab-weave.svg');
+  background-size: 180px 120px;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+}
+.homepage .events-card,
+.homepage .news-card { --preview-row: 140px; }
+.homepage .events-card .event-item,
+.homepage .news-card .news-item { align-items: start !important; }
+.homepage .events-card .event-item-body,
+.homepage .news-card .news-item-body { align-self: start !important; margin-top: 0 !important; }
+.homepage .events-card .event-item h3,
+.homepage .news-card .news-item h3 { margin-top: 0 !important; }
+.homepage .events-card .event-item .event-thumb,
+.homepage .news-card .news-item img { object-position: center top !important; align-self: start !important; }
+@media (max-width: 768px) {
+  .homepage .events-card,
+  .homepage .news-card { --preview-row: 120px; }
+  .homepage .events-card .event-item .event-thumb,
+  .homepage .news-card .news-item img { height: 94px !important; }
+  .homepage .prayer-section { background-position: left top, right bottom; background-size: 130px 87px; }
+  .homepage .info-grid { background-size: 150px 100px; background-position: center top; background-repeat: repeat-y; }
+}
+
+.homepage .date-navigator,
+.homepage .date-nav-main,
+.homepage .date-nav-button { background: #fff; }
+.homepage .date-nav-main img { filter: none; }
+.homepage main,
+.homepage .prayer-section,
+.homepage .info-grid { background-image: none; }
+.homepage .events-card .card-header {
+  background-image: url('./icons/heading-calendar.svg') !important;
+  background-repeat: no-repeat !important;
+  background-position: right center !important;
+  background-size: 160px 64px !important;
+}
+.homepage .news-card .card-header {
+  background-image: url('./icons/heading-news.svg') !important;
+  background-repeat: no-repeat !important;
+  background-position: right center !important;
+  background-size: 160px 64px !important;
+}
+.homepage .hero-actions .button-primary img { filter: brightness(0) invert(1); }
+@media (min-width: 769px) {
+  .homepage .events-card,
+  .homepage .news-card { height: 565px !important; --preview-gap: 31.5px; }
+  .homepage .events-card .event-item h3,
+  .homepage .news-card .news-item h3 { font-size: 16px !important; line-height: 18px !important; }
+  .homepage .events-card .event-item p,
+  .homepage .news-card .news-item p { font-size: 14px !important; line-height: 18px !important; }
+}
+@media (max-width: 768px) {
+  .homepage .events-card .event-item h3,
+  .homepage .news-card .news-item h3 { font-size: 13px !important; line-height: 15px !important; }
+  .homepage .events-card .event-item p,
+  .homepage .news-card .news-item p { font-size: 12px !important; line-height: 14px !important; }
+}
+
+.homepage .events-card .card-header,
+.homepage .news-card .card-header { background-image: none !important; }
+.homepage .date-navigator { border-radius: 0; }
+.homepage .date-navigator > .date-nav-button:first-child { border-radius: 0; }
+.homepage .news-card .news-category,
+.homepage .events-card .event-item .event-status { top: 12px !important; right: 12px !important; line-height: 16px !important; }
+.homepage .top-nav > .nav-donate { background: var(--green) !important; color: #fff !important; }
+.homepage .nav-donate img { filter: brightness(0) invert(1); }
+@media (min-width: 821px) {
+  .homepage .nav-donate img { display: none; }
+}
+@media (min-width: 769px) {
+  .homepage .date-navigator { width: 440px; }
+  .homepage .date-nav-main { flex: 1; min-width: 0 !important; }
+}
+@media (max-width: 768px) {
+  .homepage .date-navigator { max-width: calc(100% - 12px) !important; }
+  .homepage .date-nav-button { width: 28px; flex: 0 0 28px; }
+  .homepage .date-nav-main { padding-inline: 6px !important; font-size: 11.5px !important; gap: 5px; }
+  .homepage .date-nav-main img { width: 16px; height: 16px; }
+  .homepage .date-nav-today { padding-inline: 7px; margin-inline: 6px; left: 0; }
+}
+@media (max-width: 768px) {
+  .homepage .news-card .news-category { top: 0 !important; }
+}
+
+.homepage .top-nav > .nav-donate { background: #fff !important; color: var(--green) !important; }
+.homepage .nav-donate img { filter: none; }
+@media (min-width: 769px) {
+  .homepage .date-navigator { width: 410px; }
+}
+@media (max-width: 768px) {
+  .homepage .date-nav-today { height: 25px !important; padding-inline: 10px; font-size: 11px; }
+  .homepage .date-nav-main { padding-inline: 11px !important; }
+}
+
+/* Stable text budgets: titles never run beneath category/status badges. */
+.homepage .news-card .news-item h3 { box-sizing: border-box !important; padding-right: 90px !important; overflow-wrap: anywhere !important; }
+.homepage .news-card .news-category {
+  box-sizing: border-box;
+  max-width: 82px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 8px !important;
+  padding-inline: 5px !important;
+  height: 16px !important;
+}
+.homepage .events-card .event-item:has(.event-status) h3 { padding-right: 48px !important; }
+.homepage .events-card .event-item h3 { overflow-wrap: anywhere !important; }
+.homepage .events-card .event-item p > span {
+  display: block !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+}
+.homepage .events-card .event-item .event-status {
+  height: 16px !important;
+  padding: 0 5px !important;
+  line-height: 16px !important;
+}
+/* Bound long speaker names before they can push the topic out of its row. */
+@media (min-width: 769px) {
+  .homepage .jummah-card .speaker-name {
+    display: block !important;
+    height: 31px !important;
+    min-height: 31px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  .homepage .jummah-card .speaker-name::before { display: block; margin-bottom: 2px; }
+  .homepage .jummah-card .topic-chip {
+    min-height: 0 !important;
+    font-size: 12.8px !important;
+    line-height: 15px !important;
+  }
+  .homepage .jummah-card .topic-text { line-height: 15px !important; }
+}
+.homepage .news-card .news-category { display: block !important; text-align: left !important; direction: ltr; }
+
+.homepage .nav-donate img { display: block; }
+@media (hover: hover) and (pointer: fine) {
+  .homepage .hero-actions .button-secondary:hover { background: rgba(255,255,255,.16) !important; border-color: #fff; }
+}
+.homepage .news-card .news-item-heading { display: flex; align-items: flex-start; gap: 7px; min-width: 0; }
+.homepage .news-card .news-item-heading h3 { flex: 1 1 0; min-width: 0; padding-right: 0 !important; }
+.homepage .news-card .news-item-heading .news-category {
+  position: static !important;
+  flex: 0 1 auto;
+  width: auto !important;
+  max-width: 45% !important;
+  height: auto !important;
+  min-width: 0;
+  white-space: normal !important;
+  overflow: visible !important;
+  overflow-wrap: anywhere;
+  text-overflow: clip !important;
+  line-height: 12px !important;
+  padding: 2px 5px !important;
+}
+@media (max-width: 768px) {
+  .homepage .date-nav-main { padding-inline: 16px !important; }
+}
+@media (max-width: 820px) {
+  .homepage .site-header {
+    position: absolute !important;
+    inset: 0 0 auto;
+    z-index: 50;
+    background: transparent !important;
+    border-bottom: 0;
+  }
+  .homepage .hero {
+    min-height: 100svh;
+    min-height: 100lvh;
+    box-sizing: border-box;
+    padding-top: var(--home-header-height);
+  }
+  .homepage .brand img { filter: drop-shadow(0 0 3px rgba(255,255,255,.8)); }
+  .homepage .menu-button img { filter: brightness(0) invert(1); }
+}
+
+.homepage .date-navigator { border-radius: 12px 12px 0 0; }
+.homepage .date-navigator > .date-nav-button:first-child { border-top-left-radius: 11px; }
+@media (max-width: 820px) {
+  .homepage .site-header { position: relative !important; inset: auto; background: #fff !important; }
+  .homepage .hero {
+    padding-top: 0;
+    min-height: calc(100svh - var(--home-header-height));
+    /* Stable large viewport prevents image rescaling as browser controls hide. */
+    min-height: calc(100lvh - var(--home-header-height));
+  }
+  .homepage .brand img,
+  .homepage .menu-button img { filter: none; }
+}
+@media (max-width: 768px) {
+  .homepage .date-nav-main { padding-inline: 20px !important; }
+}
+
+/* Shared metadata row: date and category above every announcement title. */
+.homepage .news-card .news-item-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; min-width: 0; }
+.homepage .news-card .news-date-line { display: flex; align-items: center; gap: 5px; min-width: 0; }
+.homepage .news-card .news-item-meta time { position: static !important; margin: 0 !important; }
+.homepage .news-card .news-date-line svg { flex: 0 0 11px; width: 11px; height: 11px; color: #005b46; }
+.homepage .news-card .news-item-meta .news-category {
+  position: static !important; flex: 0 1 auto; max-width: 46% !important; height: auto !important;
+  white-space: normal !important; overflow: visible !important; text-overflow: clip !important;
+  overflow-wrap: anywhere; line-height: 12px !important; padding: 2px 5px !important; margin: 0 !important;
+}
+.homepage .news-card .news-item.is-wide-media img { object-position: center !important; background: #f8f7f2 !important; }
+
+/* Every poster uses the same card layout; no paging or forced letterbox surface. */
+.homepage .news-card .news-item { grid-template-rows: auto !important; grid-template-areas: none !important; }
+.homepage .news-card .news-list { scroll-snap-type: none !important; }
+.homepage .news-card .news-item img,
+.homepage .news-card .news-item.is-wide-media img,
+.homepage .events-card .event-item.is-wide-media .event-thumb {
+  background: transparent !important; box-shadow: none !important; border: 0 !important;
+  object-fit: contain !important; object-position: center !important;
+}
+/* Keep the shared minimum size, but allow long metadata/text to fit safely. */
+.homepage .news-card .news-item { height: auto !important; flex: 0 0 auto !important; }
+
+/* Featured bulletin: full-width poster followed immediately by its text. */
+.homepage .news-card .news-item--bulletin { display: flex !important; flex-direction: column; gap: 12px !important; align-items: stretch !important; }
+.homepage .news-card .news-item--bulletin > img { width: 100% !important; height: auto !important; max-height: none !important; aspect-ratio: auto; object-fit: contain !important; }
+.homepage .news-card .news-item--bulletin .news-item-body { width: 100%; }
+.homepage .news-card .news-item--bulletin .news-item-meta { flex-wrap: wrap; }
+
+/* A full first card without scroll snapping or spreading its contents apart. */
+.homepage .news-card .news-item--bulletin { flex: 0 0 100% !important; height: 100% !important; min-height: 100% !important; justify-content: flex-start; }
+.homepage .news-card .news-item--bulletin > .news-pinned { align-self: flex-start; flex: 0 0 auto; }
+.homepage .news-card .news-item--bulletin > img { flex: 0 1 auto; min-height: 0; }
+.homepage .news-card .news-item--bulletin .news-item-body { flex: 0 0 auto; }
+
+.homepage .news-card .news-item--bulletin { position: relative; padding-top: 42px !important; }
+.homepage .news-card .news-item--bulletin > .news-pinned { position: absolute; top: 0; left: 0; z-index: 2; width: max-content; padding: 5px 9px; border-radius: 0 0 6px 0; background: #005b46; color: #fff; font-size: 10px; }

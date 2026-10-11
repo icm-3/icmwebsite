@@ -7,16 +7,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="./public/images/icm-logo-provided-transparent.png"><link rel="stylesheet" href="./styles.css?v=20260807-isha-gap-v102">
+    <link rel="icon" href="./public/images/icm-logo-provided-transparent.png"><link rel="stylesheet" href="./styles.css?v=20261004-background-revert">
+    <link rel="stylesheet" href="./public/home-banner.css?v=20261004-21">
   </head>
-  <body>
+  <body class="homepage">
     <header class="site-header">
       <a class="brand" href="./index.html" aria-label="Islamic Center of Morrisville home">
         <img src="./public/images/icm-logo-provided-transparent.png" alt="Islamic Center of Morrisville">
       </a>
       <nav class="top-nav" aria-label="Primary navigation">
         <a class="nav-donate" href="./donate.html" aria-label="Donate">
-          <img src="./public/icons/generated/donate.png" alt="" aria-hidden="true">
+          <img src="./public/icons/donate-heart-hand.svg" alt="" aria-hidden="true">
           <span>Donate</span>
         </a>
         <a href="./calendar.html">Calendar</a>
@@ -32,12 +33,11 @@
     <main>
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow">Welcome to our masjid</p>
           <h1 id="hero-title">Our Masjid.<br><span class="hero-title-line">Our Community.</span></h1>
           <p class="hero-subtitle">A place of worship, learning, and service for<br> you and your family.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="./donate.html">
-              <img src="./public/icons/generated/donate.png" alt="" aria-hidden="true">
+              <img src="./public/icons/donate-heart-hand.svg" alt="" aria-hidden="true">
               <span>Donate</span>
             </a>
             <a class="button button-secondary" href="./programs.html">
@@ -50,11 +50,11 @@
           <picture>
             <source
               type="image/webp"
-              srcset="./public/images/responsive/masjid-interior-hero-20260806-640.webp 640w, ./public/images/responsive/masjid-interior-hero-20260806-960.webp 960w, ./public/images/responsive/masjid-interior-hero-20260806-1536.webp 1536w"
-              sizes="(max-width: 820px) 100vw, 62vw"
+              srcset="./public/images/masjid-reference-restored.webp"
+              sizes="100vw"
               data-hero-source>
             <img
-              src="./public/images/masjid-interior-hero-clean.png"
+              src="./public/images/masjid-reference-restored.webp"
               width="1535"
               height="1024"
               fetchpriority="high"
@@ -219,11 +219,11 @@
           <header class="card-header">
             <div class="card-title">
               <img src="./public/icons/generated/megaphone.png" alt="" aria-hidden="true">
-              <h2>Latest News &amp; Announcements</h2>
+              <h2>Community Announcements</h2>
             </div>
-            <a href="./news.html">All News <span aria-hidden="true">&rarr;</span></a>
+            <a href="./news.html">All Announcements <span aria-hidden="true">&rarr;</span></a>
           </header>
-          <div class="news-list skeleton-region" data-news-list aria-busy="true" aria-label="News and announcements">
+          <div class="news-list skeleton-region" data-news-list aria-busy="true" aria-label="Community announcements">
             <div class="news-item news-item--skeleton" aria-hidden="true">
               <span class="skeleton-block news-skeleton-media"></span><span class="skeleton-block skeleton-chip"></span>
               <div class="news-item-body"><span class="skeleton-block skeleton-date"></span><span class="skeleton-block skeleton-line skeleton-line-title"></span><span class="skeleton-block skeleton-line skeleton-line-medium"></span></div>
@@ -250,6 +250,7 @@
       <p>&copy; 2026 Islamic Center of Morrisville. All rights reserved.</p>
       <a href="./about.html#contact">Contact Us</a>
     </footer>
-    <script type="module" src="./public/app/main.js?v=20260806-exact-motion-v100"></script>
+    <script type="module" src="./public/app/main.js?v=20261004-isha-stable"></script>
+    <script type="module" src="./public/home-reveal.js?v=20261003-2"></script>
   </body>
 </html>

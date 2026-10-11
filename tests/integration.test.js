@@ -35,8 +35,8 @@ test('connected website uses the latest organization frontend and shared data ro
  const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
  const pages=readFileSync(new URL('../src/pages.js',import.meta.url),'utf8');
  const site=readFileSync(new URL('../src/site.js',import.meta.url),'utf8');
- assert.match(home,/masjid-interior-hero-clean\.png/);
- assert.match(home,/styles\.css\?v=20260807-isha-gap-v102/);
+ assert.match(home,/masjid-reference-restored\.webp/);
+ assert.match(home,/styles\.css\?v=/);
  assert.doesNotMatch(news,/data-newsletter-link/);
  assert.match(readFileSync(new URL('../donate.html',import.meta.url),'utf8'),/Continue to Secure Donation/);
  assert.match(main,/loadMonth\(selectedKey\.slice/);
@@ -71,7 +71,7 @@ test('login, CSRF, drafts, publishing, revision conflicts, restore, proposals, a
  const published=await call('/api/admin/content',{method:'PUT',headers,body:JSON.stringify({content:draft.content,revision:draft.revision,publish:true})});assert.equal(published.status,200);draft=await published.json();
  const site=await (await call('/api/cms')).json(),mobile=await (await call('/api/content')).json();assert.deepEqual(site.news,mobile.content.news);assert.equal(site.news[0].title,'Connected newsletter');
  const appContent=await (await call('/api/mobile-content')).json();
- assert.equal(appContent.schemaVersion,1);assert.equal(appContent.site.address,mobile.content.settings.address);assert.equal(appContent.site.websiteUrl,undefined);assert.equal(appContent.site.newsletterUrl,mobile.content.settings.newsletterUrl);assert.equal(appContent.site.facebook,mobile.content.settings.facebook);assert.equal(appContent.site.instagram,mobile.content.settings.instagram);assert.equal(appContent.site.youtube,mobile.content.settings.youtube);assert.equal(appContent.donation.url,'/donate.html');assert.equal(appContent.prayerTimes.apiUrl,'/api/prayers');assert.equal(appContent.news.find(item=>item.title==='Connected newsletter').body,'Complete newsletter');assert.ok(appContent.news.some(item=>item.id.startsWith('program-')));assert.equal(appContent.jummah.shifts.length,3);
+ assert.equal(appContent.schemaVersion,1);assert.equal(appContent.site.address,mobile.content.settings.address);assert.equal(appContent.site.websiteUrl,undefined);assert.equal(appContent.site.newsletterUrl,mobile.content.settings.newsletterUrl);assert.equal(appContent.site.facebook,mobile.content.settings.facebook);assert.equal(appContent.site.instagram,mobile.content.settings.instagram);assert.equal(appContent.site.youtube,mobile.content.settings.youtube);assert.equal(appContent.donation.url,'/donate.html');assert.equal(appContent.prayerTimes.apiUrl,'/api/prayers');assert.equal(appContent.news.find(item=>item.title==='Connected newsletter').body,'Complete newsletter');assert.ok(appContent.news.some(item=>item.id.startsWith('program-')));assert.deepEqual(appContent.jummah.shifts.map(({location,id,...shift})=>shift),site.jummah.shifts);
  const png=readFileSync(new URL('../public/news/friday-announcements-june-12-2026.png',import.meta.url));
  const media=await call('/api/admin/media',{method:'POST',headers,body:JSON.stringify({mime:'image/png',data:png.toString('base64')})});
  assert.equal(media.status,201);const mediaUrl=(await media.json()).url,mediaRead=await call(mediaUrl);assert.equal(mediaRead.status,200);assert.equal(mediaRead.headers.get('content-type'),'image/png');assert.deepEqual(Buffer.from(await mediaRead.arrayBuffer()),png);

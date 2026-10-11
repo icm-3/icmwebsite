@@ -8,7 +8,7 @@ export function normalizeNewsItems(items, fallbackItems = []) {
 
   return source.map((item) => {
     const normalized = { ...item };
-    const isEvergreen = !evergreenAssigned && (
+    const isEvergreen = !evergreenAssigned && !normalized.archived && (
       normalized.id === EVERGREEN_ANNOUNCEMENT_ID
       || normalized.pinned === true
       || fridayAnnouncementPattern.test(String(normalized.title || ""))
@@ -48,7 +48,7 @@ export function newsCategory(item) {
 
 export function findEvergreenAnnouncement(items) {
   if (!Array.isArray(items)) return null;
-  return items.find((item) => (
+  return items.find((item) => !item.archived && (
     item.id === EVERGREEN_ANNOUNCEMENT_ID
     || item.pinned === true
     || fridayAnnouncementPattern.test(String(item.title || ""))
@@ -63,6 +63,8 @@ export function editableAnnouncementSnapshot(item) {
     image: item.image || "",
     imageAlt: item.imageAlt || "",
     category: item.category || "Announcement",
+    issueDate: item.issueDate || "",
+    sourceUrl: item.sourceUrl || "",
   });
 }
 
@@ -76,3 +78,20 @@ export function todayDateKey(date = new Date(), timeZone = "America/New_York") {
   const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
   return `${values.year}-${values.month}-${values.day}`;
 }
+
+// Dates describe real edits, not page views. Preserve the preceding edition.
+export function prepareAnnouncementSave(content, previousContent, now = new Date()) {
+  const result = structuredClone(content);
+  const current = findEvergreenAnnouncement(result.news);
+  const previous = findEvergreenAnnouncement(previousContent?.news);
+  if (!current || editableAnnouncementSnapshot(current) === editableAnnouncementSnapshot(previous)) return result;
+  current.date = todayDateKey(now);
+  if (previous) {
+    const snapshot = editableAnnouncementSnapshot(previous);
+    const alreadyArchived = result.news.some(item => item.archived && item.date === previous.date && editableAnnouncementSnapshot(item) === snapshot);
+    if (!alreadyArchived) result.news.push({ ...structuredClone(previous), id: crypto.randomUUID(), pinned: false, archived: true });
+  }
+  return result;
+}
+
+export const announcementPin = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Pinned"><path d="M8 2h8a1 1 0 0 1 0 2h-1v5l3 4v2h-5v6l-1 2-1-2v-6H6v-2l3-4V4H8a1 1 0 0 1 0-2Z"/></svg>`;

@@ -1,3 +1,46 @@
+// src/content-utils.js
+var EVERGREEN_ANNOUNCEMENT_ID = "friday-announcements";
+var fridayAnnouncementPattern = /\bfriday announcements?\b/i;
+function findEvergreenAnnouncement(items) {
+  if (!Array.isArray(items)) return null;
+  return items.find((item2) => !item2.archived && (item2.id === EVERGREEN_ANNOUNCEMENT_ID || item2.pinned === true || fridayAnnouncementPattern.test(String(item2.title || "")))) || null;
+}
+function editableAnnouncementSnapshot(item2) {
+  if (!item2) return "";
+  return JSON.stringify({
+    title: item2.title || "",
+    summary: item2.summary || "",
+    image: item2.image || "",
+    imageAlt: item2.imageAlt || "",
+    category: item2.category || "Announcement",
+    issueDate: item2.issueDate || "",
+    sourceUrl: item2.sourceUrl || ""
+  });
+}
+function todayDateKey(date = /* @__PURE__ */ new Date(), timeZone = "America/New_York") {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+function prepareAnnouncementSave(content, previousContent, now2 = /* @__PURE__ */ new Date()) {
+  const result = structuredClone(content);
+  const current = findEvergreenAnnouncement(result.news);
+  const previous = findEvergreenAnnouncement(previousContent?.news);
+  if (!current || editableAnnouncementSnapshot(current) === editableAnnouncementSnapshot(previous)) return result;
+  current.date = todayDateKey(now2);
+  if (previous) {
+    const snapshot = editableAnnouncementSnapshot(previous);
+    const alreadyArchived = result.news.some((item2) => item2.archived && item2.date === previous.date && editableAnnouncementSnapshot(item2) === snapshot);
+    if (!alreadyArchived) result.news.push({ ...structuredClone(previous), id: crypto.randomUUID(), pinned: false, archived: true });
+  }
+  return result;
+}
+
 // node_modules/luxon/build/es6/luxon.mjs
 var LuxonError = class extends Error {
 };
@@ -6516,6 +6559,7 @@ async function request(url, options = {}) {
 }
 
 // src/admin.js
+var savedState;
 var session;
 var state;
 var revision;
@@ -6583,7 +6627,7 @@ function overview() {
   return `<section class="cms-overview"><div class="cms-summary-grid">${cards.map(([label, count, key]) => `<button type="button" data-section="${key}"><strong>${count}</strong><span>${esc(label)}</span><small>Open editor</small></button>`).join("")}</div>${panel("How publishing works", "There is one shared source for both public experiences.", `<ol class="cms-steps cms-field-wide"><li>Edit a section and check the information.</li><li>Select <strong>Save draft</strong> if it is not ready for visitors.</li><li>Select <strong>Publish to website + app</strong> when it is ready. Open screens update within 15 seconds.</li><li>Published items stay editable. Change any field or image and publish again to update both places.</li></ol><div class="cms-system cms-field-wide"><strong>Connected services</strong><span>Website content API</span><b>Ready</b><span>Mobile app content API</span><b>Ready</b><span>Prayer times</span><b>Official ICM WordPress feed</b><span>Storage</span><b>SQLite database on this server</b></div>`)}${panel("Quick links", "Open the public pages in a new tab.", `<div class="cms-quick-links cms-field-wide"><a href="/" target="_blank" rel="noopener">Homepage</a><a href="/news.html" target="_blank" rel="noopener">News</a><a href="/calendar.html" target="_blank" rel="noopener">Calendar</a><a href="/programs.html" target="_blank" rel="noopener">Programs</a></div>`)}</section>`;
 }
 function newsEditor() {
-  const body = state.news.length ? state.news.map((entry, index) => item(entry.title, `${entry.kind === "newsletter" ? "Newsletter" : "News"} \xB7 ${entry.date}`, `${field(`news.${index}.title`, "Headline", entry.title, { required: true, wide: true })}${field(`news.${index}.date`, "Publication date", entry.date, { type: "date", required: true })}<label class="cms-field"><span>Content type</span><select data-path="news.${index}.kind"><option value="news" ${entry.kind === "news" ? "selected" : ""}>News announcement</option><option value="newsletter" ${entry.kind === "newsletter" ? "selected" : ""}>Newsletter</option></select></label>${area(`news.${index}.summary`, "Short summary", entry.summary, { help: "Shown on cards in the website and app.", required: true })}${area(`news.${index}.body`, "Full article", entry.body, { help: "Shown when a visitor opens the story." })}${field(`news.${index}.url`, "Newsletter issue or details link", entry.url, { type: "url", help: "For a newsletter, paste its public Constant Contact issue link. Otherwise use the original or registration link.", wide: true })}${upload(`news.${index}.image`, entry.image)}${advanced("Use an image already online instead", field(`news.${index}.image`, "Image web address", entry.image, { help: "Optional advanced option. Paste an HTTPS address or a site path beginning with /.", wide: true }))}${field(`news.${index}.imageAlt`, "Image description", entry.imageAlt, { help: "Describe the flyer or photo for people using screen readers. A basic description is added automatically when you upload.", wide: true })}`, itemActions("news", index, state.news.length), index)).join("") : '<div class="cms-empty cms-field-wide"><strong>No news has been added yet.</strong><span>Add a newsletter or announcement to get started.</span></div>';
+  const body = state.news.length ? state.news.map((entry, index) => item(entry.title, `${entry.kind === "newsletter" ? "Newsletter" : "News"} \xB7 ${entry.date}`, `${field(`news.${index}.title`, "Headline", entry.title, { required: true, wide: true })}${field(`news.${index}.sourceUrl`, "Official source URL", entry.sourceUrl || "", { type: "url" })}${field(`news.${index}.date`, "Publication date (optional)", entry.date, { type: "date" })}<label class="cms-field"><span>Content type</span><select data-path="news.${index}.kind"><option value="news" ${entry.kind === "news" ? "selected" : ""}>News announcement</option><option value="newsletter" ${entry.kind === "newsletter" ? "selected" : ""}>Newsletter</option></select></label>${area(`news.${index}.summary`, "Short summary", entry.summary, { help: "Shown on cards in the website and app.", required: true })}${area(`news.${index}.body`, "Full article", entry.body, { help: "Shown when a visitor opens the story." })}${field(`news.${index}.url`, "Newsletter issue or details link", entry.url, { type: "url", help: "For a newsletter, paste its public Constant Contact issue link. Otherwise use the original or registration link.", wide: true })}${upload(`news.${index}.image`, entry.image)}${advanced("Use an image already online instead", field(`news.${index}.image`, "Image web address", entry.image, { help: "Optional advanced option. Paste an HTTPS address or a site path beginning with /.", wide: true }))}${field(`news.${index}.imageAlt`, "Image description", entry.imageAlt, { help: "Describe the flyer or photo for people using screen readers. A basic description is added automatically when you upload.", wide: true })}`, itemActions("news", index, state.news.length), index)).join("") : '<div class="cms-empty cms-field-wide"><strong>No news has been added yet.</strong><span>Add a newsletter or announcement to get started.</span></div>';
   return panel("Newsletters & news", "Create, publish, and later edit any item here. Republishing updates the same item on both the website and app.", body, button("add-newsletter", "Add newsletter") + button("add-news", "Add announcement", "", "cms-primary"));
 }
 function jummahEditor() {
@@ -6634,6 +6678,7 @@ async function api(url, method = "GET", data) {
 async function load() {
   const result = await api("/api/admin/content");
   state = result.content;
+  savedState = structuredClone(state);
   revision = result.revision;
   updated = result.updated;
   dirty = false;
@@ -6644,7 +6689,6 @@ function validate() {
   const missing = [];
   state.news.forEach((entry, index) => {
     if (!entry.title.trim()) missing.push(`News item ${index + 1} needs a headline`);
-    if (!entry.date) missing.push(`News item ${index + 1} needs a date`);
     if (entry.image && !entry.imageAlt.trim()) missing.push(`News item ${index + 1} needs an image description`);
   });
   state.events.forEach((entry, index) => {
@@ -6664,9 +6708,11 @@ function validate() {
   if (missing.length) throw new Error(missing.slice(0, 3).join(". "));
 }
 async function save(publish) {
+  state = prepareAnnouncementSave(state, savedState);
   validate();
   const result = await api("/api/admin/content", "PUT", { content: state, revision, publish });
   state = result.content;
+  savedState = structuredClone(state);
   revision = result.revision;
   updated = result.updated;
   dirty = false;
@@ -6829,6 +6875,7 @@ document.addEventListener("click", async (event) => {
       if (dirty && !confirm("Replace your unsaved changes with this revision?")) return;
       const result = await api("/api/admin/restore", "POST", { id: Number(element.dataset.id), revision });
       state = result.content;
+      savedState = structuredClone(state);
       revision = result.revision;
       updated = result.updated;
       dirty = false;

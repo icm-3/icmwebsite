@@ -8,6 +8,7 @@ import {
 import { defaultContent } from "./default-content.js";
 import { calendarDesktopEdgeFixture, calendarPositionFixtures } from "./calendar-test-fixtures.js";
 import {
+  announcementPin,
   newsCategory,
   normalizeNewsItems,
   sortNewsEntries,
@@ -580,6 +581,7 @@ function setCalendarDetail(event, index = 0) {
             : ""
         }
         ${event.description ? `<p class="calendar-detail-description">${escapeHtml(event.description)}</p>` : ""}
+        ${/^https:\/\//.test(event.sourceUrl || "") ? `<a href="${escapeHtml(event.sourceUrl)}" target="_blank" rel="noopener">Official ICM flyer ↗</a>` : ""}
         ${eventLink(event) ? `<a class="calendar-detail-link" href="${escapeHtml(eventLink(event))}" target="_blank" rel="noopener">Register</a>` : ""}
       </div>
       ${
@@ -802,9 +804,10 @@ function renderNews(content) {
         return `
           <a class="news-feature${shortTitleClass}" id="${escapeHtml(newsId)}" href="./news.html#${escapeHtml(newsId)}">
             ${item.image ? responsiveImageMarkup(item.image, item.imageAlt || newsTitle(item, originalIndex), { sizes: "(max-width: 768px) calc(100vw - 48px), 210px" }) : ""}
+            ${item.pinned ? `<span class="news-pinned">${announcementPin}<span>PINNED</span></span>` : ""}
             <span class="news-feature-category">${escapeHtml(newsCategory(item))}</span>
             <div>
-              ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
+              ${item.date ? `<time datetime="${escapeHtml(item.date)}">${item.pinned || item.issueDate ? "Updated " : ""}${escapeHtml(formatShortDate(item.date))}</time>` : `<span class="news-undated">Date not provided</span>`}
               ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
               ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
             </div>
@@ -827,9 +830,11 @@ function renderNews(content) {
       <article class="news-detail" data-news-detail data-news-id="${escapeHtml(newsId)}">
         <a class="news-detail-back" href="./news.html">Back to news</a>
         <div class="news-detail-body">
+
           <span class="news-feature-category">${escapeHtml(newsCategory(item))}</span>
-          ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
+          ${item.date ? `<time datetime="${escapeHtml(item.date)}">${item.pinned || item.issueDate ? "Updated " : ""}${escapeHtml(formatShortDate(item.date))}</time>` : `<span class="news-undated">Date not provided</span>`}
           ${item.title ? `<h2>${escapeHtml(item.title)}</h2>` : ""}
+
           ${item.summary ? `<div class="news-detail-summary"><p>${escapeHtml(item.summary)}</p></div>` : ""}
           ${item.body ? `<div class="news-detail-copy">${String(item.body).split(/\n{2,}/).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}</div>` : ""}
           ${item.url ? `<a class="calendar-detail-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${item.kind === "newsletter" ? "Open newsletter" : "Read more"}</a>` : ""}

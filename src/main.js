@@ -7,6 +7,7 @@ import {
 } from "adhan";
 import { defaultContent } from "./default-content.js";
 import {
+  announcementPin,
   newsCategory,
   normalizeNewsItems,
   sortNewsEntries,
@@ -48,6 +49,9 @@ const prayerActivationTimers = new WeakMap();
 const reducedMotionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 let prayerClockOffset = null;
 let prayerRenderSequence = 0;
+const repeatPrayerPreview = window.location.pathname.endsWith("/prayer-transition-test.html");
+let prayerPreviewReset = null;
+let prayerPreviewHolding = false;
 
 export function getIcmPrayerTimes(date) {
   const params = CalculationMethod.Karachi();
@@ -164,6 +168,15 @@ function currentPrayerPeriodForNow(now) {
 function getPrayerClockOffset() {
   if (prayerClockOffset !== null) return prayerClockOffset;
   prayerClockOffset = 0;
+
+  if (repeatPrayerPreview) {
+    const start = new URLSearchParams(window.location.search).get("start");
+    const target = nextPrayerOrder.includes(start)
+      ? getIcmPrayerTimes(prayerDateFor(new Date()))[start]
+      : nextPrayerForNow(new Date()).time;
+    prayerClockOffset = target.getTime() - 5000 - Date.now();
+    return prayerClockOffset;
+  }
 
   const params = new URLSearchParams(window.location.search);
   const testTransition = params.get("testTransition")?.toLowerCase();
@@ -358,13 +371,47 @@ function finishLoadingRegion(target) {
   );
 }
 
+const countdownAnimations = new Map();
+const visibleCountdownDigits = new WeakSet();
+const observedCountdownDigits = new WeakSet();
+const countdownObserver = typeof IntersectionObserver === "function" ? new IntersectionObserver(entries => {
+  for (const entry of entries) {
+    if (entry.isIntersecting) visibleCountdownDigits.add(entry.target);
+    else {
+      visibleCountdownDigits.delete(entry.target);
+      countdownAnimations.get(entry.target)?.cancel();
+      countdownAnimations.delete(entry.target);
+    }
+  }
+}) : null;
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) return;
+  for (const animation of countdownAnimations.values()) animation.cancel();
+  countdownAnimations.clear();
+});
+
 function setAnimatedText(selector, value) {
   const element = document.querySelector(selector);
-  if (!element || element.textContent === value) return;
+  if (!element) return;
+  if (!observedCountdownDigits.has(element)) {
+    observedCountdownDigits.add(element);
+    countdownObserver?.observe(element);
+    element.textContent = value;
+    return;
+  }
+  if (element.textContent === value) return;
+  countdownAnimations.get(element)?.cancel();
+  countdownAnimations.delete(element);
   element.textContent = value;
-  element.classList.remove("is-changing");
-  void element.offsetWidth;
-  element.classList.add("is-changing");
+  if (document.hidden || prefersReducedMotion() || !visibleCountdownDigits.has(element) || typeof element.animate !== "function") return;
+  const animation = element.animate(
+    [{ transform: "translateY(1.5px)" }, { transform: "translateY(0)" }],
+    { duration: 420, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+  );
+  countdownAnimations.set(element, animation);
+  animation.onfinish = () => {
+    if (countdownAnimations.get(element) === animation) countdownAnimations.delete(element);
+  };
 }
 
 function prayerTransitionDirection(previousKey, nextKey) {
@@ -381,6 +428,8 @@ function animatePrayerActivation(tile, direction) {
   if (document.hidden || typeof tile.animate !== "function") return;
 
   const reducedMotion = prefersReducedMotion();
+  const isLastTile = tile.matches(":last-child");
+  const restingX = Number.parseFloat(getComputedStyle(tile).getPropertyValue("--prayer-active-x")) || 0;
   const animations = [
     tile.animate(
       reducedMotion
@@ -388,9 +437,11 @@ function animatePrayerActivation(tile, direction) {
         : [
             {
               opacity: 0.72,
-              transform: `translateX(${direction * 12}px) translateY(1px) scale(0.97)`,
+              transform: isLastTile
+                ? `translateX(${restingX}px) translateY(1px)`
+                : `translateX(${restingX + direction * 12}px) translateY(1px) scale(0.97)`,
             },
-            { opacity: 1, transform: "translateX(0) translateY(-1px) scale(1)" },
+            { opacity: 1, transform: `translateX(${restingX}px) translateY(-1px) scale(1)` },
           ],
       {
         duration: reducedMotion ? 160 : 250,
@@ -404,7 +455,7 @@ function animatePrayerActivation(tile, direction) {
     animations.push(
       icon.animate(
         [
-          { opacity: 0.72, transform: `translateX(${direction * 10}px) scale(0.94)` },
+          { opacity: 0.72, transform: isLastTile ? "translateY(2px)" : `translateX(${direction * 10}px) scale(0.94)` },
           { opacity: 1, transform: "translateX(0) scale(1)" },
         ],
         {
@@ -764,15 +815,15 @@ function renderHero(content) {
 
   if (source) {
     if (usesDefaultHero) {
-      source.srcset = "./public/images/responsive/masjid-interior-hero-20260806-640.webp 640w, ./public/images/responsive/masjid-interior-hero-20260806-960.webp 960w, ./public/images/responsive/masjid-interior-hero-20260806-1536.webp 1536w";
-      source.sizes = "(max-width: 820px) 100vw, 62vw";
+      source.srcset = "./public/images/masjid-reference-restored.webp";
+      source.sizes = "100vw";
     } else {
       source.removeAttribute("srcset");
       source.removeAttribute("sizes");
     }
   }
 
-  image.src = heroImage;
+  image.src = usesDefaultHero ? "./public/images/masjid-reference-restored.webp" : heroImage;
   image.alt = content.hero.imageAlt || "";
 }
 
@@ -867,6 +918,7 @@ async function renderPrayerTimes() {
 
   if (countdownTimer) window.clearInterval(countdownTimer);
   const tick = () => {
+    if (document.hidden) return;
     const remaining = next ? Math.max(0, Math.ceil((next.time - Date.now()) / 1000)) : 0;
     setAnimatedText("[data-countdown-hours]", String(Math.floor(remaining / 3600)).padStart(2, "0"));
     setAnimatedText("[data-countdown-minutes]", String(Math.floor((remaining % 3600) / 60)).padStart(2, "0"));
@@ -920,17 +972,10 @@ function renderEvents(content) {
   const upcomingEvents = sourceEvents
     .filter(({ event }) => eventEndValue(event) > now)
     .sort((first, second) => eventStartValue(first.event) - eventStartValue(second.event));
-  const pastEvents = sourceEvents
-    .filter(({ event }) => eventEndValue(event) <= now)
-    .sort((first, second) => eventEndValue(second.event) - eventEndValue(first.event));
-  const events = [...upcomingEvents, ...pastEvents].slice(0, HOME_EVENT_LIMIT);
-  if (!events.length) {
-    list.innerHTML = '<p class="content-empty">No upcoming events have been published yet.</p>';
-    finishLoadingRegion(list);
-    return;
-  }
-  const firstPastDisplayIndex = events.findIndex(({ event }) => eventEndValue(event) <= now);
-  list.classList.toggle("has-past-divider-in-preview", firstPastDisplayIndex >= 0 && firstPastDisplayIndex < 3);
+  const events = upcomingEvents.slice(0, HOME_EVENT_LIMIT);
+  const firstPastDisplayIndex = -1;
+  list.classList.remove("has-past-divider-in-preview");
+  if (!events.length) { list.innerHTML = '<p class="content-empty">No upcoming events have been published yet.</p>'; finishLoadingRegion(list); return; }
   list.innerHTML = events
     .map(({ event, originalIndex }, displayIndex) => {
       const eventDate = formatLongDate(event.date);
@@ -951,6 +996,7 @@ function renderEvents(content) {
       `;
     })
     .join("");
+  if (!events.length) list.innerHTML = `<p class="home-events-empty">New events will appear here when announced. <a href="https://www.icmnc.org/calendar/">View ICM’s official calendar</a>.</p>`;
   finishLoadingRegion(list);
   markCardImageShapes(list, ".event-item", ".event-thumb");
 }
@@ -960,7 +1006,7 @@ function renderNews(content) {
   if (!list) return;
   const news = sortNewsEntries(
     normalizeNewsItems(content.news, defaultContent.news)
-      .map((item, originalIndex) => ({ item, originalIndex })),
+      .map((item, originalIndex) => ({ item, originalIndex })).filter(({ item }) => !item.archived),
     dateValue,
   ).slice(0, HOME_NEWS_LIMIT);
   if (!news.length) {
@@ -971,12 +1017,12 @@ function renderNews(content) {
   list.innerHTML = news
     .map(
       ({ item, originalIndex }) => `
-        <a class="news-item${newsTitle(item, originalIndex).length <= 42 ? " news-item--short-title" : ""}" href="./news.html#news-${escapeHtml(newsSlug(item, originalIndex))}">
+        <a class="news-item${item.pinned ? " news-item--bulletin" : ""}${newsTitle(item, originalIndex).length <= 42 ? " news-item--short-title" : ""}" href="./news.html#news-${escapeHtml(newsSlug(item, originalIndex))}">
+          ${item.pinned ? `<span class="news-pinned">${announcementPin}<span>PINNED</span></span>` : ""}
           ${item.image ? responsiveImageMarkup(item.image, item.imageAlt || newsTitle(item, originalIndex), { sizes: "120px" }) : ""}
-          <span class="news-category">${escapeHtml(newsCategory(item))}</span>
           <div class="news-item-body">
-            ${item.date ? `<time datetime="${escapeHtml(item.date)}">${escapeHtml(formatShortDate(item.date))}</time>` : ""}
-            ${item.title ? `<h3>${escapeHtml(item.title)}</h3>` : ""}
+            <div class="news-item-meta"><div class="news-date-line">${item.date ? `<time datetime="${escapeHtml(item.date)}">${item.pinned ? "Updated " : ""}${escapeHtml(formatShortDate(item.date))}</time>` : ""}</div><span class="news-category">${escapeHtml(newsCategory(item))}</span></div>
+            <div class="news-item-heading">${item.title ? `<h3>${escapeHtml(item.title)}</h3>` : ""}</div>
             ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ""}
           </div>
         </a>

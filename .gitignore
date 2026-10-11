@@ -16,3 +16,11 @@ test-results/
 /src/mobile.js
 /public/app/mobile.js
 /icm-original-expo.tar
+
+# Local deployment metadata, exports and design previews
+.vercel/
+dist/
+output/
+.playwright-cli/
+/layout-test.html
+/prayer-transition-test.html
